@@ -1,0 +1,77 @@
+<layout name="Admin@default/common/dashboard_layout" />
+<taglib name="Common\TagLib\Gy" />
+
+<!-- Content Header (Page header) -->
+<section class="content-header clearfix">
+    <h1>系统日志</h1>
+</section>
+<!-- Main content -->
+<section class="content" n-id="86">
+    <div class="row mb-20">
+        <div class="col-md-5">
+        </div>
+        <div class="col-md-7">
+            <form action="" class="pull-right">
+                <div class="input-group">
+                            <input type="text" name="search_value" class="form-control input-sm pull-right" style="width: 150px;" value="{$Think.get.search_value}" placeholder="搜索">
+
+                            <select name="search_key" id="" class="pull-right form-control input-sm" style="width: 120px;">
+
+                            <option value="act" <eq name='Think.get.search_key' value='act'>selected</eq> >操作方法
+                            </option>
+
+                                <option value="uid" <eq name='Think.get.search_key' value='uid'>selected</eq> >用户ID
+                                </option>
+
+                            </select>
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+            </form>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-body no-padding">
+            <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th>模块名称</th>
+                        <th>方法名称</th>
+                        <th>消息</th>
+                        <th>用户ID</th>
+                        <th>用户IP</th>
+                        <th>操作时间</th>
+                        <th width="120">操作记录</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                        <volist name="list" id="log">
+                    <tr>
+                        <td>{$log.modulename}</td>
+                        <td>{$log.actionname}</td>
+                        <td>{$log.message}</td>
+                        <td>{$log.userid}</td>
+                        <td>{$log.userip}</td>
+                        <td>{$log.create_time|date='Y-m-d H:i:s',###}</td>
+                        <td>{$log.opname}</td>
+                        </td>
+                    </tr>
+                        </volist>
+                </tbody>
+            </table>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+    <div class="row mt-20">
+        <div class="col-md-5">
+            <div class="form-inline">
+
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="pull-right">
+                <include file="common/pagination" />
+            </div>
+        </div>
+    </div>
+</section><!-- /.content -->

@@ -1,0 +1,49 @@
+/* nav-bar begin*/
+#nav-bar {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.1rem;
+  line-height: 1.1rem;
+  padding: 0;
+  background-color: #fff;
+}
+
+#nav-bar li {
+  float: left;
+  width: 20%;
+  text-align: center;
+}
+
+#nav-bar li a {
+  display: inline-block;
+  line-height: 1.4;
+  vertical-align: middle;
+  color: #333;
+  width: 100%;
+  font-size: 0.26rem;
+}
+
+#nav-bar li.on a, #nav-bar li.on i {
+  color: #c9151e;
+}
+
+#nav-bar li.news {
+  position: relative;
+}
+
+#nav-bar li.news:after {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #c9151e;
+  position: absolute;
+  right: 0.36rem;
+  top: 0.15rem;
+}
+
+/* nav-bar end*/

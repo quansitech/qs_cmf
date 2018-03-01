@@ -1,0 +1,18 @@
+<case value="address">
+    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+        <label class="left control-label">{$[type]form.title}：</label>
+        <div class="right">
+            <input type="hidden" name="{$[type]form.name}" value="{$[type]form.value}" />
+            <notempty name="[type]form.tip">
+                <span class="check-tips small">{$[type]form.tip}</span>
+            </notempty>
+        </div>
+    </div>
+    <notdefined name="address">
+        <script type="text/javascript" src="__PUBLIC__/libs/addrSelect/selectAddr.js"></script>
+        <define name="address" value="1" />
+    </notdefined>
+    <script>
+        $('input[name={$[type]form.name}]').selectAddr({class : 'form-control select'});
+    </script>
+</case>

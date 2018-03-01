@@ -1,0 +1,36 @@
+.LockRow /*固定行的样式*/
+{
+    position: relative;
+    /*top: expression(this.parentElement.parentElement.parentElement.scrollTop);*/
+    top:0px;
+    z-index:2;
+}
+.LockCell /*固定列的样式*/
+{
+    position: relative;
+    /*left: expression(this.parentElement.parentElement.parentElement.parentElement.scrollLeft);*/
+    left:0px;
+    z-index:0;
+}
+.LockCross /*行列交叉处样式*/
+{
+    z-index:3;
+}
+.divBoxing /*外出div样式*/
+{
+    clear:both;
+    overflow: scroll;
+    position:relative;
+}
+.tbLock /*设置单元格间隙的样式*/
+{
+    border-collapse:collapse;
+}
+.lockRowBg
+{
+    background-color:#FFF;
+}
+.lockColumnBg
+{
+    background-color:#FFF;
+}

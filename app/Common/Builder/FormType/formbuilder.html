@@ -1,0 +1,371 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/cui/cui.extend.min.css">
+<style type="text/css">
+    .builder {
+        background: #fff;
+    }
+    .builder .builder-tabs,
+    .builder .builder-toolbar,
+    .builder .builder-container {
+        margin-bottom: 20px;
+    }
+    .builder .builder-container .builder-data-empty {
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+    .builder .builder-container .builder-data-empty .empty-info {
+        padding: 130px 0;
+        color: #555;
+    }
+    .builder .builder-container .builder-table .panel {
+        margin-bottom: 0px;
+    }
+    .builder .builder-container .builder-table .panel .table td {
+        max-width: 600px;
+        vertical-align: middle;
+    }
+    .builder .builder-container .builder-table .panel .table td img {
+        max-width: 200px;
+        max-height: 40px;
+    }
+    .builder .builder-container .pagination {
+        margin-bottom: 0px;
+    }
+    .builder-form-box .builder-form.form-horizontal .tab-content .form-group {
+        margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+        .row,
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+        }
+        .builder-list-toolbar .button-list .btn {
+            margin-bottom: 15px;
+        }
+        
+        button.submit, button.return{
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+    }
+    @media (min-width: 768px) {
+        .builder-form-box .builder-form.form-horizontal {
+            padding: 0 15px;
+        }
+        .builder-form-box .builder-form.form-horizontal .control-label {
+            text-align: left;
+        }
+        .builder-form-box .builder-form.form-horizontal .left {
+            width: 15%;
+            float: left;
+        }
+        .builder-form-box .builder-form.form-horizontal .right {
+            width: 85%;
+            float: left;
+        }
+        .builder-form-box .builder-form-container .builder-form .input,
+        .builder-form-box .builder-form-container .builder-form .select,
+        .builder-form-box .builder-form-container .builder-form .textarea,
+        .builder-form-box .builder-form-container .builder-form .img-box,
+        .builder-form-box .builder-form-container .builder-form .file-box {
+            width: 70%;
+        }
+        .builder-form-box .builder-form .submit,
+        .builder-form-box .builder-form .return {
+            min-width: 120px;
+        }
+    }
+    @media (min-width: 992px) {
+        .builder-form-box .builder-form.form-horizontal {
+/*
+            max-width: 1200px;
+ */
+        }
+        .builder-form-box .builder-form.form-horizontal .left {
+            width: 12%;
+            float: left;
+        }
+        .builder-form-box .builder-form.form-horizontal .right {
+            width: 88%;
+            float: left;
+        }
+    }
+    .builder-form-box .huploadify-upload {
+        margin-bottom: 10px;
+    }
+    .builder-form-box .huploadify-preview img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    .builder-form-box .img-box {
+        position: relative;
+        vertical-align: top;
+        height: 90px;
+    }
+    .builder-form-box .img-box img {
+        margin-top: 8px;
+        max-width: 150px;
+        max-height: 90px;
+        margin-right: 8px;
+    }
+    .builder-form-box .img-box .remove-picture {
+        color: red;
+        position: absolute;
+        top: 0;
+        right: 2px;
+        background: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+    .builder-form-box .img-box .remove-picture:hover {
+        color: #DD0000;
+        box-shadow: inset 0 1px 1px red, 0 0 8px red;
+    }
+    .builder-form-box .file-box {
+        margin-top: 15px;
+    }
+    .builder-form-box .file-box .remove-file {
+        color: red;
+        position: absolute;
+        top: 12px;
+        right: 10px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+    .builder-form-box .file-box .remove-file:hover {
+        color: #DD0000;
+        box-shadow: inset 0 1px 1px red, 0 0 8px red;
+    }
+    .builder-form-box .board_list .board {
+        padding: 0px;
+        margin-right: 10px;
+    }
+</style>
+
+<section class="content-header clearfix">
+    <h1 class="pull-left">{$meta_title}</h1>
+</section>
+
+<div class="builder builder-form-box panel-body content" n-id="{$nid}">
+    <notempty name="tab_nav">
+        <div class="builder-tabs builder-form-tabs">
+            <ul class="nav nav-tabs">
+                <volist name="tab_nav.tab_list" id="tab">
+                    <li class="<php>if($tab_nav['current_tab'] == $key) echo 'active';</php>"><a href="{$tab.href}">{$tab.title}</a></li>
+                </volist>
+            </ul>
+        </div>
+    </notempty>
+
+    {// 数据列表 }
+    <div class="builder-container builder-form-container">
+        <div class="row">
+            
+            <div class="col-xs-12">
+                <form action="{$post_url}" method="post" class="form-horizontal form builder-form">
+                    <volist name="form_items" id="form" key="k">
+                        <switch name="form.type">
+                        
+                            <include file='../app/Common/Builder/FormType/hidden.html' type='' />
+                            {// 不可修改文本 }
+                            <include file='../app/Common/Builder/FormType/static.html' type='' />
+                            {// 数字 }
+                            <include file='../app/Common/Builder/FormType/num.html' type='' />
+                            {// 字符串 }
+                            <include file='../app/Common/Builder/FormType/text.html' type='' />
+                            {// 文本 }
+                            <include file='../app/Common/Builder/FormType/textarea.html' type='' />
+                            {// 数组 }
+                            <include file='../app/Common/Builder/FormType/array.html' type='' />
+                            {// 密码 }
+                            <include file='../app/Common/Builder/FormType/password.html' type='' />
+                            {// 单选按钮 }
+                            <include file='../app/Common/Builder/FormType/radio.html' type='' />
+                            {// 复选框 }
+                            <include file='../app/Common/Builder/FormType/checkbox.html' type='' />
+                            {// 下拉框 }
+                            <include file='../app/Common/Builder/FormType/select.html' type='' />
+                            {// 图标 }
+                            <include file='../app/Common/Builder/FormType/icon.html' type='' />
+                            {// 日期 }
+                            <include file='../app/Common/Builder/FormType/date.html' type='' />
+                            {// 时间 }
+                            <include file='../app/Common/Builder/FormType/datetime.html' type='' />
+                            {// 图片 }
+                            <include file='../app/Common/Builder/FormType/picture.html' type='' />
+                            {// 图片(多图) }
+                            <include file='../app/Common/Builder/FormType/pictures.html' type='' />
+                            {// 文件 }
+                            <include file='../app/Common/Builder/FormType/file.html' type='' />
+                            {// 多文件 }
+                            <include file='../app/Common/Builder/FormType/files.html' type='' />
+                            {// 编辑器 kindeditor }
+                            <include file='../app/Common/Builder/FormType/kindeditor.html' type='' />
+                            {// 编辑器 ueditor }
+                            <include file='../app/Common/Builder/FormType/ueditor.html' type='' />
+                            {// 编辑器 markdown }
+                            <include file='../app/Common/Builder/FormType/editormd.html' type='' />
+                            {// 标签 }
+                            <include file='../app/Common/Builder/FormType/tags.html' type='' />
+                            {// 拖动排序 }
+                            <include file='../app/Common/Builder/FormType/board.html' type='' />
+                            {// 省 }
+                            <include file='../app/Common/Builder/FormType/province.html' type='' />
+                            {// 市 }
+                            <include file='../app/Common/Builder/FormType/city.html' type='' />
+                            {// 多市 }
+                            <include file='../app/Common/Builder/FormType/citys.html' type='' />
+                            {// 地区 }
+                            <include file='../app/Common/Builder/FormType/district.html' type='' />
+                            {// 下拉菜单_其他 }
+                            <include file='../app/Common/Builder/FormType/select_other.html' type='' />
+                            {// 图片 oss }
+                            <include file='../app/Common/Builder/FormType/picture_oss.html' type='' />
+                            {// 多图片 oss }
+                            <include file='../app/Common/Builder/FormType/pictures_oss.html' type='' />
+                            {// 随机码}
+                            <include file="../app/Common/Builder/FormType/key.html" type="" />
+                            {// 自定义html}
+                            <include file="../app/Common/Builder/FormType/self.html" type="" />
+
+                            <case value="group">
+                                <div class="builder-tabs builder-form-tabs">
+                                    <ul class="nav nav-tabs">
+                                        <volist name="form.options" id="li" key="group_k">
+                                            <li data-tab="tab{$group_k}" <eq name="group_k" value="1">class="active"</eq>><a href="#tab{$group_k}" data-toggle="tab">{$li.title}</a></li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                                <div class="builder-container builder-form-container">
+                                    <div class="tab-content">
+                                        <volist name="form.options" id="tab" key="group_k">
+                                            <div id="tab{$group_k}" class='tab-pane <eq name="group_k" value="1">active</eq> tab{$group_k}'>
+                                                <div class="group">
+                                                    <volist name="tab.options" id="tab_form" key="tab_k">
+                                                        <switch name="tab_form.type">
+                                                            <include file='../app/Common/Builder/FormType/hidden.html' type='tab_' />
+                                                            {// 不可修改文本 }
+                                                            <include file='../app/Common/Builder/FormType/static.html' type='tab_' />
+                                                            {// 数字 }
+                                                            <include file='../app/Common/Builder/FormType/num.html' type='tab_' />
+                                                            {// 字符串 }
+                                                            <include file='../app/Common/Builder/FormType/text.html' type='tab_' />
+                                                            {// 文本 }
+                                                            <include file='../app/Common/Builder/FormType/textarea.html' type='tab_' />
+                                                            {// 数组 }
+                                                            <include file='../app/Common/Builder/FormType/array.html' type='tab_' />
+                                                            {// 密码 }
+                                                            <include file='../app/Common/Builder/FormType/password.html' type='tab_' />
+                                                            {// 单选按钮 }
+                                                            <include file='../app/Common/Builder/FormType/radio.html' type='tab_' />
+                                                            {// 复选框 }
+                                                            <include file='../app/Common/Builder/FormType/checkbox.html' type='tab_' />
+                                                            {// 下拉框 }
+                                                            <include file='../app/Common/Builder/FormType/select.html' type='tab_' />
+                                                            {// 图标 }
+                                                            <include file='../app/Common/Builder/FormType/icon.html' type='tab_' />
+                                                            {// 日期 }
+                                                            <include file='../app/Common/Builder/FormType/date.html' type='tab_' />
+                                                            {// 时间 }
+                                                            <include file='../app/Common/Builder/FormType/datetime.html' type='tab_' />
+                                                            {// 图片 }
+                                                            <include file='../app/Common/Builder/FormType/picture.html' type='tab_' />
+                                                            {// 图片(多图) }
+                                                            <include file='../app/Common/Builder/FormType/pictures.html' type='tab_' />
+                                                            {// 文件 }
+                                                            <include file='../app/Common/Builder/FormType/file.html' type='tab_' />
+                                                            {// 多文件 }
+                                                            <include file='../app/Common/Builder/FormType/files.html' type='tab_' />
+                                                            {// 编辑器 kindeditor }
+                                                            <include file='../app/Common/Builder/FormType/kindeditor.html' type='tab_' />
+                                                            {// 编辑器 ueditor }
+                                                            <include file='../app/Common/Builder/FormType/ueditor.html' type='tab_' />
+                                                            {// 编辑器 markdown }
+                                                            <include file='../app/Common/Builder/FormType/editormd.html' type='tab_' />
+                                                            {// 标签 }
+                                                            <include file='../app/Common/Builder/FormType/tags.html' type='tab_' />
+                                                            {// 拖动排序 }
+                                                            <include file='../app/Common/Builder/FormType/board.html' type='tab_' />
+                                                            {// 省 }
+                                                            <include file='../app/Common/Builder/FormType/province.html' type='tab_' />
+                                                            {// 市 }
+                                                            <include file='../app/Common/Builder/FormType/city.html' type='tab_' />
+                                                            {// 多市 }
+                                                            <include file='../app/Common/Builder/FormType/citys.html' type='tab_' />
+                                                            {// 地区 }
+                                                            <include file='../app/Common/Builder/FormType/district.html' type='tab_' />
+                                                            {// 下拉菜单_其他 }
+                                                            <include file='../app/Common/Builder/FormType/select_other.html' type='tab_' />
+                                                            {// 图片 oss }
+                                                            <include file='../app/Common/Builder/FormType/picture_oss.html' type='tab_' />
+                                                            {// 多图片 oss }
+                                                            <include file='../app/Common/Builder/FormType/pictures_oss.html' type='tab_' />
+                                                            {// 随机码}
+                                                            <include file="../app/Common/Builder/FormType/key.html" type="tab_" />
+                                                            {// 自定义html}
+                                                            <include file="../app/Common/Builder/FormType/self.html" type="tab_" />
+                                                            
+                                                            <default />
+                                                            <php>\Think\Hook::listen('formBuilder', $tab_form);</php>
+                                                        </switch>
+                                                    </volist>
+                                                </div>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </case>
+                            
+                            <default />
+                            <php>\Think\Hook::listen('formBuilder', $form);</php>
+                        </switch>
+                    </volist>
+                    <empty name="form_items">
+                        <div class="builder-data-empty text-center">
+                            <div class="empty-info">
+                                <i class="fa fa-database"></i> 暂时没有数据<br>
+                            </div>
+                        </div>
+                    </empty>
+                    <div class="form-group">
+                        <button class="btn btn-primary submit <?php if($ajax_submit) echo 'ajax-post';?>" type="submit" target-form="builder-form">确定</button>
+                        <button class="btn btn-default return" onclick="javascript:history.back(-1);return false;">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {// 额外功能代码 }
+    {$extra_html}
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/libs/cui/cui.extend.min.js"></script>
+ <script src="{:asset('libs/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}" ></script>
+  <script src="{:asset('libs/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js')}" ></script>
+<script type="text/javascript">
+    $(function() {
+        if (!$('.builder')) {
+            return false;
+        }
+
+        //给数组增加查找指定的元素索引方法
+        Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+
+        //给数组增加删除方法
+        Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+    });
+</script>
+

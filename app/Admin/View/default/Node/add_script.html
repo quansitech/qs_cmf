@@ -1,0 +1,53 @@
+<block name="script">
+<script type="text/javascript">
+         var menu_list = <?php echo $menu_list_json ?>;
+         var menuInit = function(_cmbType, _cmbMenu, defaultType)
+         {
+            var cmbType = document.getElementById(_cmbType);
+            var cmbMenu = document.getElementById(_cmbMenu);
+	
+            function cmbSelect(cmb, str)
+            {
+                for(var i=0; i<cmb.options.length; i++)
+                {
+                    if(cmb.options[i].value == str)
+                    {
+                        cmb.selectedIndex = i;
+                        return;
+                    }
+                }
+            }
+            function cmbAddOption(cmb, key, str, obj)
+            {
+                var option = document.createElement("OPTION");
+                cmb.options.add(option);
+                option.innerHTML = str;
+                option.value = key;
+                option.obj = obj;
+            }
+	
+            function changeType()
+            {
+                cmbMenu.options.length = 0;
+                cmbMenu.onchange = null;
+                if(cmbType.selectedIndex == -1 || cmbType.selectedIndex == 0)return;
+                var item = cmbType.options[cmbType.selectedIndex].obj;
+                for(var i=0; i<item.length; i++)
+                {
+                    cmbAddOption(cmbMenu, item[i].id, item[i].title, null);
+                }
+            }
+	
+            for(var key in menu_list)
+            {
+                cmbAddOption(cmbType, key, key, menu_list[key]);
+            }
+            cmbSelect(cmbType, defaultType);
+            changeType();
+            cmbType.onchange = changeType;
+        }
+        
+        menuInit('cmbType', 'cmbMenu', '无');
+
+    </script>
+</block>

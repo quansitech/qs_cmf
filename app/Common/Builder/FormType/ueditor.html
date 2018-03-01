@@ -1,0 +1,26 @@
+<case value="ueditor">
+    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+        <label class="left control-label">{$[type]form.title}：</label>
+        <div class="right">
+            <textarea id="[type]{$group_k}_ueditor_{$[type]k}" name="{$[type]form.name}"  {$[type]form.extra_attr}>
+                {$[type]form.value}
+            </textarea>
+            <notdefined name="UEDITOR">
+               <script type="text/javascript" charset="utf-8" src="__PUBLIC__/libs/ueditor/ueditor.config.js"></script>
+               <script type="text/javascript" charset="utf-8" src="__PUBLIC__/libs/ueditor/ueditor.all.js"></script>
+               <script type="text/javascript" charset="utf-8" src="__PUBLIC__/libs/ueditor/lang/zh-cn/zh-cn.js"></script>
+                <define name="UEDITOR" value="1" />
+            </notdefined>
+            <script type="text/javascript">
+                var url = $('#[type]{$group_k}_ueditor_{$[type]k}').data('url');
+                if(url){
+                  UE.getEditor('[type]{$group_k}_ueditor_{$[type]k}', {serverUrl : url});
+                }
+                else{
+                  UE.getEditor('[type]{$group_k}_ueditor_{$[type]k}');
+                }
+
+            </script>
+        </div>
+    </div>
+</case>

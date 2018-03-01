@@ -1,0 +1,207 @@
+@charset "UTF-8";
+/* nav-bar begin*/
+.tabBox {
+  background-color: #fff;
+  padding: 0 15px;
+  margin-top: 0.85rem;
+}
+
+div.huoban ul {
+  overflow: hidden;
+  text-align: center;
+  font-size: 0;
+  position: relative;
+  top: -0.3rem;
+}
+
+div.huoban ul li {
+  width: 32.3333%;
+  height: 0.6rem;
+  background-color: #e2e2e2;
+  line-height: 0.6rem;
+  display: inline-block;
+  font-size: 0.28rem;
+  margin: 0 .5%;
+}
+
+div.huoban ul li a {
+  color: #333;
+}
+
+div.huoban ul li:nth-last-child {
+  margin-right: 0;
+}
+
+div.huoban ul .on a {
+  display: block;
+  /* 修复Android 4.0.x 默认浏览器当前样色无效果bug */
+  background-color: #c9151e;
+  color: #fff;
+}
+
+.tabBox table {
+  width: 100%;
+}
+
+.tabBox table td {
+  height: 0.65rem;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0 20px;
+  font-size: 0.26rem;
+}
+
+.tabBox table tbody tr:nth-child(1) td, .tabBox table tbody tr:nth-child(2) td, .tabBox table tbody tr:nth-child(3) td {
+  color: #c9151e;
+}
+
+.tabBox table tbody tr:nth-child(1) td:nth-child(1), .tabBox table tbody tr:nth-child(2) td:nth-child(1), .tabBox table tbody tr:nth-child(3) td:nth-child(1) {
+  font-weight: bold;
+  color: #333;
+}
+
+.tabBox .it-delivery {
+  color: #333;
+  display: block;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 0.2rem;
+}
+
+.tabBox .delivery-l {
+  float: left;
+  width: 1.7rem;
+  height: 1.55rem;
+  margin-right: 0.2rem;
+}
+
+.tabBox .delivery-l img {
+  display: block;
+  width: 1.7rem;
+  height: 1.55rem;
+}
+
+.tabBox .delivery-r {
+  width: 3.6rem;
+  float: left;
+  padding-right: 0.3rem;
+}
+
+.tabBox .delivery-r h2 {
+  font-size: 0.24rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tabBox .delivery-r p, .tabBox .delivery-r time, .tabBox .delivery-r span {
+  font-size: 0.18rem;
+  color: #666666;
+}
+
+.tabBox .delivery-r time {
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.tabBox .delivery-r span {
+  color: #c9151e;
+  margin-top: 0.3rem;
+  margin-right: 0.2rem;
+  display: block;
+}
+
+.tabBox .delivery-r span i {
+  display: inline-block;
+  width: 12.5px;
+  height: 12.5px;
+  background: url(../images/sprite/delivery-more.png?__sprite) no-repeat center;
+  vertical-align: -3px;
+  margin-left: 0.1rem;
+}
+
+.huodong {
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  padding-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.huodong li {
+  float: left;
+  width: 33.33333%;
+  text-align: center;
+  font-size: 0.26rem;
+  line-height: 1.8;
+}
+
+.huodong li i {
+  font-size: 0.26rem;
+}
+
+.huodong li a {
+  color: #333;
+  display: inline-block;
+  padding: 0 0.2rem;
+}
+
+.huodong li.on a {
+  color: #c9151e;
+  border-bottom: 2px solid #c9151e;
+}
+
+.video li {
+  background-color: #fff;
+  margin-bottom: 20px;
+  border-bottom: 0.17rem solid #edecec;
+}
+
+.video li p {
+  font-size: 0.24rem;
+  text-align: center;
+  padding: 0.15rem 0;
+}
+
+.atlas-images li {
+  width: 50%;
+  float: left;
+  box-sizing: border-box;
+  padding: 0.075rem;
+}
+
+.atlas-images li img {
+  display: block;
+  width: 100%;
+}
+
+.atlas-images li:nth-child(2n+1) {
+  padding-left: 0.15rem;
+}
+
+.atlas-images li:nth-child(2n) {
+  padding-right: 0.15rem;
+}
+
+.project-details-content {
+  font-size: 14px;
+  color: #7e7e7e;
+}
+
+.project-details-content img {
+  display: block;
+  width: 100%;
+  margin: 0.16rem 0;
+}
+
+.project-details-content p {
+  text-indent: 2em;
+}
+
+.project-details-content dl dt {
+  border-left: 2px solid  #c9151e;
+  color: #333333;
+  margin: 0.15rem 0;
+}
+
+.project-details-content dl dd, .project-details-content dl dt {
+  padding: 0 15px;
+}

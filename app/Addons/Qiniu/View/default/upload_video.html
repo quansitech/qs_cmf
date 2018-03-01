@@ -1,0 +1,71 @@
+<div class="form-group item_video ">
+        <label class="left control-label">{$form.title}：</label>
+        <div class='right'>
+            <input type="hidden" id="domain" value="{$domain}">
+            <input type="hidden" id="uptoken" value="{$uptoken}">
+            <input type='hidden' id='setFilePicUrl' value='{:addons_url("Qiniu://Qiniu/setFilePic")}' />
+            <input type="hidden" id="file_id" name="{$form.name}" value='{$form.value}' />
+            <div id="container">
+                
+            <a class="btn btn-primary pure-button" id="pickfiles" href="#">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>选择文件</span>
+            </a>
+            </div>
+            <div style="display:none" id="success">
+                <div class="alert-success">
+                    队列全部文件处理完毕
+                </div>
+            </div>
+            <!-- <div class="col-md-12 "> -->
+                <table class="table table-hover text-left" style="<empty name='form.value'>display:none</empty>">
+                    <thead>
+                        <tr>
+                            <th class="col-md-4">文件名</th>
+                            <th class="col-md-2">大小</th>
+                            <th class="col-md-5">视频地址</th>
+                            <th class="col-md-3">操作</th>
+                        </tr>
+                    </thead>
+                    <empty name='form.value'>
+                    <tbody id="fsUploadProgress">
+                    </tbody>
+                    <else/>
+                    <tbody id="fsUploadProgress">
+                        <php>$file = D('FilePic')->getOne($form['value']);</php>
+                        <tr>
+                            <td>{$file.title}
+                            </td>
+                            <td>{:format_filesize($file['size'])}</td>
+                            <td style="word-break:break-all">{$file.url}</td>
+                            <td nowrap><input class="origin-video btn btn-primary btn-sm play-btn" type="button" value="播放" data-url="{$file.url}"> <a href='javascript:void(0);' class='delete_row btn btn-danger btn-sm'>删除</a> </td>
+                        </tr>
+                    </tbody>
+                    </empty>
+                </table>
+            <!-- </div> -->
+        </div>
+
+</div>
+
+<div class="modal modal-lg fade body" id="myModal-video" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">视频播放查看</h4>
+            </div>
+            <div class="modal-body">
+                <div class="video-preview">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="__PUBLIC__/libs/videojs/video-js.min.css" rel="stylesheet">
+<script type="text/javascript" src="__PUBLIC__/libs/videojs/video.min.js"></script>
+<script type="text/javascript" src="__ADDONSJS__/Qiniu/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="__ADDONSJS__/Qiniu/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="__ADDONSJS__/Qiniu/qiniu.js"></script>
+<script type="text/javascript" src="__ADDONSJS__/Qiniu/ui.js"></script>
+<script type="text/javascript" src='__ADDONSJS__/Qiniu/main.js'></script>

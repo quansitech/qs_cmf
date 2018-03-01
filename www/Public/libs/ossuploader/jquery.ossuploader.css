@@ -1,0 +1,126 @@
+.ossuploader-upload-box{
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.ossuploader-add, .ossuploader-dash-border{
+  border:1px dashed #bbbbbb;
+  width:30%;
+  display:flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right:2%;
+  margin-bottom:2%;
+  height:120px;
+}
+
+.ossuploader-add i{
+  width:40%;
+  height:55px;
+  background:url(./icon-plus.png);
+  background-size:100% 100%;
+  background-position:center;
+}
+
+.ossuploader-add p{
+  font-size:20px;
+  color:#333333;
+  margin-top:.2rem;
+}
+@media (max-width: 500px) {
+
+  .ossuploader-add, .ossuploader-dash-border{
+    border:1px dashed #bbbbbb;
+    width:30%;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    margin-right:2%;
+    margin-bottom:2%;
+    height:1.5rem;
+  }
+
+  .ossuploader-add i{
+    width:.7rem;
+    height:.7rem;
+    background:url(./icon-plus.png);
+    background-size:100% 100%;
+    background-position:center;
+  }
+
+  .ossuploader-add p{
+    font-size:0.28rem;
+    color:#333333;
+    margin-top:.2rem;
+  }
+}
+
+.ossuploader-dash-border img{
+  max-height:100%;
+  max-width: 100%;
+  vertical-align:middle;
+}
+
+.ossuploader-dash-border{
+  position:relative;
+  text-align:center;
+  background:#e8e8e8;
+}
+
+.ossuploader-dash-border .ossuploader-progress{
+  position: absolute;
+  height: 0.15rem;
+  bottom: 0px;
+  left:0px;
+  background: #28a745;
+  transition:.3s ease;
+  opacity:0.7;
+}
+
+.ossuploader-dash-border .ossuploader-filedelete{
+  cursor:pointer;
+  position:absolute;
+  left:90%;
+  top:0;
+  color:red;
+}
+
+.ossuploader-mask{
+    display:none;
+    z-index:9999;
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    background:rgba(0,0,0,.8);
+    text-align: center;
+    overflow:auto;
+}
+
+.ossuploader-mask .close-container{
+    text-align: center;
+    padding:20px;
+}
+
+.ossuploader-mask .close{
+    color:white;
+    font-size:2em;
+    position:absolute;
+    right:1em;
+}
+
+.ossuploader-mask .crop-btn{
+    position: relative;
+    background-color:#0f8ce4;
+    border-radius:20px;
+    padding:0 20px;
+    color:#fff;
+    height:3em;
+    line-height: 3em;
+    border:0;
+}
+
+.ossuploader-mask .image .ori-img{
+    width:900px;
+}

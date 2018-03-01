@@ -1,0 +1,26 @@
+<php>if(!empty($config['type'])){</php>
+<?php if(in_array('Sina',$config['type'])){ ?>
+<php>if(in_array('sina', $bind_type)){</php>
+<h3 class="weibo">已绑定新浪微博
+    <a href="{:addons_url('SyncLogin://Register/cancelbind' ,array('type'=>'sina', 'uid' => session(C('USER_AUTH_KEY'))))}" class="pure-button button-more button-round">解除绑定</a></h3>
+<php>}else{</php>
+<h3 class="weibo">未绑定新浪微博
+    <a href="{:addons_url('SyncLogin://Base/login' ,array('type'=>'Sina'))}" class="pure-button button-more button-round">点击绑定</a></h3>
+<php>}</php>
+<?php }?>
+
+<?php if(in_array('Wechat',$config['type'])){ ?>
+<h3 class="wechat">未绑定微信
+<a href="" type="button" class="pure-button button-more button-round">点击绑定</a></h3>
+<?php }?>
+<?php if(in_array('Qq',$config['type'])){ ?>
+<php>if(in_array('qq', $bind_type)){</php>
+<h3 class="qq">已绑定QQ
+    <a href="{:addons_url('SyncLogin://Register/cancelbind' ,array('type'=>'QQ', 'uid' => session(C('USER_AUTH_KEY'))))}" class="pure-button button-more button-round">解除绑定</a></h3>
+<php>}else{</php>
+<h3 class="qq">未绑定QQ
+    <a href="{:addons_url('SyncLogin://Base/login' ,array('type'=>'Qq'))}" type="button" class="pure-button button-more button-round">点击绑定</a></h3>	
+<php>}</php>
+<?php }?>
+<php>}</php>
+

@@ -1,0 +1,38 @@
+<header class="header">
+    <a class="logo">
+        <!-- Add the class icon to your logo image or logo icon to add the margining -->
+        全思公益信息平台
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="toggle-bar"></span>
+            <span class="toggle-bar"></span>
+            <span class="toggle-bar"></span>
+        </a>
+
+        <div class="navbar-left">
+          <volist name="top_menu" id="top">
+              <div class="navbar-nav <eq name='current_module' value='$top["module"]'>on</eq>"><a href="{$top.url}" class="menu">{$top.title}</a></div>
+          </volist>
+        </div>
+
+        <div class="navbar-right">
+            <ul class="nav navbar-nav">
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>{:getUserName(session(C('USER_AUTH_KEY')))} <i class="caret"></i></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="/"><i class="fa fa-home"></i>网站首页</a></li>
+                        <li><a href="{:U('public/logout')}"><i class="fa fa-power-off"></i>退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

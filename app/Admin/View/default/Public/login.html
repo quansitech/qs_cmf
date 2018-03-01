@@ -1,0 +1,208 @@
+<layout name="common/layout" />
+<div class="background"></div>
+<div class="login-page">
+    <div class="inner-login-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 col-sm-offset-1 hidden-xs">
+                </div>
+                <div class="col-sm-4 col-sm-offset-1 col-xs-12">
+                    <div class="login-form-box" id="login-box">
+                        <div class="header">{:C('WEB_SITE_TITLE')}</div>
+                        <form id='' method="post">
+                            <div class="form-group">
+                                <input autofocus type="text" name="uid" class="form-control" placeholder="{:L('username')}/{:L('email')}" />
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="pwd" class="form-control" placeholder="******" />
+                            </div>
+                            <present name='verify_show'>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="text" name='verify' class="form-control" placeholder="{:L('verify_code')}" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="#" class="validate-img"><img src="{:U('verify')}" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </present>
+                            <button type="submit" class="btn btn-mtx btn-block" data-loading-text="登录中...">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+                            <div class="error-info"></div>
+                        </form>
+                        <hr>
+                        <p class="text-center">由 <a href="http://quansitech.com">全思科技</a> 技术驱动</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section:script{%
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    // $('html').addClass('bg-login');
+    // $(document.body).addClass('bg-login');
+    $('.form-box').fadeIn(800);
+    $('a.validate-img').click(function() {
+        //重新加载验证码
+        $('#loadingimg').show();
+        var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
+            .load(function() {
+                if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                    alert('验证码图片加载出错，请刷新');
+                } else {
+                    $(".validate-img").html('').append(img);
+                }
+            });
+        return false;
+    });
+    $('#login_form').submit(function(e) {
+        e.preventDefault();
+        var formValues = $(this).serialize();
+        $.ajax({
+            url: $(this).attr('action') ? $(this).attr('action') : document.URL,
+            type: $(this).attr('method'),
+            data: formValues,
+            beforeSend: function() {
+                $('button[type=submit]').button('loading');
+                return true;
+            },
+            success: function(data) {
+                //成功状态，下面的是服务器返回的，数据库操作的状态
+                var type;
+                if (data.status === 1) {
+                    type = "success";
+                } else {
+                    type = "error";
+                    //在登录按钮下面显示错误信息，并清空验证码字段
+                    $('.error-info').text(data.info);
+                    if ($('a.validate-img').length) {
+                        $('input[name="verify"]').val('');
+                    }
+                }
+                if (type === 'success') {
+                    //成功则跳转到返回的网址
+                    setTimeout(function() {
+                        window.location = data.url;
+                    });
+                } else {
+                    //如果type=error，则不能执行跳转，需重新填写，重新启用提交按钮
+                    $('button[type=submit]').button('reset');
+                    //如果超过三次需要验证码，而验证码域未建立，则刷新页面以显示验证码
+                    if (data.verify_show && !$('a.validate-img').length) {
+                        location.reload(true);
+                    }
+                    //若验证码域已存在，则重新载入新的验证码
+                    if ($('a.validate-img').length) {
+                        $('a.validate-img').trigger('click');
+                    }
+                }
+            },
+            error: function() {
+                $('.error-info').text('提交出错，请检查网络或浏览器设置');
+            },
+        });
+    });
+});
+</script>
+%} @section:css{%
+<style>
+html,
+body {
+    height: 100%;
+    font-family: "Microsoft Yahei"
+}
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('__PUBLIC__/img/admin-login-bg.jpg') no-repeat center;
+    background-size: cover;
+}
+
+.login-page {
+    height: 100%;
+    margin: 0 auto;
+    display: table;
+    position: relative;
+    z-index: 1000;
+}
+
+#login_form {
+    margin: 20px 0 30px;
+}
+a.validate-img img{
+    width: 100%;
+    height: auto;
+}
+.error-info{
+    margin-top: 10px;
+    text-align: center;
+}
+.inner-login-page {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.slogan p {
+    font-size: 28px;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 1px #000;
+}
+
+.login-form-box {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px 35px
+}
+
+.login-form-box .header {
+    padding: 10px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: normal;
+}
+input{
+    border-radius: 0!important;
+}
+.login-form-box .body,
+.login-form-box .footer {
+    padding: 10px 20px;
+    color: #444;
+}
+
+.login-form-box .body > .form-group,
+.login-form-box .footer > .form-group {
+    margin-top: 20px;
+}
+
+.login-form-box .body > .form-group > input,
+.login-form-box .footer > .form-group > input {
+    border: #fff;
+}
+
+.login-form-box .body > .btn,
+.login-form-box .footer > .btn {
+    margin-bottom: 10px;
+}
+
+.login-form-box .footer {}
+
+.btn-mtx {
+    background-color: #017ffc;
+    color: #ffffff;
+    border-radius: 0;
+}
+
+.btn.btn-mtx:focus,
+.btn.btn-mtx:hover,
+.btn.btn-mtx:active,
+.btn.btn-mtx.hover {
+    background-color: #0167f0;
+    color: #ffffff;
+}
+</style>
+%}

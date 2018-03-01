@@ -1,0 +1,8 @@
+span.icon-search{
+	background-image: url('/evhtml/assets/images/search.png');
+	background-repeat: no-repeat;
+	width: 18px;
+	height: 19px;
+	display: inline-block;
+	vertical-align: middle;
+}

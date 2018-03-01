@@ -1,0 +1,94 @@
+@charset "UTF-8";
+/* nav-bar begin*/
+#header {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 50px;
+  line-height: 50px;
+  background: #fff;
+  padding: 0 15px;
+  border-bottom: 1px solid #c9151e;
+  font-size: 0.26rem;
+  text-align: center;
+}
+
+#header .logo {
+  position: absolute;
+  left: 15px;
+  top: 0;
+  z-index: 3;
+}
+
+#header .logo a {
+  display: block;
+}
+
+#header .logo img {
+  width: 77.5px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+#header .h-select i {
+  display: inline-block;
+  width: 12.5px;
+  height: 10px;
+  background: url("../images/sprite/h-select.png?__sprite") no-repeat center;
+  margin-left: -5px;
+}
+
+#header .h-select select {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 0.26rem;
+  /* 彻底去掉边框三角 */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+#header .search {
+  position: absolute;
+  right: 15px;
+  top: 18px;
+}
+
+#header .search a {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: url("../images/sprite/search.png?__sprite") no-repeat center;
+  position: relative;
+}
+
+#header .search a:after {
+  content: '';
+  position: absolute;
+  left: -15px;
+  right: -15px;
+  top: -15px;
+  bottom: -15px;
+}
+
+#header .prev-page {
+  width: 9px;
+  height: 15px;
+  background: url(../images/sprite/prev-page.png?__sprite) no-repeat center;
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  display: block;
+}
+
+#header .prev-page:after {
+  content: '';
+  position: absolute;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  top: -15px;
+}
+
+/* nav-bar end*/

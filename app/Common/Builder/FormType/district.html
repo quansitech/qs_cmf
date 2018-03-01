@@ -1,0 +1,51 @@
+<case value="district">
+    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+        <label class="left control-label">{$[type]form.title}：</label>
+            <div class="right">
+                <div class="chinese-region {$[type]form.name} flat dropdown" data-min-level="1" data-max-level="3" data-def-val="[name={$[type]form.name}]">
+                    <input type='hidden' class='form-control' name='{$[type]form.name}' id="{$[type]form.name}" value='{$[type]form.value}' /> 
+                    <input type="text" class="form-control area-selector" placeholder="选择地区" data-toggle="dropdown" readonly="" aria-expanded="false" value="">
+                    <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#province{$[type]form.name}" data-next="city" role="tab" data-toggle="tab">省份</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#city{$[type]form.name}" data-next="district" role="tab" data-toggle="tab">城市</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#district{$[type]form.name}" data-next="street" role="tab" data-toggle="tab">县区</a>
+                                </li>
+                            </ul>
+                                 <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="province{$[type]form.name}">--</div>
+                                    <div role="tabpanel" class="tab-pane" id="city{$[type]form.name}">--</div>
+                                    <div role="tabpanel" class="tab-pane" id="district{$[type]form.name}">--</div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </label>
+    </div>
+    <notdefined name="chinese_region">
+        <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-chinese-region/bootstrap-chinese-region.js"></script>
+        <define name="chinese_region" value="1" />
+    </notdefined>
+    <script>
+        $.getJSON("<?php echo U('Api/Area/getArea'); ?>", function (data) {
+
+            for (var i = 0; i < data.length; i++) {
+                var area = {id: data[i].id, name: data[i].cname, level: data[i].level, parentId: data[i].upid};
+                data[i] = area;
+            }
+
+            $('.{$[type]form.name}').chineseRegion('source', data).on('completed.bs.chinese-region', function (e, areas) {
+                $(this).find('[id={$[type]form.name}]').val(areas[areas.length - 1].id);
+            });
+
+        });
+
+    </script>
+</case>

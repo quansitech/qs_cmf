@@ -1,0 +1,51 @@
+<case value="export">
+  <a {$button.attribute} >{$button.title}</a>&nbsp;
+  <notdefined name="export_excel">
+  <script src="__PUBLIC__/libs/exportExcel/xlsx.full.min.js"></script>
+  <script src="__PUBLIC__/libs/exportExcel/exportExcel.js"></script>
+
+  <script>
+  $('body').on('click', '.export_excel',function(){
+      var url = $(this).data('url');
+      var stream_rownum = $(this).data('streamrownum');
+      var filename = $(this).data('filename');
+      var query = $('.listbuilder .search-input').serialize();
+      query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+      query = query.replace(/(^&)|(\+)/g, '');
+      if (url.indexOf('?') > 0) {
+          url += '&' + query;
+      } else {
+          url += '?' + query;
+      }
+      var btn = this;
+      var title = $(this).text();
+      var opt = {
+        'url' : url,
+        'fileName' : filename,
+        'before' : function(){
+          $(btn).attr('disabled', 'true');
+          $(btn).text('导出中');
+          //$('.export_loading').show();
+        },
+        'after' : function(){
+          $(btn).removeAttr('disabled');
+          $(btn).text(title);
+          //$('.export_loading').hide();
+        },
+        'progress' : function(progress){
+            $(btn).text(progress);
+        }
+      }
+      var excel = new ExportExcel(opt);
+      if(parseInt(stream_rownum) > 0){
+          excel.streamExport(stream_rownum);
+      }
+      else{
+          excel.export();
+      }
+
+  });
+  </script>
+    <define name="export_excel" value="1" />
+  </notdefined>
+</case>

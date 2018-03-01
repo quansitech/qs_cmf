@@ -1,0 +1,15 @@
+<div class="user-content">
+        <div class="clearfix"></div>
+        <volist name="message_list" id="message">
+        <div class="outerbox">
+                <div class="text">
+                    <p><eq name='message.title' value='已删除'>该文章已被删除<else/>我对文章《{$message.title}》发表了评论</eq></p>
+                        <p>{:date('Y-m-d H:i:s', $message['create_date'])}</p>
+                        <p>{$message.content}</p>
+                </div>		
+        </div>
+        </volist>
+        <nav class="text-center">
+            <include file="../app/Admin/View/default/common/pagination.html" />
+        </nav>
+</div>

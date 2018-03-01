@@ -1,0 +1,22 @@
+<div class="content-header">
+    <h1 class="content-title">“{$query}”的搜索结果</h1>
+</div>
+<div class="content-body search-result">
+    <div class="pure-g">
+        <div class="pure-u-3-4">
+            <ul>
+                <volist name="data_list" id="data">
+                <li>
+                    <a href="{$data.url}" target="_blank"><h2>{$data.title}</h2></a>
+                    <div class="cate_name"><span>{$data.model_name}</span></div>
+                <present name='data.date'>
+                    <span>{:date('Y-m-d H:i:s', $data['date'])}</span>
+                </present>
+                    <p>{:cutLength(strip_tags(showHtmlContent($data['summary'])),150)}</p>
+                </li>
+                </volist>
+            </ul>
+            <include file="../app/Admin/View/default/common/pagination.html" />
+        </div>
+    </div>
+</div>

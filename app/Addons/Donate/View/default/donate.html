@@ -1,0 +1,214 @@
+<div class="content-body">
+                <div class="brief">
+                    <p>感谢您的爱心支持。完成网上捐款步骤大约花费您2-3分钟。请填写以下信息，以便我们及时做出捐赠反馈。</p>
+                </div>
+    <form id='form' action="{:addons_url('Donate://Donate/index', array('id' => I('get.id'), 't' => I('get.t')))}" method="post" class="pure-form pure-form-aligned donate-form">
+                                <h2>请选择或填入您希望捐助的金额</h2>
+                                <div class="pure-control-group">
+                            <label for="donate_amount">捐赠金额</label>
+                            <input name="donate_amount" type="radio" value='10' required> 10
+                            <input name="donate_amount" type="radio" value='20' required> 20
+                            <input name="donate_amount" type="radio" value='50' required> 50
+                            <input name="donate_amount" type="radio" value='100' required> 100
+                            <input name="donate_amount" type="radio" value='1000' required> 1000
+                            <input name="donate_amount" type="radio" value='other' id="other" required>
+                            <input type="text" name='other_amount' value=''>
+                            <label for="donate_amount" class="error"></label>
+                        </div>
+                        <h2>填写个人信息</h2>
+                        <div class="pure-control-group">
+                            <label for="name">姓名</label>
+                            <input type="text" name="name" value="{$user.name}">
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="gender">称谓</label>
+                            <php>$prefix_list = \Addons\Donate\DonateCont::getPrefixList();</php>
+                            <volist name='prefix_list' id="prefix">
+                                <input name="prefix" type="radio" value="{$key}" <eq name='user.gender' value='$key'>checked='checked'</eq>> {$prefix}
+                            </volist>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="email">电子邮箱</label>
+                            <input type="text" name="email" value="{$user.email}">
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="phone">手机号码</label>
+                            <input type="text" name="telephone" value="{$user.telephone}">
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="address">居住地址</label>
+                            <input type="text" name="address" value="{$user.address}">
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="secret">是否允许在网上公开个人信息</label>
+                            <php>$secret_list = \Addons\Donate\DonateCont::getPublishList();</php>
+                            <volist name='secret_list' id="secret">
+                            <input type="radio" name="secret" value="{$key}" required> {$secret}
+                            </volist>
+                            <label for="secret" class="error"></label>
+                        </div>
+                        <h2>选择反馈方式</h2>
+                        <php>$mail_type_list = \Addons\Donate\DonateCont::getDonateMailTypeList();</php>
+                        <volist name='mail_type_list' id='mail_type'>
+                                <label class="pure-radio"><input type="radio" id="mail_type_{$key}" name="mail_type" value='{$key}'> {$mail_type}</label>
+                        </volist>
+                        <label for="mail_type" class="error"></label>
+                        <div class="pure-control-group" id='nb_div' style="margin-top:20px;">
+                            <label for="bill_title">捐赠收据抬头</label>
+                            <input type="text" name="bill_title" id='bill_title'>
+                        </div>
+            <h2>选择捐赠方式</h2>
+                        <p>目前，我们支持支付宝在线捐赠。</p>
+                        <img src="/evhtml/assets/images/alipay.jpg" alt="">
+                        <div class="text-center">
+                                <button type="submit" class="pure-button button-more button-round button-wide ajax-submit">提交支付</button>
+                        </div>
+                        </form>
+        </div>
+<div id="donate-login" style="display:none">
+    <h4>选择捐赠方式</h4>
+    <p>您可以选择注册/登录账号进行捐赠，我们就可以为您建立终身爱心档案。您可以随时查询自己的每一笔捐赠，见证自己的爱心成长。</p>
+    <a href="{:U('/home/index/login')}" class="pure-button button-more">注册/登录</a>
+    <a href="#" class="pure-button button-more direct-donate">直接捐赠</a>
+        
+</div>
+<link rel="stylesheet" href="__PUBLIC__/libs/fancybox/fancybox.css">
+<script type="text/javascript" src="__PUBLIC__/libs/fancybox/fancybox.js"></script>
+<script type="text/javascript" src="__PUBLIC__/libs/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/libs/validate/messages_zh.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('input[name="other_amount"]').on('focus',function(){
+            $('input#other').prop('checked', true);
+        }).on('blur',function(){
+            if($(this).val()==""){
+                $('input#other').prop('checked', false);
+            }
+        });
+        $('#form').validate({
+            rules: {
+                mail_type: "required",
+                name: {
+                    required: {
+                        depends: function(element) {
+                            if ($('#mail_type_0:checked,#mail_type_1:checked,#mail_type_2:checked').length) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                email: {
+                    required: "#mail_type_0:checked",
+                    email: true
+                },
+                telephone: {
+                    required: {
+                        depends: function(element) {
+                            if ($('#mail_type_1:checked,#mail_type_2:checked').length) {
+                                return true
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                address: {
+                    required: "#mail_type_1:checked",
+                },
+                mail_code: {
+                    required: "#mail_type_1:checked",
+                },
+                bill_title: {
+                    required: {
+                        depends: function(element) {
+                            if ($('#mail_type_0:checked,#mail_type_1:checked,#mail_type_2:checked').length) {
+                                return true
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                other_amount: {
+                    required: {
+                        depends: function(element){
+                            if ($('input#other').prop('checked')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            },
+            messages: {
+                mail_type: '请选择捐赠收据寄送方式',
+                name: '请填写姓名，以便我们与您联系',
+                email: '请填写正确的邮箱地址，以便我们发送捐赠收据',
+                telephone: '请填写电话号码，以便我们与您联系',
+                address: '请填写地址，以便我们寄送捐赠收据',
+                mail_code: '请填写邮编，以便我们寄送捐赠收据',
+                bill_title: '请填写捐赠收据抬头',
+                secret: '请选择是否公开个人信息',
+                donate_amount: '请选择或输入捐赠金额',
+                other_amount: '请输入捐赠金额',
+            }
+        });
+
+        $('input[name=mail_type]').on('checked', function(event) {
+            $('label .required').hide();
+            $('#nb_div').show();
+            switch ($(this).val()) {
+                case '0':
+                    $('label[for=name] .required, label[for=email] .required').show();
+                    break;
+                case '1':
+                    $('label[for=name] .required, label[for=telephone] .required, label[for=address] .required, label[for=mail_code] .required').show();
+                    break;
+                case '2':
+                    $('label[for=name] .required, label[for=telephone] .required').show();
+                    break;
+                case '3':
+                    $('#nb_div').hide();
+            }
+        });
+        <notpresent name = 'user'>
+            $.fancybox.open([
+                {
+                    href: '#donate-login'
+                }
+            ],{
+                width: 500,
+                height: 'auto',
+                autoSize: false,
+                closeBtn: false,
+                helpers: {
+                    overlay : {
+                        closeClick : false, 
+                    }
+                }
+            });
+        </notpresent>
+        $('a.direct-donate').click(function() {
+            $.fancybox.close();
+            return false;
+        });
+
+        //刷新验证码
+        $('a.validate-img').click(function() {
+            //重新加载验证码
+            $('#loadingimg').show();
+            var img = $("<img />").attr('src', "<?php echo U('/admin/Public/verify') ?>")
+                .load(function() {
+                    if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                        alert('验证码图片加载出错，请刷新');
+                    } else {
+                        $(".validate-img").html('').append(img);
+                    }
+                });
+            return false;
+        });
+    });
+    </script>

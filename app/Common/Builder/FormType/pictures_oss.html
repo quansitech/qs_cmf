@@ -1,0 +1,133 @@
+<case value="pictures_oss">
+    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+        <label class="left control-label">{$[type]form.title}：</label>
+        <div class="right">
+            <div id="[type]{$group_k}_upload_{$[type]k}" <empty name='[type]form.extra_attr'>data-url="{:U('/api/OssUpload/policyGet', array('type' => 'image'))}"<else/>{$[type]form.extra_attr}</empty>>
+                <a id="[type]{$group_k}_upload_{$[type]k}_selectfiles" class='uploadify-button btn btn-primary pure-button button-more button-xsmall' href="javascript:void(0);">上传图片</a>
+                <div class="uploadify-queue">
+                </div>
+            </div>
+            <div id="[type]{$group_k}_preview_{$[type]k}">
+                <input type="hidden" name="{$[type]form.name}" value="{$[type]form.value}">
+                <notempty name="[type]form.value">
+                    <?php $images = explode(',',$[type]form['value']); ?>
+                    <foreach name="images" item="img">
+                        <span class="img-box"><img class="img" src="{$img|showFileUrl}" data-id="{$img}"><i class="fa fa-times-circle remove-picture"></i></span>
+                    </foreach>
+                </notempty>
+            </div>
+            <notempty name="[type]form.tip">
+                <span class="check-tips small">{$[type]form.tip}</span>
+            </notempty>
+            <notdefined name="picture_oss">
+                <script type="text/javascript" src="__PUBLIC__/libs/plupload-2.1.2/js/plupload.full.min.js"></script>
+                <script type="text/javascript" src="__PUBLIC__/static/oss_upload.js"></script>
+                <define name="picture_oss" value="1" />
+            </notdefined>
+            <script type="text/javascript">
+                new plupload.Uploader({
+                    runtimes : 'html5,flash,silverlight,html4',
+                    browse_button : '[type]{$group_k}_upload_{$[type]k}_selectfiles', 
+                    multi_selection: true,
+                    container: document.getElementById('[type]{$group_k}_upload_{$[type]k}'),
+                    flash_swf_url : '__PUBLIC__/libs/plupload-2.1.2/js/Moxie.swf',
+                    silverlight_xap_url : '__PUBLIC__/libs/plupload-2.1.2/js/Moxie.xap',
+                    url : 'http://oss.aliyuncs.com',
+
+                    filters: {
+                        mime_types : [ //只允许上传图片
+                        { title : "Image files", extensions : "jpg,gif,png,bmp,jpeg" }, 
+                        ],
+                        prevent_duplicates : true //不允许选取重复文件
+                    },
+
+                    init: { 
+                        PostInit: function() {
+                            $('#[type]{$group_k}_upload_{$[type]k}').children('.uploadify-queue').html('');
+                        },
+
+                        FilesAdded: function(up, files) {
+                            plupload.each(files, function(file) {
+                                var html = '<div id="' + file.id + '" class="uploadify-queue-item">' + 
+                                        '<div class="uploadify-progress" lastloaded="0">' +
+                                        '<div class="uploadify-progress-bar" style="width: 0%;">' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<span class="up_percent">0%</span>' + 
+                                        '<span class="up_filename">' + file.name + '</span>' +
+                                        '</div>';
+                                $('#[type]{$group_k}_upload_{$[type]k}').children('.uploadify-queue').append(html);
+                            });
+                            up.start();
+                        },
+
+                        BeforeUpload: function(up, file) {
+                            set_upload_param(up, file.name, false, $('#[type]{$group_k}_upload_{$[type]k}').data('url'));
+                        },
+
+                        UploadProgress: function(up, file) {
+                            $('#' + file.id).children('.uploadify-progress').attr('lastloaded', file.loaded);
+                            $('#' + file.id).find('.uploadify-progress-bar').css('width', file.percent + "%");
+                            $('#' + file.id).children('.up_percent').html(file.percent + "%");
+                        },
+
+                        FileUploaded: function(up, file, info) {
+                            if (info.status == 200)
+                            {
+                                var response = JSON.parse(info.response);
+                                var file_id = $('input[name="{$[type]form.name}"]').val();
+                                if(file_id){
+                                    $('input[name="{$[type]form.name}"]').val(file_id + ',' + response.file_id);
+                                }
+                                else{
+                                    $('input[name="{$[type]form.name}"]').val(response.file_id);
+                                }
+                                
+                                $('#[type]{$group_k}_preview_{$[type]k}').append('<span class="img-box"><img class="img" src="' + response.file_url + '" data-id="' + response.file_id + '"><i class="fa fa-times-circle remove-picture"></i></span>');
+                            }
+                            else
+                            {
+                                alert(info.response);
+                            } 
+                            $('#[type]{$group_k}_upload_{$[type]k}').children('.uploadify-queue').find('#' + file.id).remove();
+                        },
+
+                        Error: function(up, err) {
+                            if (err.code == -600) {
+                                alert("选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小");
+                            }
+                            else if (err.code == -601) {
+                                alert("选择的文件后缀不对,可以根据应用情况，在upload.js进行设置可允许的上传文件类型");
+                            }
+                            else if (err.code == -602) {
+                                alert("这个文件已经上传过一遍了");
+                            }
+                            else 
+                            {
+                                alert(err.response);
+                            }
+                        }
+                    }
+                }).init();
+                
+                //删除图片
+                $('#[type]{$group_k}_preview_{$[type]k} ').on('click','.remove-picture', function(){
+                    var id = $(this).siblings('.img').data("id");
+                    removeId(id);
+                    $(this).closest('.img-box').remove(); //删除图片预览图
+                });
+                
+                function removeId(id) {
+                    var fileVal = $('input[name="{$[type]form.name}"]').val().split(',');
+                    for(var i = 0; i < fileVal.length; i++) {
+                        if(parseInt(id) === parseInt(fileVal[i])) {
+                          fileVal.splice(i, 1);
+                          $('input[name="{$[type]form.name}"]').val(fileVal.join(','));
+                          return i;
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</case>

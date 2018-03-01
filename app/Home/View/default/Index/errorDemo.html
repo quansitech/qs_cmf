@@ -1,0 +1,17 @@
+<notempty name="errors">
+  <volist name="errors" id="error">
+    <p>{$error}</p>
+  </volist>
+</notempty>
+
+<form action="" method="post">
+  <input type="text" name="name" value="{:old('name')}" />
+  <php>$gender = old('gender');</php>
+  <select name="gender">
+    <option >选择性别</option>
+    <option value="male" <eq name="gender" value="male">selected</eq>>男</option>
+    <option value="female" <eq name="gender" value="female">selected</eq>>女</option>
+  </select>
+
+  <button type="submit">提交</button>
+</form>

@@ -1,0 +1,40 @@
+<extend name="Admin@default/common/dashboard_layout"/>
+<block name='content'>
+<section class="content" n-id="28">
+    <form  method="post" action="" >
+<div class='row'>
+            <div class='col-xs-9'>
+                <div class="nav-tabs-custom">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="base-inf" >
+                            <div class="form-group">
+                                <label for="module">检查模块</label>
+                                <select name="module" class="form-control js-data-example-ajax" style="width:500px">
+                                    <volist name="module_list" id="module">
+                                        <option value="{$module.name}" <eq name="check_module" value="$module['name']">selected='selected'</eq>>{$module.name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- /.tab-content -->
+                </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.col -->
+
+            <div class="col-xs-3">
+                <div class="pull-right">
+                    <button class="btn btn-primary" type="submit">检查</button>
+                </div>
+            </div>
+
+
+        </div><!-- /.row -->
+        <div class='row'>
+            <div class='col-xs-9'>
+                <present name='check_module'>
+        {:W('Admin/AuthCheck/index', array('module' => $check_module))}
+        </present>
+        </div>
+        </div>
+    </form>
+</section>
+</block>

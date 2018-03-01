@@ -1,0 +1,143 @@
+<case value="citys">
+    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+        <label class="left control-label">{$[type]form.title}：</label>
+            <div class="right">
+                <a  class="btn btn-default"  id='add-active'>添加</a>
+                <hr/>
+		<div class="row">
+			<div class="col-md-12">
+                            <div class="active-box">
+                         <php>if(!$[type]form["value"]){</php>
+                            <div class="form-group active-item row">
+                                <div class="col-md-10">
+                                    <div class="bs-chinese-region {$[type]form.name} flat dropdown" data-min-level="1" data-max-level="2" data-def-val="[name='{$[type]form.name}[]']">
+                                        <input type="text" class="form-control" id="address" placeholder="选择你的地区" data-toggle="dropdown" readonly>
+                                        <input type="hidden" class="form-control" name="{$[type]form.name}[]" value=''>
+                                        <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <div>
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#province{$[type]form.name}" data-next="city" role="tab" data-toggle="tab">省份</a></li>
+                                                    <li role="presentation"><a href="#city{$[type]form.name}" data-next="district" role="tab" data-toggle="tab">城市</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane active" id="province{$[type]form.name}">--</div>
+                                                    <div role="tabpanel" class="tab-pane" id="city{$[type]form.name}">--</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 delete-active">
+                                </div>
+                        
+                            </div>
+                         <php>}</php>
+                        <php>foreach($[type]form["value"] as $k => $place){</php>
+                            <div class="form-group active-item row">
+                                <div class="col-md-10">
+                                    <div class="bs-chinese-region {$[type]form.name} flat dropdown" data-min-level="1" data-max-level="2" data-def-val="[name='{$[type]form.name}[]']">
+                                        <input type="text" class="form-control" id="address" placeholder="选择你的地区" data-toggle="dropdown" readonly>
+                                        <input type="hidden" class="form-control" name="{$[type]form.name}[]" value='{$place}'>
+                                        <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <div>
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#province{$[type]form.name}" data-next="city" role="tab" data-toggle="tab">省份</a></li>
+                                                    <li role="presentation"><a href="#city{$[type]form.name}" data-next="district" role="tab" data-toggle="tab">城市</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane active" id="province{$[type]form.name}">--</div>
+                                                    <div role="tabpanel" class="tab-pane" id="city{$[type]form.name}">--</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 delete-active">
+                                    <php>if($k != 0){</php>
+                                    <a  class='btn btn-warning'>删除</a>
+                                    <php>}</php>
+                                </div>
+                        
+                            </div>
+                        <php>}</php>
+                    </div>
+			</div>
+		</div>
+            </div>
+    </div>
+    <notdefined name="chinese_region">
+        <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-chinese-region/bootstrap-chinese-region.js"></script>
+        <define name="chinese_region" value="1" />
+    </notdefined>
+    
+    <script id="city_template" type="text/template">
+                            <div class="form-group active-item row">
+                                <div class="col-md-10">
+                                    <div class="bs-chinese-region place flat dropdown" data-min-level="1" data-max-level="2" data-def-val="[name='place[]']">
+                                        <input type="text" class="form-control" id="address" placeholder="选择你的地区" data-toggle="dropdown" readonly="">
+                                        <input type="hidden" class="form-control" name="place[]" value="">
+                                        <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <div>
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#provinceplace" data-next="city" role="tab" data-toggle="tab">省份</a></li>
+                                                    <li role="presentation"><a href="#cityplace" data-next="district" role="tab" data-toggle="tab">城市</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane active" id="provinceplace">--</div>
+                                                    <div role="tabpanel" class="tab-pane" id="cityplace">--</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 delete-active">
+                                </div>
+                        
+                            </div>
+    </script>
+        
+    <script>
+        
+        var el = $('#city_template').html();
+        //获取需要添加的元素
+		$.getJSON("<?php echo U('Api/Area/getArea'); ?>",function(data){
+			for (var i = 0; i < data.length; i++) {
+				var area = {id:data[i].id,name:data[i].cname,level:data[i].level,parentId:data[i].upid};
+				data[i] = area;
+			}		
+			$('.{$[type]form.name}').each(function(){
+				$(this).chineseRegion('source',data).on('completed.bs.chinese-region',function(e,areas){
+					$(this).find('[name="{$[type]form.name}[]"]').val(areas[areas.length-1].id);
+				});
+			})
+                        
+                        $('.delete-active a').on('click',function(){
+                            $(this).parent().parent().remove()
+                        });
+	
+			$('#add-active').click(function(){
+                                 //插入元素
+                                $('.active-box').append(el);
+                                //获得不重复索引
+                                var lastIndex = Date.parse(new Date()) + Math.random().toString(36).substr(2);
+                                //获取最后插入的元素
+                                var lastEl = $('.active-box .active-item:last').find('.bs-chinese-region')
+                                // var eqIndex = ++number;
+                                lastEl.parent().nextAll('.delete-active').append("<a  class='btn btn-warning'>删除</a>")
+                                lastEl.chineseRegion('source',data).on('completed.bs.chinese-region',function(e,areas){
+                                    $(this).find('[name="{$[type]form.name}[]"]').val(areas[areas.length-1].id);
+                                });
+                                //为每一个插入的元素设置对应的id和锚点
+                                lastEl.find('#province{$[type]form.name}').attr('id','province{$[type]form.name}'+lastIndex)
+                                lastEl.find('#city{$[type]form.name}').attr('id','city{$[type]form.name}'+lastIndex)
+                                lastEl.find('a[href="#province{$[type]form.name}"]').attr('href','#province{$[type]form.name}'+lastIndex)
+                                lastEl.find('a[href="#city{$[type]form.name}"]').attr('href','#city{$[type]form.name}'+lastIndex)
+                                $('.delete-active a').unbind('click').on('click',function(){
+                                    $(this).parent().parent().remove()
+                                });
+                        });
+
+			
+		});
+    </script>
+</case>

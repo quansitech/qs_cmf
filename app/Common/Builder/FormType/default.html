@@ -1,0 +1,9 @@
+<?php
+$var_name = '[type]form';
+$var = $$var_name;
+$path = str_replace('_', '/', $var['type']);
+$path = '../app/' . $path . '.html';
+
+echo "<include file="{$path}" type='[type]' />";
+?>
+

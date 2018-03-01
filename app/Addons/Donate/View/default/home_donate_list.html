@@ -1,0 +1,87 @@
+<div class="content-body">
+                                    <form method="get" class="donation-detail pure-form">
+                                        <div class="pure-g">
+                                            <div class="pure-u-1-4">
+                                                <div class="form-group">
+                                                    <input type="text" name="donate_date_range" class="form-control" id="detail_date_range" placeholder="选择日期范围" value='{:I("donate_date_range")}'>
+                                                </div>
+                                            </div>
+                                            <div class="pure-u-1-4">
+                                                <div class="form-group">
+                                                   <input type="text" class="" name="ref_name" placeholder="搜索用途" value='{:I("ref_name")}'>
+                                                </div>
+                                            </div>
+                                            <div class="pure-u-1-4">
+                                                <div class="form-group">
+                                                    <select class="form-control input-sm" name='channel_id'>
+                                                        <option value=''>选择捐赠渠道</option>
+                                                        <volist name="channel_list" id='channel'>
+                                                            <option value='{$key}' <eq name='Think.get.channel_id' value='$key'>selected='selected'</eq>>{$channel}</option>
+                                                        </volist>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="pure-u-1-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="" name="donator" placeholder="搜索捐赠人名称" value='{:I("donator")}'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pure-g" style="margin-top:10px">
+                                                <input type="submit" class="pure-button button-more" style="margin-right:5px" value="搜索">
+                                                <input type="reset" class="pure-button button-more" value="重置">
+                                        </div>
+                                    </form>
+                                    <table class="pure-table pure-table-horizontal inf-table">
+                                            <thead>
+                                                    <tr>
+                                                            <th>捐赠日期</th>
+                                                            <th>捐赠人</th>
+                                                            <th>捐赠金额</th>
+                                                            <th>用途</th>
+                                                            <th>捐赠渠道</th>
+                                                            <th>备注</th>
+                                                    </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="donation_list" id="donation">
+                                                <tr>
+                                                    <td>{$donation.donate_date|date="Y-m-d",###}</td>
+                                                    <eq name='donation.name' value=''>
+                                                    <td>无留名人士</td>
+                                                <else />
+                                                    <td>{$donation.name}</td>
+                                                </eq>
+                                                    <td>￥{$donation.amount}</td>
+                                                    <td>{$donation.ref_title}</td>
+                                                     <td>{$donation.channel_name}</td>
+                                                     <td>{$donation.remark}</td>
+                                                </tr>
+                                                </volist>
+                                            </tbody>
+                                    </table>
+                                        <include file="../app/Admin/View/default/common/pagination.html" />
+				</div>
+
+<link rel="stylesheet" href="__PUBLIC__/libs/daterangepicker/daterangepicker-bs3.css">
+    <script type="text/javascript" src="__PUBLIC__/libs/daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/libs/daterangepicker/lang/zh-cn.js"></script>
+    <script>
+    jQuery(document).ready(function($) {
+        $('#detail_date_range').daterangepicker({
+            format: 'YYYY/MM/DD',
+            clearBtn: true,
+            locale: {
+                applyLabel: '应用',
+                cancelLabel: '取消',
+                fromLabel: '从',
+                toLabel: '到',
+                weekLabel: '周',
+                customRangeLabel: '自定义范围',
+                daysOfWeek: moment()._lang._weekdaysMin.slice(),
+                monthNames: moment()._lang._monthsShort.slice(),
+                firstDay: 0
+            }
+        });
+    });
+    </script>

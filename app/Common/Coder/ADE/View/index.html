@@ -1,0 +1,421 @@
+<extend name="../app/Admin/View/default/common/dashboard_layout.html"/>
+
+<block name="content">
+    <form action="/admin/coder/generate/id/ADE" method="post" id="form" class="form-horizontal form builder-form">
+        <input type="hidden" name="id" value="{$id}"/>
+    <section class="content-header clearfix">
+        <h1 class="pull-left">{$meta_title}</h1>
+        <div class="pull-right">
+            <a class="btn btn-primary btn-sm" href="{:U('/admin/coder/coderLog', array('id' => 'ADE'))}">生成记录</a>
+            <button type="button" id="save_btn" class="btn btn-primary btn-sm">保存记录</button>
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> 生成代码</button>
+        </div>
+    </section>
+    
+    <div class="builder builder-form-box panel-body content" n-id="301">
+        
+        <input type="hidden" name="log_id" value="{$log_id}" />
+        
+        <div class="builder-container builder-form-container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">控制器名：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='controller_name' value='{$coder_log.controller_name}' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">列表标题：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='list_title' value='{$coder_log.list_title}'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">menu_id：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='menu_id' value='{$coder_log.menu_id}' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">表名：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='table_name' value='{$coder_log.table_name}'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <input type='checkbox' name='action[]' <php>if(in_array('add', $coder_log['action'])) echo 'checked="true"';</php> value='add'>增
+                        <input type='checkbox' name='action[]' <php>if(in_array('delete', $coder_log['action'])) echo 'checked="true"';</php> value='delete'>删
+                        <input type='checkbox' name='action[]' <php>if(in_array('edit', $coder_log['action'])) echo 'checked="true"';</php> value='edit'>改
+                        <input type='checkbox' name='action[]' <php>if(in_array('forbid_resume', $coder_log['action'])) echo 'checked="true"';</php> value='forbid_resume'>禁/启
+                        <input type='checkbox' name='action[]' <php>if(in_array('save', $coder_log['action'])) echo 'checked="true"';</php> value='save'>保存
+                    </div>
+                </div>
+            </div>
+            <h1>自定义字段:</h1>
+            <php>$list_show_num = 0;</php>
+            <php>$add_show_num = 0;</php>
+            <php>for($cus_i=0;$cus_i<count($coder_log['column_name']);$cus_i++){</php>
+            <div class='row box box-solid'>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">字段名：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='column_name[]' value='<php> echo $coder_log["column_name"][$cus_i];</php>' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">字段类型：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='column_type[]' value='<php> echo $coder_log["column_type"][$cus_i];</php>'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">必填：</label>
+                        <div class="right">
+                            <select name='require[]'>
+                                <option value='1' <php>if($coder_log['require'][$cus_i] == "1") echo 'selected="true"';</php>>是</option>
+                                <option value='0' <php>if($coder_log['require'][$cus_i] == "0") echo 'selected="true"';</php>>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">注释：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='comment[]' value='<php> echo $coder_log["comment"][$cus_i];</php>'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 list_show_div">
+                    <div class='form-group'>
+                        <label class="left control-label">list show?：</label>
+                        <div class="right">
+                            <select name='list_show[]' class='list_show'>
+                                <option value='1' <php>if($coder_log['list_show'][$cus_i] == "1") echo 'selected="true"';</php>>是</option>
+                                <option value='0' <php>if($coder_log['list_show'][$cus_i] == "0") echo 'selected="true"';</php>>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <php>if($coder_log['list_show'][$cus_i] == "1"){</php>
+                
+                <div class="col-xs-12 list_show_type_div">
+                    <div class='form-group'>
+                        <label class="left control-label">调用类型：</label>
+                        <div class="right">
+                            <select name="list_show_type[]">
+                                <option value='' <php>if($coder_log['list_show_type'][$list_show_num] == "") echo 'selected="true"';</php>>无</option>
+                                <option value='picture' <php>if($coder_log['list_show_type'][$list_show_num] == "picture") echo 'selected="true"';</php>>图片</option> 
+                                <option value='fun' <php>if($coder_log['list_show_type'][$list_show_num] == "fun") echo 'selected="true"';</php>>函数</option>
+                                <option value='status' <php>if($coder_log['list_show_type'][$list_show_num] == "status") echo 'selected="true"';</php>>状态</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">调用函数：(只有函数类型需要填写)</label>
+                        <div class="right">
+                            <input type='text' name="list_show_fun[]" value='<php> echo $coder_log["list_show_fun"][$list_show_num];</php>'>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">可修改?</label>
+                        <div class="right">
+                            <select name="list_edit[]">
+                                <option value='' <php>if($coder_log['list_edit'][$list_show_num] == "") echo 'selected="true"';</php>>否</option>
+                                <option value='1' <php>if($coder_log['list_edit'][$list_show_num] == "1") echo 'selected="true"';</php>>是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">下拉查询?</label>
+                        <div class="right">
+                            <select name="list_show_select_search[]">
+                                <option value='' <php>if($coder_log['list_show_select_search'][$list_show_num] == "") echo 'selected="true"';</php>>否</option>
+                                <option value='1' <php>if($coder_log['list_show_select_search'][$list_show_num] == "1") echo 'selected="true"';</php>>是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">下拉查询函数?</label>
+                        <div class="right">
+                            <input type='text' name="list_show_select_options_fun[]" value='<php> echo $coder_log["list_show_select_options_fun"][$list_show_num];</php>' />
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">模糊查询?</label>
+                        <div class="right">
+                            <select name="list_show_like_search[]">
+                                <option value='' <php>if($coder_log['list_show_like_search'][$list_show_num] == "") echo 'selected="true"';</php>>否</option>
+                                <option value='1' <php>if($coder_log['list_show_like_search'][$list_show_num] == "1") echo 'selected="true"';</php>>是</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <php>$list_show_num++;</php>
+                <php>}</php>
+                <div class="col-xs-12 add_show_div">
+                    <div class='form-group'>
+                        <label class="left control-label">add show?：</label>
+                        <div class="right">
+                             <select name='add_show[]' class='add_show'>
+                                <option value='1' <php>if($coder_log['add_show'][$cus_i] == "1") echo 'selected="true"';</php>>是</option>
+                                <option value='0' <php>if($coder_log['add_show'][$cus_i] == "0") echo 'selected="true"';</php>>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <php>if($coder_log['add_show'][$cus_i] == "1"){</php>
+                <div class="col-xs-12 add_show_type_div">
+                    <div class='form-group'>
+                        <label class="left control-label">字段类型：</label>
+                        <div class="right">
+                            <select name="add_show_type[]">
+                                <volist name=":C('FORM_ITEM_TYPE')" id="type">
+                                    <option value='{$key}' <php>if($coder_log['add_show_type'][$add_show_num] == $key) echo 'selected="true"';</php> >{$type.0}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">调用函数：(只有checkbox 或者 select等类型需要填写)</label>
+                        <div class="right">
+                            <input type='text' name="add_show_options_fun[]" value='<php> echo $coder_log["add_show_options_fun"][$add_show_num];</php>'>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">extra_attr</label>
+                        <div class="right">
+                            <input type='text' name="add_show_extra_attr[]" value='<php> echo $coder_log["add_show_extra_attr"][$add_show_num];</php>'>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">默认值</label>
+                        <div class="right">
+                            <input type='text' name="add_show_default[]" value='<php> echo $coder_log["add_show_default"][$add_show_num];</php>'>
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label class="left control-label">tips:</label>
+                        <div class="right">
+                            <input type='text' name="add_show_tips[]" value='<php> echo $coder_log["add_show_tips"][$add_show_num];</php>'>
+                        </div>
+                    </div>
+                </div>
+                <php>$add_show_num++;</php>
+                <php>}</php>
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-danger btn-xs pull-right" onclick="$(this).parents('.box').remove();">删除</button>
+                </div>
+            </div>
+            <php>}</php>
+            <div class='row' id='add-panel'>
+                <button type="button" class="btn btn-sm btn-default " id="addField">增加一行</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</block>
+
+<block name='script'>
+    <script id="field" type="text/template">
+        <div class='row box box-solid'>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">字段名：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='column_name[]' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">字段类型：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='column_type[]' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">必填：</label>
+                        <div class="right">
+                            <select name='require[]'>
+                                <option value='1'>是</option>
+                                <option value='0' selected='true'>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label class="left control-label">注释：</label>
+                        <div class="right">
+                            <input type='text' class="form-control input text" name='comment[]' />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 list_show_div">
+                    <div class='form-group'>
+                        <label class="left control-label">list show?：</label>
+                        <div class='right'>
+                            <select name='list_show[]' class='list_show'>
+                                <option value='1'>是</option>
+                                <option value='0' selected='true'>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 add_show_div">
+                    <div class='form-group'>
+                        <label class="left control-label">add show?：</label>
+                       
+                        <div class="right">
+                            <select name='add_show[]' class='add_show'>
+                                <option value='1'>是</option>
+                                <option value='0' selected='true'>否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-danger btn-xs pull-right" onclick="$(this).parents('.box').remove();">删除</button>
+                </div>
+            </div>
+    </script>
+    <script id="add_type_select_field" type="text/template">
+        <div class="col-xs-12 add_show_type_div">
+            <div class='form-group'>
+                <label class="left control-label">字段类型：</label>
+                <div class="right">
+                    <select name="add_show_type[]">
+                        <volist name=":C('FORM_ITEM_TYPE')" id="type">
+                            <option value='{$key}'>{$type.0}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">调用函数：(只有checkbox 或者 select等类型需要填写)</label>
+                <div class="right">
+                    <input type='text' name="add_show_options_fun[]">
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">extra_attr</label>
+                <div class="right">
+                    <input type='text' name="add_show_extra_attr[]">
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">默认值</label>
+                <div class="right">
+                    <input type='text' name="add_show_default[]">
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">tips:</label>
+                <div class="right">
+                    <input type='text' name="add_show_tips[]">
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="list_type_select_field" type="text/template">
+        <div class="col-xs-12 list_show_type_div">
+            <div class='form-group'>
+                <label class="left control-label">调用类型：</label>
+                <div class="right">
+                    <select name="list_show_type[]">
+                        <option value=''>无</option>
+                        <option value='picture'>图片</option> 
+                        <option value='fun'>函数</option>
+                        <option value='status'>状态</option>
+                    </select>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">调用函数：(只有函数类型需要填写)</label>
+                <div class="right">
+                    <input type='text' name="list_show_fun[]">
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">可修改?</label>
+                <div class="right">
+                    <select name="list_edit[]">
+                        <option value=''>否</option>
+                        <option value='1'>是</option>
+                    </select>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">下拉查询?</label>
+                <div class="right">
+                    <select name="list_show_select_search[]">
+                        <option value=''>否</option>
+                        <option value='1'>是</option>
+                    </select>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">下拉查询函数?</label>
+                <div class="right">
+                    <input type='text' name="list_show_select_options_fun[]" />
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class="left control-label">模糊查询?</label>
+                <div class="right">
+                    <select name="list_show_like_search[]">
+                        <option value=''>否</option>
+                        <option value='1'>是</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $('#save_btn').click(function(){
+                $('#form').attr('action','/admin/coder/save');
+                $('#form').submit();
+            });
+            
+            $('#addField').click(function () {
+                $($('#field').clone().html()).insertBefore('#add-panel');
+            });
+            
+            $('.builder').on('change', '.add_show', function(){
+                if($(this).val() == 1){
+                    $(this).parents('.add_show_div').after($('#add_type_select_field').clone().html());
+                }
+                else{
+                    $(this).parents('.add_show_div').next().remove();
+                }
+            });
+            
+            $('.builder').on('change', '.list_show', function(){
+                if($(this).val() == 1){
+                    $(this).parents('.list_show_div').after($('#list_type_select_field').clone().html());
+                }
+                else{
+                    $(this).parents('.list_show_div').next().remove();
+                }
+            });
+        });
+    </script>
+</block>

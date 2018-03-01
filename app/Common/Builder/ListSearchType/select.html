@@ -1,0 +1,10 @@
+<case value="select">
+    <div class="form-group">
+        <select class="search-input form-control" name="{$item.name}" style="100px">
+            <option value="">{$item.title}</option>
+            <volist name="item.options" id="option">
+                <option value="{$key}" <?php if(isset($_GET[$item['name']])): ?> <eq name='item["name"] | I' value="$key">selected="true"</eq><?php endif; ?>>{$option}</option>
+            </volist>
+        </select>
+    </div>
+</case>

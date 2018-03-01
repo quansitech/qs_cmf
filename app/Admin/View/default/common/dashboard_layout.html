@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{$meta_title}｜{:C('WEB_SITE_TITLE')}后台管理</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="__PUBLIC__/libs/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/font-awesome/font-awesome.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/icomoon/icomoon.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/ionicons/ionicons.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/messenger/messenger.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/messenger/messenger-theme-block.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/libs/toastr/toastr.css" rel="stylesheet" type="text/css" />
+        <link href="__PUBLIC__/views/common.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="/Public/libs/cui/cui.extend.min.css">
+
+        <script type="text/javascript" src="__PUBLIC__/libs/mod.js"></script>
+        <!-- jQuery 2.0.2 -->
+        <script src="__PUBLIC__/libs/jquery/jquery.js"></script>
+        <script src="__PUBLIC__/libs/underscore/underscore.js" type="text/javascript"></script>
+        <!-- Bootstrap -->
+        <script src="__PUBLIC__/libs/bootstrap/bootstrap.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/libs/icheck/icheck.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/libs/messenger/messenger.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-messagebox/bootstrap-messagebox.js"></script>
+        <script src="__PUBLIC__/libs/toastr/toastr.min.js" type="text/javascript"></script>
+        <!-- AdminLTE App -->
+        <script src="__PUBLIC__/views/Admin/common/common.js" type="text/javascript"></script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="/libs/html5shiv.js"></script>
+          <script src="__PUBLIC__/libs/respond.min.js"></script>
+        <![endif]-->
+        <block name="style"></block>
+
+
+</head>
+    <body class="skin-blue fixed">
+        <include file="Admin@default/common/head" />
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <include file="Admin@default/common/sidebar" />
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                <block name="content"></block>
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <div class="modal fade bs-example-modal-lg" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">图片浏览</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+            </div>
+          </div>
+        </div>
+        <block name="script"></block>
+    </body>
+</html>

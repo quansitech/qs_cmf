@@ -1,0 +1,16 @@
+/* nav-bar begin*/
+.freemode-container {
+  padding: 0 5px 15px;
+  box-sizing: border-box;
+}
+
+.freemode-container .swiper-slide {
+  text-align: center;
+  border: 1px solid #e2e2e2;
+}
+
+.freemode-container .swiper-slide img {
+  display: inline-block;
+  width: 67.5px;
+  height: 67.5px;
+}

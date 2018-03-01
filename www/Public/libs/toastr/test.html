@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="toastr.min.css">
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="toastr.min.js"></script>
+</head>
+<body>
+	<p style="margin-top:100px;">hello world</p>
+	<button class="success">Click me to success</button>
+	<button class="info">Click me to info</button>
+	<button class="error">Click me to error</button>
+	<script>
+		$(document).ready(function(){
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-bottom-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			};
+			$('button.success').click(function(){
+				//toastr.success('Are you the 6 fingered man?');
+				toastr["success"]("Are you the six fingered man?");
+				return false;
+			});
+			$('button.info').click(function(){
+				//toastr.info('Are you the 6 fingered man?');
+				toastr["info"]("Are you the six fingered man?");
+				return false;
+			});
+			$('button.error').click(function(){
+				//toastr.error('Are you the 6 fingered man?');
+				toastr["error"]("Are you the six fingered man?");
+				return false;
+			})
+		})
+	</script>
+</body>
+</html>
