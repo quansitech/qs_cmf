@@ -163,7 +163,7 @@ class Resque
 	}
 
     public static function addSchedule($run_time, $class, $args = null, $desc = '', $queue = 'default'){
-
+        $id = md5(uniqid('', true));
         $schedule = [
             'run_time' => $run_time,
             'preload' => [
@@ -174,6 +174,7 @@ class Resque
             ]
         ];
         self::redis()->lpush('schedule', json_encode($schedule));
+        return $id;
     }
 
     public static function scheduleHandle(){
@@ -199,6 +200,14 @@ class Resque
                 $len = $len - $delete_count;
             }
         }
+    }
+
+    public static function removeSchedule($id){
+        self::redis()->hdel('schedule', $id);
+    }
+
+    public static function getAllSchedule(){
+        return self::redis()->hgetall('schedule');
     }
 
 	/**
