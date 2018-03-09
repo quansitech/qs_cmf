@@ -7,11 +7,6 @@
 -- 服务器版本： 5.7.17
 -- PHP Version: 7.0.12-1+deb.sury.org~trusty+1
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-CREATE DATABASE IF NOT EXISTS qs_cmf DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE qs_cmf;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
