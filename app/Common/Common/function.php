@@ -1,4 +1,9 @@
 <?php
+function verifyAuthNode($node){
+    list($module_name, $controller_name, $action_name) = explode('.', $node);
+    return \Common\Util\GyRbac::AccessDecision($module_name, $controller_name, $action_name) ? 1 : 0;
+}
+
 function old($key, $default = null){
     return \Common\Lib\Flash::get('qs_old_input.' . $key, $default);
 }

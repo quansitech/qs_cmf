@@ -21,12 +21,8 @@ class Gy extends TagLib{
      */
     public function _auth($tag,$content) {
         $node       =   $tag['node'];
-        
-        list($module_name, $controller_name, $action_name) = split('.', $node);
-        
-        $result = GyRbac::AccessDecision($module_name, $controller_name, $action_name) ? 1 : 0;
-       
-        $parseStr   =   '<?php if('.$result.'): ?>'.$content.'<?php endif; ?>';
+        $parseStr   = '<?php $result = verifyAuthNode("' . $node . '");';
+        $parseStr   .=   ' if($result): ?>'.$content.'<?php endif; ?>';
         return $parseStr;
     }
     

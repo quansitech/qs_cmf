@@ -52,7 +52,7 @@ class GyController extends Controller {
             }
 
             //非正常状态用户禁止登录后台
-            $user_ent = D('User')->find(session(C('USER_AUTH_KEY')));
+            $user_ent = D(C('USER_AUTH_MODEL'))->find(session(C('USER_AUTH_KEY')));
             if($user_ent['status'] != DBCont::NORMAL_STATUS){
                 E('用户状态异常');
             }
