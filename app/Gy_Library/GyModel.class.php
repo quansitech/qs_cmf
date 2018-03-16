@@ -318,7 +318,108 @@ class GyModel extends Model {
         }
         $r  = $this->addAll($dataList,$options=array(),$replace=false);
         return $r;
-    }    
+    }
+
+    protected function _options_filter(&$options) {
+        //保留不过滤机制
+        if($options['cus_filter'] === false){
+            return;
+        }
+
+        if(!in_array(strtolower(MODULE_NAME), C("BACKEND_MODULE"))){
+            return;
+        }
+
+        if(!$this->_auth_ref_rule){
+            return;
+        }
+
+        $auth = session('AUTH_RULE_ID');
+        if(!$auth){
+            return;
+        }
+
+        if(!isset($this->_auth_ref_rule['ref_path'])){
+            return;
+        }
+
+        list($ref_model, $ref_id) = explode('.', $this->_auth_ref_rule['ref_path']);
+
+        //检查options中有无对应key值的设置
+        if(isset($options['where'][$this->_auth_ref_rule['auth_ref_key']])){
+            //有对应key值
+            $arr = D($ref_model)->getField($ref_id, true);
+            $map[$this->_auth_ref_rule['auth_ref_key']] = $options['where'][$this->_auth_ref_rule['auth_ref_key']];
+            $key_arr = $this->notOptionsFilter()->where($map)->distinct($this->_auth_ref_rule['auth_ref_key'])->getField($this->_auth_ref_rule['auth_ref_key'],true);
+            $this->enableOptionsFilter();
+
+            if(!$arr){
+                $options['where']['_string'] = "1!=1";
+                return;
+            }
+
+            //比较是否在范围内
+            if(array_diff($key_arr, $arr)){
+                //范围外
+                $options['where'][$this->_activity_ref_rule['activity_ref_key']] = array('in', join(',', $arr));
+            }
+            else{
+                return;
+            }
+
+        }
+        else{
+
+            //无对应key值，设置key值
+            if($this->name == $ref_model){
+                $options['where']['id'] = $auth;
+            }
+            else{
+                $arr = D($ref_model)->getField($ref_id, true);
+                if(!$arr){
+                    $options['where']['_string'] = "1!=1";
+                    return;
+                }
+                $options['where'][$this->_auth_ref_rule['auth_ref_key']] = array('in', join(',', $arr));
+            }
+        }
+        return;
+
+    }
+
+    protected function _before_write(&$data) {
+        if(!$this->_auth_ref_rule){
+            return;
+        }
+
+        if(!in_array(strtolower(MODULE_NAME), C("BACKEND_MODULE"))){
+            return;
+        }
+
+        if($this->options['cus_before_write'] === false){
+            return;
+        }
+
+        $auth = session('AUTH_RULE_ID');
+        if(!$auth){
+            return;
+        }
+
+        if(isset($data[$this->_auth_ref_rule['auth_ref_key']])){
+            list($ref_model, $ref_id) = explode('.', $this->_auth_ref_rule['ref_path']);
+            $arr = D($ref_model)->getField($ref_id, true);
+            if(!$arr){
+                E('无权去进行意料之外的数据设置');
+            }
+
+            if(in_array($data[$this->_auth_ref_rule['auth_ref_key']], $arr)){
+                return;
+            }
+            else{
+                E('无权去进行意料之外的数据设置');
+            }
+        }
+    }
     
     public function destory(){
         $this->db->__destruct();
