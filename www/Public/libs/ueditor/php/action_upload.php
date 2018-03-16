@@ -47,8 +47,6 @@ switch (htmlspecialchars($_GET['action'])) {
         break;
 }
 
-/* 生成上传实例对象并完成上传 */
-$up = new Uploader($fieldName, $config, $base64);
 
 /**
  * 得到上传文件所对应的各个参数,数组结构
