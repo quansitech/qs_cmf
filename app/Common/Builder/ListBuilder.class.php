@@ -1,6 +1,7 @@
 <?php
 
 namespace Common\Builder;
+use Think\Template;
 use Think\View;
 use Think\Controller;
 /**
@@ -84,12 +85,12 @@ class ListBuilder extends Controller {
                 $my_attribute['href']  = 'javascript:history.go(-1)';
 
                 /**
-                * 如果定义了属性数组则与默认的进行合并
-                * 用户定义的同名数组元素会覆盖默认的值
-                * 比如$builder->addTopButton('add', array('title' => '换个马甲'))
-                * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
-                * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
-                */
+                 * 如果定义了属性数组则与默认的进行合并
+                 * 用户定义的同名数组元素会覆盖默认的值
+                 * 比如$builder->addTopButton('add', array('title' => '换个马甲'))
+                 * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
+                 * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
+                 */
                 if ($attribute && is_array($attribute)) {
                     $my_attribute = array_merge($my_attribute, $attribute);
                 }
@@ -137,12 +138,12 @@ class ListBuilder extends Controller {
                 $my_attribute['href']  = U(MODULE_NAME.'/'.CONTROLLER_NAME.'/add');
 
                 /**
-                * 如果定义了属性数组则与默认的进行合并
-                * 用户定义的同名数组元素会覆盖默认的值
-                * 比如$builder->addTopButton('add', array('title' => '换个马甲'))
-                * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
-                * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
-                */
+                 * 如果定义了属性数组则与默认的进行合并
+                 * 用户定义的同名数组元素会覆盖默认的值
+                 * 比如$builder->addTopButton('add', array('title' => '换个马甲'))
+                 * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
+                 * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
+                 */
                 if ($attribute && is_array($attribute)) {
                     $my_attribute = array_merge($my_attribute, $attribute);
                 }
@@ -291,9 +292,9 @@ class ListBuilder extends Controller {
     /**
      * 设置Tab按钮列表
      * @param $tab_list Tab列表  array(
-                                    'title' => '标题',
-                                    'href' => 'http://www.corethink.cn'
-                                )
+    'title' => '标题',
+    'href' => 'http://www.corethink.cn'
+    )
      * @param $current_tab 当前tab
      * @return $this
      */
@@ -347,7 +348,7 @@ class ListBuilder extends Controller {
      * @param array  $attr 按钮属性，一个定了标题/链接/CSS类名等的属性描述数组
      * @return $this
      */
-    public function addRightButton($type, $attribute = null, $tips = '') {
+    public function addRightButton($type, $attribute = null, $tips = '', $auth_node = '') {
         switch ($type) {
             case 'edit':  // 编辑按钮
                 // 预定义按钮属性以简化使用
@@ -487,11 +488,15 @@ class ListBuilder extends Controller {
                     $my_attribute['title'] = '该自定义按钮未配置属性';
                 }
 
-                // 这个按钮定义好了把它丢进按钮池里
+            // 这个按钮定义好了把它丢进按钮池里
         }
 
         if($tips != ''){
             $my_attribute['tips'] = $tips;
+        }
+
+        if($auth_node != ''){
+            $my_attribute['auth_node'] = $auth_node;
         }
 
         $this->_right_button_list[] = $my_attribute;
@@ -606,8 +611,11 @@ class ListBuilder extends Controller {
 
                     // 编译按钮属性
                     $right_button['attribute'] = $this->compileHtmlAttr($right_button);
-                    $data['right_button'] .= '<a '.$right_button['attribute']
-                                          .'>'.$right_button['title']. $tips. '</a> ';
+
+                    //是否存在权限控制，存在则检验有无权限值
+                    if(!$right_button['auth_node'] || verifyAuthNode($right_button['auth_node'])){
+                        $data['right_button'] .= '<a '.$right_button['attribute'] .'>'.$right_button['title']. $tips. '</a> ';
+                    }
 
                     while(preg_match('/__(.+?)__/i', $data['right_button'], $matches)){
                         $data['right_button'] = str_replace('__' . $matches[1] . '__', $data[$matches[1]], $data['right_button']);
