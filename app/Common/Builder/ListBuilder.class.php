@@ -129,7 +129,7 @@ class ListBuilder extends Controller {
      * @param array  $attr 按钮属性，一个定了标题/链接/CSS类名等的属性描述数组
      * @return $this
      */
-    public function addTopButton($type, $attribute = null, $tips = '') {
+    public function addTopButton($type, $attribute = null, $tips = '', $auth_node = '') {
         switch ($type) {
             case 'addnew':  // 添加新增按钮
                 // 预定义按钮属性以简化使用
@@ -270,6 +270,10 @@ class ListBuilder extends Controller {
         if($tips != ''){
             $my_attribute['tips'] = $tips;
         }
+        if($auth_node != ''){
+            $my_attribute['auth_node'] = $auth_node;
+        }
+
         $this->_top_button_list[] = $my_attribute;
         return $this;
     }
@@ -716,10 +720,14 @@ class ListBuilder extends Controller {
 
         //编译top_button_list中的HTML属性
         if ($this->_top_button_list) {
-            foreach ($this->_top_button_list as &$button) {
-                $this->compileButton($button);
-
+            $top_button_list = [];
+            foreach ($this->_top_button_list as $button) {
+                if(!$button['auth_node'] || verifyAuthNode($button['auth_node'])) {
+                    $this->compileButton($button);
+                    $top_button_list[] = $button;
+                }
             }
+            $this->_top_button_list = $top_button_list;
         }
 
         if ($this->_meta_button_list) {
