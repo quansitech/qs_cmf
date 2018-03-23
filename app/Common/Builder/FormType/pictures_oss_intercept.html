@@ -36,6 +36,7 @@
                     $('input[name="{$[type]form.name}"]').ossuploader({
                         multi_selection:true,
                         url:'{:U("api/OssUpload/policyGet")}'+'?type={$[type]form.options.type}',
+                        oss:true,
                         crop:{
                             dragMode: 'move',
                             aspectRatio: {$[type]form.options.width}/{$[type]form.options.height},
