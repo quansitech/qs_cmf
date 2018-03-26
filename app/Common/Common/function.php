@@ -1,4 +1,8 @@
 <?php
+function uniqueId(){
+    return md5(uniqid('', true));
+}
+
 function verifyAuthNode($node){
     list($module_name, $controller_name, $action_name) = explode('.', $node);
     return \Common\Util\GyRbac::AccessDecision($module_name, $controller_name, $action_name) ? 1 : 0;

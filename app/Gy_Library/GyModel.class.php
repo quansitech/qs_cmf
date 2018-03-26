@@ -149,7 +149,12 @@ class GyModel extends Model {
                         }
 
                         $relation_model = D($val[1]);
-                        $map = array();
+                        if(is_array($val[3])){
+                            $map = $val[3];
+                        }
+                        else{
+                            $map = array();
+                        }
                         $map[$val[2][$key]] = array('in', $fields);
                         $relation_model->where($map)->delete();
                         break;
