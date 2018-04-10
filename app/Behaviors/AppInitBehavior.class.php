@@ -27,7 +27,7 @@ class AppInitBehavior extends \Think\Behavior{
             \Resque::setBackend(['redis' => $config], 1);
             // 初始化缓存前缀
             if(isset($config['prefix']) && !empty($config['prefix']))
-            \Resque\Redis::prefix($config['prefix']);
+            \Resque\RedisCluster::prefix($config['prefix']);
 
             \Resque\Event::listen('afterScheduleRun', function($args){
                 $job_id = $args['job_id'];
