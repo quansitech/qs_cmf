@@ -481,6 +481,10 @@ function showFileUrl($file_id){
 
 //取缩略图
 function showThumbUrl($file_id, $prefix,$replace_img=''){
+    if(filter_var($file_id, FILTER_VALIDATE_URL)){
+        return $file_id;
+    }
+
     $file_pic = M('FilePic');
     $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
     if(!$file_pic_ent && !$replace_img){
