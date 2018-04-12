@@ -59,7 +59,8 @@ switch (htmlspecialchars($_GET['action'])) {
  *     "size" => "",           //文件大小
  * )
  */
-
+/* 生成上传实例对象并完成上传 */
+$up = new Uploader($fieldName, $config, $base64);
 $oss = $_GET['oss'];
 if($oss){
   /* 返回数据 */
@@ -109,8 +110,7 @@ if($oss){
   return json_encode($file_info);
 }
 else{
-  /* 生成上传实例对象并完成上传 */
-  $up = new Uploader($fieldName, $config, $base64);
+
 
   /**
    * 得到上传文件所对应的各个参数,数组结构
