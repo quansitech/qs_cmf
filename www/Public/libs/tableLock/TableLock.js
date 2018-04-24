@@ -23,8 +23,11 @@ example:$.fn.TableLock({table:'lockTable',lockRow:1,lockColumn:2,width:'100%',he
             }
             if(table){
                 var box=$("<div id='divBoxing' class='divBoxing'></div>").scroll(function(){//在此处添加事件
-                    $('.LockRow').css('top',this.scrollTop+'px');
-                    $('.LockCell').css('left',this.scrollLeft+'px');
+                    var that = this;
+                    setTimeout(function(){
+                        $('.LockRow').css('top',that.scrollTop+'px');
+                        $('.LockCell').css('left',that.scrollLeft+'px');
+                    });
                 });
                 box.css('width',tl.width).css('height',tl.height);//设置高度和宽度
                 table.wrap(box);
