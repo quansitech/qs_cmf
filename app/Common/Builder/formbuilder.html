@@ -240,6 +240,8 @@
                             <include file="../app/Common/Builder/FormType/key.html" type="" />
                             {// 自定义html}
                             <include file="../app/Common/Builder/FormType/self.html" type="" />
+                            {// 下拉选择地址}
+                            <include file="../app/Common/Builder/FormType/address.html" type="" />
 
                             <case value="group">
                                 <div class="builder-tabs builder-form-tabs">
@@ -319,7 +321,9 @@
                                                             <include file="../app/Common/Builder/FormType/key.html" type="tab_" />
                                                             {// 自定义html}
                                                             <include file="../app/Common/Builder/FormType/self.html" type="tab_" />
-                                                            
+                                                            {// 下拉选择地址}
+                                                            <include file="../app/Common/Builder/FormType/address.html" type="tab_" />
+
                                                             <default />
                                                             <php>\Think\Hook::listen('formBuilder', $tab_form);</php>
                                                         </switch>

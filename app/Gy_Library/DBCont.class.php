@@ -3,22 +3,9 @@
 namespace Gy_Library;
 
 class DBCont{
-    const GRADE_ONE = 1;
-    const GRADE_TWO = 2;
-    const GRADE_THREE = 3;
-    const GRADE_FOUR = 4;
-    const GRADE_FIVE = 5;
-    const GRADE_SIX = 6;
-    const GRADE_SEVEN = 7;
-    const GRADE_EIGHT = 8;
-    const GRADE_NINE = 9;
     
     const HELP_STATUS_UNSOLVE = 0;
     const HELP_STATUS_SOLVE = 1;
-    
-    const FAMILY_CONDITION_PARENTOUT = 1;
-    const FAMILY_CONDITION_FATHEROUT = 2;
-    const FAMILY_CONDITION_MOTHEROUT = 3;
     
     const VOLUNTEER_STATUS_APPLICATING = 1;
     const VOLUNTEER_STATUS_ACTIVE = 2;
@@ -108,23 +95,6 @@ class DBCont{
         self::HELP_STATUS_SOLVE => '已解决'
     );
     
-    static private $_family_condition = array(
-        self::FAMILY_CONDITION_PARENTOUT => '父母都外出工作',
-        self::FAMILY_CONDITION_FATHEROUT => '只是父亲外出工作',
-        self::FAMILY_CONDITION_MOTHEROUT => '只是母亲外出工作'
-    );
-    
-    static private $_grade = array(
-        self::GRADE_ONE => '一年级',
-        self::GRADE_TWO => '二年级',
-        self::GRADE_THREE => '三年级',
-        self::GRADE_FOUR => '四年级',
-        self::GRADE_FIVE => '五年级',
-        self::GRADE_SIX => '六年级',
-        self::GRADE_SEVEN => '七年级',
-        self::GRADE_EIGHT => '八年级',
-        self::GRADE_NINE => '九年级'
-    );
     
     static private $_volunteer_status = array(
         self::VOLUNTEER_STATUS_FORBIDDEN => '禁用',
@@ -276,21 +246,6 @@ class DBCont{
         return self::$_help_status;
     }
     
-    static public function getFamilyCondition($condition){
-        return self::$_family_condition[$condition];
-    }
-    
-    static public function getFamilyConditionList(){
-        return self::$_family_condition;
-    }
-    
-    static public function getGrade($grade){
-        return self::$_grade[$grade];
-    }
-    
-    static public function getGradeList(){
-        return self::$_grade;
-    }
     
     static public function getChildStatus($status){
         return self::$_child_status[$status];
