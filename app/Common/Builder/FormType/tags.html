@@ -1,45 +1,30 @@
 <case value="tags">
-    <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
-        <label class="left control-label">{$[type]form.title}：</label>
-        <div class="right">
-            <input type="text" id="[type]{$group_k}_tag_{$[type]k}" class="form-control" name="{$[type]form.name}" value="{$[type]form.value}" {$[type]form.extra_attr}>
-            <link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/jquery_tokeninput/css/token-input.css">
-            <script type="text/javascript" src="__PUBLIC__/libs/jquery_tokeninput/js/jquery.tokeninput.min.js" charset="utf-8"></script>
-            <script type="text/javascript">
-                $(function(){
-                    //标签自动完成
-                    var tags = $('#[type]{$group_k}_tag_{$[type]k}'), tagsPre = [];
-                    if (tags.length > 0) {
-                        var items = tags.val().split(','), result = [];
-                        for (var i = 0; i < items.length; i ++) {
-                            var tag = items[i];
-                            if (!tag) {
-                                continue;
-                            }
-                            tagsPre.push({
-                                id      :   tag,
-                                title   :   tag
-                            });
-                        }
-                    }
-                    tags.tokenInput('{:U(C("MODULE_MARK")."/Tag/searchTags")}',{
-                        propertyToSearch    :   'title',
-                        tokenValue          :   'title',
-                        searchDelay         :   0,
-                        tokenLimit          :   5,
-                        preventDuplicates   :   true,
-                        animateDropdown     :   true,
-                        allowFreeTagging    :   true,
-                        hintText            :   '请输入标签名',
-                        noResultsText       :   '此标签不存在, 按回车创建',
-                        searchingText       :   "查找中...",
-                        prePopulate         :   tagsPre,
-                        onAdd: function (item){ //新增系统没有的标签时提交到数据库
-                            $.post('{:U(C("MODULE_MARK")."/Tag/add")}', {'title': item.title});
-                        }
-                    });
-                });
-            </script>
+        <div class="form-group item_{$[type]form.name} {$[type]form.extra_class}">
+            <label class="left control-label">{$[type]form.title}：</label>
+            <div class="right">
+                <div class="label-select-list-wrap-{$[type]form.name}">
+    
+                </div>
+            </div>
         </div>
-    </div>
-</case>
+        <notdefined name="tags">
+            <script type="text/javascript" src="__PUBLIC__/libs/label-select.min.js"></script>
+            <define name="tags" value="1" />
+        </notdefined>
+        <script>
+            $(function() {
+                new labelSelect({
+                    el: '.label-select-list-wrap-{$[type]form.name}',  //初始化的元素
+                    url: '{$[type]form.options.url}',        //请求所有标签的地址  返回格式 [{"id":"1","name":"\u6d4b\u8bd5"},{"id":"2","name":"PHP"}]
+                    reqData: {},                    //请求所有标签数据的额外参数
+                    removeUrl: '{$[type]form.options.removeUrl}',  //删除标签的地址, id=标签id
+                    removeData: {},          //删除标签的额外参数,
+                    addUrl: '{$[type]form.options.addUrl}',      //新增标签的地址 labelName=新的标签名
+                    addReqData: {},                 //新增标签的额外参数
+                    field: '{$[type]form.name}',                  //隐藏域的name
+                    value: '{$[type]form.value}',              //默认选中的value
+                    tips: '{$[type]form.tips}' //额外提示
+                });
+            });
+        </script>
+    </case>
