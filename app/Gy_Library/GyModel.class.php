@@ -172,7 +172,7 @@ class GyModel extends Model {
         $map = array();
         
         if(empty($ids)){
-            return true;
+            return null;
         }
         
         if(is_string($field)){
