@@ -65,7 +65,7 @@ class PublicController extends Controller {
             sysLogs('后台登出');
             session(C('ADMIN_AUTH_KEY'), null);
             session(C('USER_AUTH_KEY'), null);
-            session(C('ADMIN_LOGIN'), null);
+            session('ADMIN_LOGIN', null);
         } 
         $this->redirect('Public/login');
     }

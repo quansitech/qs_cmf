@@ -173,7 +173,16 @@ class Resque
                 'desc' => $desc
             ]
         ];
-        self::redis()->lpush('schedule', json_encode($schedule));
+		self::redis()->lpush('schedule', json_encode($schedule));
+		
+		Event::trigger(
+			'addSchedule',
+			[
+				'id' => $id,
+				'run_time' => $run_time,
+				'preload' => $schedule['preload']
+			]
+		);
         return $id;
     }
 
@@ -191,7 +200,8 @@ class Resque
                             'job_id' => $job_id,
                             'job_desc' => $schedule['preload']['desc'],
                             'job' => $schedule['preload']['class'],
-                            'job_args' => $schedule['preload']['args'],
+							'job_args' => $schedule['preload']['args'],
+							'queue' => $schedule['preload']['queue']
                         ]
                     );
                 }
@@ -203,7 +213,13 @@ class Resque
     }
 
     public static function removeSchedule($id){
-        self::redis()->hdel('schedule', $id);
+		self::redis()->hdel('schedule', $id);
+		Event::trigger(
+			'removeSchedule',
+			[
+				'id' => $id
+			]
+		);
     }
 
     public static function getAllSchedule(){

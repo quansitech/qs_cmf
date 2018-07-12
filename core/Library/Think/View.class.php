@@ -163,7 +163,7 @@ class View {
         }elseif(false === strpos($template, $depr)){
             $template = CONTROLLER_NAME . $depr . $template;
         }
-        $file   =   theme_path.$template.C('TMPL_TEMPLATE_SUFFIX');
+        $file   =   THEME_PATH.$template.C('TMPL_TEMPLATE_SUFFIX');
         if(C('TMPL_LOAD_DEFAULTTHEME') && THEME_NAME != C('DEFAULT_THEME') && !is_file($file)){
             // 找不到当前主题模板的时候定位默认主题中的模板
             $file   =   dirname(theme_path).'/'.C('DEFAULT_THEME').'/'.$template.C('TMPL_TEMPLATE_SUFFIX');

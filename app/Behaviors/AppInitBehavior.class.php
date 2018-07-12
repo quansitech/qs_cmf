@@ -34,6 +34,7 @@ class AppInitBehavior extends \Think\Behavior{
                 $job_desc = $args['job_desc'];
                 $job = $args['job'];
                 $param = $args['job_args'];
+                $queue = $args['queue'];
 
                 $data['id'] = $job_id;
                 $data['job'] = $job;
@@ -42,8 +43,33 @@ class AppInitBehavior extends \Think\Behavior{
                 $data['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
                 $data['create_date'] = time();
                 $data['schedule'] = \Gy_Library\DBCont::YES_BOOL_STATUS;
+                $data['queue'] = $queue;
 
                 D('Queue')->add($data);
+            });
+
+            \Resque\Event::listen('addSchedule', function($args){
+                $id = $args['id'];
+                $run_time = $args['run_time'];
+                $preload = $args['preload'];
+
+                $data['id'] = $id;
+                $data['run_time'] = $run_time;
+                $data['desc'] = $preload['desc'];
+                $data['preload'] = json_encode($preload);
+                $data['delete_status'] = \Gy_Library\DBCont::NO_BOOL_STATUS;
+                $data['create_date'] = time();
+
+                D('Schedule')->add($data);
+            });
+
+            \Resque\Event::listen('removeSchedule', function($args){
+                $id = $args['id'];
+
+                $ent = D("Schedule")->where(["id" => $id])->find();
+                
+                $ent["delete_status"] = \Gy_Library\DBCont::YES_BOOL_STATUS;
+                D('Schedule')->save($ent);
             });
         }
     }

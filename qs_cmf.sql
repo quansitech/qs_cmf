@@ -3804,8 +3804,19 @@ CREATE TABLE `qs_queue` (
   `description` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `create_date` int(11) NOT NULL,
-  `schedule` tinyint(4) NOT NULL default 0,
+  `schedule` varchar(50) NOT NULL default '',
   `queue` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE `qs_schedule` (
+  `id` varchar(50) NOT NULL primary key,
+  'run_time' int(11) NOT NULL default 0,
+  `desc` varchar(200) NOT NULL default '',
+  `preload` varchar(2000) NOT NULL default '',
+  `delete_status` tinyint(4) NOT NULL default 0,
+  `create_date` int(11) NOT NULL default 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
