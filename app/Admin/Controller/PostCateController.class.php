@@ -2,10 +2,30 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
+use Gy_Library\CateHelperTrait;
 
 //自动生成代码
 class PostCateController extends GyListController{
     
+    use CateHelperTrait;
+
+    protected $option = [
+        5 => [
+            'hidden' => [
+                'pid','type','introduction','img_id','cover_id','pic_id','summary','sort'
+            ]
+        ],
+        1 => [
+            'show' => ['cover_id', 'introduction']
+        ],
+        6=> [
+            'except_self' => true,
+            'show' => ['summary'],
+            'hidden' => ['introduction'],
+        ]
+
+    ];
+
     public function index(){
         $get_data = I('get.');
         $map = array();
@@ -123,6 +143,7 @@ class PostCateController extends GyListController{
                     ->setNID(933)
                     ->addFormItem('id', 'hidden', 'ID')
                     ->addFormItem('name', 'text', '分类', '', '')->addFormItem('pid', 'select', '上级分类', '', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '分类封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '分类详情', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    ->setFormData($info)
+                    ->setFormItemFilter($this->formItemFilter($this->option))
                     ->display();
         }
     }

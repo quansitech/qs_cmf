@@ -18,6 +18,7 @@ class FormBuilder extends Controller {
     private $_template;              // 模版
     private $_nid;            //高亮节点ID
     private $_custom_html;
+    private $_form_item_Filter = null;
 
     /**
      * 初始化方法
@@ -75,6 +76,11 @@ class FormBuilder extends Controller {
      */
     public function setPostUrl($post_url) {
         $this->_post_url = $post_url;
+        return $this;
+    }
+
+    public function setFormItemFilter(\Closure $filter){
+        $this->_form_item_Filter = $filter;
         return $this;
     }
 
@@ -155,6 +161,10 @@ class FormBuilder extends Controller {
                     $item['value'] = $this->_form_data[$item['name']];
                 }
             }
+        }
+
+        if($this->_form_item_Filter){
+            $this->_form_items = call_user_func($this->_form_item_Filter, $this->_form_data, $this->_form_items);
         }
 
         $this->assign('custom_html', $this->_custom_html);

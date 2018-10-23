@@ -2,10 +2,25 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
+use Gy_Library\ContentHelperTrait;
 
 //自动生成代码
 class PostController extends GyListController{
     
+    use ContentHelperTrait;
+
+    protected $content_option = [
+        6 => [
+            'hidden' => ['author'],
+        ],
+        7 => [
+            'hidden' => ['author','source']
+        ],
+        8 => [
+            'hidden' =>  ['author','source', 'summary', 'url']
+        ]
+    ];
+
     public function index(){
         $get_data = I('get.');
         $map = array();
@@ -145,6 +160,7 @@ class PostController extends GyListController{
                     ->addFormItem('cate_id', 'select', '所属分类', '', D("PostCate")->getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('publish_date', 'date', '发布时间', '', '')->addFormItem('author', 'text', '作者', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '正文内容', '', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片', '', '')->addFormItem('attach', 'files', '附件', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    
                     ->addFormItem('up','radio','置顶','',  DBCont::getBoolStatusList())
                     ->setFormData($info)
+                    ->setFormItemFilter($this->formItemFilter($this->content_option))
                     ->display();
         }
     }
