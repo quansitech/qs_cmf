@@ -1,17 +1,27 @@
+<style>
+    .sub_item_hidden{
+        display: none;
+    }
+</style>
 <table id="{$table_id}" class="table">
     <tr>
         <volist name="table_header" id="header">
             <th <notempty name="header.width">width="{$header.width}"</notempty>>{$header.name}</th>
         </volist>
+        <php>if(!$readonly):</php>
         <th>操作</th>
+        <php>endif;</php>
     </tr>
     <tr id="{$table_id}_add-panel">
         <td colspan="{:count($table_header)+1}" class="text-right">
             <span class="pull-left tip text-danger"></span>
+            <php>if(!$readonly):</php>
             <button type="button" class="btn btn-sm btn-default " id="{$table_id}_addField">添加新字段</button>
+            <php>endif;</php>
         </td>
     </tr>
 </table>
+
 
 <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-validator/validator.js"></script>
 <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-validator/bootstrap-validator.js"></script>
@@ -19,32 +29,37 @@
     <tr>
 
         <volist name="items" id="item">
-            <td>
-            <switch name="item.type">
-                <case value='text'>
-                    <input type="text" name="{$item.name}[]" class="form-control input-sm" value=""/>
-                </case>
-                <case value="select">
-                    <select name="{$item.name}[]" class="form-control input-sm">
+            <td class="sub_item_{$item.type}">
+                <switch name="item.type">
+                    <case value='text'>
+                        <input type="text" {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm" value=""/>
+                    </case>
+                    <case value="select">
+                        <select  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm">
                         <option value="">----请选择----</option>
                         <volist name="item.options" id="option">
                             <option value="{$key}">{$option}</option>
                         </volist>
-                    </select>
-                </case>
-                <case value="textarea">
-                    <div class="input-control">
-                        <textarea name="{$item.name}[]" class="form-control"></textarea>
-                    </div>
-                </case>
-                <default />
-            </switch>
+                        </select>
+                    </case>
+                    <case value="textarea">
+                        <div class="input-control">
+                            <textarea  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control"></textarea>
+                        </div>
+                    </case>
+                    <case value="hidden">
+                        <input type="hidden" name="{$item.name}[]" class="form-control input-sm" value="">
+                    </case>
+                    <default />
+                </switch>
             </td>
         </volist>
 
+        <php>if(!$readonly):</php>
         <td>
             <button type="button" class="btn btn-danger btn-sm" onclick="$(this).parents('tr').remove();">删除</button>
         </td>
+        <php>endif;</php>
     </tr>
 </script>
 <script type="text/javascript">
@@ -53,6 +68,7 @@
         for(var i=0;i<data.length;i++){
             switch(data[i].type){
                 case 'text':
+                case 'hidden':
                     template.find('input[name="' + data[i].name + '[]"]').val(data[i].value);
                     break;
                 case 'select':
@@ -80,13 +96,13 @@
         $('#{$table_id}_addField').click(function(){
             addTableItem{$table_id}();
         });
-        <empty name="data">
-            addTableItem{$table_id}();
-        <else />
-            <volist name="data" id="item">
+    <empty name="data">
+            // addTableItem{$table_id}();
+            <else />
+        <volist name="data" id="item">
 
             addTableItem{$table_id}(eval('{:json_encode($item)}'));
-            </volist>
+    </volist>
 
         </empty>
 
