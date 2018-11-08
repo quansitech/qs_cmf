@@ -1,0 +1,138 @@
+<style>
+    .new-red{
+        color: #f00;
+    }
+</style>
+    <section class="content" n-id = '{$nid}' style ='width:50%;float:left;'>
+        <div class='row'>
+            <div class='col-xs-9' >
+                <h4 style='text-align: center;'>更改前数据</h4>
+                <div class="box box-solid">
+
+                    <div class="box-body builder-form-box">
+                        <volist name="compare_items" id="item">
+                            <div class="form-group">
+                                <php>$value=$old_data[$item['name']];</php>
+                                <switch name="item.type">
+                                    <case value="text">
+                                        <p><strong>{$item.title}：</strong>
+                                            {$value}
+                                        </p>
+                                    </case>
+                                    <case value="ueditor">
+                                        <p><strong>{$item.title}：</strong>
+                                            {:showHtmlContent($value)}
+                                        </p>
+                                    </case>
+                                    <case value="picture">
+                                        <p><strong>{$item.title}：</strong>
+                                            <span class="img-box">
+                                                <img src="{:showFileUrl($value)}">
+                                            </span>
+                                        </p>
+                                    </case>
+                                    <case value="select">
+                                        <p><strong>{$item.title}：</strong>
+                                            {:$item['option'][$value]}
+                                        </p>
+                                    </case>
+                                    <case value="date">
+                                        <p><strong>{$item.title}：</strong>
+                                            {:date('Y-m-d',$value)}
+                                        </p>
+                                    </case>
+                                    <case value="datetime">
+                                        <p><strong>{$item.title}：</strong>
+                                            {:date('Y-m-d H:i:s',$value)}
+                                        </p>
+                                    </case>
+                                    <case value="pictures">
+                                        <php>
+                                            $ps=explode(',',$value);
+                                        </php>
+                                        <p><strong>{$item.title}：</strong>
+                                            <volist name="ps" id="p">
+                                                <span class="img-box">
+                                                    <img src="{:showFileUrl($p)}">
+                                                </span>
+                                            </volist>
+                                        </p>
+                                    </case>
+                                </switch>
+                            </div>
+                        </volist>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" n-id = '{$nid}' style ='width:50%;float:right;' >
+        <div class='row' >
+            <div class='col-xs-9'   >
+                <h4 style='text-align: center;'>更改后数据</h4>
+                <div class="box box-solid">
+                    <div class="box-body builder-form-box" >
+                        <volist name="compare_items" id="item">
+                            <div class="form-group">
+                                <php>
+                                    $value=$new_data[$item['name']];
+                                    $is_new=$value != $old_data[$item['name']];
+                                </php>
+                                <switch name="item.type">
+                                    <case value="text">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            {$value}
+                                        </p>
+                                    </case>
+                                    <case value="ueditor">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            {:showHtmlContent($value)}
+                                        </p>
+                                    </case>
+                                    <case value="picture">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            <span class="img-box">
+                                                <img src="{:showFileUrl($value)}">
+                                            </span>
+                                        </p>
+                                    </case>
+                                    <case value="select">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            {:$item['option'][$value]}
+                                        </p>
+                                    </case>
+                                    <case value="date">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            {:date('Y-m-d',$value)}
+                                        </p>
+                                    </case>
+                                    <case value="datetime">
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            {:date('Y-m-d H:i:s',$value)}
+                                        </p>
+                                    </case>
+                                    <case value="pictures">
+                                        <php>
+                                            $ps=explode(',',$value);
+                                        </php>
+                                        <p class="{:$is_new?'new-red':''}"><strong>{$item.title}：</strong>
+                                            <volist name="ps" id="p">
+                                                <span class="img-box">
+                                                    <img src="{:showFileUrl($p)}">
+                                                </span>
+                                            </volist>
+                                        </p>
+                                    </case>
+                                </switch>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </section>
+    {$extra_html}
+
