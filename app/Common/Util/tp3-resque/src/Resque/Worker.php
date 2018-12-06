@@ -163,7 +163,7 @@ class Worker
 				break;
 			}
 
-            Resque::scheduleHandle();
+            Resque::scheduleHandle($this->queues[0]);
 
 			// Attempt to find and reserve a job
 			$job = false;

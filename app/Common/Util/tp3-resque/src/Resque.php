@@ -164,8 +164,8 @@ class Resque
 
     public static function addSchedule($run_time, $class, $args = null, $desc = '', $queue = 'default'){
         $id = md5(uniqid('', true));
-        $schedule = [
-            'run_time' => $run_time,
+	    $schedule = [
+	        'run_time' => $run_time,
             'preload' => [
                 'queue' => $queue,
                 'class' => $class,
@@ -173,57 +173,60 @@ class Resque
                 'desc' => $desc
             ]
         ];
-		self::redis()->lpush('schedule', json_encode($schedule));
-		
+		self::redis()->hset($queue . '_schedule', $id, json_encode($schedule));
+
+		$args = [
+            'id' => $id,
+            'run_time' => $run_time,
+            'preload' => $schedule['preload']
+        ];
+
 		Event::trigger(
 			'addSchedule',
-			[
-				'id' => $id,
-				'run_time' => $run_time,
-				'preload' => $schedule['preload']
-			]
+			$args
 		);
         return $id;
     }
 
-    public static function scheduleHandle(){
-        $len = self::redis()->llen('schedule');
-        for($i = 0; $i < $len; $i++){
-            $s = self::redis()->lindex('schedule', $i);
+    public static function scheduleHandle($queue){
+        $keys = self::redis()->hkeys($queue. '_schedule');
+        foreach($keys as $v){
+            $s = self::redis()->hget($queue. '_schedule', $v);
             $schedule = json_decode($s, true);
             if($schedule['run_time'] <= time()){
                 $job_id = self::enqueue($schedule['preload']['queue'], $schedule['preload']['class'], $schedule['preload']['args'], true);
                 if($job_id){
-                    Event::trigger(
-                        'afterScheduleRun',
-                        [
-                            'job_id' => $job_id,
-                            'job_desc' => $schedule['preload']['desc'],
-                            'job' => $schedule['preload']['class'],
-							'job_args' => $schedule['preload']['args'],
-							'queue' => $schedule['preload']['queue']
-                        ]
-                    );
+                    $args = [
+                        'job_id' => $job_id,
+                        'job_desc' => $schedule['preload']['desc'],
+                        'job' => $schedule['preload']['class'],
+                        'job_args' => $schedule['preload']['args'],
+                        'queue' => $schedule['preload']['queue'],
+                        'schedule_id' => $v
+                    ];
+
+                    Event::trigger('afterScheduleRun', $args);
                 }
-                $delete_count = self::redis()->lrem('schedule', 0, $s);
-                $i--;
-                $len = $len - $delete_count;
+                self::removeSchedule($v, $queue);
             }
         }
     }
 
-    public static function removeSchedule($id){
-		self::redis()->hdel('schedule', $id);
-		Event::trigger(
-			'removeSchedule',
-			[
-				'id' => $id
-			]
-		);
+    public static function removeSchedule($id, $queue){
+		self::redis()->hdel($queue . '_schedule', $id);
+
+        $args = [
+            'id' => $id
+        ];
+        Event::trigger(
+            'removeSchedule',
+            $args
+        );
+
     }
 
-    public static function getAllSchedule(){
-        return self::redis()->hgetall('schedule');
+    public static function getAllSchedule($queue){
+        return self::redis()->hgetall($queue . '_schedule');
     }
 
 	/**

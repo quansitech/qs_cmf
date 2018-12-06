@@ -35,6 +35,7 @@ class AppInitBehavior extends \Think\Behavior{
                 $job = $args['job'];
                 $param = $args['job_args'];
                 $queue = $args['queue'];
+                $schedule_id = $args['schedule_id'];
 
                 $data['id'] = $job_id;
                 $data['job'] = $job;
@@ -42,7 +43,7 @@ class AppInitBehavior extends \Think\Behavior{
                 $data['description'] = $job_desc;
                 $data['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
                 $data['create_date'] = time();
-                $data['schedule'] = \Gy_Library\DBCont::YES_BOOL_STATUS;
+                $data['schedule'] = $schedule_id;
                 $data['queue'] = $queue;
 
                 D('Queue')->add($data);
