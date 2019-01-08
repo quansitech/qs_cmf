@@ -235,9 +235,11 @@
                   var div_add1 = document.createElement('div');
                   div_add1.id = 'ossuploader_upload1_' + guid();
                   setting.browse_button = div_add1.id;
-                  setting.multi_selection = false;
+                  if(setting.multi_selection) setting.uploader_multi_selection = false;
                   div.appendChild(div_add1);
               }
+
+              if(typeof setting.uploader_multi_selection === 'undefined') setting.uploader_multi_selection = setting.multi_selection;
   
               var i = document.createElement('i');
               var p = document.createElement('p');
@@ -269,7 +271,7 @@
               var pluploaduploader = new plupload.Uploader({
                  runtimes : 'html5,flash,silverlight,html4',
                  browse_button : setting.browse_button,
-                 multi_selection: setting.multi_selection,
+                 multi_selection: setting.uploader_multi_selection,
                  container: document.getElementById(div.id),
                  flash_swf_url : '/Public/libs/plupload-2.1.2/js/Moxie.swf',
                  silverlight_xap_url : '/Public/libs/plupload-2.1.2/js/Moxie.xap',
