@@ -31,6 +31,7 @@
                                 $.bs_messagebox('错误', data.info, 'ok');
                             }else{
                                 var new_img = '<span class="img-box"><img class="img" src="' + data.Data.url + '" data-id="'+data.Data.file_id+'"><i class="fa fa-times-circle remove-picture"></i></span>';
+                                $('#[type]{$group_k}_preview_{$[type]k}').find('.img-box').remove();
                                 $('#[type]{$group_k}_preview_{$[type]k}').append(new_img);
                                 $('#[type]{$group_k}_preview_{$[type]k} input').attr('value', data.Data.file_id);
                             }
