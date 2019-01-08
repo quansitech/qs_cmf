@@ -357,24 +357,24 @@
                              setting.uploadCompleted();
                          }
                      },
-  
+
                      Error: function(up, err) {
-                         if (err.code == -600) {
-                             alert("选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小");
-                         }
-                         else if (err.code == -601) {
-                             alert("选择的文件后缀不对,可以根据应用情况，在upload.js进行设置可允许的上传文件类型");
-                         }
-                         else if (err.code == -602) {
-                             alert("这个文件已经上传过一遍了");
-                         }
-                         else if(err.code == -200){
-                             alert('文件太大了');
-                         }
-                         else
-                         {
+                         // if (err.code == -600) {
+                         //     alert("选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小");
+                         // }
+                         // else if (err.code == -601) {
+                         //     alert("选择的文件后缀不对,可以根据应用情况，在upload.js进行设置可允许的上传文件类型");
+                         // }
+                         // else if (err.code == -602) {
+                         //     alert("这个文件已经上传过一遍了");
+                         // }
+                         // else if(err.code == -200){
+                         //     alert('文件太大了');
+                         // }
+                         // else
+                         // {
                              alert(err.response);
-                         }
+                         // }
                      }
                  }
              });

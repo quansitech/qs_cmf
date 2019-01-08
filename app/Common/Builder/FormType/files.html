@@ -34,14 +34,14 @@
                                 toastr.remove();
                                 $.bs_messagebox('错误', data.info, 'ok');
                             }else{
-                                var new_file = '<li class="list-group-item file-item" data-id="'+data.Data.file_id+'"><i class="fa fa-file"></i> '
-                                               +data.Data.title+' <i class="fa fa-times-circle remove-file"></i></li>'
+                                var new_file = '<li class="list-group-item file-item" data-id="'+data.file_id+'"><i class="fa fa-file"></i> '
+                                               +data.title+' <i class="fa fa-times-circle remove-file"></i></li>'
                                 $('#[type]{$group_k}_preview_{$[type]k} .list-group').append(new_file);
                                 var input = $('#[type]{$group_k}_preview_{$[type]k} input');
                                 if(input.val() != ''){
-                                    input.val(input.val() + ',' + data.Data.file_id);
+                                    input.val(input.val() + ',' + data.file_id);
                                 }else{
-                                    input.val(data.Data.file_id);
+                                    input.val(data.file_id);
                                 }
                             }
                         }
