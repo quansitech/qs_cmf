@@ -79,6 +79,19 @@
             -webkit-overflow-scrolling: touch;
         }
     }
+    .help-tip{
+        text-align: center;
+        background-color: #BCDBEA;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        cursor: default;
+        display: inline-block;
+        color: #fff;
+
+    }
 </style>
 <link href="__PUBLIC__/libs/tableLock/TableLock.css" rel="stylesheet" media="screen" />
 <script src="__PUBLIC__/libs/tableLock/TableLock.js"></script>
@@ -168,7 +181,12 @@ jQuery(document).ready(function($){
                                 <tr>
                             <eq name="show_check_box" value="true"><th><input class="check-all "  type="checkbox" ></th></eq>
                                     <volist name="table_column_list" id="column">
-                                        <th>{$column.title|htmlspecialchars}</th>
+                                        <th>
+                                            {$column.title|htmlspecialchars}
+                                            <notempty name="column.tip">
+                                                <span class="help-tip" data-toggle="tooltip" data-placement="bottom" title="{$column['tip']}">?</span>
+                                            </notempty>
+                                        </th>
                                     </volist>
                                 </tr>
                             </thead>
