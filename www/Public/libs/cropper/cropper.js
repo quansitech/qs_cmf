@@ -2088,4 +2088,5 @@
     return this;
   };
 
+  window.Cropper = Cropper;
 });
