@@ -67,7 +67,7 @@ class UploadController extends \Think\Controller{
             if(!$data['file']){
                 $this->error('文件获取失败,请重新上传');
             }
-            
+            C("TOKEN_ON", false);
             $id = $file_pic->createAdd($data);
             if ($id === false) {
                 $this->error($file_pic->getError());
