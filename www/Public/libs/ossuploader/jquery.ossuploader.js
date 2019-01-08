@@ -328,23 +328,24 @@
                          if (info.status == 200)
                          {
                              var response = JSON.parse(info.response);
+                             console.log(response);
                              if(response.err_msg){
                                  alert(response.err_msg);
                              }
                              else{
                                  if(!setting.multi_selection){
-                                     $(clone_o).val(response.Data.file_id);
+                                     $(clone_o).val(response.file_id);
                                  }
                                  else{
                                      var file_id = $(clone_o).val();
                                      if(file_id){
-                                         $(clone_o).val(file_id + ',' + response.Data.file_id);
+                                         $(clone_o).val(file_id + ',' + response.file_id);
                                      }
                                      else{
-                                         $(clone_o).val(response.Data.file_id);
+                                         $(clone_o).val(response.file_id);
                                      }
                                  }
-                                 $('#' + file.id).attr('data-fileid', response.Data.file_id);
+                                 $('#' + file.id).attr('data-fileid', response.file_id);
                              }
                          }
                          else

@@ -82,8 +82,8 @@ class UploadController extends \Think\Controller{
                     'Status' => 1,
                     'info' => 'success',
                     'Time_stamp' => time(),
-                    'Data' => $data
                 );
+                $ajax = array_merge($ajax, $data);
                 $this->ajaxReturn($ajax);
             }
         }
