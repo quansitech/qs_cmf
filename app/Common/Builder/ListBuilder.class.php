@@ -313,13 +313,14 @@ class ListBuilder extends Controller {
     /**
      * 加一个表格标题字段
      */
-    public function addTableColumn($name, $title, $type = null, $value = '', $editable = false) {
+    public function addTableColumn($name, $title, $type = null, $value = '', $editable = false, $tip = '') {
         $column = array(
             'name' => $name,
             'title' => $title,
             'editable' => $editable,
             'type' => $type,
-            'value' => $value
+            'value' => $value,
+            'tip' => $tip
         );
         $this->_table_column_list[] = $column;
         return $this;
