@@ -32,10 +32,10 @@
                                 toastr.remove();
                                 $.bs_messagebox('错误', data.info, 'ok');
                             }else{
-                                var new_file = '<li class="list-group-item file-item" data-id="'+data.Data.file_id+'"><i class="fa fa-file"></i> '
-                                               +data.Data.title+' <i class="fa fa-times-circle remove-file"></i></li>'
+                                var new_file = '<li class="list-group-item file-item" data-id="'+data.file_id+'"><i class="fa fa-file"></i> '
+                                               +data.title+' <i class="fa fa-times-circle remove-file"></i></li>'
                                 $('#[type]{$group_k}_preview_{$[type]k} .list-group').html(new_file);
-                                $('#[type]{$group_k}_preview_{$[type]k} input').attr('value', data.Data.file_id);
+                                $('#[type]{$group_k}_preview_{$[type]k} input').attr('value', data.file_id);
                             }
                         }
                     });
