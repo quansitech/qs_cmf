@@ -1,0 +1,17 @@
+<case value="select_city">
+    <div class="form-group">
+        <div class="city-select">
+        <span>{$item.title}</span>
+            <input type="hidden" id="hidden_position{$item.name}" class="form-control search-input" name="{$item.name}" value="{:I('get.' . $item['name'])}">
+        </div>
+    </div>
+    <script src="__PUBLIC__/libs/addrSelect/selectAddr.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('#hidden_position{$item.name}').selectAddr({
+                url: ['__ROOT__/api/area/getProvince.html','__ROOT__/api/area/getCityByProvince.html','__ROOT__/api/area/getDistrictByCity.html']
+            });
+            $('select').css('padding','6px 12px');
+        });
+    </script>
+</case>
