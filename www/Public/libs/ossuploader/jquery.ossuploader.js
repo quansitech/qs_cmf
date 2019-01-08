@@ -328,7 +328,6 @@
                          if (info.status == 200)
                          {
                              var response = JSON.parse(info.response);
-                             console.log(response);
                              if(response.err_msg){
                                  alert(response.err_msg);
                              }
