@@ -16,15 +16,16 @@
         <td colspan="{:count($table_header)+1}" class="text-right">
             <span class="pull-left tip text-danger"></span>
             <php>if(!$readonly):</php>
-            <button type="button" class="btn btn-sm btn-default " id="{$table_id}_addField">添加新字段</button>
+            <button type="button" class="btn btn-sm btn-default " id="{$table_id}_addField">{$set_add_btn?$set_add_btn:'添加新字段'}</button>
             <php>endif;</php>
         </td>
     </tr>
 </table>
 
-
 <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-validator/validator.js"></script>
 <script type="text/javascript" src="__PUBLIC__/libs/bootstrap-validator/bootstrap-validator.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/libs/select2/css/select2.min.css">
+<script type="text/javascript" src="__PUBLIC__/libs/select2/js/select2.full.min.js"></script>
 <script id="{$table_id}_field" type="text/template">
     <tr>
 
@@ -32,19 +33,31 @@
             <td class="sub_item_{$item.type}">
                 <switch name="item.type">
                     <case value='text'>
-                        <input type="text" {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm" value=""/>
+                        <input type="text" {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm {$item.extra_class}" value="" {$item.extra_attr}/>
+                    </case>
+                    <case value='hidden'>
+                        <input type="hidden" {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm {$item.extra_class}" value="" {$item.extra_attr}/>
                     </case>
                     <case value="select">
-                        <select  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm">
+                        <select  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm {$item.extra_class}" {$item.extra_attr}>
                         <option value="">----请选择----</option>
                         <volist name="item.options" id="option">
                             <option value="{$key}">{$option}</option>
                         </volist>
                         </select>
                     </case>
+                    <case value="select2">
+                        <select  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control input-sm select-two {$item.extra_class}" {$item.extra_attr}>
+                            <option value="">----请选择----</option>
+                            <volist name="item.options" id="option">
+                                <option value="{$key}">{$option}</option>
+                            </volist>
+                        </select>
+                        <php>define('select2',true);</php>
+                    </case>
                     <case value="textarea">
                         <div class="input-control">
-                            <textarea  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control"></textarea>
+                            <textarea  {:$item['readonly']?'readonly ':''}name="{$item.name}[]" class="form-control {$item.extra_class}" {$item.extra_attr}></textarea>
                         </div>
                     </case>
                     <case value="hidden">
@@ -71,6 +84,8 @@
                 case 'hidden':
                     template.find('input[name="' + data[i].name + '[]"]').val(data[i].value);
                     break;
+                case 'select2':
+                    template.find('.select-two').val(data[i].value);
                 case 'select':
                 case 'textarea':
                     template.find(data[i].type + '[name="' + data[i].name + '[]"]').val(data[i].value);
@@ -89,6 +104,7 @@
             var o = render_data{$table_id}(data);
             o.insertBefore('#{$table_id}_add-panel');
         }
+        <defined name="select2">$('.select-two').select2();</defined>
     }
 
     jQuery(document).ready(function($){
@@ -96,16 +112,14 @@
         $('#{$table_id}_addField').click(function(){
             addTableItem{$table_id}();
         });
-    <empty name="data">
-            // addTableItem{$table_id}();
-            <else />
-        <volist name="data" id="item">
-
-            addTableItem{$table_id}(eval('{:json_encode($item)}'));
-    </volist>
+        <empty name="data">
+            addTableItem{$table_id}();
+        <else />
+            <volist name="data" id="item">
+                addTableItem{$table_id}(eval('{:json_encode($item)}'));
+            </volist>
 
         </empty>
-
 
     });
 </script>
