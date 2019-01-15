@@ -12,6 +12,7 @@ class SubTableBuilder{
     private $_unique_id;
     private $_data;
     private $_readonly;
+    private $_set_add_btn;
 
     public function __construct($readonly=false){
         $this->_template = APP_PATH.'Common/Builder/subTableBuilder.html';
@@ -26,17 +27,24 @@ class SubTableBuilder{
         return $this;
     }
 
-    public function addFormItem($name, $type, $options = [],$readonly=false) {
+    public function addFormItem($name, $type, $options = [],$readonly=false,$extra_class='',$extra_attr='') {
         $item['name'] = $name;
         $item['type'] = $type;
         $item['options'] = $options;
         $item['readonly'] = $readonly;
+        $item['extra_class'] = $extra_class;
+        $item['extra_attr'] = $extra_attr;
         $this->_items[] = $item;
         return $this;
     }
 
     public function setData($data){
         $this->_data = $data;
+        return $this;
+    }
+
+    public function setAddBtn($set_add_btn){
+        $this->_set_add_btn = $set_add_btn;
         return $this;
     }
 
@@ -47,6 +55,7 @@ class SubTableBuilder{
         $view->assign('table_id', $this->_unique_id);
         $view->assign('data', $this->_data);
         $view->assign('readonly', $this->_readonly);
+        $view->assign('set_add_btn', $this->_set_add_btn);
 
         return $view->fetch($this->_template);
     }
