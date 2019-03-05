@@ -15,8 +15,8 @@ String.prototype.ltrim=function(char){
     return this.replace(/^\s+|\s+$/g, '');
 }
 String.prototype.rtrim=function(char){
-   //return this.replace(/(\s*$)/g,"");
-   if(char){
+    //return this.replace(/(\s*$)/g,"");
+    if(char){
         return this.replace(new RegExp('\\'+char+'+$', 'g'), '');
     }
     return this.replace(/^\s+|\s+$/g, '');
@@ -25,165 +25,165 @@ String.prototype.rtrim=function(char){
 
 function Guid(g){
 
-     var arr = new Array(); //存放32位数值的数组
+    var arr = new Array(); //存放32位数值的数组
 
-    
 
-     if (typeof(g) == "string"){ //如果构造函数的参数为字符串
 
-         InitByString(arr, g);
+    if (typeof(g) == "string"){ //如果构造函数的参数为字符串
 
-     }
+        InitByString(arr, g);
 
-     else{
+    }
 
-         InitByOther(arr);
+    else{
 
-     }
+        InitByOther(arr);
 
-     //返回一个值，该值指示 Guid 的两个实例是否表示同一个值。
+    }
 
-     this.Equals = function(o){
+    //返回一个值，该值指示 Guid 的两个实例是否表示同一个值。
 
-         if (o && o.IsGuid){
+    this.Equals = function(o){
 
-              return this.ToString() == o.ToString();
+        if (o && o.IsGuid){
 
-         }
+            return this.ToString() == o.ToString();
 
-         else{
+        }
 
-              return false;
+        else{
 
-         }
+            return false;
 
-     }
+        }
 
-     //Guid对象的标记
+    }
 
-     this.IsGuid = function(){}
+    //Guid对象的标记
 
-     //返回 Guid 类的此实例值的 String 表示形式。
+    this.IsGuid = function(){}
 
-     this.ToString = function(format){
+    //返回 Guid 类的此实例值的 String 表示形式。
 
-         if(typeof(format) == "string"){
+    this.ToString = function(format){
 
-              if (format == "N" || format == "D" || format == "B" || format == "P"){
+        if(typeof(format) == "string"){
 
-                   return ToStringWithFormat(arr, format);
+            if (format == "N" || format == "D" || format == "B" || format == "P"){
 
-              }
+                return ToStringWithFormat(arr, format);
 
-              else{
+            }
 
-                   return ToStringWithFormat(arr, "D");
+            else{
 
-              }
+                return ToStringWithFormat(arr, "D");
 
-         }
+            }
 
-         else{
+        }
 
-              return ToStringWithFormat(arr, "D");
+        else{
 
-         }
+            return ToStringWithFormat(arr, "D");
 
-     }
+        }
 
-     //由字符串加载
+    }
 
-     function InitByString(arr, g){
+    //由字符串加载
 
-         g = g.replace(/\{|\(|\)|\}|-/g, "");
+    function InitByString(arr, g){
 
-         g = g.toLowerCase();
+        g = g.replace(/\{|\(|\)|\}|-/g, "");
 
-         if (g.length != 32 || g.search(/[^0-9,a-f]/i) != -1){
+        g = g.toLowerCase();
 
-              InitByOther(arr);
+        if (g.length != 32 || g.search(/[^0-9,a-f]/i) != -1){
 
-         }
+            InitByOther(arr);
 
-         else{
+        }
 
-              for (var i = 0; i < g.length; i++){
+        else{
 
-                   arr.push(g[i]);
+            for (var i = 0; i < g.length; i++){
 
-              }
+                arr.push(g[i]);
 
-         }
+            }
 
-     }
+        }
 
-     //由其他类型加载
+    }
 
-     function InitByOther(arr){
+    //由其他类型加载
 
-         var i = 32;
+    function InitByOther(arr){
 
-         while(i--){
+        var i = 32;
 
-              arr.push("0");
+        while(i--){
 
-         }
+            arr.push("0");
 
-     }
+        }
 
-     /*
+    }
 
-     根据所提供的格式说明符，返回此 Guid 实例值的 String 表示形式。
+    /*
 
-     N  32 位： xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    根据所提供的格式说明符，返回此 Guid 实例值的 String 表示形式。
 
-     D  由连字符分隔的 32 位数字 xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    N  32 位： xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-     B  括在大括号中、由连字符分隔的 32 位数字：{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
+    D  由连字符分隔的 32 位数字 xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
-     P  括在圆括号中、由连字符分隔的 32 位数字：(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+    B  括在大括号中、由连字符分隔的 32 位数字：{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
 
-     */
+    P  括在圆括号中、由连字符分隔的 32 位数字：(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
 
-     function ToStringWithFormat(arr, format){
+    */
 
-         switch(format){
+    function ToStringWithFormat(arr, format){
 
-              case "N":
+        switch(format){
 
-                   return arr.toString().replace(/,/g, "");
+            case "N":
 
-              case "D":
+                return arr.toString().replace(/,/g, "");
 
-                   var str = arr.slice(0, 8) + "-" + arr.slice(8, 12) + "-" + arr.slice(12, 16) + "-" + arr.slice(16, 20) + "-" + arr.slice(20,32);
+            case "D":
 
-                   str = str.replace(/,/g, "");
+                var str = arr.slice(0, 8) + "-" + arr.slice(8, 12) + "-" + arr.slice(12, 16) + "-" + arr.slice(16, 20) + "-" + arr.slice(20,32);
 
-                   return str;
+                str = str.replace(/,/g, "");
 
-              case "B":
+                return str;
 
-                   var str = ToStringWithFormat(arr, "D");
+            case "B":
 
-                   str = "{" + str + "}";
+                var str = ToStringWithFormat(arr, "D");
 
-                   return str;
+                str = "{" + str + "}";
 
-              case "P":
+                return str;
 
-                   var str = ToStringWithFormat(arr, "D");
+            case "P":
 
-                   str = "(" + str + ")";
+                var str = ToStringWithFormat(arr, "D");
 
-                   return str;
+                str = "(" + str + ")";
 
-              default:
+                return str;
 
-                   return new Guid();
+            default:
 
-         }
+                return new Guid();
 
-     }
+        }
+
+    }
 
 }
 
@@ -195,17 +195,17 @@ Guid.Empty = new Guid();
 
 Guid.NewGuid = function(){
 
-     var g = "";
+    var g = "";
 
-     var i = 32;
+    var i = 32;
 
-     while(i--){
+    while(i--){
 
-         g += Math.floor(Math.random()*16.0).toString(16);
+        g += Math.floor(Math.random()*16.0).toString(16);
 
-     }
+    }
 
-     return new Guid(g);
+    return new Guid(g);
 
 }
 
@@ -235,7 +235,7 @@ $(function() {
     //         }
     //     }
     // }
-    
+
     //Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
@@ -262,7 +262,7 @@ $(function() {
             $('#imgModal').modal('show');
         }
     });
-    
+
     //ajax post submit请求
     $('body').delegate('.ajax-post', 'click', function() {
         var target, query, form;
@@ -279,6 +279,7 @@ $(function() {
                 return false;
             } else if (form.get(0).nodeName == 'FORM') {
                 if ($(this).hasClass('confirm')) {
+
                     if (!confirm('确认要执行该操作吗?')) {
                         return false;
                     }
@@ -296,8 +297,13 @@ $(function() {
                     }
                 });
                 if (nead_confirm && $(this).hasClass('confirm')) {
+<<<<<<< HEAD
                     var confirm_msg = $(this).attr('confirm-msg');
                     if (!confirm(confirm_msg ? confirm_msg : '确认要执行该操作吗')) {
+=======
+                    var confirmMsg = $(this).attr('confirm-msg');
+                    if (!confirm(confirmMsg ? confirmMsg : '确认要执行该操作吗?')) {
+>>>>>>> 994d564765002e66b25861d7a906cb394b686c66
                         return false;
                     }
                 }
@@ -310,7 +316,7 @@ $(function() {
                 }
                 query = form.find('input,select,textarea').serialize();
             }
-            
+
             var cus_query;
             cus_query = $(this).attr('query');
             if(cus_query){
@@ -351,7 +357,7 @@ $(function() {
         }
         return false;
     });
-    
+
     //ajax get请求
     $('body').delegate('.ajax-get', 'click', function() {
         var target;
@@ -388,8 +394,8 @@ $(function() {
                     if (data.login == 1) {
                         $('#login-modal').modal(); //弹出登陆框
                     } else {
-                         toastr.remove();
-                         $.bs_messagebox('错误', data.info, 'ok');
+                        toastr.remove();
+                        $.bs_messagebox('错误', data.info, 'ok');
                     }
                     setTimeout(function() {
                         $(that).removeClass('disabled').prop('disabled', false);
@@ -861,7 +867,7 @@ function fix_sidebar() {
                 function r(d) {
                     if (s) {
                         d = d ||
-                                window.event;
+                            window.event;
                         var c = 0;
                         d.wheelDelta && (c = -d.wheelDelta / 120);
                         d.detail && (c = d.detail / 3);
@@ -906,7 +912,7 @@ function fix_sidebar() {
                 var s, x, y, A, z, u, l, B, D = 30, k = !1, b = f(this);
                 if (b.parent().hasClass(a.wrapperClass)) {
                     var n = b.scrollTop(),
-                            c = b.parent().find("." + a.barClass), g = b.parent().find("." + a.railClass);
+                        c = b.parent().find("." + a.barClass), g = b.parent().find("." + a.railClass);
                     w();
                     if (f.isPlainObject(h)) {
                         if ("height"in h && "auto" == h.height) {
@@ -934,7 +940,7 @@ function fix_sidebar() {
                         overflow: "hidden", width: a.width, height: a.height});
                     b.css({overflow: "hidden", width: a.width, height: a.height});
                     var g = f("<div></div>").addClass(a.railClass).css({width: a.size, height: "100%", position: "absolute", top: 0, display: a.alwaysVisible && a.railVisible ? "block" : "none", "border-radius": a.railBorderRadius, background: a.railColor, opacity: a.railOpacity, zIndex: 90}), c = f("<div></div>").addClass(a.barClass).css({background: a.color, width: a.size, position: "absolute", top: 0, opacity: a.opacity, display: a.alwaysVisible ?
-                                "block" : "none", "border-radius": a.borderRadius, BorderRadius: a.borderRadius, MozBorderRadius: a.borderRadius, WebkitBorderRadius: a.borderRadius, zIndex: 99}), q = "right" == a.position ? {right: a.distance} : {left: a.distance};
+                            "block" : "none", "border-radius": a.borderRadius, BorderRadius: a.borderRadius, MozBorderRadius: a.borderRadius, WebkitBorderRadius: a.borderRadius, zIndex: 99}), q = "right" == a.position ? {right: a.distance} : {left: a.distance};
                     g.css(q);
                     c.css(q);
                     b.wrap(n);
@@ -985,7 +991,7 @@ function fix_sidebar() {
                     b.bind("touchmove", function(b) {
                         k || b.originalEvent.preventDefault();
                         b.originalEvent.touches.length &&
-                                (m((z - b.originalEvent.touches[0].pageY) / a.touchScrollStep, !0), z = b.originalEvent.touches[0].pageY)
+                        (m((z - b.originalEvent.touches[0].pageY) / a.touchScrollStep, !0), z = b.originalEvent.touches[0].pageY)
                     });
                     w();
                     "bottom" === a.start ? (c.css({top: b.outerHeight() - c.outerHeight()}), m(0, !0)) : "top" !== a.start && (m(f(a.start).position().top, null, !0), a.alwaysVisible || c.hide());
