@@ -296,7 +296,8 @@ $(function() {
                     }
                 });
                 if (nead_confirm && $(this).hasClass('confirm')) {
-                    if (!confirm('确认要执行该操作吗?')) {
+                    var confirm_msg = $(this).attr('confirm-msg');
+                    if (!confirm(confirm_msg ? confirm_msg : '确认要执行该操作吗')) {
                         return false;
                     }
                 }
