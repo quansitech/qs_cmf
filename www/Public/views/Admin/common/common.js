@@ -297,13 +297,8 @@ $(function() {
                     }
                 });
                 if (nead_confirm && $(this).hasClass('confirm')) {
-<<<<<<< HEAD
-                    var confirm_msg = $(this).attr('confirm-msg');
-                    if (!confirm(confirm_msg ? confirm_msg : '确认要执行该操作吗')) {
-=======
                     var confirmMsg = $(this).attr('confirm-msg');
                     if (!confirm(confirmMsg ? confirmMsg : '确认要执行该操作吗?')) {
->>>>>>> 994d564765002e66b25861d7a906cb394b686c66
                         return false;
                     }
                 }
