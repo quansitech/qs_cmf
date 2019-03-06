@@ -279,8 +279,8 @@ $(function() {
                 return false;
             } else if (form.get(0).nodeName == 'FORM') {
                 if ($(this).hasClass('confirm')) {
-
-                    if (!confirm('确认要执行该操作吗?')) {
+                    var confirmMsg = $(this).attr('confirm-msg');
+                    if (!confirm(confirmMsg ? confirmMsg : '确认要执行该操作吗?')) {
                         return false;
                     }
                 }
@@ -305,7 +305,8 @@ $(function() {
                 query = form.serialize();
             } else {
                 if ($(this).hasClass('confirm')) {
-                    if (!confirm('确认要执行该操作吗?')) {
+                    var confirmMsg = $(this).attr('confirm-msg');
+                    if (!confirm(confirmMsg ? confirmMsg : '确认要执行该操作吗?')) {
                         return false;
                     }
                 }
@@ -358,7 +359,8 @@ $(function() {
         var target;
         var that = this;
         if ($(this).hasClass('confirm')) {
-            if (!confirm('确认要执行该操作吗?')) {
+            var confirmMsg = $(this).attr('confirm-msg');
+            if (!confirm(confirmMsg ? confirmMsg : '确认要执行该操作吗?')) {
                 return false;
             }
         }
