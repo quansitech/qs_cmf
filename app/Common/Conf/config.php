@@ -9,6 +9,8 @@ $_config = array(
 
     'UPLOAD_FILE_SIZE' => 5,
 
+    'JS_ERROR_LOG' => true,
+
     'VAR_PATHINFO' => 'baobao_',
 
     'ENCRYPT_KEY' => 'csh',
@@ -41,10 +43,10 @@ $_config = array(
 
     //数据库连接配置
     'DB_TYPE'               =>  'mysql',     // 数据库类型
-    'DB_HOST'               =>  '127.0.0.1', // 服务器地址
+    'DB_HOST'               =>  'db', // 服务器地址
     'DB_NAME'               =>  'qs_cmf',          // 数据库名
     'DB_USER'               =>  'root',      // 用户名
-    'DB_PWD'                =>  'Trans2201!&*',          // 密码
+    'DB_PWD'                =>  'root',          // 密码
     'DB_PORT'               =>  '3306',        // 端口
     'DB_PREFIX'             =>  'qs_',    // 数据库表前缀
     'DB_FIELDTYPE_CHECK'    =>  false,       // 是否进行字段类型检查
