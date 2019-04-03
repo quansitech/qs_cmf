@@ -27,6 +27,7 @@ class Think {
      * @return void
      */
     static public function start() {
+
       // 注册AUTOLOAD方法
       spl_autoload_register('Think\Think::autoload');      
       // 设定错误和异常处理

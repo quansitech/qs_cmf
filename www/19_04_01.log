@@ -1,0 +1,30 @@
+[ 2019-04-01T15:36:51+08:00 ] 127.0.0.1 /admin/Public/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000029s ]
+NOTIC: [2] Use of undefined constant in - assumed 'in' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/core/Common/functions.php 第 595 行.
+SQL: SHOW COLUMNS FROM `qs_hooks` [ RunTime:0.0012s ]
+NOTIC: [8] Undefined index: cus_filter /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 330 行.
+NOTIC: [2] Use of undefined constant MODULE_NAME - assumed 'MODULE_NAME' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+NOTIC: [2] in_array() expects parameter 2 to be array, null given /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+SQL: SELECT * FROM `qs_hooks` WHERE `status` = 1  [ RunTime:0.0007s ]
+NOTIC: [2] Use of undefined constant in - assumed 'in' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/core/Common/functions.php 第 595 行.
+NOTIC: [2] Use of undefined constant in - assumed 'in' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/core/Common/functions.php 第 595 行.
+SQL: SHOW COLUMNS FROM `qs_addons` [ RunTime:0.0006s ]
+NOTIC: [8] Undefined index: cus_filter /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 330 行.
+NOTIC: [2] Use of undefined constant MODULE_NAME - assumed 'MODULE_NAME' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+NOTIC: [2] in_array() expects parameter 2 to be array, null given /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+SQL: SELECT * FROM `qs_addons` WHERE `status` = 1  [ RunTime:0.0004s ]
+NOTIC: [2] Invalid argument supplied for foreach() /var/www/qs_cmf/app/Common/Common/function.php 第 709 行.
+NOTIC: [8] Undefined index: cus_filter /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 330 行.
+NOTIC: [2] Use of undefined constant MODULE_NAME - assumed 'MODULE_NAME' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+NOTIC: [2] in_array() expects parameter 2 to be array, null given /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+SQL: SELECT * FROM `qs_addons` WHERE `status` = 1  [ RunTime:0.0004s ]
+NOTIC: [2] Invalid argument supplied for foreach() /var/www/qs_cmf/app/Common/Common/function.php 第 709 行.
+NOTIC: [8] Undefined index: cus_filter /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 330 行.
+NOTIC: [2] Use of undefined constant MODULE_NAME - assumed 'MODULE_NAME' (this will throw an Error in a future version of PHP) /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+NOTIC: [2] in_array() expects parameter 2 to be array, null given /var/www/qs_cmf/app/Gy_Library/GyModel.class.php 第 334 行.
+SQL: SELECT * FROM `qs_addons` WHERE `status` = 1  [ RunTime:0.0014s ]
+NOTIC: [2] Invalid argument supplied for foreach() /var/www/qs_cmf/app/Common/Common/function.php 第 709 行.
+INFO: Run Behaviors\InitHookBehavior [ RunTime:0.079818s ]
+NOTIC: [8] Undefined index: HTTP_X_FORWARDED_PROTO /var/www/qs_cmf/app/Behaviors/AppInitBehavior.class.php 第 28 行.
+

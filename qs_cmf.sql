@@ -33,7 +33,7 @@ CREATE TABLE `qs_access` (
   `node_id` smallint(6) UNSIGNED NOT NULL,
   `level` tinyint(1) NOT NULL,
   `module` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -52,7 +52,7 @@ CREATE TABLE `qs_addons` (
   `version` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '版本号',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '安装时间',
   `has_adminlist` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否有后台列表'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='插件表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  COMMENT='插件表';
 
 -- --------------------------------------------------------
 
@@ -68,7 +68,7 @@ CREATE TABLE `qs_area` (
   `ename` varchar(100) NOT NULL,
   `pinyin` varchar(100) NOT NULL,
   `level` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_area`
@@ -3509,7 +3509,7 @@ CREATE TABLE `qs_coder_log` (
   `content` text NOT NULL,
   `create_date` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_coder_log`
@@ -3540,7 +3540,7 @@ CREATE TABLE `qs_config` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `value` text NOT NULL COMMENT '配置值',
   `sort` smallint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '排序'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_config`
@@ -3574,7 +3574,7 @@ CREATE TABLE `qs_file_pic` (
   `security` tinyint(4) NOT NULL DEFAULT '0',
   `owner` int(11) NOT NULL DEFAULT '0',
   `upload_date` int(11) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 触发器 `qs_file_pic`
@@ -3608,7 +3608,7 @@ CREATE TABLE `qs_hooks` (
   `desc` varchar(500) NOT NULL,
   `update_date` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_hooks`
@@ -3655,7 +3655,7 @@ CREATE TABLE `qs_menu` (
   `pid` int(11) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL,
   `module` varchar(100) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_menu`
@@ -3684,7 +3684,7 @@ CREATE TABLE `qs_node` (
   `menu_id` int(11) NOT NULL DEFAULT '0',
   `icon` varchar(50) NOT NULL DEFAULT '',
   `url` varchar(500) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_node`
@@ -3796,7 +3796,7 @@ CREATE TABLE `qs_post` (
   `status` tinyint(4) NOT NULL COMMENT '状态',
   `english_name` varchar(50) NOT NULL,
   `up` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3814,7 +3814,7 @@ CREATE TABLE `qs_post_cate` (
   `url` varchar(500) NOT NULL COMMENT 'url',
   `content` text NOT NULL COMMENT '分类详情',
   `status` tinyint(4) NOT NULL COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3831,7 +3831,7 @@ CREATE TABLE `qs_queue` (
   `create_date` int(11) NOT NULL,
   `schedule` varchar(50) NOT NULL DEFAULT '',
   `queue` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3845,7 +3845,7 @@ CREATE TABLE `qs_role` (
   `pid` smallint(6) DEFAULT '0',
   `status` tinyint(1) UNSIGNED DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3856,7 +3856,7 @@ CREATE TABLE `qs_role` (
 CREATE TABLE `qs_role_user` (
   `role_id` mediumint(9) UNSIGNED DEFAULT NULL,
   `user_id` char(32) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3871,7 +3871,7 @@ CREATE TABLE `qs_schedule` (
   `preload` varchar(2000) NOT NULL DEFAULT '',
   `delete_status` tinyint(4) NOT NULL DEFAULT '0',
   `create_date` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3888,7 +3888,7 @@ CREATE TABLE `qs_syslogs` (
   `userid` varchar(64) DEFAULT '',
   `userip` varchar(40) NOT NULL,
   `create_time` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_syslogs`
@@ -3915,7 +3915,7 @@ CREATE TABLE `qs_user` (
   `status` tinyint(4) NOT NULL,
   `last_login_time` int(11) NOT NULL DEFAULT '0',
   `last_login_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_user`

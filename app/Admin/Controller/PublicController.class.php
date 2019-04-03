@@ -38,6 +38,7 @@ class PublicController extends Controller {
         if(!empty($_POST)){
 
             $r = $this->adminLogin(I('post.uid'), I('post.pwd'));
+
             if($r === false){
                 $this->error($this->getError(), U('Public/login'), array('verify_show'=> isShowVerify()));
             }
