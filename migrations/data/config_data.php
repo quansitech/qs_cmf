@@ -1,4 +1,9 @@
-<?php return array (
+<?php
+$group_value = <<<EOT
+1:基本
+2:系统
+EOT;
+return array (
   0 => 
   array (
     'id' => '2',
@@ -11,7 +16,7 @@
     'create_time' => '1379228036',
     'update_time' => '1487173314',
     'status' => '1',
-    'value' => '1:基本\\r\\n2:系统',
+    'value' => $group_value,
     'sort' => '15',
   ),
   1 => 

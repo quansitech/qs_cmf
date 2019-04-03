@@ -248,12 +248,12 @@ class InitDatabase extends Migration
             'nick_name' => 'admin',
             'salt' => 665453,
             'pwd' => 'f801370d75ee676156ed8c49bcaea9e7',
-            'email' => 'admin@quansitech.com',
-            'telephone' => '15360550176',
+            'email' => 'admin@admin.com',
+            'telephone' => '15300000000',
             'register_date' => 1464594432,
             'status' => 1,
             'last_login_time' => 1552356067,
-            'last_login_ip' => '10.0.2.2',
+            'last_login_ip' => '10.0.1.1',
         ];
         DB::table('qs_user')->insert($user);
     }
