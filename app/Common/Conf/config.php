@@ -24,6 +24,10 @@ $_config = array(
     'ALIOSS_ACCESS_KEY_ID' => '',
     'ALIOSS_ACCESS_KEY_SECRET' => '',
 
+    'ELASTICSEARCH_HOSTS' => [
+//      '10.0.75.1:9200'
+    ],
+
     'QUEUE' => array(
         'type' => 'redis',
         'host' => '127.0.0.1',

@@ -10,6 +10,8 @@ class AppInitBehavior extends \Think\Behavior
 {
 
     private function _setDBConfigWhileTesting(){
+        require '../vendor/autoload.php';
+
         //测试模式，数据库配置指向phpunit设置
         if(php_sapi_name() == 'cli-server' && file_exists(APP_DIR . '/../phpunit.xml')){
             //关闭伪静态才能正确获取PATH_INFO
