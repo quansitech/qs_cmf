@@ -41,6 +41,14 @@ trait ElasticsearchHelper{
                 }
                 $params[$k] = $value;
             }
+            else if(preg_match('#^:([A-Za-z_]+)\|([A-Za-z0-9_]+)$#', $v, $match)){
+                if(function_exists($match[2])){
+                    $params[$k] = call_user_func($match[2], $ent[$match[1]]);
+                }
+                else{
+                    $params[$k] = call_user_func([$this, $match[2]], $ent[$match[1]]);
+                }
+            }
         }
 
         return $params;

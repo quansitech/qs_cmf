@@ -68,6 +68,7 @@ php artisan migrate
        // 程序会自动生成索引的配置参数，此处是定义生成参数的规则
        // 以:开头的字母表示该处会自动替换成相应字段的实际值
        // {}表示里面的字符会与替换后的:字段值进行连接，如:id{_chapter}, id实际值为 12，则该处会替换成 12_chapter
+       // | 表示可以将字段的实际值传递给指定的函数进行处理，转换成想要的值。如，description字段是富文本内容，我们将html标签进行索引，可以在model方法里自定义一个叫deleteHtmlTag的方法进行处理，当然也可以定义为全局函数，程序会先查找全局是否存在该函数，如果没有再去对象里查找有无该方法
       // index和type的值在建立初始化全文索引时指定，具体查看全文索引初始化说明
        public function elasticsearchAddDataParams()
        {
@@ -76,7 +77,8 @@ php artisan migrate
                'type' => 'content',
                'id' => ':id{_chapter}',
                'body' => [
-                   'title' => ':title'
+                   'title' => ':title',
+                   'desc' => ':description|html_entity_decode'
                ]
            ];
        }
