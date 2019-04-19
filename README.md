@@ -94,6 +94,28 @@ php artisan migrate
     php makeIndex.php
     ```
 
+## 联动删除
+在进行一些表删除操作时，很可能要删除另外几张表的特定数据。联动删除功能只需在Model里定义好联动删除规则，在删除数据时即可自动完成另外多张表的删除操作，可大大简化开发的复杂度。
+
+使用样例
+```
+//假设有一张文章表Post, 评论表 Message, 点赞表 Like。 
+//点赞表有字段type, type_id, 当type=4时，type_id指向文章表的主ID
+//评论表有字段post_id，post_id与文章表的主id关联
+//这时我们可以在Model里定义 _initialize方法，在该方法内定义 _delete_auto 规则
+protected function _initialize() {
+    $this->_delete_auto = [
+         //实现Message表的联动删除
+        ['delete', 'Message', ['id' => 'post_id']],
+        //实现点赞表的联动删除，$ent参数就是存放Post表的记录的实体变量
+        ['delete', function($ent){
+            D('Like')->where(['type' => 4, 'type_id' => $ent['id']])->delete();
+        }],
+    ];
+}
+```
+
+目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## 文档
 文档是不存在的，该项目是佛性开源，或许某一天会有吧。。
