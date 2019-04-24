@@ -25,6 +25,8 @@ composer require tiderjian/lara-for-tp
 php artisan migrate
 ```
 
+将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
+
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
