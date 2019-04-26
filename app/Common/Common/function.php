@@ -1524,3 +1524,5 @@ function frontCutLength($str,$len){
 }
 
 //前台信息展示类函数 end
+
+
