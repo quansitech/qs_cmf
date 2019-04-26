@@ -27,8 +27,10 @@ php artisan migrate
 
 将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
 
+
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
+
 
 1. 添加 "elasticsearch/elasticsearch": "~6.0" 到composer.json文件，执行composer update 命令安装扩展包。
 2. 安装elasticsearch, 具体安装方法自行查找，推荐使用laradock作为开发环境，直接集成了elasticsearch的docker安装环境。
@@ -120,7 +122,206 @@ protected function _initialize() {
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## 文档
-文档是不存在的，该项目是佛性开源，或许某一天会有吧。。
+
+## 后台表单生成器、列表生成器功能
+1.选择左侧菜单栏→系统设置→菜单列表→新增。如下图所示:
+<img src="https://raw.githubusercontent.com/ericlwd/img/master/1.png" /><br/>
+2.添加新增菜单的标题，排序（从0开始），自定义icon，类型：backend_menu ,url(非必填)，父菜单：平台，绑定模块以及状态。<br/>
+3.添加菜单列表成功后，点击节点列表，点击新增使用新增节点功能。<br/>
+4.新增节点，需注意：
+1）节点名称为定义的action方法
+2）控制器为实现action方法对应的业务逻辑控制器<br/>
+举例为Sample控制器下的index方法，如下图所示：
+<img src="https://raw.githubusercontent.com/ericlwd/img/master/2.png" /><br/>
+5.新增成功后显示<br/>
+<img src="https://raw.githubusercontent.com/ericlwd/img/master/3.png" /><br/>
+6. 创建数据
+方法一：点击新增按钮创建数据
+方法二：数据库生成迁移和运行迁移
+数据库生成迁移和运行迁移参考文档:
+![laravel相关文档]https://learnku.com/docs/laravel/5.8/migrations/3928<br/>
+7. 设置需要使用后台表单以及列表controller<br/>
+以SampleController.class.php为例
+```
+<?php
+namespace Admin\Controller;
+use Common\Builder\FormBuilder;
+use Common\Builder\ListBuilder;
+use Gy_Library\GyListController;
+use Gy_Library\DBCont;
+
+
+class SampleController extends GyListController
+{
+
+    /**     *后台表单以及列表的输出     */
+
+    public function index()
+    {
+        $builder = new ListBuilder();
+        $Sample_data_list = D('Sample')->select();//实例化Sample数据表
+        $builder = $builder->setMetaTitle('内容管理')
+            ->setNID(992)
+            ->addTopButton('save', array('title' => '保存标题'))//增加保存标题的按钮
+            ->addTableColumn('id', '主键', '', '', false, '')//增加id栏页面不能编辑
+            ->addTableColumn('title', '标题', '', '', true) //增加标题栏页面可以编辑
+            ->addTableColumn('status', '状态', 'status', '', false)
+            ->addTableColumn('right_button', '操作', 'btn') //增加右键按钮栏的显示
+           ->addTableColumn('summary', '概述', '', '', true)
+            ->setTableDataList($Sample_data_list)//
+            ->addTopButton('addnew') //增加顶部新增按钮
+            ->addRightButton('edit') //增加右侧编辑按钮
+            ->addRightButton('forbid') //增加禁用编辑按钮
+            ->addRightButton('delete') //增加删除编辑按钮
+            ->display();
+
+    }
+
+/**     *新增功能的实现     */
+
+    public function add()
+    {
+        if (IS_POST) {
+            parent::autoCheckToken();
+            $data = I('post.');
+            $model = D('sample');
+            $r = $model->createAdd($data);
+            if ($r === false) {
+                $this->error($model->getError());
+            } else {
+                $this->success('添加成功', U('index'));
+            }
+        } else {
+            $builder = new FormBuilder();
+            $builder->setMetaTitle('新增分类')
+                ->setNID(992)
+                ->setPostUrl(U('add'))
+                ->addFormItem('title', 'text', '标题', '', '')
+                ->addFormItem('summary', 'ueditor', '概述', '', '')
+                ->addFormItem('status', 'radio', '状态', '', DBCont::getStatusList())
+                ->display();
+        }
+    }
+
+/**     *保存标题功能的实现     */
+
+    public function save()
+    {
+        if (IS_POST) {
+            $data = I('post.');
+            foreach ($data['id'] as $k => $v) {
+                $save_data['title'] = $data['title'][$k];
+                $save_data['summary'] = $data['summary'][$k];
+                D('sample')->where('id=' . $v)->save($save_data);
+            }
+            $this->success('保存成功', U('index'));
+        }
+    }
+/**     *编辑功能的实现     */
+
+    public function edit($id)
+    {
+        if (IS_POST) {
+            parent::autoCheckToken();
+            $m_id = I('post.id');
+            $data = I('post.');
+            $model = D('Post');
+            if (!$m_id) {
+                E('缺少内容ID');
+            }
+
+            $ent = $model->getOne($m_id);
+            if (!$ent) {
+                E('不存在内容');
+            }
+
+            $ent['up'] = $data['up'];
+            $ent['title'] = $data['title'];
+            $ent['cate_id'] = $data['cate_id'];
+            $ent['summary'] = $data['summary'];
+            $ent['cover_id'] = $data['cover_id'];
+            $ent['sort'] = $data['sort'];
+            $ent['english_name'] = $data['english_name'];
+            $ent['publish_date'] = $data['publish_date'];
+            $ent['author'] = $data['author'];
+            $ent['url'] = $data['url'];
+            $ent['content'] = $data['content'];
+            $ent['video'] = $data['video'];
+            $ent['images'] = $data['images'];
+            $ent['attach'] = $data['attach'];
+            $ent['status'] = $data['status'];
+            if ($model->createSave($ent) === false) {
+                $this->error($model->getError());
+            } else {
+                sysLogs('修改内容id:' . $m_id);
+                $this->success('修改成功', U('index'));
+            }
+        } else {
+
+            $sample_ent = D('sample')->getOne($id);
+            $builder = new FormBuilder();
+            $builder->setMetaTitle('编辑内容')
+                ->setNID(992)
+                ->setPostUrl(U('edit'))
+                ->addFormItem('id', 'hidden', '')
+                ->addFormItem('title', 'text', '标题','sample formbuilder演示')
+                ->addFormItem('summary', 'ueditor', '简介')
+                ->display();
+        }
+}
+/**     *禁用功能的实现     */
+
+    public function forbid(){
+        $ids = I('ids');
+     var_dump($ids);
+        if(!$ids){
+            $this->error('请选择要禁用的数据');
+        }
+        $r = parent::_forbid($ids);
+        if($r !== false){
+            sysLogs(' sample id: ' . $ids . ' 禁用');
+            $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
+        }
+        else{
+            $this->error($this->_getError());
+        }
+    }
+/**     *启用功能的实现     */
+
+    public function resume(){
+        $ids = I('ids');
+        if(!$ids){
+            $this->error('请选择要启用的数据');
+        }
+        $r = parent::_resume($ids);
+        if($r !== false){
+            sysLogs('内容id: ' . $ids . ' 启用');
+            $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
+        }
+        else{
+            $this->error($this->_getError());
+        }
+
+}
+/**     *删除功能的实现     */
+
+    public function delete(){
+        $ids = I('ids');
+        if(!$ids){
+            $this->error('请选择要删除的数据');
+        }
+        $r = parent::_del($ids);
+        if($r === false){
+            $this->error($this->_getError());
+        }
+        else{
+            sysLogs('内容id: ' . $ids . ' 删除');
+            $this->success('删除成功', U(MODULE_NAME . '/' . CONTROLLER_NAME . '/index'));
+        }
+    }
+}
+?>
+```
 
 ## lincense
 [MIT License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.MIT) AND [996ICU License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.996ICU)
