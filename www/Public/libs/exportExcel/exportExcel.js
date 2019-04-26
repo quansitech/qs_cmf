@@ -1,48 +1,38 @@
-(function (xs, window) {
-    'use strict';
+(function(xs, window){
+  'use strict';
 
-    function ExportExcel(opt) {
-        this.wopts = {
-            bookType: 'xlsx',
-            bookSST: false,
-            type: 'binary',
-            reqType: 'GET',
-            reqBody: ''
-        };
-        if (typeof opt.reqType === 'undefined') {
-            opt.reqType = this.wopts.reqType;
-        }
-        this.options = opt;
-        this.export_data = [];
+  function ExportExcel(opt){
+    this.wopts = {
+      bookType: 'xlsx',
+      bookSST: false,
+      type: 'binary'
+    };
+
+    this.options = opt;
+  }
+
+  ExportExcel.prototype.s2ab = function(s){
+    if (typeof ArrayBuffer !== 'undefined') {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    } else {
+        var buf = new Array(s.length);
+        for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
     }
+  }
 
-
-    ExportExcel.prototype.s2ab = function (s) {
-        if (typeof ArrayBuffer !== 'undefined') {
-            var buf = new ArrayBuffer(s.length);
-            var view = new Uint8Array(buf);
-            for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-            return buf;
-        } else {
-            var buf = new Array(s.length);
-            for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
-            return buf;
-        }
-    }
-
-    ExportExcel.prototype.saveAs = function (obj, fileName) {
-        var tmpa = document.createElement("a");
-        tmpa.download = fileName || "下载";
-        tmpa.href = URL.createObjectURL(obj);
-        tmpa.style.display = 'none';
-        document.body.append(tmpa);
-        tmpa.click();
-        setTimeout(function () {
-            URL.revokeObjectURL(obj);
-            document.body.removeChild(tmpa);
-        }, 100);
-    }
-
+  ExportExcel.prototype.saveAs = function(obj, fileName){
+    var tmpa = document.createElement("a");
+    tmpa.download = fileName || "下载";
+    tmpa.href = URL.createObjectURL(obj);
+    tmpa.click();
+    setTimeout(function () {
+        URL.revokeObjectURL(obj);
+    }, 100);
+  }
 
     //JS实现excel表头字母和数字的转换 : https://blog.csdn.net/byf20222/article/details/53283542
     //数字 转 excel 表头
@@ -143,75 +133,28 @@
         return new Blob([buffer], {type: "application/octet-stream"});
     }
 
-    ExportExcel.prototype.streamExport = function (rownum) {
-        if (this.options.before && typeof this.options.before == 'function') {
-            this.options.before();
-        }
-        this.stream(1, rownum);
+
+  ExportExcel.prototype.export = function(){
+    var obj = this;
+    if(obj.options.before && typeof obj.options.before == 'function'){
+        obj.options.before();
     }
+    fetch(obj.options.url, {credentials: 'include'}).then(function(res) {
+      if(res.ok){
+        return res.json();
+      }
+      else{
+        throw 'something go error, status:' . res.status;
+      }
+    }).then(function(data) {
+      if(obj.options.after && typeof obj.options.after == 'function'){
+          obj.options.after();
+      }
+      obj.saveAs(obj.generateExcelBlob(data), obj.options.fileName + '.' + (obj.wopts.bookType=="biff2"?"xls":obj.wopts.bookType));
+    }).catch(function(e) {
+      console.log(e);
+    });
+  }
 
-    ExportExcel.prototype.stream = function (page, rownum) {
-        var obj = this;
-        var reqType = this.options.reqType;
-        var reqBody = this.options.reqBody;
-        var query = 'page=' + page + '&rownum=' + rownum;
-        var url = '';
-        if (obj.options.url.indexOf('?') > 0) {
-            url = obj.options.url + '&' + query;
-        } else {
-            url = obj.options.url + '?' + query;
-        }
-        fetch(url, {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            credentials: 'include',
-            method: reqType,
-            body: reqBody
-        }).then(function (res) {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw 'something go error, status:'.res.status;
-            }
-        }).then(function (data) {
-            if (data.length > 0) {
-                obj.export_data = obj.export_data.concat(data);
-                if (obj.options.progress && typeof obj.options.progress == 'function') {
-                    obj.options.progress(page * rownum);
-                }
-                obj.stream(page + 1, rownum);
-            } else {
-                obj.makeExcel(obj.export_data);
-            }
-        });
-
-    }
-
-    ExportExcel.prototype.makeExcel = function (data) {
-        if (this.options.after && typeof this.options.after == 'function') {
-            this.options.after();
-        }
-        this.saveAs(this.generateExcelBlob(data), this.options.fileName + '.' + (this.wopts.bookType == "biff2" ? "xls" : this.wopts.bookType));
-    }
-
-
-    ExportExcel.prototype.export = function () {
-        var obj = this;
-        if (obj.options.before && typeof obj.options.before == 'function') {
-            obj.options.before();
-        }
-        fetch(obj.options.url, {credentials: 'include'}).then(function (res) {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw 'something go error, status:'.res.status;
-            }
-        }).then(function (data) {
-            obj.makeExcel(data);
-
-        }).catch(function (e) {
-            console.log(e);
-        });
-    }
-
-    window.ExportExcel = ExportExcel;
+  window.ExportExcel = ExportExcel;
 }(XLSX, window));
