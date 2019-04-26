@@ -34,12 +34,104 @@
     }, 100);
   }
 
-  ExportExcel.prototype.generateExcelBlob = function(data){
-    var wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
-    wb.Sheets['Sheet1'] = xs.utils.json_to_sheet(data);
-    var buffer = this.s2ab(xs.write(wb, this.wopts));
-    return new Blob([buffer], { type: "application/octet-stream" });
-  }
+    //JS实现excel表头字母和数字的转换 : https://blog.csdn.net/byf20222/article/details/53283542
+    //数字 转 excel 表头
+    ExportExcel.prototype.numToString = function(numm) {
+        var stringArray = [];
+        stringArray.length = 0;
+        var numToStringAction = function (nnum) {
+            var num = nnum - 1;
+            var a = parseInt(num / 26);
+            var b = num % 26;
+            stringArray.push(String.fromCharCode(64 + parseInt(b + 1)));
+            if (a > 0) {
+                numToStringAction(a);
+            }
+        }
+        numToStringAction(numm);
+        return stringArray.reverse().join("");
+    }
+
+    //excel 表头 转数字
+    ExportExcel.prototype.stringToNum = function(word) {
+        var str = word.toLowerCase().split("");
+        var num = 0;
+        var length = str.length;
+        var getCharNumber = function (charx) {
+            return charx.charCodeAt() - 96;
+        };
+        var numout = 0;
+        var charnum = 0;
+        for (var i = 0; i < length; i++) {
+            charnum = getCharNumber(str[i]);
+            numout += charnum * Math.pow(26, length - i - 1);
+        }
+        return numout;
+    }
+
+    //type value: n:number d:date s:string     more information : https://docs.sheetjs.com/#data-types
+    ExportExcel.prototype.getExcelColumnAndRowCount = function (sheetInfo) {
+        var range = xs.utils.decode_range(sheetInfo);
+        this.excelRange = {rows: range.e.r + 1, columns: range.e.c};
+    }
+
+    ExportExcel.prototype.getExcelHeader = function (data) {
+        var header = [],
+            headerItem = null,
+            columns = this.excelRange.columns;
+        //Loop at the under loop.columns loop start with 1,end with column (less 2 column).
+        columns += 2;
+        //number zero will be convert to '@' by function numToString.we should start with number 1.
+        for (var i = 1; i < columns; i++) {
+            headerItem = {};
+            headerItem.l = this.numToString(i);
+            headerItem.v = data[headerItem.l + '1'].v;
+            header.push(headerItem);
+        }
+        this.sheetHeader = header;
+    }
+
+    ExportExcel.prototype.getConventFieldFormHeader = function () {
+        var conf = this.options.excelConfig,
+            that = this;
+        this.convert = [];
+        for (var i in conf) {
+            this.sheetHeader.forEach(function (val, index) {
+                if (val.v === conf[i].field) {
+                    that.convert.push({
+                        v: conf[i].field,
+                        t: conf[i].type,
+                        i: index,
+                        l: val.l
+                    });
+                }
+            })
+        }
+    }
+
+    ExportExcel.prototype.setFieldType = function (data) {
+        var convert = this.convert,
+            rows = this.excelRange.rows;
+        convert.forEach(function (item) {
+            //the first line is sheet header,so we needn't convert it.
+            for (var i = 2; i < rows + 1; i++) {
+                data[item.l + i] && (data[item.l + i].t = item.t);
+            }
+        });
+    }
+
+    ExportExcel.prototype.generateExcelBlob = function (data) {
+        var wb = {SheetNames: ['Sheet1'], Sheets: {}, Props: {}};
+        wb.Sheets['Sheet1'] = xs.utils.json_to_sheet(data);
+
+        this.getExcelColumnAndRowCount(wb.Sheets['Sheet1']['!ref']);
+        this.getExcelHeader(wb.Sheets['Sheet1']);
+        this.getConventFieldFormHeader();
+        this.setFieldType(wb.Sheets['Sheet1']);
+
+        var buffer = this.s2ab(xs.write(wb, this.wopts));
+        return new Blob([buffer], {type: "application/octet-stream"});
+    }
 
 
   ExportExcel.prototype.export = function(){
