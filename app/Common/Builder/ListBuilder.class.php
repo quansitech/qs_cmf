@@ -182,6 +182,16 @@ class ListBuilder extends Controller {
 
                 //这个按钮定义好了把它丢进按钮池里
                 break;
+            case 'export':
+                $my_attribute['type'] = 'export';
+                $my_attribute['title'] = '导出excel';
+                $my_attribute['target-form'] = 'ids';
+                $my_attribute['class'] = 'btn btn-primary export_excel';
+
+                if ($attribute && is_array($attribute)) {
+                    $my_attribute = array_merge($my_attribute, $attribute);
+                }
+                break;
 //            case 'recycle':  // 添加回收按钮(还原的反操作)
 //                // 预定义按钮属性以简化使用
 //                $my_attribute['title'] = '回收';
