@@ -1510,4 +1510,19 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
+//裁剪字符串
+function frontCutLength($str,$len){
+    $gbStr=iconv('UTF-8','GBK',$str);
+    $count=strlen($gbStr);
+    if ($count<=$len){
+        return $str;
+    }
+    $gbStr=mb_strcut($gbStr,0,$len-3,'GBK');
+
+    $str=iconv('GBK','UTF-8',$gbStr);
+    return $str.'...';
+}
+
 //前台信息展示类函数 end
+
+
