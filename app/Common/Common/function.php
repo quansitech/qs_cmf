@@ -1510,7 +1510,51 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
-//裁剪字符串
+/**
+ * 配合文件上传插件使用  把file_ids转化为srcjson
+ * example: $ids = '1,2'  
+ *   return: [ "https:\/\/csh-pub-resp.oss-cn-shenzhen.aliyuncs.com\/Uploads\/image\/20181123\/5bf79e7860393.jpg",
+ *          //有数据的时候返回showFileUrl($id)的结果
+ *    ''    //没有数据时返回空字符串
+ *   ];
+ * @param $ids array|string file_ids
+ * @return string data srcjson
+ */
+function fidToSrcjson($ids){
+    if ($ids) {
+        if (!is_array($ids)) {
+            $ids = explode(',', $ids);
+        }
+        $json = [];
+        foreach ($ids as $id) {
+            $json[] = showFileUrl($id);
+        }
+        return htmlentities(json_encode($json));
+    }else{
+        return '';
+    }
+}
+
+
+/**
+ * 裁剪字符串
+ *   保证每个裁切的字符串视觉长度一致,而curLength裁剪会导致视觉长度参差不齐
+ *   frontCutLength: 中文算2个字符长度，其他算1个长度
+ *   curLength:      每个字符都是算一个长度
+ *
+ *   example1: 若字符串长度小等于$len,将会原样输出$str;
+ *   frontCutLength('字符1',5)；    @return: '字符1';
+ *
+ *   example2: 若字符串长度大于$len
+ *   frontCutLength('字符12',5)；   @return: '字...';(最后的"..."会算入$len)
+ *
+ *   example3: 若字符串长度大于$len，且最大长度的字符不能完整输出,则最大长度的字符会被忽略
+ *   frontCutLength('1字符串',5)；  @return: '1....';("字"被省略，最后的"..."会算入$len)
+ *
+ * @param $str string 要截的字符串
+ * @param $len int|string 裁剪的长度 按英文的长度计算
+ * @return false|string
+ */
 function frontCutLength($str,$len){
     $gbStr=iconv('UTF-8','GBK',$str);
     $count=strlen($gbStr);
