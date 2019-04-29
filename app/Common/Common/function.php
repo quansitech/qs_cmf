@@ -1510,7 +1510,6 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
-
 /**
  * 配合文件上传插件使用  把file_ids转化为srcjson
  * example: $ids = '1,2'  

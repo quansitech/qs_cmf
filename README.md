@@ -120,6 +120,56 @@ protected function _initialize() {
 
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
+## Listbuilder
+### xlsx导出excel
+由后端完成excel导出操作会极大占用服务器资源，同时数据太多时往往会需要处理很长时间，页面长时间处于卡死状态用户体验也极差，因此采用前端分批导出excel数据才是更合理的做法。
+
+使用样例
+```blade
+.
+.
+.
+
+class PostController extends GyListController{
+    //继承ExportExcelByXlsx
+    use ExportExcelByXlsx;
+.
+.
+.
+    
+        $builder = new \Common\Builder\ListBuilder();
+        //第一个参数指定export类型，第二个参数是指定需要覆盖的html组件属性
+        //title为按钮名称，默认导出excel
+        //data-url为点击导出按钮后ajax请求的地址,必填
+        //data-filename 为生成的excel文件名,默认为浏览器的默认生成文件名
+        //data-streamrownum 为每次请求获取的数据数
+        $builder->addTopButton('export', array('title' => '样例导出', 'data-url' => U('/admin/post/export'), 'data-filename' => '文章列表', 'data-streamrownum' => '10'));
+    
+.
+.
+.
+    //导出excel请求的action
+    public function export(){
+    
+        //exportExcelByXlsx为 ExportExcelByXlsx trait提供的方法
+        //参数为一个闭包函数，接收两个参数， page为请求的页数， rownnum为请求的数据行数
+        $this->exportExcelByXlsx(function($page, $rownum){
+             //闭包函数必须返回如下数据格式
+             //[
+             //    [  'excel表头1' =>  行1数据1, 'excel表头2' => 行1数据2 ..... ]
+             //    [  'excel表头1' =>  行2数据1, 'excel表头2' => 行2数据2 ..... ]
+             //    ...
+             //]
+            return [
+                 [  '姓名' =>  'tt', '性别' => 'male', '年龄' => 23 ]
+                 [  '姓名' =>  'ff', '性别' => 'female', '年龄' => 19 ]
+            ];
+        });
+
+    }
+
+```
+
 ## 文档
 文档是不存在的，该项目是佛性开源，或许某一天会有吧。。
 
