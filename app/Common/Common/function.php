@@ -1510,8 +1510,14 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
+
 /**
  * 配合文件上传插件使用  把file_ids转化为srcjson
+ * example: $ids = '1,2'  
+ *   return: [ "https:\/\/csh-pub-resp.oss-cn-shenzhen.aliyuncs.com\/Uploads\/image\/20181123\/5bf79e7860393.jpg",
+ *          //有数据的时候返回showFileUrl($id)的结果
+ *    ''    //没有数据时返回空字符串
+ *   ];
  * @param $ids array|string file_ids
  * @return string data srcjson
  */
@@ -1530,31 +1536,22 @@ function fidToSrcjson($ids){
     }
 }
 
-/**
- * 根据file_id获取oss的的文件地址
- * @param $file_id string 文件的id
- * @return mixed|string 反向代理后的url
- * @example nginx config
- * location ^~ /crossOss/ {
- *   rewrite ^/crossOss/(.*)$ /$1 break;
- *   proxy_pass http://[oss_host];
- * }
- */
-function crossOss($file_id){
-    $url=showFileUrl($file_id);
-    $oss_host=C('UPLOAD_TYPE_IMAGE');
-    if ($oss_host['oss_host']){
-        $oss_host=$oss_host['oss_host'];
-        if (strpos($url,$oss_host)!==false){
-            $url=str_replace($oss_host,'/crossOss',$url);
-        }
-    }
-    return $url;
-}
-
 
 /**
  * 裁剪字符串
+ *   保证每个裁切的字符串视觉长度一致,而curLength裁剪会导致视觉长度参差不齐
+ *   frontCutLength: 中文算2个字符长度，其他算1个长度
+ *   curLength:      每个字符都是算一个长度
+ *
+ *   example1: 若字符串长度小等于$len,将会原样输出$str;
+ *   frontCutLength('字符1',5)；    @return: '字符1';
+ *
+ *   example2: 若字符串长度大于$len
+ *   frontCutLength('字符12',5)；   @return: '字...';(最后的"..."会算入$len)
+ *
+ *   example3: 若字符串长度大于$len，且最大长度的字符不能完整输出,则最大长度的字符会被忽略
+ *   frontCutLength('1字符串',5)；  @return: '1....';("字"被省略，最后的"..."会算入$len)
+ *
  * @param $str string 要截的字符串
  * @param $len int|string 裁剪的长度 按英文的长度计算
  * @return false|string
