@@ -1510,7 +1510,55 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
-//裁剪字符串
+/**
+ * 配合文件上传插件使用  把file_ids转化为srcjson
+ * @param $ids array|string file_ids
+ * @return string data srcjson
+ */
+function fidToSrcjson($ids){
+    if ($ids) {
+        if (!is_array($ids)) {
+            $ids = explode(',', $ids);
+        }
+        $json = [];
+        foreach ($ids as $id) {
+            $json[] = showFileUrl($id);
+        }
+        return htmlentities(json_encode($json));
+    }else{
+        return '';
+    }
+}
+
+/**
+ * 根据file_id获取oss的的文件地址
+ * @param $file_id string 文件的id
+ * @return mixed|string 反向代理后的url
+ * @example nginx config
+ * location ^~ /crossOss/ {
+ *   rewrite ^/crossOss/(.*)$ /$1 break;
+ *   proxy_pass http://[oss_host];
+ * }
+ */
+function crossOss($file_id){
+    $url=showFileUrl($file_id);
+    $oss_host=C('UPLOAD_TYPE_IMAGE');
+    if ($oss_host['oss_host']){
+        $oss_host=$oss_host['oss_host'];
+        if (strpos($url,$oss_host)!==false){
+            $url=str_replace($oss_host,'/crossOss',$url);
+        }
+    }
+    return $url;
+}
+
+
+/**
+ * 裁剪字符串
+ * @param $str string 要截的字符串
+ * @param $len int|string 裁剪的长度 按英文的长度计算
+ * @return false|string
+ */
 function frontCutLength($str,$len){
     $gbStr=iconv('UTF-8','GBK',$str);
     $count=strlen($gbStr);
