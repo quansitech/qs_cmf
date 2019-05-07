@@ -20,7 +20,7 @@ git clone https://github.com/tiderjian/qs_cmf.git
 composer require tiderjian/lara-for-tp
 ```
 
-安装完成后将qs_cmf\migrations复制到lara\database\migrations，配置lara.env的数据库设置，执行migrate数据库迁移命令。
+安装完成后将qs_cmf\migrations复制到lara\database\migrations，复制.env.example并重命名为.env，配置数据库参数，执行migrate数据库迁移命令。
 
 ```
 php artisan migrate
@@ -34,7 +34,7 @@ php artisan migrate
 1. 添加 "elasticsearch/elasticsearch": "~6.0" 到composer.json文件，执行composer update 命令安装扩展包。
 2. 安装elasticsearch, 具体安装方法自行查找，推荐使用laradock作为开发环境，直接集成了elasticsearch的docker安装环境。
 3. 安装ik插件，安装查找elasticsearch官方文档。
-4. 修改app/Common/Conf/config.php 里的 ELASTICSEARCH_HOSTS值，设置为elasticsearch的启动ip和端口，如laradock的默认设置为10.0.75.1:9200
+4.  在.env下添加 ELASTICSEARCH_HOSTS值，设置为elasticsearch的启动ip和端口，如laradock的默认设置为10.0.75.1:9200，需要配置一组地址，可用“,”隔开。
 5. 设置需要使用elastic的model和字段
 
     以ChapterModel添加title和summary到全文索引为例
@@ -171,7 +171,7 @@ class PostController extends GyListController{
 ```
 
 ## 文档
-文档是不存在的，该项目是佛性开源，或许某一天会有吧。。
+由于工作量大，文档会逐步补全。
 
 ## lincense
 [MIT License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.MIT) AND [996ICU License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.996ICU)
