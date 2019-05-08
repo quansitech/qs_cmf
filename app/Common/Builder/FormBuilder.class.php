@@ -1,6 +1,7 @@
 <?php
 
 namespace Common\Builder;
+use Gy_Library\DBCont;
 use Think\View;
 use Think\Controller;
 /**
@@ -26,6 +27,27 @@ class FormBuilder extends Controller {
      */
     protected function _initialize() {
         $this->_template = APP_PATH.'Common/Builder/Layout/'.MODULE_NAME.'/form.html';
+    }
+
+    public function setNIDByNode($module, $controller, $action){
+        $module_ent = D('Node')->where(['name' => $module, 'level' => DBCont::LEVEL_MODULE, 'status' => DBCont::NORMAL_STATUS])->find();
+
+        if(!$module_ent){
+            E('setNIDByNode 传递的参数module不存在');
+        }
+
+        $controller_ent = D('Node')->where(['name' => $controller, 'level' => DBCont::LEVEL_CONTROLLER, 'status' => DBCont::NORMAL_STATUS, 'pid' => $module_ent['id']])->find();
+        if(!$controller_ent){
+            E('setNIDByNode 传递的参数controller不存在');
+        }
+
+        $action_ent = D('Node')->where(['name' => $action, 'level' => DBCont::LEVEL_ACTION, 'status' => DBCont::NORMAL_STATUS, 'pid' => $controller_ent['id']])->find();
+        if(!$action_ent){
+            E('setNIDByNode 传递的参数action不存在');
+        }
+        else{
+            return $this->setNID($action_ent['id']);
+        }
     }
     
     public function setNID($nid){
