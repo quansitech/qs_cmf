@@ -38,7 +38,7 @@ php artisan migrate
 5. 设置需要使用elastic的model和字段
 
     以ChapterModel添加title和summary到全文索引为例
-    ```blade
+    ```php
     // ChapterModel类必须继承接口
     class ChapterModel  extends \Gy_Library\GyListModel implements \Common\Lib\ElasticsearchModelContract{
  
@@ -92,7 +92,7 @@ php artisan migrate
     打开Home/Controller/ElasticController.class.php文件, 修改index方法里的$params变量，根据你的需要来设置
     
 7. 执行索引初始化，程序会自动检索数据库全部数据表，为需要添加索引的表和字段进行索引添加操作。
-    ```blade
+    ```
     //进入app目录，下面有个makeIndex.php文件
     php makeIndex.php
     ```
@@ -101,7 +101,7 @@ php artisan migrate
 在进行一些表删除操作时，很可能要删除另外几张表的特定数据。联动删除功能只需在Model里定义好联动删除规则，在删除数据时即可自动完成另外多张表的删除操作，可大大简化开发的复杂度。
 
 使用样例
-```
+```php
 //假设有一张文章表Post, 评论表 Message, 点赞表 Like。 
 //点赞表有字段type, type_id, 当type=4时，type_id指向文章表的主ID
 //评论表有字段post_id，post_id与文章表的主id关联
@@ -125,7 +125,7 @@ protected function _initialize() {
 由后端完成excel导出操作会极大占用服务器资源，同时数据太多时往往会需要处理很长时间，页面长时间处于卡死状态用户体验也极差，因此采用前端分批导出excel数据才是更合理的做法。
 
 使用样例
-```blade
+```php
 .
 .
 .
@@ -168,6 +168,25 @@ class PostController extends GyListController{
 
     }
 
+```
+
+## Builder
+
+#### setNID 
+
+```blade
+参数 
+$nid  需要高亮的左菜单栏的node_id
+```
+
+#### setNIDByNode
+```blade
+该方法是setNID的封装，通过module controller action动态获取nid
+
+参数 
+$module 需要高亮左侧菜单的module_name
+$controller 需要高亮左侧菜单的controller_name
+$action 需要高亮左侧菜单的action_name
 ```
 
 ## 文档
