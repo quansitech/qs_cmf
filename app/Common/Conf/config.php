@@ -24,6 +24,7 @@ $_config = array(
     'ALIOSS_ACCESS_KEY_ID' => '',
     'ALIOSS_ACCESS_KEY_SECRET' => '',
 
+    'ELASTIC_ALLOW_EXCEPTION' => true,
     'ELASTICSEARCH_HOSTS' => explode(',', ENV('ELASTICSEARCH_HOSTS')),
 
     'QUEUE' => array(
