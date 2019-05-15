@@ -122,7 +122,7 @@ protected function _initialize() {
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## 文档
-###侧边栏菜单设置及显示
+### 侧边栏菜单设置及显示
 1.选择左侧菜单栏→系统设置→菜单列表→新增。如下图所示:
 <img src="https://raw.githubusercontent.com/ericlwd/img/master/1.png" /><br/>
 2.添加新增菜单的标题，排序（从0开始），自定义icon，类型：backend_menu ,url(非必填)，父菜单：平台，绑定模块以及状态。<br/>
@@ -138,7 +138,7 @@ protected function _initialize() {
 方法一：点击新增按钮创建数据
 方法二：数据库生成迁移和运行迁移，具体用法请自行参照lavaver手册
 
-###列表生成器
+### 列表生成器
 列表生成器：在后台把与数据库交互的数据生成显示。
 ```
   $builder = new ListBuilder();
@@ -173,7 +173,7 @@ protected function _initialize() {
 8)addSearchItem($name, $type, $title='', $options = array())
 参数说明：addSearchItem增加搜索栏，$name为搜索的字段，$type为搜索栏的类型， $title为搜索栏的标题，$options是一个数组，数组内的值为搜索字段可选择的值。
         
-###后台表单生成器  
+### 后台表单生成器  
 后台表单生成器 :新增数据或编辑后台原有数据所使用。
 使用说明：
 实例化一个FormBuilder的类，FormBuilder的示例代码：
