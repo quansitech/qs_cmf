@@ -122,8 +122,7 @@ protected function _initialize() {
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## 文档
-## 后台表单生成器、列表生成器功能
-###列表生成器
+###侧边栏菜单设置及显示
 1.选择左侧菜单栏→系统设置→菜单列表→新增。如下图所示:
 <img src="https://raw.githubusercontent.com/ericlwd/img/master/1.png" /><br/>
 2.添加新增菜单的标题，排序（从0开始），自定义icon，类型：backend_menu ,url(非必填)，父菜单：平台，绑定模块以及状态。<br/>
@@ -138,10 +137,27 @@ protected function _initialize() {
 6. 创建数据
 方法一：点击新增按钮创建数据
 方法二：数据库生成迁移和运行迁移，具体用法请自行参照lavaver手册
-7. 设置需要使用列表controller<br/>
+
+###列表生成器
+列表生成器：在后台把与数据库交互的数据生成显示。
+```
+  $builder = new ListBuilder();
+        $builder = $builder->setMetaTitle('')
+            ->setNIDByNode(MODULE_NAME,CONTROLLER_NAME,'index')
+            ->addTopButton('addnew')    // 添加新增按钮;
+            ->addTableColumn('name', 'title', '', '', false,'')
+            ->addTableColumn('right_button', '操作', 'btn')
+            ->setTableDataList($data_list)
+            ->addSearchItem('status', 'select', '所有状态', DBCont::getStatusList())
+            ->setTabNav($tab_list, $current_tab)  // 设置页面Tab导航
+            ->addRightButton('edit')
+            ->setTableDataPage($page->show())
+            ->display();
+```
+使用说明：
 实例化一个ListBuilder的类，
 1）setMetaTitle参数说明：设置列表标题。
-2）setNID，参数说明：选择对应ID后高亮。
+2）setNIDByNode，参数说明：选择对应ID后高亮，MODULE_NAME与CONTROLLER_NAME为该节点对应模块和控制器的名字，'index'为该节点名称。
 3）addTopButton($name, $title, $type = null, $value = '', $editable = false, $tip = '')
 参数说明：addTopButton增加列表顶部按钮。$name为增加的字段名，$value为初始值，$editable能否编辑，$tip显示的提示。
 3）addTableColumn($name, $title, $type = null, $value = '', $editable = false, $tip = '')
@@ -150,15 +166,39 @@ protected function _initialize() {
 参数说明：addRightButton增加列表右侧按钮，$type为进入的类型，$tips显示的提示。
 5)setTableDataList($sql)
 参数说明：setTableDataList使用表单的数据，$sql为数据包实例化后传进的变量名。
-6）setTableDataPage
+6）setTabNav($tab_list, $current_tab)
+参数说明：设置页面Tab导航， $current_tab为当前TAB，$tab_list是Tab列表。
+7）setTableDataPage
 参数说明：setTableDataPage设置表单数据的分页。
+8)addSearchItem($name, $type, $title='', $options = array())
+参数说明：addSearchItem增加搜索栏，$name为搜索的字段，$type为搜索栏的类型， $title为搜索栏的标题，$options是一个数组，数组内的值为搜索字段可选择的值。
         
-### 后台表单增删改查功能         
-  addFormItem
-  addFormItem($name, $type, $title, $tip = '', $options = array(), $extra_class = '', $extra_attr = '')
-  参数说明：addFormItem增加表单项。$name为增加的字段名，$type为类型，$title为标题$value为初始值，$editable能否编辑，$tip显示的提示。
-
-
+###后台表单生成器  
+后台表单生成器 :新增数据或编辑后台原有数据所使用。
+使用说明：
+实例化一个FormBuilder的类，FormBuilder的示例代码：
+```      
+  $builder = new FormBuilder();
+            $builder->setMetaTitle('新增分类')
+                ->setNIDByNode(MODULE_NAME,CONTROLLER_NAME,'index')
+                ->setPostUrl(U('add'))
+                ->addFormItem('title', 'text', '标题', '', '')
+                ->addFormItem('summary', 'ueditor', '概述', '', '')
+                ->addFormItem('status', 'radio', '状态', '', DBCont::getStatusList())
+                ->display();
+```
+ 参数说明:
+1)addFormItem($name, $type, $title, $tip = '', $options = array(), $extra_class = '', $extra_attr = '')
+addFormItem加入一个表单项。$name为增加的字段名；$type为表单类型；其中表单类型有$title为表单标题；$extra_class表单项是否隐藏；$tip表单提示说明，$extra_attr为表单额外属性；$options是一个数组，数组内的值为表单可选择的值。
+示例代码：
+```
+				->addFormItem('title', 'text', '标题', '', '')
+                ->addFormItem('summary', 'ueditor', '概述', '', '')
+                ->addFormItem('status', 'radio', '状态', '', DBCont::getStatusList())
+```
+2)setMetaTitle设置列表标题 。     
+3)setNIDByNode，选择对应ID后高亮，MODULE_NAME与CONTROLLER_NAME为该节点对应模块和控制器的名字，'index'为该节点名称。
+4)setPostUrl设置表单提交地址。
 
 ## lincense
 [MIT License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.MIT) AND [996ICU License](https://github.com/tiderjian/lara-for-tp/blob/master/LICENSE.996ICU)
