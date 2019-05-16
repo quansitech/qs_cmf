@@ -158,21 +158,108 @@ protected function _initialize() {
 实例化一个ListBuilder的类，
 1）setMetaTitle参数说明：设置列表标题。
 2）setNIDByNode，参数说明：选择对应ID后高亮，MODULE_NAME与CONTROLLER_NAME为该节点对应模块和控制器的名字，'index'为该节点名称。
-3）addTopButton($name, $title, $type = null, $value = '', $editable = false, $tip = '')
-参数说明：addTopButton增加列表顶部按钮。$name为增加的字段名，$value为初始值，$editable能否编辑，$tip显示的提示。
+3）addTopButton($type, $attribute = null, $tips = '', $auth_node = '')
+参数说明：
+	addTopButton增加列表顶部按钮。
+	1、$type为增加按钮的类型，主要有addnew(新增)/resume(启用)/forbid(禁用)/save(保存)/delete(删除)/self(自定义)六种取值
+ ``` 
+          	->addTopButton('addnew')   
+            ->addTopButton('resume')
+            ->addTopButton('forbid')
+            ->addTopButton('save')
+            ->addTopButton('delete')
+            ->addTopButton('self')
+``` 
+示例代码实现效果：
+<img src="https://github.com/ericlwd/img/blob/master/%E6%96%B0%E5%A2%9E%E6%8C%89%E9%92%AE%E7%B1%BB%E5%9E%8B.png" /><br/>
+	2、$attribute为一个定了标题/链接/CSS类名等的属性描述数组，示例代码：
+```
+$builder->addTopButton('self', array('title' => '管理信息公开分类', 'class' => 'btn btn-success', 'href' => U('InformationCate/index')));
+```
+上述代码通过数组描述title值为管理信息公开分类，样式为btn btn-success，href指向U函数跳转InformationCate控制器下action为index方法的页面。
+示例代码实现效果：
+<img src="https://github.com/ericlwd/img/blob/master/SELF%E6%8C%89%E9%92%AE%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B.png" /><br/>
+   3、$tips显示的提示
+
 3）addTableColumn($name, $title, $type = null, $value = '', $editable = false, $tip = '')
-参数说明：addTableColumn增加一个表格标题字段，$name为增加的字段名，$value为初始值，$editable能否编辑，$tip显示的提示。
+参数说明：
+  addTableColumn增加一个表格标题字段
+  1、$name为实例化对象要选择显示的字段名
+  2、$title标题名
+  3、$editable能否编辑
+  4、$tip显示的提示
+ $name、$title、$editable以及$tip示例代码
+```
+			->addTableColumn('name', '数据名称', '', '', false,'真实的数量')
+            ->addTableColumn('number', '数量', '', '', false)
+            ->addTableColumn('unit', '数据单位', '', '', false)
+            ->addTableColumn('sort', '排序', '', '', true)
+            ->addTableColumn('status', '状态', 'status', '', false)
+```
+ $name、$title、$editable以及$tip示例代码实现效果：
+<img src="https://github.com/ericlwd/img/blob/master/tips_title_editable.png" /><br/>
+  5、$type的值类型：
+  status的状态类型显示（1为启用状态，0为禁用状态），
+  btn增加按钮的显示
+  fun匹配当前数据的真实ID予以显示
+  $type的示例代码：
+```
+            ->addTableColumn('status', '状态', 'status', '', false)   //增加显示status的状态类型显示
+            ->addTableColumn('right_button', '操作', 'btn')   //增加右侧按钮的显示
+            ->addTableColumn('publish_date', '发布时间', 'fun', 'date("Y-m-d",__data_id__)', false)   //fun匹配当前数据的真实ID显示对应的发布时间         
+```  
+ $type的示例代码实现效果：
+<img src="https://github.com/ericlwd/img/blob/master/status_btn_fun.png" /><br/>
+
 4）addRightButton($type, $attribute = null, $tips = '', $auth_node = '')
-参数说明：addRightButton增加列表右侧按钮，$type为进入的类型，$tips显示的提示。
+参数说明：addRightButton增加列表右侧按钮，$type类型，$tips显示的提示。
+```
+            ->addRightButton('edit')                          //增加显示右侧按钮，编辑功能
+            ->addRightButton('forbid') 						  //增加显示右侧按钮，启用/禁用功能
+            ->addRightButton('delete')  					  //增加显示右侧按钮，删除功能
+            ->addTopButton('self')                            //增加显示右侧按钮，自定义功能
+``` 
+
 5)setTableDataList($sql)
-参数说明：setTableDataList使用表单的数据，$sql为数据包实例化后传进的变量名。
+参数说明：setTableDataList使用表单的数据，$sql为实例化后传进的变量名。
+
 6）setTabNav($tab_list, $current_tab)
 参数说明：设置页面Tab导航， $current_tab为当前TAB，$tab_list是Tab列表。
 7）setTableDataPage
 参数说明：setTableDataPage设置表单数据的分页。
+  setTableDataPage示例代码：
+```
+        $Index_config = D('IndexConfig');         				//实例化对象
+        $count = $Index_config->getListForCount($map); 			//获取当前对象的列数
+        $per_page = C('ADMIN_PER_PAGE_NUM', null, false); 		//每页显示的数量，ADMIN_PER_PAGE_NUM设定为20
+        if($per_page === false){
+            $page = new \Gy_Library\GyPage($count);
+        }
+        else{
+            $page = new \Gy_Library\GyPage($count, $per_page);
+        }
+        $data_list = $Index_config->getListForPage($map, $page->nowPage, $page->listRows, 'id desc');    //实例化对象获取当前页，总页数，id正序排列赋值$data_list
+
+         $builder = new ListBuilder();
+
+         $builder->setTableDataList($data_list)             //显示实例化对象IndexConfig的列表
+         		 ->setTableDataPage($page->show()) 			//分页显示列表
+         		 ->display();                               //输出
+```
 8)addSearchItem($name, $type, $title='', $options = array())
-参数说明：addSearchItem增加搜索栏，$name为搜索的字段，$type为搜索栏的类型， $title为搜索栏的标题，$options是一个数组，数组内的值为搜索字段可选择的值。
-        
+参数说明：addSearchItem增加搜索栏，
+  1、$name为搜索的字段，
+  2、$type为搜索栏的类型，$type可用的值：select可选择对应字段的值（如status字段的启用和禁用）
+  3、$title为搜索栏的标题，
+  4、$options是一个数组，数组内的值为搜索字段可选择的值。
+ ```
+           addSearchItem('status', 'select', '所有状态', DBCont::getStatusList())
+           addSearchItem('name', 'select_text', '搜索轮播图', array('name'=>'标题'))
+ ```
+ 示例图：
+ <img src="https://github.com/ericlwd/img/blob/master/%E6%90%9C%E7%B4%A2%E6%A1%86.png" /><br/>
+ 示例效果：
+<img src="https://github.com/ericlwd/img/blob/master/%E6%90%9C%E7%B4%A2%E6%95%88%E6%9E%9C.png" /><br/>
 ### 后台表单生成器  
 后台表单生成器 :新增数据或编辑后台原有数据所使用。
 使用说明：
@@ -190,12 +277,38 @@ protected function _initialize() {
  参数说明:
 1)addFormItem($name, $type, $title, $tip = '', $options = array(), $extra_class = '', $extra_attr = '')
 addFormItem加入一个表单项。$name为增加的字段名；$type为表单类型；其中表单类型有$title为表单标题；$extra_class表单项是否隐藏；$tip表单提示说明，$extra_attr为表单额外属性；$options是一个数组，数组内的值为表单可选择的值。
-示例代码：
+
+type的可选值有hidden(隐藏);num(数字)数字;text(单行文本);textarea(多行文本);password(密码);radio(单选按钮);checkbox (复选框);select(下拉框);date(日期);datetime(时间);picture(单张图片);pictures(多张图片),file(单个文件),files (多个文件),ueditor(百度编辑器 )
+
+示例代码1：
 ```
-				->addFormItem('title', 'text', '标题', '', '')
-                ->addFormItem('summary', 'ueditor', '概述', '', '')
-                ->addFormItem('status', 'radio', '状态', '', DBCont::getStatusList())
+			    ->addFormItem('id', 'hidden', '主键ID')    
+                ->addFormItem('real_name', 'text', '真实姓名')
+                ->addFormItem('nick_name', 'text', '别名')
+                ->addFormItem('password', 'password', '密码')
+                ->addFormItem('telephone', 'num', '手机号码')
+                ->addFormItem('content', 'ueditor', '内容')
+                ->addFormItem('edu_type', 'checkbox', '教育类型', '',DBCont::getEduTypeList())
+                ->addFormItem('sort', 'text', '排序')
+                ->addFormItem('up', 'radio', '置顶', '', DBCont::getBoolStatusList())
+                ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
 ```
+示例效果1：
+<img src="https://github.com/ericlwd/img/blob/master/formbuilder_type1.png" /><br/>
+示例代码2：
+```
+->addFormItem('pic', 'picture_intercept', '封面','', '')
+                ->addFormItem('img', 'picture', '二维码图片','', '')
+                ->addFormItem('publish_date', 'date', '发布日期')
+                ->addFormItem('create_date', 'datetime', '创建日期')
+                ->addFormItem('pdf', 'file', '文档')
+                ->addFormItem('pdf1', 'files', '多个文档')
+                ->addFormItem('imgs', 'pictures', '多张图片','', '')
+```
+示例效果2：
+<img src="https://github.com/ericlwd/img/blob/master/formbuilder_type1.png" /><br/>
+<img src="https://github.com/ericlwd/img/blob/master/%E5%A4%9A%E5%BC%A0%E5%9B%BE%E7%89%87%E5%A4%9A%E4%B8%AA%E6%96%87%E4%BB%B6%E7%9A%84%E6%95%88%E6%9E%9C.png" /><br/>
+
 2)setMetaTitle设置列表标题 。     
 3)setNIDByNode，选择对应ID后高亮，MODULE_NAME与CONTROLLER_NAME为该节点对应模块和控制器的名字，'index'为该节点名称。
 4)setPostUrl设置表单提交地址。
