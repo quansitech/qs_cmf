@@ -163,7 +163,7 @@ protected function _initialize() {
 	addTopButton增加列表顶部按钮。
 	1、$type为增加按钮的类型，主要有addnew(新增)/resume(启用)/forbid(禁用)/save(保存)/delete(删除)/self(自定义)六种取值
  ``` 
-          	->addTopButton('addnew')   
+            ->addTopButton('addnew')   
             ->addTopButton('resume')
             ->addTopButton('forbid')
             ->addTopButton('save')
@@ -190,7 +190,7 @@ $builder->addTopButton('self', array('title' => '管理信息公开分类', 'cla
   4、$tip显示的提示
  $name、$title、$editable以及$tip示例代码
 ```
-			->addTableColumn('name', '数据名称', '', '', false,'真实的数量')
+	     ->addTableColumn('name', '数据名称', '', '', false,'真实的数量')
             ->addTableColumn('number', '数量', '', '', false)
             ->addTableColumn('unit', '数据单位', '', '', false)
             ->addTableColumn('sort', '排序', '', '', true)
@@ -215,8 +215,8 @@ $builder->addTopButton('self', array('title' => '管理信息公开分类', 'cla
 参数说明：addRightButton增加列表右侧按钮，$type类型，$tips显示的提示。
 ```
             ->addRightButton('edit')                          //增加显示右侧按钮，编辑功能
-            ->addRightButton('forbid') 						  //增加显示右侧按钮，启用/禁用功能
-            ->addRightButton('delete')  					  //增加显示右侧按钮，删除功能
+            ->addRightButton('forbid') 			      //增加显示右侧按钮，启用/禁用功能
+            ->addRightButton('delete')  		      //增加显示右侧按钮，删除功能
             ->addTopButton('self')                            //增加显示右侧按钮，自定义功能
 ``` 
 
@@ -229,7 +229,7 @@ $builder->addTopButton('self', array('title' => '管理信息公开分类', 'cla
 参数说明：setTableDataPage设置表单数据的分页。
   setTableDataPage示例代码：
 ```
-        $Index_config = D('IndexConfig');         				//实例化对象
+        $Index_config = D('IndexConfig');         			 //实例化对象
         $count = $Index_config->getListForCount($map); 			//获取当前对象的列数
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false); 		//每页显示的数量，ADMIN_PER_PAGE_NUM设定为20
         if($per_page === false){
@@ -282,8 +282,8 @@ type的可选值有hidden(隐藏);num(数字)数字;text(单行文本);textarea(
 
 示例代码1：
 ```
-			    ->addFormItem('id', 'hidden', '主键ID')    
-                ->addFormItem('real_name', 'text', '真实姓名')
+		->addFormItem('id', 'hidden', '主键ID')    
+                ->addFormItem('real_name', 'textarea', '真实姓名')
                 ->addFormItem('nick_name', 'text', '别名')
                 ->addFormItem('password', 'password', '密码')
                 ->addFormItem('telephone', 'num', '手机号码')
@@ -297,7 +297,7 @@ type的可选值有hidden(隐藏);num(数字)数字;text(单行文本);textarea(
 <img src="https://github.com/ericlwd/img/blob/master/formbuilder_type1.png" /><br/>
 示例代码2：
 ```
-->addFormItem('pic', 'picture_intercept', '封面','', '')
+                ->addFormItem('pic', 'picture_intercept', '封面','', '')
                 ->addFormItem('img', 'picture', '二维码图片','', '')
                 ->addFormItem('publish_date', 'date', '发布日期')
                 ->addFormItem('create_date', 'datetime', '创建日期')
