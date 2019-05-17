@@ -1,12 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: 2017-03-20 14:25:35
--- 服务器版本： 5.7.17
--- PHP Version: 7.0.12-1+deb.sury.org~trusty+1
+-- 主机： db
+-- 生成日期： 2019-03-12 02:35:15
+-- 服务器版本： 8.0.15
+-- PHP 版本： 7.2.14
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,7 +19,7 @@
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `csh`
+-- 数据库： `qs_cmf`
 --
 
 -- --------------------------------------------------------
@@ -40,15 +44,15 @@ CREATE TABLE `qs_access` (
 CREATE TABLE `qs_addons` (
   `id` int(10) UNSIGNED NOT NULL COMMENT '主键',
   `name` varchar(40) NOT NULL COMMENT '插件名或标识',
-  `title` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '中文名',
-  `description` text CHARACTER SET utf8 COMMENT '插件描述',
+  `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '中文名',
+  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '插件描述',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
-  `config` text CHARACTER SET utf8 COMMENT '配置',
-  `author` varchar(40) CHARACTER SET utf8 DEFAULT '' COMMENT '作者',
-  `version` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '版本号',
+  `config` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '配置',
+  `author` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '作者',
+  `version` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '版本号',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '安装时间',
   `has_adminlist` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否有后台列表'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='插件表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  COMMENT='插件表';
 
 -- --------------------------------------------------------
 
@@ -1140,9 +1144,6 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (331181, '龙泉市', '', 331100, '', '', 3),
 (340000, '安徽省', '安徽', 1, '', '', 1),
 (340100, '合肥市', '合肥', 340000, '', '', 2),
-(341400, '巢湖市', '', 340100, '', '', 3),
-(341402, '居巢区', '', 340100, '', '', 3),
-(341421, '庐江县', '', 340100, '', '', 3),
 (340102, '瑶海区', '', 340100, '', '', 3),
 (340103, '庐阳区', '', 340100, '', '', 3),
 (340104, '蜀山区', '', 340100, '', '', 3),
@@ -1160,7 +1161,6 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (340221, '芜湖县', '', 340200, '', '', 3),
 (340222, '繁昌县', '', 340200, '', '', 3),
 (340223, '南陵县', '', 340200, '', '', 3),
-(341422, '无为县', '', 340200, '', '', 3),
 (340300, '蚌埠市', '蚌埠', 340000, '', '', 2),
 (340302, '龙子湖区', '', 340300, '', '', 3),
 (340303, '蚌山区', '', 340300, '', '', 3),
@@ -1178,8 +1178,6 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (340421, '凤台县', '', 340400, '', '', 3),
 (340500, '马鞍山市', '马鞍山', 340000, '', '', 2),
 (340502, '金家庄区', '', 340500, '', '', 3),
-(341423, '含山县', '', 340500, '', '', 3),
-(341424, '和县', '', 340500, '', '', 3),
 (340503, '花山区', '', 340500, '', '', 3),
 (340504, '雨山区', '', 340500, '', '', 3),
 (340521, '当涂县', '', 340500, '', '', 3),
@@ -1237,6 +1235,12 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (341322, '萧县', '', 341300, '', '', 3),
 (341323, '灵璧县', '', 341300, '', '', 3),
 (341324, '泗县', '', 341300, '', '', 3),
+(341400, '巢湖市', '', 340100, '', '', 3),
+(341402, '居巢区', '', 340100, '', '', 3),
+(341421, '庐江县', '', 340100, '', '', 3),
+(341422, '无为县', '', 340200, '', '', 3),
+(341423, '含山县', '', 340500, '', '', 3),
+(341424, '和县', '', 340500, '', '', 3),
 (341500, '六安市', '六安', 340000, '', '', 2),
 (341502, '金安区', '', 341500, '', '', 3),
 (341503, '裕安区', '', 341500, '', '', 3),
@@ -1680,7 +1684,6 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (410328, '洛宁县', '', 410300, '', '', 3),
 (410329, '伊川县', '', 410300, '', '', 3),
 (410381, '偃师市', '', 410300, '', '', 3),
-(471004, '高新区', '', 410300, '', '', 3),
 (410400, '平顶山市', '平顶山', 410000, '', '', 2),
 (410402, '新华区', '', 410400, '', '', 3),
 (410403, '卫东区', '', 410400, '', '', 3),
@@ -1730,9 +1733,9 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (410822, '博爱县', '', 410800, '', '', 3),
 (410823, '武陟县', '', 410800, '', '', 3),
 (410825, '温县', '', 410800, '', '', 3),
+(410881, '济源市', '济源', 410000, '', '', 2),
 (410882, '沁阳市', '', 410800, '', '', 3),
 (410883, '孟州市', '', 410800, '', '', 3),
-(410881, '济源市', '济源', 410000, '', '', 2),
 (410900, '濮阳市', '濮阳', 410000, '', '', 2),
 (410902, '华龙区', '', 410900, '', '', 3),
 (410922, '清丰县', '', 410900, '', '', 3),
@@ -2204,6 +2207,39 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (441881, '英德市', '', 441800, '', '', 3),
 (441882, '连州市', '', 441800, '', '', 3),
 (441900, '东莞市', '东莞', 440000, '', '', 2),
+(441901, '中堂镇', '', 441900, '', '', 3),
+(441902, '东坑镇', '', 441900, '', '', 3),
+(441903, '道滘镇', '', 441900, '', '', 3),
+(441904, '沙田镇', '', 441900, '', '', 3),
+(441905, '高埗镇', '', 441900, '', '', 3),
+(441906, '石龙镇', '', 441900, '', '', 3),
+(441907, '石排镇', '', 441900, '', '', 3),
+(441908, '企石镇', '', 441900, '', '', 3),
+(441909, '石碣镇', '', 441900, '', '', 3),
+(441910, '洪梅镇', '', 441900, '', '', 3),
+(441911, '麻涌镇', '', 441900, '', '', 3),
+(441912, '桥头镇', '', 441900, '', '', 3),
+(441913, '望牛墩镇', '', 441900, '', '', 3),
+(441914, '茶山镇', '', 441900, '', '', 3),
+(441915, '谢岗镇', '', 441900, '', '', 3),
+(441916, '松山湖', '', 441900, '', '', 3),
+(441917, '莞城区', '', 441900, '', '', 3),
+(441918, '南城区', '', 441900, '', '', 3),
+(441919, '长安镇', '', 441900, '', '', 3),
+(441920, '寮步镇', '', 441900, '', '', 3),
+(441921, '大岭山镇', '', 441900, '', '', 3),
+(441922, '常平镇', '', 441900, '', '', 3),
+(441923, '厚街镇', '', 441900, '', '', 3),
+(441924, '万江区', '', 441900, '', '', 3),
+(441925, '樟木头镇', '', 441900, '', '', 3),
+(441926, '大朗镇', '', 441900, '', '', 3),
+(441927, '塘厦镇', '', 441900, '', '', 3),
+(441928, '凤岗镇', '', 441900, '', '', 3),
+(441929, '清溪镇', '', 441900, '', '', 3),
+(441930, '横沥镇', '', 441900, '', '', 3),
+(441931, '东城区', '', 441900, '', '', 3),
+(441932, '黄江镇', '', 441900, '', '', 3),
+(441933, '虎门镇', '', 441900, '', '', 3),
 (442000, '中山市', '中山', 440000, '', '', 2),
 (445100, '潮州市', '潮州', 440000, '', '', 2),
 (445102, '湘桥区', '', 445100, '', '', 3),
@@ -2373,6 +2409,7 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (469037, '西沙群岛', '西沙群', 460000, '', '', 2),
 (469038, '南沙群岛', '南沙群', 460000, '', '', 2),
 (469039, '中沙群岛的岛礁及其海域', '中沙群岛的岛礁及其海', 460000, '', '', 2),
+(471004, '高新区', '', 410300, '', '', 3),
 (500000, '重庆', '重庆', 1, '', '', 1),
 (500100, '重庆市', '重庆', 500000, '', '', 2),
 (500101, '万州区', '', 500100, '', '', 3),
@@ -2634,7 +2671,8 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (520151, '金阳开发区', '', 520100, '', '', 3),
 (520181, '清镇市', '', 520100, '', '', 3),
 (520200, '六盘水市', '六盘水', 520000, '', '', 2),
-(520201, '钟山区', '', 520200, '', '', 3),
+(520201, '钟山区', '', 520200, '', '', 3);
+INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `level`) VALUES
 (520203, '六枝特区', '', 520200, '', '', 3),
 (520221, '水城县', '', 520200, '', '', 3),
 (520222, '盘县', '', 520200, '', '', 3),
@@ -2666,8 +2704,7 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (522223, '玉屏侗族自治县', '', 522200, '', '', 3),
 (522224, '石阡县', '', 522200, '', '', 3),
 (522225, '思南县', '', 522200, '', '', 3),
-(522226, '印江土家族苗族自治县', '', 522200, '', '', 3);
-INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `level`) VALUES
+(522226, '印江土家族苗族自治县', '', 522200, '', '', 3),
 (522227, '德江县', '', 522200, '', '', 3),
 (522228, '沿河土家族自治县', '', 522200, '', '', 3),
 (522229, '松桃苗族自治县', '', 522200, '', '', 3),
@@ -3458,40 +3495,7 @@ INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `leve
 (820100, '澳门半岛', '澳门半', 820000, '', '', 2),
 (820200, '离岛', '离', 820000, '', '', 2),
 (990000, '海外', '', 0, '', '', 0),
-(990100, '海外', '', 990000, '', '', 0),
-(441901, '中堂镇', '', 441900, '', '', 3),
-(441902, '东坑镇', '', 441900, '', '', 3),
-(441903, '道滘镇', '', 441900, '', '', 3),
-(441904, '沙田镇', '', 441900, '', '', 3),
-(441905, '高埗镇', '', 441900, '', '', 3),
-(441906, '石龙镇', '', 441900, '', '', 3),
-(441907, '石排镇', '', 441900, '', '', 3),
-(441908, '企石镇', '', 441900, '', '', 3),
-(441909, '石碣镇', '', 441900, '', '', 3),
-(441910, '洪梅镇', '', 441900, '', '', 3),
-(441911, '麻涌镇', '', 441900, '', '', 3),
-(441912, '桥头镇', '', 441900, '', '', 3),
-(441913, '望牛墩镇', '', 441900, '', '', 3),
-(441914, '茶山镇', '', 441900, '', '', 3),
-(441915, '谢岗镇', '', 441900, '', '', 3),
-(441916, '松山湖', '', 441900, '', '', 3),
-(441917, '莞城区', '', 441900, '', '', 3),
-(441918, '南城区', '', 441900, '', '', 3),
-(441919, '长安镇', '', 441900, '', '', 3),
-(441920, '寮步镇', '', 441900, '', '', 3),
-(441921, '大岭山镇', '', 441900, '', '', 3),
-(441922, '常平镇', '', 441900, '', '', 3),
-(441923, '厚街镇', '', 441900, '', '', 3),
-(441924, '万江区', '', 441900, '', '', 3),
-(441925, '樟木头镇', '', 441900, '', '', 3),
-(441926, '大朗镇', '', 441900, '', '', 3),
-(441927, '塘厦镇', '', 441900, '', '', 3),
-(441928, '凤岗镇', '', 441900, '', '', 3),
-(441929, '清溪镇', '', 441900, '', '', 3),
-(441930, '横沥镇', '', 441900, '', '', 3),
-(441931, '东城区', '', 441900, '', '', 3),
-(441932, '黄江镇', '', 441900, '', '', 3),
-(441933, '虎门镇', '', 441900, '', '', 3);
+(990100, '海外', '', 990000, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -3551,7 +3555,7 @@ INSERT INTO `qs_config` (`id`, `name`, `type`, `title`, `group`, `extra`, `remar
 (42, 'HOME_PER_PAGE_NUM', 'text', '前台每页显示量', 1, '', '', 1449558268, 1449558268, 1, '20', 4),
 (43, 'DEFAULT_THUMB', 'picture', '默认封面', 1, '', '设置文章的默认封面', 1449734897, 1449734923, 1, '', 100),
 (94, 'CONFIG_COPYRIGHT', 'ueditor', '版权信息', 1, '', '', 1484642191, 1484642191, 1, '', 11),
-(95,'BACKEND_MODULE','array','后台模块',2,'','',1507730688,1507731515,1,'admin',1);
+(95, 'BACKEND_MODULE', 'array', '后台模块', 2, '', '', 1507730688, 1507731515, 1, 'admin', 1);
 
 -- --------------------------------------------------------
 
@@ -3561,7 +3565,7 @@ INSERT INTO `qs_config` (`id`, `name`, `type`, `title`, `group`, `extra`, `remar
 
 CREATE TABLE `qs_file_pic` (
   `id` bigint(20) NOT NULL,
-  `title` varchar(200) NOT NULL default '',
+  `title` varchar(200) NOT NULL DEFAULT '',
   `file` varchar(100) NOT NULL,
   `url` varchar(500) NOT NULL DEFAULT '',
   `ref_id` varchar(200) NOT NULL DEFAULT '',
@@ -3618,6 +3622,25 @@ INSERT INTO `qs_hooks` (`id`, `name`, `desc`, `update_date`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `qs_js_errlog`
+--
+
+CREATE TABLE `qs_js_errlog` (
+  `id` int(11) NOT NULL,
+  `browser` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `msg` varchar(500) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `file` varchar(500) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `line_no` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `col_no` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `stack` varchar(2000) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `user_agent` varchar(1000) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `url` varchar(500) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `create_date` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `qs_menu`
 --
 
@@ -3628,10 +3651,10 @@ CREATE TABLE `qs_menu` (
   `sort` smallint(6) NOT NULL,
   `type` varchar(25) NOT NULL,
   `icon` varchar(50) NOT NULL,
-  `url` varchar(2000) NOT NULL default '',
-  `pid` int(11) NOT NULL default 0,
+  `url` varchar(2000) NOT NULL DEFAULT '',
+  `pid` int(11) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL,
-  `module` varchar(100) NOT NULL default ''
+  `module` varchar(100) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3673,20 +3696,19 @@ INSERT INTO `qs_node` (`id`, `name`, `title`, `status`, `remark`, `sort`, `pid`,
 (3, 'dashboard', '后台面板', 1, '', 0, 1, 2, 0, '', ''),
 (4, 'index', '平台概况', 1, '', 1, 3, 3, 0, '', ''),
 (5, 'index', '账号列表', 1, '', 0, 2, 3, 1, '', ''),
-(24, 'index', '菜单列表', 1, '', 4, 23, 3, 2, '', ''),
-(34, 'forbid', '禁用节点', 1, '', 0, 21, 3, 0, '', ''),
-(33, 'resume', '启用菜单', 1, '', 0, 23, 3, 0, '', ''),
-(32, 'forbid', '禁用菜单', 1, '', 0, 23, 3, 0, '', ''),
 (15, 'role', '组管理', 1, '', 0, 1, 2, 0, '', ''),
-(31, 'add', '新增账号', 1, '', 0, 2, 3, 0, '', ''),
-(23, 'menu', '菜单管理', 1, '', 1, 1, 2, 0, '', ''),
 (21, 'node', '节点管理', 1, '', 0, 1, 2, 0, '', ''),
-(59, 'delete', '删除组', 1, '', 1, 15, 3, 0, '', ''),
+(23, 'menu', '菜单管理', 1, '', 1, 1, 2, 0, '', ''),
+(24, 'index', '菜单列表', 1, '', 4, 23, 3, 2, '', ''),
 (26, 'add', '新增菜单', 1, '', 0, 23, 3, 0, '', ''),
 (27, 'edit', '修改菜单', 1, '', 0, 23, 3, 0, '', ''),
 (28, 'index', '节点列表', 1, '', 5, 21, 3, 2, '', ''),
 (29, 'add', '新增节点', 1, '', 0, 21, 3, 0, '', ''),
 (30, 'edit', '修改节点', 1, '', 0, 21, 3, 0, '', ''),
+(31, 'add', '新增账号', 1, '', 0, 2, 3, 0, '', ''),
+(32, 'forbid', '禁用菜单', 1, '', 0, 23, 3, 0, '', ''),
+(33, 'resume', '启用菜单', 1, '', 0, 23, 3, 0, '', ''),
+(34, 'forbid', '禁用节点', 1, '', 0, 21, 3, 0, '', ''),
 (35, 'resume', '启用节点', 1, '', 0, 21, 3, 0, '', ''),
 (36, 'index', '组列表', 1, '', 2, 15, 3, 1, '', ''),
 (37, 'add', '新增组', 1, '', 0, 15, 3, 0, '', ''),
@@ -3700,6 +3722,7 @@ INSERT INTO `qs_node` (`id`, `name`, `title`, `status`, `remark`, `sort`, `pid`,
 (47, 'delete', '删除账号', 1, '', 1, 2, 3, 0, '', ''),
 (48, 'delete', '删除菜单', 1, '', 1, 23, 3, 0, '', ''),
 (50, 'delete', '删除节点', 1, '', 1, 21, 3, 0, '', ''),
+(59, 'delete', '删除组', 1, '', 1, 15, 3, 0, '', ''),
 (60, 'config', '配置管理', 1, '', 0, 1, 2, 0, '', ''),
 (61, 'index', '配置管理', 1, '', 2, 60, 3, 2, '', ''),
 (62, 'add', '新增配置', 1, '', 2, 60, 3, 0, '', ''),
@@ -3710,28 +3733,27 @@ INSERT INTO `qs_node` (`id`, `name`, `title`, `status`, `remark`, `sort`, `pid`,
 (69, 'setting', '系统配置', 1, '', 1, 60, 3, 2, '', ''),
 (85, 'Syslogs', '系统日志', 1, '', 0, 1, 2, 0, '', ''),
 (86, 'index', '系统日志', 1, '系统日志列表', 99, 85, 3, 2, '', ''),
-(306, 'addons', '插件管理', 1, '', 0, 1, 2, 0, '', ''),
-(307, 'index', '插件列表', 1, '', 5, 306, 3, 2, '', ''),
 (121, 'hooks', '钩子管理', 1, '', 0, 1, 2, 0, '', ''),
 (122, 'index', '钩子列表', 1, '', 8, 121, 3, 2, '', ''),
-(126, 'edit', '修改钩子', 1, '', 1, 121, 3, 0, '', ''),
 (125, 'add', '新增钩子', 1, '', 1, 121, 3, 0, '', ''),
+(126, 'edit', '修改钩子', 1, '', 1, 121, 3, 0, '', ''),
 (127, 'forbid', '禁用钩子', 1, '', 1, 121, 3, 0, '', ''),
 (128, 'resume', '启用钩子', 1, '', 1, 121, 3, 0, '', ''),
 (129, 'delete', '删除钩子', 1, '', 1, 121, 3, 0, '', ''),
-(600, 'execute', '运行插件', 1, '', 0, 306, 3, 0, '', ''),
-(969, 'index', '内容管理', 1, '', 0, 747, 3, 76, '', ''),
 (175, 'authCheck', '权限点检查', 1, '', 1, 21, 3, 0, '', ''),
-(755, 'postCate', '资讯管理分类', 1, '', 0, 1, 2, 0, '', ''),
 (300, 'coder', '代码生成', 1, '', 0, 1, 2, 0, '', ''),
 (301, 'index', '代码生成器', 1, '', 98, 300, 3, 2, '', ''),
-(747, 'post', '资讯管理', 1, '', 0, 1, 2, 0, '', ''),
+(306, 'addons', '插件管理', 1, '', 0, 1, 2, 0, '', ''),
+(307, 'index', '插件列表', 1, '', 5, 306, 3, 2, '', ''),
+(600, 'execute', '运行插件', 1, '', 0, 306, 3, 0, '', ''),
 (659, 'forbid', '禁用', 1, '', 0, 306, 3, 0, '', ''),
 (660, 'resume', '启用', 1, '', 0, 306, 3, 0, '', ''),
 (661, 'install', '安装', 1, '', 0, 306, 3, 0, '', ''),
 (662, 'uninstall', '卸载', 1, '', 0, 306, 3, 0, '', ''),
 (663, 'config', '设置', 1, '', 0, 306, 3, 0, '', ''),
 (668, 'generate', '代码生成', 1, '', 0, 300, 3, 0, '', ''),
+(747, 'post', '资讯管理', 1, '', 0, 1, 2, 0, '', ''),
+(755, 'postCate', '资讯管理分类', 1, '', 0, 1, 2, 0, '', ''),
 (927, 'add', '新增', 1, '', 0, 747, 3, 0, '', ''),
 (928, 'forbid', '禁用', 1, '', 0, 747, 3, 0, '', ''),
 (929, 'resume', '启用', 1, '', 0, 747, 3, 0, '', ''),
@@ -3745,8 +3767,11 @@ INSERT INTO `qs_node` (`id`, `name`, `title`, `status`, `remark`, `sort`, `pid`,
 (937, 'delete', '删除', 1, '', 0, 755, 3, 0, '', ''),
 (938, 'save', '保存', 1, '', 0, 755, 3, 0, '', ''),
 (939, 'edit', '编辑', 1, '', 0, 755, 3, 0, '', ''),
+(969, 'index', '内容管理', 1, '', 0, 747, 3, 76, '', ''),
 (970, 'queue', 'queue', 1, '', 0, 1, 2, 0, '', ''),
-(971, 'index', '任务队列', 1, '', 9, 970, 3, 2, '', '');
+(971, 'index', '任务队列', 1, '', 9, 970, 3, 2, '', ''),
+(989, 'JsErrLog', 'JsErrLog', 1, '', 0, 1, 2, 0, '', ''),
+(990, 'index', '前台js异常日志', 1, '', 98, 989, 3, 2, '', '');
 
 -- --------------------------------------------------------
 
@@ -3804,19 +3829,8 @@ CREATE TABLE `qs_queue` (
   `description` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `create_date` int(11) NOT NULL,
-  `schedule` varchar(50) NOT NULL default '',
+  `schedule` varchar(50) NOT NULL DEFAULT '',
   `queue` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
-CREATE TABLE `qs_schedule` (
-  `id` varchar(50) NOT NULL primary key,
-  'run_time' int(11) NOT NULL default 0,
-  `desc` varchar(200) NOT NULL default '',
-  `preload` varchar(2000) NOT NULL default '',
-  `delete_status` tinyint(4) NOT NULL default 0,
-  `create_date` int(11) NOT NULL default 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -3847,6 +3861,21 @@ CREATE TABLE `qs_role_user` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `qs_schedule`
+--
+
+CREATE TABLE `qs_schedule` (
+  `id` varchar(50) NOT NULL,
+  `run_time` int(11) NOT NULL DEFAULT '0',
+  `desc` varchar(200) NOT NULL DEFAULT '',
+  `preload` varchar(2000) NOT NULL DEFAULT '',
+  `delete_status` tinyint(4) NOT NULL DEFAULT '0',
+  `create_date` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `qs_syslogs`
 --
 
@@ -3861,6 +3890,14 @@ CREATE TABLE `qs_syslogs` (
   `create_time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- 转存表中的数据 `qs_syslogs`
+--
+
+INSERT INTO `qs_syslogs` (`id`, `modulename`, `actionname`, `opname`, `message`, `userid`, `userip`, `create_time`) VALUES
+(1, '管理后台', 'Public', 'login', '后台登录', '1', '10.0.2.2', 1552356067),
+(2, '管理后台', '节点管理', '新增节点', '新增节点ID:990', '1', '10.0.2.2', 1552357997);
+
 -- --------------------------------------------------------
 
 --
@@ -3868,57 +3905,56 @@ CREATE TABLE `qs_syslogs` (
 --
 
 CREATE TABLE `qs_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL,
   `nick_name` varchar(30) NOT NULL,
   `salt` int(11) NOT NULL,
-  `pwd` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8 NOT NULL COMMENT 'E-mail',
-  `telephone` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '手机号码',
+  `pwd` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'E-mail',
+  `telephone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号码',
   `register_date` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `last_login_time` int(11) NOT NULL DEFAULT '0',
-  `last_login_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  `last_login_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 转存表中的数据 `qs_user`
 --
 
 INSERT INTO `qs_user` (`id`, `nick_name`, `salt`, `pwd`, `email`, `telephone`, `register_date`, `status`, `last_login_time`, `last_login_ip`) VALUES
-(1, 'admin', 665453, 'f801370d75ee676156ed8c49bcaea9e7', 'admin@quansitech.com', '15360550176', 1464594432, 1, 1488782585, '172.17.0.1');
+(1, 'admin', 665453, 'f801370d75ee676156ed8c49bcaea9e7', 'admin@quansitech.com', '15360550176', 1464594432, 1, 1552356067, '10.0.2.2');
 
 --
--- Indexes for dumped tables
+-- 转储表的索引
 --
 
 --
--- Indexes for table `qs_access`
+-- 表的索引 `qs_access`
 --
 ALTER TABLE `qs_access`
   ADD KEY `groupId` (`role_id`),
   ADD KEY `nodeId` (`node_id`);
 
 --
--- Indexes for table `qs_addons`
+-- 表的索引 `qs_addons`
 --
 ALTER TABLE `qs_addons`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_area`
+-- 表的索引 `qs_area`
 --
 ALTER TABLE `qs_area`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_coder_log`
+-- 表的索引 `qs_coder_log`
 --
 ALTER TABLE `qs_coder_log`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_config`
+-- 表的索引 `qs_config`
 --
 ALTER TABLE `qs_config`
   ADD PRIMARY KEY (`id`),
@@ -3927,25 +3963,31 @@ ALTER TABLE `qs_config`
   ADD KEY `group` (`group`);
 
 --
--- Indexes for table `qs_file_pic`
+-- 表的索引 `qs_file_pic`
 --
 ALTER TABLE `qs_file_pic`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_hooks`
+-- 表的索引 `qs_hooks`
 --
 ALTER TABLE `qs_hooks`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_menu`
+-- 表的索引 `qs_js_errlog`
+--
+ALTER TABLE `qs_js_errlog`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `qs_menu`
 --
 ALTER TABLE `qs_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_node`
+-- 表的索引 `qs_node`
 --
 ALTER TABLE `qs_node`
   ADD PRIMARY KEY (`id`),
@@ -3955,25 +3997,25 @@ ALTER TABLE `qs_node`
   ADD KEY `name` (`name`);
 
 --
--- Indexes for table `qs_post`
+-- 表的索引 `qs_post`
 --
 ALTER TABLE `qs_post`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_post_cate`
+-- 表的索引 `qs_post_cate`
 --
 ALTER TABLE `qs_post_cate`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_queue`
+-- 表的索引 `qs_queue`
 --
 ALTER TABLE `qs_queue`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `qs_role`
+-- 表的索引 `qs_role`
 --
 ALTER TABLE `qs_role`
   ADD PRIMARY KEY (`id`),
@@ -3981,16 +4023,28 @@ ALTER TABLE `qs_role`
   ADD KEY `status` (`status`);
 
 --
--- Indexes for table `qs_role_user`
+-- 表的索引 `qs_role_user`
 --
 ALTER TABLE `qs_role_user`
   ADD KEY `group_id` (`role_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `qs_syslogs`
+-- 表的索引 `qs_schedule`
+--
+ALTER TABLE `qs_schedule`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `qs_syslogs`
 --
 ALTER TABLE `qs_syslogs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `qs_user`
+--
+ALTER TABLE `qs_user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -4002,61 +4056,80 @@ ALTER TABLE `qs_syslogs`
 --
 ALTER TABLE `qs_addons`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键';
+
 --
 -- 使用表AUTO_INCREMENT `qs_coder_log`
 --
 ALTER TABLE `qs_coder_log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- 使用表AUTO_INCREMENT `qs_config`
 --
 ALTER TABLE `qs_config`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '配置ID', AUTO_INCREMENT=98;
+
 --
 -- 使用表AUTO_INCREMENT `qs_file_pic`
 --
 ALTER TABLE `qs_file_pic`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- 使用表AUTO_INCREMENT `qs_hooks`
 --
 ALTER TABLE `qs_hooks`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
+--
+-- 使用表AUTO_INCREMENT `qs_js_errlog`
+--
+ALTER TABLE `qs_js_errlog`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- 使用表AUTO_INCREMENT `qs_menu`
 --
 ALTER TABLE `qs_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+
 --
 -- 使用表AUTO_INCREMENT `qs_node`
 --
 ALTER TABLE `qs_node`
-  MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=989;
+  MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=991;
+
 --
 -- 使用表AUTO_INCREMENT `qs_post`
 --
 ALTER TABLE `qs_post`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- 使用表AUTO_INCREMENT `qs_post_cate`
 --
 ALTER TABLE `qs_post_cate`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- 使用表AUTO_INCREMENT `qs_role`
 --
 ALTER TABLE `qs_role`
   MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- 使用表AUTO_INCREMENT `qs_syslogs`
 --
 ALTER TABLE `qs_syslogs`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- 使用表AUTO_INCREMENT `qs_user`
 --
 ALTER TABLE `qs_user`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

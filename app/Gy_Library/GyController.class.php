@@ -43,6 +43,7 @@ class GyController extends Controller {
 
         $this->dbname = $this->dbname ? $this->dbname : 'Common/' . CONTROLLER_NAME;
 
+
         //未使用ajax前，暂时使用
         //将后台菜单存入缓存
         if(in_array(strtolower(MODULE_NAME), C("BACKEND_MODULE"))){

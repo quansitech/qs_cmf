@@ -61,7 +61,6 @@ class App {
      * @return void
      */
     static public function exec() {
-    
         if(!preg_match('/^[A-Za-z](\/|\w)*$/',CONTROLLER_NAME)){ // 安全检测
             $module  =  false;
         }elseif(C('ACTION_BIND_CLASS')){

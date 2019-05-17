@@ -1,6 +1,7 @@
 <?php
 
 namespace Common\Builder;
+use Gy_Library\DBCont;
 use Think\Template;
 use Think\View;
 use Think\Controller;
@@ -54,6 +55,27 @@ class ListBuilder extends Controller {
     public function setLockCol($col){
         $this->_lock_col = $col;
         return $this;
+    }
+
+    public function setNIDByNode($module, $controller, $action){
+        $module_ent = D('Node')->where(['name' => $module, 'level' => DBCont::LEVEL_MODULE, 'status' => DBCont::NORMAL_STATUS])->find();
+
+        if(!$module_ent){
+            E('setNIDByNode 传递的参数module不存在');
+        }
+
+        $controller_ent = D('Node')->where(['name' => $controller, 'level' => DBCont::LEVEL_CONTROLLER, 'status' => DBCont::NORMAL_STATUS, 'pid' => $module_ent['id']])->find();
+        if(!$controller_ent){
+            E('setNIDByNode 传递的参数controller不存在');
+        }
+
+        $action_ent = D('Node')->where(['name' => $action, 'level' => DBCont::LEVEL_ACTION, 'status' => DBCont::NORMAL_STATUS, 'pid' => $controller_ent['id']])->find();
+        if(!$action_ent){
+            E('setNIDByNode 传递的参数action不存在');
+        }
+        else{
+            return $this->setNID($action_ent['id']);
+        }
     }
 
     public function setNID($nid){
@@ -181,6 +203,16 @@ class ListBuilder extends Controller {
                 }
 
                 //这个按钮定义好了把它丢进按钮池里
+                break;
+            case 'export':
+                $my_attribute['type'] = 'export';
+                $my_attribute['title'] = '导出excel';
+                $my_attribute['target-form'] = 'ids';
+                $my_attribute['class'] = 'btn btn-primary export_excel';
+
+                if ($attribute && is_array($attribute)) {
+                    $my_attribute = array_merge($my_attribute, $attribute);
+                }
                 break;
 //            case 'recycle':  // 添加回收按钮(还原的反操作)
 //                // 预定义按钮属性以简化使用

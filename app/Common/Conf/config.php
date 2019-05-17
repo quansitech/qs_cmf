@@ -9,6 +9,8 @@ $_config = array(
 
     'UPLOAD_FILE_SIZE' => 5,
 
+    'JS_ERROR_LOG' => true,
+
     'VAR_PATHINFO' => 'baobao_',
 
     'ENCRYPT_KEY' => 'csh',
@@ -21,6 +23,9 @@ $_config = array(
     //阿里云oss
     'ALIOSS_ACCESS_KEY_ID' => '',
     'ALIOSS_ACCESS_KEY_SECRET' => '',
+
+    'ELASTIC_ALLOW_EXCEPTION' => true,
+    'ELASTICSEARCH_HOSTS' => explode(',', ENV('ELASTICSEARCH_HOSTS')),
 
     'QUEUE' => array(
         'type' => 'redis',
@@ -40,13 +45,13 @@ $_config = array(
     'UPLOAD_FILE_SIZE' => 5,
 
     //数据库连接配置
-    'DB_TYPE'               =>  'mysql',     // 数据库类型
-    'DB_HOST'               =>  '127.0.0.1', // 服务器地址
-    'DB_NAME'               =>  'qs_cmf',          // 数据库名
-    'DB_USER'               =>  'root',      // 用户名
-    'DB_PWD'                =>  'Trans2201!&*',          // 密码
-    'DB_PORT'               =>  '3306',        // 端口
-    'DB_PREFIX'             =>  'qs_',    // 数据库表前缀
+    'DB_TYPE'               =>  env('DB_CONNECTION', 'mysql'),     // 数据库类型
+    'DB_HOST'               =>  env('DB_HOST', '127.0.0.1'), // 服务器地址
+    'DB_NAME'               =>  env('DB_DATABASE', 'qs_cmf'),          // 数据库名
+    'DB_USER'               =>  env('DB_USERNAME', 'root'),      // 用户名
+    'DB_PWD'                =>  env('DB_PASSWORD', 'root'),          // 密码
+    'DB_PORT'               =>  env('DB_PORT', '3306'),        // 端口
+    'DB_PREFIX'             =>  env('DB_PREFIX', 'qs_'),    // 数据库表前缀
     'DB_FIELDTYPE_CHECK'    =>  false,       // 是否进行字段类型检查
     //以下字段缓存没有其作用
     //① 如果是调试模式就不起作用

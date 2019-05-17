@@ -5,3 +5,6 @@
 /.idea
 /js-src
 /.vscode
+/vendor
+/package
+.env

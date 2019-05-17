@@ -132,31 +132,16 @@ class GyModel extends Model {
             foreach($this->_delete_auto as $val){
                 switch ($val[0]){
                     case 'delete':
-                        if(!isset($val[1]) || !isset($val[2])){
-                            $this->error = '关联删除规则错误';
-                            return false;
+                        if(!empty($val[1]) && is_array($val[2])){
+                            $this->_autoDeleteByArr($val[1], $val[2], $options);
                         }
-                        
-                        if(empty($val[1]) || !is_array($val[2])){
-                            $this->error = '关联删除规则错误';
-                            return false;
-                        }
-                        
-                        $key = key($val[2]);
-                        $fields = $this->where($options['where'])->getField($key, true);
-                        if(!$fields){
-                            continue;
-                        }
-
-                        $relation_model = D($val[1]);
-                        if(is_array($val[3])){
-                            $map = $val[3];
+                        else if($val[1] instanceof  \Closure){
+                            $this->_autoDeleteByClosure($val[1], $options);
                         }
                         else{
-                            $map = array();
+                            $this->error = '未知删除规则';
+                            return false;
                         }
-                        $map[$val[2][$key]] = array('in', $fields);
-                        $relation_model->where($map)->delete();
                         break;
                     default:
                         break;
@@ -165,6 +150,26 @@ class GyModel extends Model {
             
         }
         return true;
+    }
+
+    protected function _autoDeleteByClosure(\Closure $callback, $options){
+        $ent_list = $this->where($options['where'])->select();
+        foreach($ent_list as $ent){
+            call_user_func($callback,$ent);
+        }
+    }
+
+    protected function _autoDeleteByArr($relation_model, $rule, $options){
+        $key = key($rule);
+        $fields = $this->where($options['where'])->getField($key, true);
+        if(!$fields){
+            return;
+        }
+
+        $relation_model = D($relation_model);
+        $map = array();
+        $map[$rule[$key]] = array('in', $fields);
+        $relation_model->where($map)->delete();
     }
 
     protected function _checkExists($model, $field, $ids){

@@ -1,14 +1,19 @@
 (function(xs, window){
   'use strict';
-
   function ExportExcel(opt){
     this.wopts = {
       bookType: 'xlsx',
       bookSST: false,
-      type: 'binary'
+      type: 'binary',
+      reqType:'GET',
+      reqBody:''
     };
-
+    if (typeof opt.reqType === 'undefined')
+    {
+        opt.reqType=this.wopts.reqType;
+    }
     this.options = opt;
+    this.export_data = [];
   }
 
   ExportExcel.prototype.s2ab = function(s){
@@ -41,6 +46,58 @@
     return new Blob([buffer], { type: "application/octet-stream" });
   }
 
+  ExportExcel.prototype.streamExport = function(rownum){
+    if(this.options.before && typeof this.options.before == 'function'){
+        this.options.before();
+    }
+    this.stream(1, rownum);
+  }
+
+  ExportExcel.prototype.stream = function(page, rownum){
+      var obj = this;
+      var reqType = this.options.reqType;
+      var reqBody = this.options.reqBody;
+      var query = 'page=' + page + '&rownum=' + rownum;
+      var url = '';
+      if (obj.options.url.indexOf('?') > 0) {
+          url = obj.options.url + '&' + query;
+      } else {
+          url = obj.options.url + '?' + query;
+      }
+      fetch(url, {
+          headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+          credentials: 'include',
+          method:reqType,
+          body:reqBody
+      }).then(function(res){
+          if(res.ok){
+            return res.json();
+          }
+          else{
+            throw 'something go error, status:' . res.status;
+          }
+      }).then(function(data) {
+          if(data.length >0){
+              obj.export_data = obj.export_data.concat(data);
+              if(obj.options.progress && typeof obj.options.progress == 'function'){
+                  obj.options.progress(page * rownum);
+              }
+              obj.stream(page+1, rownum);
+          }
+          else{
+              obj.makeExcel(obj.export_data);
+          }
+      });
+
+  }
+
+  ExportExcel.prototype.makeExcel = function(data){
+      if(this.options.after && typeof this.options.after == 'function'){
+          this.options.after();
+      }
+      this.saveAs(this.generateExcelBlob(data), this.options.fileName + '.' + (this.wopts.bookType=="biff2"?"xls":this.wopts.bookType));
+  }
+
 
   ExportExcel.prototype.export = function(){
     var obj = this;
@@ -55,10 +112,8 @@
         throw 'something go error, status:' . res.status;
       }
     }).then(function(data) {
-      if(obj.options.after && typeof obj.options.after == 'function'){
-          obj.options.after();
-      }
-      obj.saveAs(obj.generateExcelBlob(data), obj.options.fileName + '.' + (obj.wopts.bookType=="biff2"?"xls":obj.wopts.bookType));
+      obj.makeExcel(data);
+
     }).catch(function(e) {
       console.log(e);
     });

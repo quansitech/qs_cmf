@@ -27,6 +27,7 @@ class Dispatcher {
         $varController  =   C('VAR_CONTROLLER');
         $varAction      =   C('VAR_ACTION');
         $urlCase        =   C('URL_CASE_INSENSITIVE');
+
         if(isset($_GET[$varPath])) { // 判断URL里面是否有兼容模式参数
             $_SERVER['PATH_INFO'] = $_GET[$varPath];
             unset($_GET[$varPath]);
@@ -93,9 +94,11 @@ class Dispatcher {
                 }
             }
         }
+
         // 分析PATHINFO信息
         if(!isset($_SERVER['PATH_INFO'])) {
             $types   =  explode(',',C('URL_PATHINFO_FETCH'));
+
             foreach ($types as $type){
                 if(0===strpos($type,':')) {// 支持函数判断
                     $_SERVER['PATH_INFO'] =   call_user_func(substr($type,1));
@@ -110,6 +113,7 @@ class Dispatcher {
 
         $depr = C('URL_PATHINFO_DEPR');
         define('MODULE_PATHINFO_DEPR',  $depr);
+
 
         if(empty($_SERVER['PATH_INFO'])) {
             $_SERVER['PATH_INFO'] = '';
@@ -319,6 +323,7 @@ class Dispatcher {
      */
     static private function getModule($var) {
         $module   = (!empty($_GET[$var])?$_GET[$var]:C('DEFAULT_MODULE'));
+
         unset($_GET[$var]);
         if($maps = C('URL_MODULE_MAP')) {
             if(isset($maps[strtolower($module)])) {
