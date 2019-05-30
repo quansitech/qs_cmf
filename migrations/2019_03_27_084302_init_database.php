@@ -26,7 +26,7 @@ class InitDatabase extends Migration
             $table->string('title', 20)->default('')->comment('中文名');
             $table->text('description')->comment('插件描述');
             $table->tinyInteger('status')->default(1)->comment('状态');
-            $table->text('config')->comment('配置');
+            $table->text('config')->default(null)->nullable()->comment('配置');
             $table->string('author', 40)->default('')->comment('作者');
             $table->string('version', 20)->default('')->comment('版本号');
             $table->unsignedInteger('create_time')->default(0)->comment('安装时间');
