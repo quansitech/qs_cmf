@@ -478,6 +478,13 @@ function showFileUrl($file_id){
     }
 }
 
+function getAutocropConfig($key){
+    $ent = D('Addons')->where(['name' => 'AutoCrop', 'status' => 1])->find();
+    $config = json_decode($ent['config'], true);
+    $config = json_decode(html_entity_decode($config['config']), true);
+    return $config[$key];
+}
+
 
 //取缩略图
 function showThumbUrl($file_id, $prefix,$replace_img=''){
@@ -487,6 +494,14 @@ function showThumbUrl($file_id, $prefix,$replace_img=''){
 
     $file_pic = M('FilePic');
     $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+    //自动填充的测试数据处理
+    if($file_pic_ent['seed'] && $file_pic_ent['url'] && ($config = getAutocropConfig($prefix))){
+        $width = $config[0];
+        $high = $config[1];
+
+        return preg_replace('/(http[s]?\:\/\/[a-z0-9\-\.\_]+?)\/(\d+?)\/(\d+)(.*)/i', "$1/{$width}/{$high}$4", $file_pic_ent['url']);
+    }
+
     if(!$file_pic_ent && !$replace_img){
         //不存在图片时，显示默认封面图
         $file_pic_ent = $file_pic->where(array('id' => C('DEFAULT_THUMB')))->find();

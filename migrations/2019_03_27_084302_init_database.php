@@ -90,6 +90,7 @@ class InitDatabase extends Migration
             $table->tinyInteger('security')->default(0);
             $table->integer('owner')->default(0);
             $table->integer('upload_date')->default(0);
+            $table->tinyInteger('seed')->default(0);
         });
 
 
