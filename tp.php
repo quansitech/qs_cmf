@@ -35,7 +35,7 @@ define('__ROOT__', '');
 define('APP_NAME', 'app');
 define('APP_PATH',__DIR__ . '/' . APP_NAME . '/');
 define('APP_DIR', realpath(__DIR__ . '/' . APP_NAME));
-define('WWW_DIR', __DIR__);
+define('WWW_DIR', __DIR__ . '/www');
 define('TPL_PATH', APP_DIR . '/Tpl/');
 define('UPLOAD_PATH', __ROOT__ . '/Uploads');
 define('UPLOAD_DIR', WWW_DIR . DIRECTORY_SEPARATOR . 'Uploads');
