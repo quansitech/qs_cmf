@@ -3,48 +3,7 @@
 namespace Gy_Library;
 
 class DBCont{
-    
-    const HELP_STATUS_UNSOLVE = 0;
-    const HELP_STATUS_SOLVE = 1;
-    
-    const VOLUNTEER_STATUS_APPLICATING = 1;
-    const VOLUNTEER_STATUS_ACTIVE = 2;
-    const VOLUNTEER_STATUS_FORBIDDEN = 0;
-    
-    const CHILD_STATUS_APPLICATING = 1;
-    const CHILD_STATUS_ACTIVE = 2;
-    const CHILD_STATUS_FORBIDDEN = 0;
-    
-    const EMAIL_RESULT_SUCCESS = 1;
-    const EMAIL_RESULT_FAILURE = 2;
-    
-    const JOB_STATUS_WAITING = 1;
-    const JOB_STATUS_RUNNING = 2;
-    const JOB_STATUS_FAILED = 3;
-    const JOB_STATUS_COMPLETE = 4;
-    
-    const APPLICAT_STATUS_WAITING = 0;
-    const APPLICAT_STATUS_PASS = 1;
-    const APPLICAT_STATUS_FAIL = 2;
-    
-    const ORDER_STATUS_PROCESS = 1;
-    const ORDER_STATUS_FINISH = 2;
-    const ORDER_STATUS_CANCEL = 3;
-    
-    const PROCESS_STATUS_NONE = 0;
-    const PROCESS_STATUS_FINISH = 1;
-    const PROCESS_STATUS_DELAY = 2;
-    const PROCESS_STATUS_CHANGE = 3;
-    
-    const BILL_ITEM_TYPE_TOTAL = 1;
-    const BILL_ITEM_TYPE_TRAVEL = 2;
-    
-    const LEVEL_MODULE = 1;
-    const LEVEL_CONTROLLER = 2;
-    const LEVEL_ACTION = 3;
-    
-    const FORBIDDEN_STATUS = 0;
-    const NORMAL_STATUS = 1;
+
     
     const PUBLISH_STATUS = 1;
     const UNPUBLISH_STATUS = 0;
@@ -65,9 +24,6 @@ class DBCont{
     const RETURN_AUDIT_STATUS = 2;
     const PASS_AUDIT_STATUS = 1;
     const WAIT_AUDIT_STATUS = 0;
-    
-    const YES_BOOL_STATUS = 1;
-    const NO_BOOL_STATUS = 0;
     
     const YES_PAY_STATUS = 1;
     const NO_PAY_STATUS = 0;
@@ -114,13 +70,6 @@ class DBCont{
         self::FAVOUR_PAINT => '画画',
         self::FAVOUR_FOOTBALL => '足球',
         self::FAVOUR_BASKETBALL => '篮球'
-    );
-    
-    static private $_job_status = array(
-        self::JOB_STATUS_WAITING => '等待',
-        self::JOB_STATUS_RUNNING => '运行中',
-        self::JOB_STATUS_FAILED => '失败',
-        self::JOB_STATUS_COMPLETE => '完成'
     );
     
     static private $_email_result = array(
@@ -207,10 +156,7 @@ class DBCont{
     );
     
     
-    static private $_status = array(
-        self::NORMAL_STATUS => '正常',
-        self::FORBIDDEN_STATUS => '禁用'
-    );
+
     
     static private $_audit_status = array(
         self::PASS_AUDIT_STATUS => '已审核',
@@ -223,10 +169,7 @@ class DBCont{
         self::RETURN_AUDIT_STATUS => '退回'
     );
     
-    static private $_bool_status = array(
-        self::YES_BOOL_STATUS => '是',
-        self::NO_BOOL_STATUS => '否'
-    );
+
     
     static private $_pay_status = array(
         self::YES_PAY_STATUS => '已支付',
@@ -445,29 +388,7 @@ class DBCont{
         return self::$_publish_status;
     }
 
-    static function __callStatic($name, $arguments)
-    {
-        $getListFn = function($var_name){
-            return self::$$var_name;
-        };
 
-        $getListValueFn = function($var_name) use ($arguments){
-
-            return (self::$$var_name)[$arguments[0]];
-        };
-
-        $static_name = '_';
-        if(preg_match("/get(\w+)List/", $name, $matches)){
-            $static_name .= parse_name($matches[1]);
-            $fn = $getListFn;
-        }
-        elseif(preg_match("/get(\w+)/", $name, $matches)){
-            $static_name .= parse_name($matches[1]);
-            $fn = $getListValueFn;
-        }
-
-        return $fn($static_name);
-    }
     
 }
 
