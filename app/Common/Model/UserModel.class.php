@@ -2,7 +2,7 @@
 
 namespace Common\Model;
 
-use \Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class UserModel extends \Gy_Library\GyListModel implements \Gy_Library\ICheckAvailable {
 

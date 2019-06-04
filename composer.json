@@ -1,0 +1,18 @@
+{
+    "require": {
+        "tiderjian\/lara-for-tp": "^1.0",
+        "tiderjian/think-core": "*@dev"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "package\/tiderjian\/think-core"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "lara\/database\/seeds",
+            "lara\/database\/factories"
+        ]
+    }
+}

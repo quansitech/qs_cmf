@@ -2,7 +2,7 @@
 
 namespace Admin\Controller;
 use Gy_Library\GyListController;
-use Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class UserController extends GyListController{
     
@@ -48,7 +48,7 @@ class UserController extends GyListController{
        
 
         // 设置Tab导航数据列表
-        $user_status_list = DBCont::getUserStatusList();
+        $user_status_list = DBCont::getStatusList();
         foreach ($user_status_list as $key => $val) {
             $tab_list[$key]['title'] = $val;
             $tab_list[$key]['href']  = U('index', array('status' => $key));

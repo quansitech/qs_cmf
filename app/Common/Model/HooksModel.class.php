@@ -1,7 +1,7 @@
 <?php
 
 namespace Common\Model;
-use Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class HooksModel extends \Gy_Library\GyListModel{
     protected $_validate = array(

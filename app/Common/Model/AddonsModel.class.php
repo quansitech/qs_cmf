@@ -1,7 +1,7 @@
 <?php
 
 namespace Common\Model;
-use Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class AddonsModel extends \Gy_Library\GyListModel{
     

@@ -1,6 +1,6 @@
 <?php
 namespace Common\Model;
-use Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class NodeModel extends \Gy_Library\GyListModel{
     

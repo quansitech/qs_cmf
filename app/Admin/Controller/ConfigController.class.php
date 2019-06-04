@@ -2,7 +2,7 @@
 
 namespace Admin\Controller;
 use Gy_Library\GyListController;
-use Gy_Library\DBCont;
+use Qscmf\Lib\DBCont;
 
 class ConfigController extends GyListController{
     

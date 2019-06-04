@@ -2,10 +2,10 @@
 
 namespace Gy_Library;
 use Think\Controller;
-use Common\Util\GyRbac;
-use Gy_Library\DBCont;
-use Common\Lib\FlashError;
-use Common\Lib\Flash;
+use Qscmf\Lib\GyRbac;
+use Qscmf\Lib\Flash;
+use Qscmf\Lib\FlashError;
+use Qscmf\Lib\DBCont;
 
 class GyController extends Controller {
 
