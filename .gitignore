@@ -8,3 +8,5 @@
 /vendor
 /package
 .env
+
+/lara
