@@ -33,6 +33,7 @@ define('__ROOT__', '');
 
 // 定义应用目录
 define('APP_NAME', 'app');
+define('ROOT_PATH', __DIR__ . '/');
 define('APP_PATH',__DIR__ . '/' . APP_NAME . '/');
 define('APP_DIR', realpath(__DIR__ . '/' . APP_NAME));
 define('WWW_DIR', __DIR__ . '/www');

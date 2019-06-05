@@ -1,6 +1,12 @@
 <?php
 return array(
-    'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
+    'TEMPLATE_MAP' => [
+        'package/tiderjian/think-core/src/Library/Qscmf/View/default/common/head.html' => 'app/Common/View/head.html'
+    ],
+
+    'AUTOLOAD_NAMESPACE' => array(
+        'Addons' => ADDON_PATH
+    ), //扩展模块列表
 
     'LOG_RECORD'            =>  true,
 
