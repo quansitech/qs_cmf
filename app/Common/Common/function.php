@@ -1,20 +1,4 @@
 <?php
-function uniqueId(){
-    return md5(uniqid('', true));
-}
-
-function verifyAuthNode($node){
-    list($module_name, $controller_name, $action_name) = explode('.', $node);
-    return \Common\Util\GyRbac::AccessDecision($module_name, $controller_name, $action_name) ? 1 : 0;
-}
-
-function old($key, $default = null){
-    return \Common\Lib\Flash::get('qs_old_input.' . $key, $default);
-}
-
-function flashError($err_msg){
-    \Common\Lib\FlashError::set($err_msg);
-}
 
 function arrToQueryStr($arr){
     $buff = "";
@@ -29,11 +13,6 @@ function arrToQueryStr($arr){
     return $buff;
 }
 
-function asset($path){
-    $config = C('ASSET');
-    return $config['prefix'] . $path;
-}
-
 //ISO8601 GMT时间 例如”2014-12-01T12:00:00.000Z”
 function gmt_iso8601($time) {
     $dtStr = date("c", $time);
@@ -42,41 +21,6 @@ function gmt_iso8601($time) {
     $pos = strpos($expiration, '+');
     $expiration = substr($expiration, 0, $pos);
     return $expiration."Z";
-}
-
-function http($url, $params, $method = 'GET', $header = array(), $multi = false){
-    $opts = array(
-        CURLOPT_TIMEOUT        => 30,
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_HTTPHEADER     => $header
-    );
-
-    /* 根据请求类型设置特定参数 */
-    switch(strtoupper($method)){
-        case 'GET':
-            $opts[CURLOPT_URL] = $url . '?' . http_build_query($params);
-            break;
-        case 'POST':
-            //判断是否传输文件
-            $params = $multi ? $params : http_build_query($params);
-            $opts[CURLOPT_URL] = $url;
-            $opts[CURLOPT_POST] = 1;
-            $opts[CURLOPT_POSTFIELDS] = $params;
-            break;
-        default:
-            E('不支持的请求方式！');
-    }
-
-    /* 初始化并执行curl请求 */
-    $ch = curl_init();
-    curl_setopt_array($ch, $opts);
-    $data  = curl_exec($ch);
-    $error = curl_error($ch);
-    curl_close($ch);
-    if($error) E('请求发生错误：' . $error);
-    return  $data;
 }
 
 function is_json($string){
@@ -104,15 +48,6 @@ function getOpenId(){
 function is_mobile(){
     $mobile_detect = new \Common\Util\Mobile_Detect();
     return $mobile_detect->isMobile();
-}
-
-//只替换第一次出现该字符的地方
-function str_replace_first($search, $replace, $subject){
-    $len = strlen($search);
-    if(strpos($subject, $search) === false){
-        return $subject;
-    }
-    return substr($subject, 0, strpos($subject, $search)) . $replace . substr($subject, strpos($subject, $search) + $len);
 }
 
 function showImageByHttp($file){
@@ -177,23 +112,6 @@ function intConvertToArr($i){
 function time_format($time = NULL,$format='Y-m-d H:i:s'){
     $time = $time === NULL ? NOW_TIME : intval($time);
     return date($format, $time);
-}
-
-//生成guid
-function guid(){
-    if (function_exists('com_create_guid')){
-        return com_create_guid();
-    }else{
-        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-        $charid = strtoupper(md5(uniqid(rand(), true)));
-        $hyphen = chr(45);// "-"
-        $uuid = substr($charid, 0, 8).$hyphen
-                .substr($charid, 8, 4).$hyphen
-                .substr($charid,12, 4).$hyphen
-                .substr($charid,16, 4).$hyphen
-                .substr($charid,20,12);
-        return $uuid;
-    }
 }
 
 //遍历$path下的所有文件
@@ -439,87 +357,7 @@ function getFile($file_id){
         return $file_pic_ent;
     }
 }
-//展示数据库存储文件URL地址
-function showFileUrl($file_id){
-    if(filter_var($file_id, FILTER_VALIDATE_URL)){
-        return $file_id;
-    }
 
-    $file_pic = M('FilePic');
-    $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
-
-    if(!$file_pic_ent){
-        return '';
-    }
-
-    //如果图片是网络链接，直接返回网络链接
-    if(!empty($file_pic_ent['url']) && $file_pic_ent['security'] != 1){
-        return $file_pic_ent['url'];
-    }
-
-    if($file_pic_ent['security'] == 1){
-        //alioss
-        if(!empty($file_pic_ent['url'])){
-            $ali_oss = new \Common\Util\AliOss();
-            $config = C('UPLOAD_TYPE_' . strtoupper($file_pic_ent['cate']));
-            $object = trim(str_replace($config['oss_host'], '', $file_pic_ent['url']), '/');
-            $url = $ali_oss->getOssClient($file_pic_ent['cate'])->signUrl($object, 60);
-            return $url;
-        }
-
-        if(strtolower(MODULE_NAME) == 'admin' || $file_pic_ent['owner'] == session(C('USER_AUTH_KEY'))){
-
-            session('file_auth_key', $file_pic_ent['owner']);
-            return U('/api/upload/load', array('file_id' => $file_id));
-        }
-    }
-    else{
-        return UPLOAD_PATH . '/' . $file_pic_ent['file'];
-    }
-}
-
-function getAutocropConfig($key){
-    $ent = D('Addons')->where(['name' => 'AutoCrop', 'status' => 1])->find();
-    $config = json_decode($ent['config'], true);
-    $config = json_decode(html_entity_decode($config['config']), true);
-    return $config[$key];
-}
-
-
-//取缩略图
-function showThumbUrl($file_id, $prefix,$replace_img=''){
-    if(filter_var($file_id, FILTER_VALIDATE_URL)){
-        return $file_id;
-    }
-
-    $file_pic = M('FilePic');
-    $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
-    //自动填充的测试数据处理
-    if($file_pic_ent['seed'] && $file_pic_ent['url'] && ($config = getAutocropConfig($prefix))){
-        $width = $config[0];
-        $high = $config[1];
-
-        return preg_replace('/(http[s]?\:\/\/[a-z0-9\-\.\_]+?)\/(\d+?)\/(\d+)(.*)/i', "$1/{$width}/{$high}$4", $file_pic_ent['url']);
-    }
-
-    if(!$file_pic_ent && !$replace_img){
-        //不存在图片时，显示默认封面图
-        $file_pic_ent = $file_pic->where(array('id' => C('DEFAULT_THUMB')))->find();
-    }
-    $file_name = basename(UPLOAD_DIR . '/' . $file_pic_ent['file']);
-    $thumb_path = UPLOAD_DIR . '/' . str_replace($file_name, $prefix . '_' . $file_name, $file_pic_ent['file']);
-    //当file字段不存在值时，程序编程检测文件夹是否存在，依然会通过。因此要加上当file字段有值这项条件
-    if(file_exists($thumb_path) === true && !empty($file_pic_ent['file'])){
-
-        return UPLOAD_PATH . '/' . str_replace($file_name, $prefix . '_' . $file_name, $file_pic_ent['file']);
-    }
-    elseif($replace_img){
-        return $replace_img;
-    }
-    else{
-        return showFileUrl($file_id);
-    }
-}
 
 //展示数据库存储文件缩略图URL地址
 function showFileSmallUrl($file_id){
@@ -839,60 +677,6 @@ function maskName($name, $mask = '*'){
     if($len > 1){
         return $first . str_repeat($mask, $len - 1);
     }
-}
-
-//可逆加密算法
-function encrypt($data, $key)
-{
-	$key	=	md5($key);
-    $x		=	0;
-    $len	=	strlen($data);
-    $l		=	strlen($key);
-    for ($i = 0; $i < $len; $i++)
-    {
-        if ($x == $l)
-        {
-        	$x = 0;
-        }
-        $char .= $key{$x};
-        $x++;
-    }
-    for ($i = 0; $i < $len; $i++)
-    {
-        $str .= chr(ord($data{$i}) + (ord($char{$i})) % 256);
-    }
-    return base64_encode($str);
-}
-
-//可逆解密算法
-function decrypt($data, $key)
-{
-    $key = md5($key);
-    $x = 0;
-    $data = base64_decode($data);
-    $len = strlen($data);
-    $l = strlen($key);
-    for ($i = 0; $i < $len; $i++)
-    {
-        if ($x == $l)
-        {
-        	$x = 0;
-        }
-        $char .= substr($key, $x, 1);
-        $x++;
-    }
-    for ($i = 0; $i < $len; $i++)
-    {
-        if (ord(substr($data, $i, 1)) < ord(substr($char, $i, 1)))
-        {
-            $str .= chr((ord(substr($data, $i, 1)) + 256) - ord(substr($char, $i, 1)));
-        }
-        else
-        {
-            $str .= chr(ord(substr($data, $i, 1)) - ord(substr($char, $i, 1)));
-        }
-    }
-    return $str;
 }
 
 
@@ -1509,7 +1293,7 @@ function idToNameFromModel($id_str, $model_name, $id_key, $name_key){
     return trim($return_str, ',');
 }
 
-//将id序列转换成对应的名称序列
+//将id序列转换成对应的名称序列str_replace_first
 function idToNameFromDBCont($id_str, $function_name){
     $arr = explode(',', $id_str);
 
@@ -1525,62 +1309,7 @@ function idToNameFromDBCont($id_str, $function_name){
     return trim($return_str, ',');
 }
 
-/**
- * 配合文件上传插件使用  把file_ids转化为srcjson
- * example: $ids = '1,2'  
- *   return: [ "https:\/\/csh-pub-resp.oss-cn-shenzhen.aliyuncs.com\/Uploads\/image\/20181123\/5bf79e7860393.jpg",
- *          //有数据的时候返回showFileUrl($id)的结果
- *    ''    //没有数据时返回空字符串
- *   ];
- * @param $ids array|string file_ids
- * @return string data srcjson
- */
-function fidToSrcjson($ids){
-    if ($ids) {
-        if (!is_array($ids)) {
-            $ids = explode(',', $ids);
-        }
-        $json = [];
-        foreach ($ids as $id) {
-            $json[] = showFileUrl($id);
-        }
-        return htmlentities(json_encode($json));
-    }else{
-        return '';
-    }
-}
 
-
-/**
- * 裁剪字符串
- *   保证每个裁切的字符串视觉长度一致,而curLength裁剪会导致视觉长度参差不齐
- *   frontCutLength: 中文算2个字符长度，其他算1个长度
- *   curLength:      每个字符都是算一个长度
- *
- *   example1: 若字符串长度小等于$len,将会原样输出$str;
- *   frontCutLength('字符1',5)；    @return: '字符1';
- *
- *   example2: 若字符串长度大于$len
- *   frontCutLength('字符12',5)；   @return: '字...';(最后的"..."会算入$len)
- *
- *   example3: 若字符串长度大于$len，且最大长度的字符不能完整输出,则最大长度的字符会被忽略
- *   frontCutLength('1字符串',5)；  @return: '1....';("字"被省略，最后的"..."会算入$len)
- *
- * @param $str string 要截的字符串
- * @param $len int|string 裁剪的长度 按英文的长度计算
- * @return false|string
- */
-function frontCutLength($str,$len){
-    $gbStr=iconv('UTF-8','GBK',$str);
-    $count=strlen($gbStr);
-    if ($count<=$len){
-        return $str;
-    }
-    $gbStr=mb_strcut($gbStr,0,$len-3,'GBK');
-
-    $str=iconv('GBK','UTF-8',$gbStr);
-    return $str.'...';
-}
 
 //前台信息展示类函数 end
 

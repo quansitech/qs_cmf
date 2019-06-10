@@ -1,6 +1,6 @@
 <?php
 // 应用入口文件
-ini_set('display_errors', '0');
+ini_set('display_errors', '1');
 
 // 检测PHP环境
 if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
@@ -17,8 +17,8 @@ function show_bug_ajax($object){
     header('Content-Type:application/json; charset=utf-8');
     exit(json_encode($object,0));
 }
-require __DIR__ . '/core/Common/functions.php';
-require __DIR__ . '/app/Common/Common/function.php';
+//require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
+//require __DIR__ . '/app/Common/Common/function.php';
 require __DIR__ . '/vendor/autoload.php';
 
 $dotenv = \Dotenv\Dotenv::create(__DIR__ );
@@ -95,5 +95,5 @@ define('ADDON_PATH', APP_PATH . 'Addons/');
 //show_bug($_SERVER);
 
 // 引入ThinkPHP入口文件
-require '../core/ThinkPHP.php';
+require 'vendor/tiderjian/think-core/src/ThinkPHP.php';
 

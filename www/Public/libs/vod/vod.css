@@ -1,0 +1,39 @@
+.video_delete{
+  cursor:pointer;
+  position:absolute;
+  left:90%;
+  top:0;
+  color:red;
+}        
+
+.ossuploader-add, .ossuploader-dash-border{
+  border:1px dashed #bbbbbb;
+  width:30%;
+  display:flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right:2%;
+  margin-bottom:2%;
+  height:120px;
+}
+
+.ossuploader-dash-border{
+    position:relative;
+    text-align:center;
+    background:#e8e8e8;
+}
+
+.vod-file{
+    opacity:  0;
+    position:  absolute;
+    z-index: 1;
+    height: 34px;    
+}
+
+.vod-content{
+    position:  relative;
+    cursor: pointer;
+    width: 82px;
+    height: 34px;
+    overflow:  hidden    
+}

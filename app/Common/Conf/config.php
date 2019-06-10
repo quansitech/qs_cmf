@@ -1,5 +1,5 @@
 <?php
-$_config = array(
+return array(
     'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
     'SHOW_PAGE_TRACE'       =>  false,
 
@@ -213,15 +213,3 @@ $_config = array(
         '__ADDONSJS__' => __ROOT__ . '/Public/Addons'
     ),
 );
-
-
-// 返回合并的配置
-if(defined('APP_PATH')){
-    return array_merge(
-        $_config,  // 系统全局默认配置
-        include APP_PATH.'/Common/Builder/config.php'  // 包含Builder配置
-    );
-}
-else{
-    return $_config;
-}

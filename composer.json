@@ -1,0 +1,19 @@
+{
+    "require": {
+        "tiderjian/lara-for-tp": "^1.1",
+        "tiderjian/think-core": "*@dev",
+        "funkjedi/composer-include-files": "^1.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "package/tiderjian/think-core"
+        }
+    ],
+    "extra": {
+        "include_files": [
+            "vendor/tiderjian/think-core/src/Common/functions.php",
+            "vendor/tiderjian/think-core/src/Library/Qscmf/Helper/function.php"
+        ]
+    }
+}
