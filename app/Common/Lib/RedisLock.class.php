@@ -6,7 +6,7 @@
  * Time: 10:23
  */
 
-namespace Common\Util;
+namespace Common\Lib;
 
 
 class RedisLock
