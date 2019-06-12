@@ -35,7 +35,7 @@ class PublicController extends Controller {
 //        \Think\Log::write('login 分析');
 //        \Think\Log::write(json_encode($_SERVER));
 //        \Think\Log::write('login 分析');
-        if(!empty($_POST)){
+        if(IS_POST){
 
             $r = $this->adminLogin(I('post.uid'), I('post.pwd'));
 
@@ -46,18 +46,21 @@ class PublicController extends Controller {
                 $this->success(l('login success'), U('Dashboard/index'));
             }
         }
-        
-        if (!isAdminLogin()) {
+        else{
+            if (!isAdminLogin()) {
 
-            //是否显示验证码
-            if (isShowVerify()) {
-                $this->assign('verify_show', true);
+                //是否显示验证码
+                if (isShowVerify()) {
+                    $this->assign('verify_show', true);
+                }
+
+                $this->display();
+            } else {
+                $this->redirect('Dashboard/index');
             }
-
-            $this->display();
-        } else {
-            $this->redirect('Dashboard/index');
         }
+        
+
     }
 
     //后台退出

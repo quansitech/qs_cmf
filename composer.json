@@ -1,6 +1,5 @@
 {
     "require": {
-        "tiderjian/lara-for-tp": "^1.1",
         "tiderjian/think-core": "*@dev",
         "funkjedi/composer-include-files": "^1.0"
     },
