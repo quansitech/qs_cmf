@@ -15,12 +15,21 @@
 git clone https://github.com/tiderjian/qs_cmf.git
 ```
 
-安装lara-for-tp扩展，安装和使用方法查看[此处](https://github.com/tiderjian/lara-for-tp)
+代码拉取完成后，执行composer安装
 ```
-composer require tiderjian/lara-for-tp
+composer install
 ```
 
-安装完成后将qs_cmf\migrations复制到lara\database\migrations，复制.env.example并重命名为.env，配置数据库参数，执行migrate数据库迁移命令。
+安装完成依赖包后分别执行以下命令
+```
+vendor/bin/larafortp
+vendor/bin/qsinstall
+```
+
+1. 将qs_cmf\migrations复制到lara\database
+2. 复制qs_cmf\tests到lara路径下
+3. 复制.env.example并重命名为.env，配置数据库参数
+4. 执行migrate数据库迁移命令。
 
 ```
 php artisan migrate
@@ -209,6 +218,129 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 如果$file_id对应的是用seed功能填充出来的图片，还可以依据前缀获取到所希望图片的大小，自动构造相同的大小的图片url。
 使用该函数即可在不做任何代码改动的情况下完好的作用在本地图片上传和填充伪造图片的两种场景。
 ```
+
+## 测试
+
+在看以下文档时，建议结合qscmf自带的测试用例代码阅读。
+
+#### http测试
+http测试实则是模拟接口请求，测试接口逻辑是否与预期一致。
+
+qscmf使用phpunit作为测试框架，在lara\tests下创建测试类，http测试类需要继承Testing\TestCase类，也可以直接使用larafortp下stub里已经构建好的TestCase。
+
+````php
+<?php
+namespace Lara\Tests\Feature;
+
+use Testing\TestCase;
+
+class AuthTest extends TestCase {
+    
+}
+````
+
+构造get请求
+
+```php
+/**
+* @uri 请求url
+* @header 自定义请求头 数组类型  例如: ['x-header' => 'value']
+* @return 返回请求结果
+**/
+$this->get($uri, $header);
+
+样例代码 tests/Feature/AuthTest.php
+```
+
+构造post请求
+```php
+/**
+* @uri 请求url
+* @data 需发送的数据 数组类型  例如: [ 'uid' => 'admin', 'pwd' => '123456']
+* 可存放上传文件  例如: [ 'file' => $file ] $file类型必须为SymfonyUploadedFile类型
+* @header 自定义请求头 数组类型  例如: ['x-header' => 'value']
+* @return 返回请求结果
+**/
+$this->post($uri, $data, $header);
+
+样例代码 tests/Feature/AuthTest.php
+```
+
+模拟超级管理员登录
+```php
+$this->loginSuperAdmin();
+```
+
+模拟普通后台用户登录
+```php
+/**
+* $uid 用户id
+**/
+$this->loginUser($uid);
+```
+
+测试上传文件
+```php
+//构造的SymfonyUploadedFile类文件对象
+$data = [
+    'file' => UploadedFile::fake()->image('test.jpg', 100, 100)
+];
+
+$content = $this->post('api/upload/uploadImage', $data);
+```
+
+测试数据库是否存在记录
+```php
+/**
+* $tablename 表名
+* $where 查询条件 例如: [ 'name' => 'admin', 'status' => '1' ]
+**/
+$this->assertDatabaseHas($tablename, $where);
+
+样例代码 tests/Feature/UploadTest.php
+```
+
+测试数据库是否不存在记录
+```php
+/**
+* $tablename 表名
+* $where 查询条件 例如: [ 'name' => 'admin', 'status' => '1' ]
+**/
+$this->assertDatabaseMissing($tablename, $where);
+
+样例代码 tests/Feature/UserTest.php
+```
+
+### 创建Mock类
+如果代码需要请求第三方接口，或者触发一些我们不想在测试里执行的的代码，可以采用Mock类模仿该部分的逻辑，达到只测试接口的目的。
+
+mock类的创建使用phpunit提供的方法
+```php
+//Foo为需模仿的类,phpunit会自动给我们生成模拟类，方法没有指定返回值，默认返回null
+$stub = $this->createMock(Foo::class);
+
+//也可以指定方法的返回值
+$stub->method('say')->willReturn(1);
+
+//给Foo类指定Mock实例
+app()->instance(Foo::class, $stub);
+·
+·
+·
+//业务代码的设计需可测试，如Mock模仿的代码必须封装成类，定义接口解耦逻辑
+//用laravel的依赖容器自动构造Foo实例，这样可达到测试实例用Mock实例替换实际业务类的目的
+$foo = app()->make(Foo::class);
+//该接口方法在测试执行时，会返回我们指定返回的值
+$foo->say();
+
+样例代码: tests/Feature/MockTest.php
+```
+
+
+### Dusk测试
+Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了一下，只需继承Testing\DuskTestCase类即可使用，具体的使用方法可查看[laravel文档](https://learnku.com/docs/laravel/5.8/dusk/3943)。
+
+样例代码: tests/LoginTest.php
 
 ## 文档
 由于工作量大，文档会逐步补全。

@@ -10,3 +10,4 @@
 .env
 
 /lara
+.phpunit.result.cache

@@ -66,7 +66,7 @@ class NodeController extends GyListController {
         }
 
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
 
         $builder = $builder->setMetaTitle('节点管理')  // 设置页面标题
                                     ->addTopButton('addnew')   // 添加新增按钮
@@ -132,7 +132,7 @@ class NodeController extends GyListController {
             $menu_list = $menu_model->getMenuListGroupByType();
             $this->assign('menu_list_json', json_encode($menu_list));
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
 
             $data_list = array(
             "status"=>1,            );
@@ -201,7 +201,7 @@ class NodeController extends GyListController {
 
 
             // 使用FormBuilder快速建立表单页面。
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑用户')  // 设置页面标题
                     ->setNID(28)
                     ->setPostUrl(U('edit'))    //设置表单提交地址

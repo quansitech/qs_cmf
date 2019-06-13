@@ -18,7 +18,7 @@ class SyslogsController extends GyListController{
         $data_list = $syslog_model->getListForPage('', $page->nowPage, $page->listRows, 'create_time desc');
 
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('系统日记')  // 设置页面标题
         ->setNID(24)

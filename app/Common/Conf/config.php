@@ -1,5 +1,5 @@
 <?php
-$_config = array(
+return array(
     'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
     'SHOW_PAGE_TRACE'       =>  false,
 
@@ -193,17 +193,6 @@ $_config = array(
         'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
     ),
 
-    'USER_AUTH_ON'      =>   true, //是否需要认证
-    'USER_AUTH_TYPE'    =>   2,  //认证类型
-    'USER_AUTH_KEY'     =>   'auth_id', //认证识别号
-    'USER_AUTH_MODEL'   =>   'user',
-    'USER_AUTH_ADMINID' =>   '1',
-
-    'RBAC_ROLE_TABLE' => 'qs_role',
-    'RBAC_USER_TABLE' => 'qs_role_user',
-    'RBAC_ACCESS_TABLE' => 'qs_access',
-    'RBAC_NODE_TABLE' => 'qs_node',
-
     //分页参数
     'VAR_PAGE' => 'page',
 
@@ -213,15 +202,3 @@ $_config = array(
         '__ADDONSJS__' => __ROOT__ . '/Public/Addons'
     ),
 );
-
-
-// 返回合并的配置
-if(defined('APP_PATH')){
-    return array_merge(
-        $_config,  // 系统全局默认配置
-        include APP_PATH.'/Common/Builder/config.php'  // 包含Builder配置
-    );
-}
-else{
-    return $_config;
-}

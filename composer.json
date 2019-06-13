@@ -1,0 +1,12 @@
+{
+    "require": {
+        "tiderjian/think-core": "^1.0",
+        "funkjedi/composer-include-files": "^1.0"
+    },
+    "extra": {
+        "include_files": [
+            "vendor/tiderjian/think-core/src/Common/functions.php",
+            "vendor/tiderjian/think-core/src/Library/Qscmf/Helper/function.php"
+        ]
+    }
+}

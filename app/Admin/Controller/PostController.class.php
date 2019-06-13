@@ -44,7 +44,7 @@ class PostController extends GyListController{
         $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'sort asc');
         
 
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('内容管理')        
         ->addSearchItem('cate_id', 'select', '所有分类', D("PostCate")->getParentOptions("id","name"))->addSearchItem('status', 'select', '所有状态', DBCont::getStatusList())        ->addSearchItem('', 'select_text', '搜索内容', array('title'=>'标题'))                
@@ -92,7 +92,7 @@ class PostController extends GyListController{
             }
         }
         else {
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             
             $data_list = array(
             "status"=>1, 
@@ -150,7 +150,7 @@ class PostController extends GyListController{
             $info = D('Post')->getOne($id);
 
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑内容') 
                     ->setPostUrl(U('edit'))    
                     ->setNID(969)
