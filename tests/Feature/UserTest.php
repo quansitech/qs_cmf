@@ -3,7 +3,7 @@ namespace Lara\Tests\Feature;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Lara\Tests\TestCase;
+use Testing\TestCase;
 
 class UserTest extends TestCase {
 

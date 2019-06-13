@@ -2,7 +2,7 @@
 namespace Lara\Tests\Feature;
 
 use Home\Lib\Foo;
-use Lara\Tests\TestCase;
+use Testing\TestCase;
 
 class MockTest extends TestCase{
 

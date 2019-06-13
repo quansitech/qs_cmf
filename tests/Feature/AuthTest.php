@@ -2,7 +2,7 @@
 namespace Lara\Tests\Feature;
 
 use Illuminate\Support\Str;
-use Lara\Tests\TestCase;
+use Testing\TestCase;
 
 class AuthTest extends TestCase {
 
