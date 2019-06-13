@@ -15,12 +15,21 @@
 git clone https://github.com/tiderjian/qs_cmf.git
 ```
 
-安装lara-for-tp扩展，安装和使用方法查看[此处](https://github.com/tiderjian/lara-for-tp)
+代码拉取完成后，执行composer安装
 ```
-composer require tiderjian/lara-for-tp
+composer install
 ```
 
-安装完成后将qs_cmf\migrations复制到lara\database\migrations，复制.env.example并重命名为.env，配置数据库参数，执行migrate数据库迁移命令。
+安装完成依赖包后分别执行以下命令
+```
+vendor/bin/larafortp
+vendor/bin/qsinstall
+```
+
+1. 将qs_cmf\migrations复制到lara\database
+2. 复制qs_cmf\tests到lara路径下
+3. 复制.env.example并重命名为.env，配置数据库参数
+4. 执行migrate数据库迁移命令。
 
 ```
 php artisan migrate

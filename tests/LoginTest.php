@@ -2,9 +2,9 @@
 namespace Lara\Tests\Featrue;
 
 use Illuminate\Support\Facades\DB;
-use Lara\Tests\TestCase;
+use Lara\Tests\DuskTestCase;
 
-class LoginTest extends TestCase {
+class LoginTest extends DuskTestCase {
 
     public function testAdminLogin(){
         $this->browse(function($browser){
@@ -13,7 +13,7 @@ class LoginTest extends TestCase {
             $browser->visit("/admin/Public/login")
                 ->waitFor('#login-box')
                 ->type('uid', 'admin')
-                ->type('pwd', 'kl201701')
+                ->type('pwd', 'admin123')
                 ->press('button[type=submit]')
                 ->waitFor('.user-menu')
                 ->assertSeeIn('.user-menu', 'admin');
