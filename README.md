@@ -311,7 +311,7 @@ $this->assertDatabaseMissing($tablename, $where);
 样例代码 tests/Feature/UserTest.php
 ```
 
-### 创建Mock类
+#### 创建Mock类
 如果代码需要请求第三方接口，或者触发一些我们不想在测试里执行的的代码，可以采用Mock类模仿该部分的逻辑，达到只测试接口的目的。
 
 mock类的创建使用phpunit提供的方法
@@ -337,7 +337,7 @@ $foo->say();
 ```
 
 
-### Dusk测试
+#### Dusk测试
 Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了一下，只需继承Testing\DuskTestCase类即可使用，具体的使用方法可查看[laravel文档](https://learnku.com/docs/laravel/5.8/dusk/3943)。
 
 样例代码: tests/LoginTest.php
