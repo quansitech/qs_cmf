@@ -5,7 +5,17 @@
 ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)
 
 ## 介绍
-快速搭建信息管理类系统的框架。基于tp3.2开发，但修改了部分tp源码 ，如该框架支持嵌套事务（原tp3.2不支持嵌套事务）。除此外还集成了众多信息管理系统用到的功能，如队列、插件系统、后台表单生成器、列表生成器等。
+快速搭建信息管理类系统的框架。基于tp3.2开发,在其基础上添加了许多功能特性。tp3.2已经停止更新，该框架源码也对核心源码做了部分改动。
+
+## 特性
++ 支持composer依赖管理
++ 支持phpunit及laravel dusk自动化测试
++ 集成laravel数据库管理工具及依赖注入容器
++ 支持Listbuilder、Formbuilder后台管理界面模块化开发
++ 插件系统
++ 简单易用，可自定义的配置管理
++ 消息队列系统
++ 集成Elasticsearch、可自定义索引重建自制，实现数据库记录与搜索引擎索引同步变动
 
 ## 截图
 <img src="https://user-images.githubusercontent.com/1665649/55472251-36458e80-563e-11e9-87c0-10c386d5bd78.png" />
