@@ -9,5 +9,4 @@
 /package
 .env
 
-/lara
 .phpunit.result.cache
