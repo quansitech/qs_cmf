@@ -18,6 +18,8 @@ class InitDatabase extends Migration
             $table->smallInteger('node_id', false, true);
             $table->tinyInteger('level');
             $table->string('module', 50)->nullable();
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_addons', function (Blueprint $table) {
@@ -31,6 +33,8 @@ class InitDatabase extends Migration
             $table->string('version', 20)->default('')->comment('版本号');
             $table->unsignedInteger('create_time')->default(0)->comment('安装时间');
             $table->unsignedTinyInteger('has_adminlist')->default(0)->comment('是否有后台列表');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_area', function(Blueprint $table){
@@ -41,6 +45,8 @@ class InitDatabase extends Migration
             $table->string('ename', 100);
             $table->string('pinyin', 100);
             $table->tinyInteger('level');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $areas = require database_path('migrations/data/area_data.php');
@@ -53,6 +59,8 @@ class InitDatabase extends Migration
             $table->text('content');
             $table->integer('create_date');
             $table->string('name', 50);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $coderLogs = require database_path('migrations/data/coder_log_data.php');;
@@ -72,6 +80,8 @@ class InitDatabase extends Migration
             $table->tinyInteger('status')->default(0)->comment('状态');
             $table->text('value')->comment('配置值');
             $table->unsignedSmallInteger('sort')->default(0)->comment('排序');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $configs = require database_path('migrations/data/config_data.php');
@@ -91,6 +101,8 @@ class InitDatabase extends Migration
             $table->integer('owner')->default(0);
             $table->integer('upload_date')->default(0);
             $table->tinyInteger('seed')->default(0);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
 
@@ -100,6 +112,8 @@ class InitDatabase extends Migration
             $table->string('desc', 500);
             $table->integer('update_date');
             $table->tinyInteger('status');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $hooks = require database_path('migrations/data/hooks_data.php');
@@ -118,6 +132,8 @@ class InitDatabase extends Migration
             $table->string('user_agent', 1000)->default('');
             $table->string('url', 500)->default('');
             $table->integer('create_date')->default(0);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
 
@@ -132,6 +148,8 @@ class InitDatabase extends Migration
             $table->integer('pid')->default(0);
             $table->integer('level');
             $table->string('module', 100)->default('');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $menus = require database_path('migrations/data/menu_data.php');
@@ -150,6 +168,8 @@ class InitDatabase extends Migration
             $table->integer('menu_id')->default(0);
             $table->string('icon', 50)->default('');
             $table->string('url', 500)->default('');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $nodes = require database_path('migrations/data/node_data.php');
@@ -173,6 +193,8 @@ class InitDatabase extends Migration
             $table->tinyInteger('status')->comment('状态');
             $table->string('english_name', 50);
             $table->tinyInteger('up');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_post_cate', function(Blueprint $table){
@@ -185,6 +207,8 @@ class InitDatabase extends Migration
             $table->string('url', 500)->comment('url');
             $table->text('content')->comment('分类详情');
             $table->tinyInteger('status')->comment('状态');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_queue', function(Blueprint $table){
@@ -196,6 +220,8 @@ class InitDatabase extends Migration
             $table->integer('create_date');
             $table->string('schedule', 50)->default('');
             $table->string('queue', 50);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_role', function(Blueprint $table){
@@ -204,11 +230,15 @@ class InitDatabase extends Migration
             $table->smallInteger('pid')->default(0);
             $table->unsignedTinyInteger('status')->nullable()->default(null);
             $table->string('remark', 255)->nullable()->default(null);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_role_user', function(Blueprint $table){
             $table->unsignedMediumInteger('role_id')->nullable()->default(null);
             $table->char('user_id', 32)->nullable()->default(null);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_schedule', function(Blueprint $table){
@@ -218,6 +248,8 @@ class InitDatabase extends Migration
             $table->string('preload', 2000)->default('');
             $table->tinyInteger('delete_status')->default(0);
             $table->integer('create_date')->default(0);
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_syslogs', function(Blueprint $table){
@@ -229,6 +261,8 @@ class InitDatabase extends Migration
             $table->string('userid', 64)->default('');
             $table->string('userip', 40);
             $table->integer('create_time');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         Schema::create('qs_user', function(Blueprint $table){
@@ -242,6 +276,8 @@ class InitDatabase extends Migration
             $table->tinyInteger('status');
             $table->integer('last_login_time')->default(0);
             $table->string('last_login_ip', 20)->default('');
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
 
         $user = [
