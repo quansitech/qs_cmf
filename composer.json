@@ -8,5 +8,8 @@
             "vendor/tiderjian/think-core/src/Common/functions.php",
             "vendor/tiderjian/think-core/src/Library/Qscmf/Helper/function.php"
         ]
+    },
+    "scripts": {
+        "post-install-cmd": "./vendor/bin/qsinstall"
     }
 }
