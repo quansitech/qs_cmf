@@ -228,13 +228,13 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 #### http测试
 http测试实则是模拟接口请求，测试接口逻辑是否与预期一致。
 
-qscmf使用phpunit作为测试框架，在lara\tests下创建测试类，http测试类需要继承Testing\TestCase类，也可以直接使用larafortp下stub里已经构建好的TestCase。
+qscmf使用phpunit作为测试框架，在lara\tests下创建测试类，http测试类需要继承Lara\Tests\TestCase类。
 
 ````php
 <?php
 namespace Lara\Tests\Feature;
 
-use Testing\TestCase;
+use Lara\Tests\TestCase;
 
 class AuthTest extends TestCase {
     
@@ -251,7 +251,7 @@ class AuthTest extends TestCase {
 **/
 $this->get($uri, $header);
 
-样例代码 tests/Feature/AuthTest.php
+样例代码 lara/tests/Feature/AuthTest.php
 ```
 
 构造post请求
@@ -265,7 +265,7 @@ $this->get($uri, $header);
 **/
 $this->post($uri, $data, $header);
 
-样例代码 tests/Feature/AuthTest.php
+样例代码 lara/tests/Feature/AuthTest.php
 ```
 
 模拟超级管理员登录
@@ -299,7 +299,7 @@ $content = $this->post('api/upload/uploadImage', $data);
 **/
 $this->assertDatabaseHas($tablename, $where);
 
-样例代码 tests/Feature/UploadTest.php
+样例代码 lara/tests/Feature/UploadTest.php
 ```
 
 测试数据库是否不存在记录
@@ -310,7 +310,7 @@ $this->assertDatabaseHas($tablename, $where);
 **/
 $this->assertDatabaseMissing($tablename, $where);
 
-样例代码 tests/Feature/UserTest.php
+样例代码 lara/tests/Feature/UserTest.php
 ```
 
 #### 创建Mock类
@@ -335,14 +335,14 @@ $foo = app()->make(Foo::class);
 //该接口方法在测试执行时，会返回我们指定返回的值
 $foo->say();
 
-样例代码: tests/Feature/MockTest.php
+样例代码: lara/tests/Feature/MockTest.php
 ```
 
 
 #### Dusk测试
-Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了一下，只需继承Testing\DuskTestCase类即可使用，具体的使用方法可查看[laravel文档](https://learnku.com/docs/laravel/5.8/dusk/3943)。
+Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了一下，只需继承Lara\Tests\DuskTestCase类即可使用，具体的使用方法可查看[laravel文档](https://learnku.com/docs/laravel/5.8/dusk/3943)。
 
-样例代码: tests/LoginTest.php
+样例代码: lara/tests/LoginTest.php
 
 ## 文档
 由于工作量大，文档会逐步补全。

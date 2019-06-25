@@ -2,9 +2,9 @@
 namespace Lara\Tests\Feature;
 
 use Home\Lib\Foo;
-use Testing\TestCase;
+use Lara\Tests\TestCase;
 
-class MockTest extends TestCase{
+class MockTest extends TestCase {
 
     public function testFoo(){
 
@@ -17,7 +17,7 @@ class MockTest extends TestCase{
         app()->instance(Foo::class, $stub);
         $content = $this->get('/home/index/mock');
 
-        $this->assertTrue(true);
+        $this->assertTrue($content == 1);
     }
 
     public function testFoo1(){

@@ -6,6 +6,9 @@ namespace Home\Controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+use Home\Lib\Foo;
+
 class IndexController extends \Gy_Library\GyController{
 
     public function index(){
@@ -21,6 +24,7 @@ class IndexController extends \Gy_Library\GyController{
     }
 
     public function mock(){
-
+        $foo = app()->make(Foo::class);
+        echo $foo->say();
     }
 }
