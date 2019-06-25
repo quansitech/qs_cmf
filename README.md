@@ -30,16 +30,8 @@ git clone https://github.com/tiderjian/qs_cmf.git
 composer install
 ```
 
-安装完成依赖包后分别执行以下命令
-```
-vendor/bin/larafortp
-vendor/bin/qsinstall
-```
-
-1. 将qs_cmf\migrations复制到lara\database
-2. 复制qs_cmf\tests到lara路径下
-3. 复制.env.example并重命名为.env，配置数据库参数
-4. 执行migrate数据库迁移命令。
+1. 复制.env.example并重命名为.env，配置数据库参数
+2. 执行migrate数据库迁移命令。
 
 ```
 php artisan migrate
