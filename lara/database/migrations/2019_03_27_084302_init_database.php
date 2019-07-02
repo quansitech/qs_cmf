@@ -96,6 +96,7 @@ class InitDatabase extends Migration
             $table->string('url', 500)->default('');
             $table->string('ref_id', 200)->default('');
             $table->boolean('ref_status')->default(0)->comment('关联处理标记 如七牛的媒体转码，0 未完成 1已完成');
+            $table->string('ref_info', 2000)->default('')->comment('关联处理额外信息，如七牛转码处理失败信息');
             $table->integer('size');
             $table->float('duration', 20, 6)->default(0)->comment('音视频时长');
             $table->string('cate', 50);
