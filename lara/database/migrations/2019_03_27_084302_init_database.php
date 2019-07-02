@@ -92,10 +92,11 @@ class InitDatabase extends Migration
         Schema::create('qs_file_pic', function(Blueprint $table){
             $table->bigIncrements('id');
             $table->string('title', 200)->default('');
-            $table->string('file', 100);
+            $table->string('file', 100)->default('');
             $table->string('url', 500)->default('');
             $table->string('ref_id', 200)->default('');
-            $table->integer('size');;
+            $table->integer('size');
+            $table->float('duration', 20, 6)->default(0)->comment('音视频时长');
             $table->string('cate', 50);
             $table->tinyInteger('security')->default(0);
             $table->integer('owner')->default(0);

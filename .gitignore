@@ -3,7 +3,7 @@
 /js-src
 /.vscode
 /vendor
-/package
 .env
+/package
 
 .phpunit.result.cache
