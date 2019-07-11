@@ -123,7 +123,7 @@ class CusUpload{
         }
 
         /* 检测上传根目录 */
-        if(!$this->uploader->checkRootPath($this->rootPath)){
+        if(!$this->uploader->checkRootPath(WWW_DIR . '/' .$this->rootPath)){
             $this->error = $this->uploader->getError();
             return false;
         }
@@ -158,9 +158,7 @@ class CusUpload{
                 }
             }
             
-            
-            \Think\Log::write(json_encode($file));
-            \Think\Log::write($_SERVER['HTTP_USER_AGENT']);
+
             /* 文件上传检测 */
             if (!$this->check($file)){
                 continue;
@@ -284,7 +282,7 @@ class CusUpload{
 
         
         /* 检查是否合法上传 */
-        if (!is_uploaded_file($file['tmp_name'])) {
+        if (env('APP_ENV') != 'testing' && !is_uploaded_file($file['tmp_name'])) {
             $this->error = '非法上传文件！';
             return false;
         }

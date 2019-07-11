@@ -9,8 +9,8 @@
 namespace Admin\Controller;
 
 
-use Common\Builder\FormBuilder;
-use Common\Builder\ListBuilder;
+use Qscmf\Builder\FormBuilder;
+use Qscmf\Builder\ListBuilder;
 use Gy_Library\GyListController;
 
 class JsErrLogController extends GyListController

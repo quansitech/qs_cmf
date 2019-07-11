@@ -26,7 +26,7 @@ class RoleController extends GyListController {
         }
         
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('用户组列表')  // 设置页面标题
                                     ->addTopButton('addnew')  // 添加新增按钮

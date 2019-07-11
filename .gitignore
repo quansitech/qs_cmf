@@ -1,10 +1,9 @@
 /nbproject/
-/app/Runtime/
-/www/Uploads/
-/app/Uploads/
 /.idea
 /js-src
 /.vscode
 /vendor
-/package
 .env
+/package
+
+.phpunit.result.cache

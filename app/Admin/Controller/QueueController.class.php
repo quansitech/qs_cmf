@@ -50,7 +50,7 @@ class QueueController extends GyListController {
         }
 
 
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
 
         $builder = $builder->setMetaTitle('队列任务')->setCheckBox(false)
             ->addSearchItem('schedule', 'select', '是否计划任务', \Gy_Library\DBCont::getBoolStatusList())

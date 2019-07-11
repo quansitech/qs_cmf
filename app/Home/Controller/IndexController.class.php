@@ -6,6 +6,9 @@ namespace Home\Controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+use Home\Lib\Foo;
+
 class IndexController extends \Gy_Library\GyController{
 
     public function index(){
@@ -20,14 +23,8 @@ class IndexController extends \Gy_Library\GyController{
         $this->display();
     }
 
-    public function img(){
-        $f = file_get_contents("https://csh-pub-resp.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20170810/598c0fb49075e.jpg");
-        $file_name = '/tmp/' . guid();
-        $file = file_put_contents($file_name, $f);
-        show_bug($file);
-        show_bug($file_name);
-        $r = getimagesize($file_name);
-        show_bug($r);
+    public function mock(){
+        $foo = app()->make(Foo::class);
+        echo $foo->say();
     }
-
 }

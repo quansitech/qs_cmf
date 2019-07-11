@@ -25,7 +25,7 @@ class AddonsController extends GyListController{
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
         $data_list     =   array_slice($list, $page->firstRow, $page->listRows);
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         $builder->setMetaTitle('插件列表')
                     ->setNID(307)
                     ->setCheckBox(false)
@@ -141,7 +141,7 @@ class AddonsController extends GyListController{
             $db_config = json_decode($db_config, true);
             $addons_ent['config'] = include $data->config_file;
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('设置插件-' . $data->info['title'])
                         ->setNID(307);
             
