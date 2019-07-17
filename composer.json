@@ -2,7 +2,6 @@
     "require": {
         "tiderjian/think-core": "^1.0",
         "funkjedi/composer-include-files": "^1.0"
-        "guzzlehttp/guzzle": "^6.3"
     },
     "extra": {
         "include_files": [
