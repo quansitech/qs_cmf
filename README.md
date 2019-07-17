@@ -21,6 +21,7 @@
 <img src="https://user-images.githubusercontent.com/1665649/55472251-36458e80-563e-11e9-87c0-10c386d5bd78.png" />
 
 ## 安装
+第一种安装方法
 ```
 git clone https://github.com/tiderjian/qs_cmf.git
 ```
@@ -30,6 +31,12 @@ git clone https://github.com/tiderjian/qs_cmf.git
 composer install
 ```
 
+第二种安装方法，composer create project
+```php
+composer create-project tiderjian/qscmf qscmf
+```
+
+完成第一种或者第二种安装后
 1. 复制.env.example并重命名为.env，配置数据库参数
 2. 执行migrate数据库迁移命令。
 
