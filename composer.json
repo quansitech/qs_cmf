@@ -1,4 +1,15 @@
 {
+    "name": "tiderjian/qscmf",
+    "description": "qscmf",
+    "type": "cmf",
+    "keywords": ["thinkphp", "admin", "grid", "form"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tiderjian",
+            "email": "tider_yatsen@hotmail.com"
+        }
+    ],
     "require": {
         "tiderjian/think-core": "^1.0",
         "funkjedi/composer-include-files": "^1.0"
