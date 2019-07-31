@@ -148,9 +148,14 @@ class Resque
 	 *
 	 * @return string
 	 */
-	public static function enqueue($queue, $class, $args = null, $trackStatus = false)
-	{
-		$result = Job::create($queue, $class, $args, $trackStatus);
+    public static function enqueue($queue, $class, $args = null, $trackStatus = false, $schedule_id = '')
+    {
+        if($schedule_id){
+            $result = Job::createBySchedule($schedule_id, $queue, $class, $args, $trackStatus);
+        }
+        else{
+            $result = Job::create($queue, $class, $args, $trackStatus);
+        }
 		if ($result) {
 			Event::trigger('afterEnqueue', array(
 				'class' => $class,

@@ -63,7 +63,7 @@ class AppInitBehavior extends \Think\Behavior
         if ($config) {
             import('Common.Util.tp3-resque.autoload');
             // 初始化队列服务,使用database(1)
-            \Resque::setBackend(['redis' => $config], 1);
+            \Resque::setBackend(['redis' => $config], $config['database_index']);
             // 初始化缓存前缀
             if(isset($config['prefix']) && !empty($config['prefix']))
             \Resque\RedisCluster::prefix($config['prefix']);

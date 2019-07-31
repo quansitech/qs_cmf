@@ -163,6 +163,7 @@ class Worker
 				break;
 			}
 
+			\Think\Db::freeInstance();
             Resque::scheduleHandle($this->queues[0]);
 
 			// Attempt to find and reserve a job

@@ -21,7 +21,7 @@ class RedisCluster extends \RedisentCluster
      * Redis namespace
      * @var string
      */
-    private static $defaultNamespace = 'resque:';
+	public static $defaultNamespace = 'resque:';
 	/**
 	 * @var array List of all commands in Redis that supply a key as their
 	 *	first argument. Used to prefix keys with the Resque namespace.

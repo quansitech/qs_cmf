@@ -78,6 +78,54 @@ class Job
 		return $id;
 	}
 
+	public static function createBySchedule($schedule_id, $queue, $class, $args = null, $monitor = false)
+	{
+		if($args !== null && !is_array($args)) {
+			throw new \InvalidArgumentException(
+				'Supplied $args must be an array.'
+			);
+		}
+
+		$job_id = md5(uniqid('', true));
+
+		$pay_load = json_encode(array(
+			'class'	=> $class,
+			'args'	=> array($args),
+			'id'	=> $job_id,
+			'repeat_times' => 0,
+		));
+
+		$lua = <<<lua
+local namespace = KEYS[2]
+local queue = KEYS[1]
+local schedule_id = ARGV[1]
+local schedule_h_k = queue.."_schedule"
+local queue_s_k = namespace.."queues"
+local queue_l_k = namespace.."queue:"..queue
+local job_payload = ARGV[2]
+local del_num = redis.call('hdel', schedule_h_k, schedule_id)
+if del_num == 1 then
+	redis.call('sadd', queue_s_k, queue)
+	return redis.call('rpush', queue_l_k,job_payload)
+else
+	return 0
+end
+lua;
+		$redis = Resque::redis();
+		$r = $redis->eval($lua, 2, $queue, $redis::$defaultNamespace, $schedule_id, $pay_load);
+		if($r >1){
+			if($monitor) {
+				Status::create($job_id);
+			}
+
+			return $job_id;
+		}
+		else{
+			return false;
+		}
+
+	}
+
 	/**
 	 * Find the next available job from the specified queue and return an
 	 * instance of Resque_Job for it.
