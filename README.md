@@ -46,6 +46,9 @@ php artisan migrate
 
 将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
 
+## 维护模式
+在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中
+
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
