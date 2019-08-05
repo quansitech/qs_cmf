@@ -244,7 +244,20 @@ $module 需要高亮左侧菜单的module_name
 $controller 需要高亮左侧菜单的controller_name
 $action 需要高亮左侧菜单的action_name
 ```
+## Forbuilder
 
+#### ueditor
+指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
+```php
+//addFormItem第七个参数，传递指定的上传处理地址，加上urldomain参数，设为1
+->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?urldomain=1"')
+```
+
+使用oss作为文件存储服务
+```php
+//addFormItem第七个参数，传递指定的上传处理地址, oss设为1表示开始oss上传处理，type为指定的上传配置类型
+->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
+```
 
 ## 全局函数
 
