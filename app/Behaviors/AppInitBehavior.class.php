@@ -6,6 +6,10 @@ namespace Behaviors;
  * and open the template in the editor.
  */
 
+use Qscmf\Lib\Tp3Resque\Resque;
+use Qscmf\Lib\Tp3Resque\Resque\RedisCluster;
+use Qscmf\Lib\Tp3Resque\Resque\Event;
+
 class AppInitBehavior extends \Think\Behavior
 {
 
@@ -61,14 +65,13 @@ class AppInitBehavior extends \Think\Behavior
         // 处理队列配置
         $config = C('QUEUE');
         if ($config) {
-            import('Common.Util.tp3-resque.autoload');
             // 初始化队列服务,使用database(1)
-            \Resque::setBackend(['redis' => $config], $config['database_index']);
+            Resque::setBackend(['redis' => $config], $config['database_index']);
             // 初始化缓存前缀
             if(isset($config['prefix']) && !empty($config['prefix']))
-            \Resque\RedisCluster::prefix($config['prefix']);
+            RedisCluster::prefix($config['prefix']);
 
-            \Resque\Event::listen('afterScheduleRun', function($args){
+            Event::listen('afterScheduleRun', function($args){
                 $job_id = $args['job_id'];
                 $job_desc = $args['job_desc'];
                 $job = $args['job'];
@@ -88,7 +91,7 @@ class AppInitBehavior extends \Think\Behavior
                 D('Queue')->add($data);
             });
 
-            \Resque\Event::listen('addSchedule', function($args){
+            Event::listen('addSchedule', function($args){
                 $id = $args['id'];
                 $run_time = $args['run_time'];
                 $preload = $args['preload'];
@@ -103,7 +106,7 @@ class AppInitBehavior extends \Think\Behavior
                 D('Schedule')->add($data);
             });
 
-            \Resque\Event::listen('removeSchedule', function($args){
+            Event::listen('removeSchedule', function($args){
                 $id = $args['id'];
 
                 $ent = D("Schedule")->where(["id" => $id])->find();

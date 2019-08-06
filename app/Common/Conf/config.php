@@ -29,10 +29,11 @@ return array(
 
     'QUEUE' => array(
         'type' => 'redis',
-        'host' => '127.0.0.1',
-        'port' =>  '6379',
+        'host' => env("QUEUE_REDIS", 'redis'),
+        'port' =>  env("QUEUE_REDIS_PORT", 6379),
         'prefix' => 'queue',
         'auth' =>  '',
+        'database_index' => env("QUEUE_REDIS_DATABASE", 0),
     ),
 
     'RESQUE_JOB_REPEAT_TIMES' => 3,

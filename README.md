@@ -61,10 +61,10 @@ php artisan migrate
     以ChapterModel添加title和summary到全文索引为例
     ```php
     // ChapterModel类必须继承接口
-    class ChapterModel  extends \Gy_Library\GyListModel implements \Common\Lib\ElasticsearchModelContract{
+    class ChapterModel  extends \Gy_Library\GyListModel implements \Qscmf\Lib\Elasticsearch\ElasticsearchModelContract{
  
        // ElasticsearchHelper已经实现了一些帮助函数
-       use \Common\Lib\ElasticsearchHelper;
+       use \Qscmf\Lib\Elasticsearch\ElasticsearchHelper;
         
        // 初始化全文索引时需要指定该Model要添加的索引记录
        public function elasticsearchIndexList()

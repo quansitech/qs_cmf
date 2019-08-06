@@ -6,19 +6,20 @@ namespace Common\Model;
  * and open the template in the editor.
  */
 
+use Qscmf\Lib\Tp3Resque\Resque;
+use Qscmf\Lib\Tp3Resque\Resque\Job\Status;
+
 class QueueModel extends \Gy_Library\GyListModel{
     
     public function __construct($name = '', $tablePrefix = '', $connection = '') {
         parent::__construct($name, $tablePrefix, $connection);
-        
-        import('Common.Util.tp3-resque.autoload');
     }
     
     public function freshStatus(){
         $map['status'] = array('neq', \Gy_Library\DBCont::JOB_STATUS_COMPLETE);
         $ents = $this->where($map)->select();
         foreach($ents as $ent){
-            $status = new \Resque\Job\Status($ent['id']);
+            $status = new Status($ent['id']);
             $new_status = $status->get();
             $ent['status'] = $new_status;
             $this->save($ent);
@@ -28,7 +29,7 @@ class QueueModel extends \Gy_Library\GyListModel{
     public function refreshStatusOne($job_id){
         $ent = $this->getOne($job_id);
         
-        $status = new \Resque\Job\Status($ent['id']);
+        $status = new Status($ent['id']);
         $new_status = $status->get();
         $ent['status'] = $new_status;
         $this->save($ent);
@@ -42,7 +43,7 @@ class QueueModel extends \Gy_Library\GyListModel{
             $job = $ent['job'];
             $args = json_decode($ent['args'], true);
             
-            $job_id = \Resque::enqueue('default', $job, $args, true);
+            $job_id = Resque::enqueue('default', $job, $args, true);
             $this->where(array('id' => $ent['id']))->delete();
             
             
@@ -70,7 +71,7 @@ class QueueModel extends \Gy_Library\GyListModel{
         $job = $ent['job'];
         $args = json_decode($ent['args'], true);
 
-        $new_job_id = \Resque::enqueue('default', $job, $args, true);
+        $new_job_id = Resque::enqueue('default', $job, $args, true);
         $this->where(array('id' => $ent['id']))->delete();
 
 
