@@ -18,5 +18,5 @@ define('APP_DIR', realpath('./'));
 // 定义应用目录
 define('UPLOAD_DIR', realpath('../www/Uploads'));
 
-require '../vendor/tiderjian/think-core/src/ThinkPHP.php';
+require __DIR__ . '/../vendor/tiderjian/think-core/src/ThinkPHP.php';
 

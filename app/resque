@@ -22,5 +22,5 @@ $act = isset($argv[1]) ? $argv[1] : 'start';
 putenv("Q_ACTION={$act}");
 putenv("Q_ARGV=" . json_encode($argv));
 
-require '../vendor/tiderjian/think-core/src/ThinkPHP.php';
+require __DIR__ . '/../vendor/tiderjian/think-core/src/ThinkPHP.php';
 
