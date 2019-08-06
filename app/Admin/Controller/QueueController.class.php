@@ -1,6 +1,8 @@
 <?php
 namespace Admin\Controller;
 use Gy_Library\GyListController;
+use Qscmf\Lib\DBCont;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,11 +35,11 @@ class QueueController extends GyListController {
         $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
 
         foreach($data_list as &$v){
-            if($v['status'] != \Gy_Library\DBCont::JOB_STATUS_COMPLETE){
+            if($v['status'] != DBCont::JOB_STATUS_COMPLETE){
                 $model->refreshStatusOne($v['id']);
             }
 
-            if($v['status'] == \Gy_Library\DBCont::JOB_STATUS_FAILED || $v['status'] == \Gy_Library\DBCont::JOB_STATUS_RUNNING){
+            if($v['status'] == DBCont::JOB_STATUS_FAILED || $v['status'] == DBCont::JOB_STATUS_RUNNING){
                 $v['show_reset'] = 1;
             }
 
@@ -54,7 +56,7 @@ class QueueController extends GyListController {
 
         $builder = $builder->setMetaTitle('队列任务')->setCheckBox(false)
             ->addSearchItem('schedule', 'select', '是否计划任务', \Gy_Library\DBCont::getBoolStatusList())
-        ->addSearchItem('status', 'select', '所有状态', \Gy_Library\DBCont::getJobStatusList())->addSearchItem('', 'select_text', '搜索内容', array('title'=>'描述'));
+        ->addSearchItem('status', 'select', '所有状态', DBCont::getJobStatusList())->addSearchItem('', 'select_text', '搜索内容', array('title'=>'描述'));
         $builder->addTopButton('self', array('title' => '重启全部失败任务', 'href' => U('rebuildAllFail'), 'class' => 'btn btn-primary ajax-get confirm'))
         ->addTopButton('self', array('title' => '刷新所有等待', 'href' => U('refreshWait'), 'class' => 'btn btn-primary ajax-get confirm'));
         $builder->setNID(969)
@@ -71,7 +73,7 @@ class QueueController extends GyListController {
     }
 
     public function refreshWait(){
-        $map['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+        $map['status'] = DBCont::JOB_STATUS_WAITING;
         $data_list = D('Queue')->getList($map);
         foreach($data_list as $data){
             D('Queue')->refreshStatusOne($data['id']);
@@ -92,7 +94,7 @@ class QueueController extends GyListController {
     }
 
     public function rebuildAllFail(){
-        $map['status'] = \Gy_Library\DBCont::JOB_STATUS_FAILED;
+        $map['status'] = DBCont::JOB_STATUS_FAILED;
         $queue_list = D('Queue')->where($map)->select();
         foreach($queue_list as $q){
             D('Queue')->rebuildJobOne($q['id']);

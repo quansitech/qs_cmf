@@ -6,6 +6,7 @@ namespace Behaviors;
  * and open the template in the editor.
  */
 
+use Qscmf\Lib\DBCont;
 use Qscmf\Lib\Tp3Resque\Resque;
 use Qscmf\Lib\Tp3Resque\Resque\RedisCluster;
 use Qscmf\Lib\Tp3Resque\Resque\Event;
@@ -83,7 +84,7 @@ class AppInitBehavior extends \Think\Behavior
                 $data['job'] = $job;
                 $data['args'] = json_encode($param);
                 $data['description'] = $job_desc;
-                $data['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+                $data['status'] = DBCont::JOB_STATUS_WAITING;
                 $data['create_date'] = time();
                 $data['schedule'] = $schedule_id;
                 $data['queue'] = $queue;
@@ -100,7 +101,7 @@ class AppInitBehavior extends \Think\Behavior
                 $data['run_time'] = $run_time;
                 $data['desc'] = $preload['desc'];
                 $data['preload'] = json_encode($preload);
-                $data['delete_status'] = \Gy_Library\DBCont::NO_BOOL_STATUS;
+                $data['delete_status'] = DBCont::NO_BOOL_STATUS;
                 $data['create_date'] = time();
 
                 D('Schedule')->add($data);
@@ -111,7 +112,7 @@ class AppInitBehavior extends \Think\Behavior
 
                 $ent = D("Schedule")->where(["id" => $id])->find();
                 
-                $ent["delete_status"] = \Gy_Library\DBCont::YES_BOOL_STATUS;
+                $ent["delete_status"] = DBCont::YES_BOOL_STATUS;
                 D('Schedule')->save($ent);
             });
         }

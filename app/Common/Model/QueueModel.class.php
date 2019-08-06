@@ -6,6 +6,7 @@ namespace Common\Model;
  * and open the template in the editor.
  */
 
+use Qscmf\Lib\DBCont;
 use Qscmf\Lib\Tp3Resque\Resque;
 use Qscmf\Lib\Tp3Resque\Resque\Job\Status;
 
@@ -16,7 +17,7 @@ class QueueModel extends \Gy_Library\GyListModel{
     }
     
     public function freshStatus(){
-        $map['status'] = array('neq', \Gy_Library\DBCont::JOB_STATUS_COMPLETE);
+        $map['status'] = array('neq', DBCont::JOB_STATUS_COMPLETE);
         $ents = $this->where($map)->select();
         foreach($ents as $ent){
             $status = new Status($ent['id']);
@@ -37,7 +38,7 @@ class QueueModel extends \Gy_Library\GyListModel{
     
     
     public function rebuildJob(){
-        $map['status'] = array('not in', array(\Gy_Library\DBCont::JOB_STATUS_WAITING, \Gy_Library\DBCont::JOB_STATUS_COMPLETE));
+        $map['status'] = array('not in', array(DBCont::JOB_STATUS_WAITING, DBCont::JOB_STATUS_COMPLETE));
         $ents = $this->where($map)->select();
         foreach($ents as $ent){
             $job = $ent['job'];
@@ -48,7 +49,7 @@ class QueueModel extends \Gy_Library\GyListModel{
             
             
             $ent['id'] = $job_id;
-            $ent['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+            $ent['status'] = DBCont::JOB_STATUS_WAITING;
             $ent['create_date'] = time();
             
             $this->add($ent);
@@ -63,7 +64,7 @@ class QueueModel extends \Gy_Library\GyListModel{
             return false;
         }
         
-        if($ent['status'] == \Gy_Library\DBCont::JOB_STATUS_WAITING || $ent['status'] == \Gy_Library\DBCont::JOB_STATUS_COMPLETE){
+        if($ent['status'] == DBCont::JOB_STATUS_WAITING || $ent['status'] == DBCont::JOB_STATUS_COMPLETE){
             $this->error = "任务状态为等待或者完成，不可重启";
             return false;
         }
@@ -76,7 +77,7 @@ class QueueModel extends \Gy_Library\GyListModel{
 
 
         $ent['id'] = $new_job_id;
-        $ent['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+        $ent['status'] = DBCont::JOB_STATUS_WAITING;
         $ent['create_date'] = time();
 
         $this->add($ent);
