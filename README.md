@@ -195,6 +195,12 @@ class PostController extends GyListController{
 
 ## Formbuilder
 
+####事件
++ startHandlePostData   
+确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
++ endHandlePostData  
+确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
+
 #### qiniu_audio/qiniu_video组件
 
 ```php
