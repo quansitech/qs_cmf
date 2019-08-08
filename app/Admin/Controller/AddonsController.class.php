@@ -2,7 +2,7 @@
 
 namespace Admin\Controller;
 use Gy_Library\GyListController;
-use Common\Util\GyRbac;
+use Qscmf\Core\QsRbac;;
 
 class AddonsController extends GyListController{
     
@@ -212,7 +212,7 @@ class AddonsController extends GyListController{
     }
     
     public function execute($_addons = null, $_controller = null, $_action = null){
-        if(!GyRbac::AccessDecision('admin', $_controller, $_action)){
+        if(!QsRbac::AccessDecision('admin', $_controller, $_action)){
             E(l('no_auth'));
         }
         

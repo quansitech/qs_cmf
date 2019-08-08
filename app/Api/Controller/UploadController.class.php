@@ -2,6 +2,8 @@
 
 namespace Api\Controller;
 
+use Qscmf\Lib\CusUpload;
+
 class UploadController extends \Think\Controller{
     
 //    private function uploadBase64($cate){
@@ -47,7 +49,7 @@ class UploadController extends \Think\Controller{
                 );
                 $this->ajaxReturn($ajax);
         }
-        $upload = new \Gy_Library\CusUpload(C($key));
+        $upload = new CusUpload(C($key));
         $info = $upload->upload();
         if (!$info) {
             $this->error($upload->getError());

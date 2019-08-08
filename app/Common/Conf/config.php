@@ -211,8 +211,6 @@ return array(
         'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
     ),
 
-    //分页参数
-    'VAR_PAGE' => 'page',
 
    // 'URL_ROUTER_ON' => true,
 

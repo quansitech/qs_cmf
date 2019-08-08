@@ -2,7 +2,7 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
-use Gy_Library\ContentHelperTrait;
+use Qscmf\Lib\Cms\ContentHelperTrait;
 
 //自动生成代码
 class PostController extends GyListController{

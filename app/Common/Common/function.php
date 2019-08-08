@@ -196,12 +196,7 @@ if(!function_exists('isLogin')) {
     }
 }
 
-if(!function_exists('isAdminLogin')) {
-    function isAdminLogin()
-    {
-        return session('?' . C('USER_AUTH_KEY')) && session('?ADMIN_LOGIN');
-    }
-}
+
 
 if(!function_exists('genTokenExptime')) {
     function genTokenExptime()
@@ -989,62 +984,7 @@ if(!function_exists('downloadFile')) {
 }
 
 
-/**
- * 把返回的数据集转换成Tree
- * @param array $list 要转换的数据集
- * @param string $pid parent标记字段
- * @param string $level level标记字段
- * @return array
- */
-if(!function_exists('list_to_tree')) {
-    function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0)
-    {
-        // 创建Tree
-        $tree = array();
-        if (is_array($list)) {
-            // 创建基于主键的数组引用
-            $refer = array();
-            foreach ($list as $key => $data) {
-                $refer[$data[$pk]] =& $list[$key];
-            }
-            foreach ($list as $key => $data) {
-                // 判断是否存在parent
-                $parentId = $data[$pid];
-                if ($root == $parentId) {
-                    $tree[] =& $list[$key];
-                } else {
-                    if (isset($refer[$parentId])) {
-                        $parent =& $refer[$parentId];
-                        $parent[$child][] =& $list[$key];
-                    }
-                }
-            }
-        }
-        return $tree;
-    }
-}
 
-//将从list_to_tree转换成的tree转换成树状结构下来列表
-if(!function_exists('genSelectByTree')) {
-    function genSelectByTree($tree, $child = '_child', $level = 0)
-    {
-        $select = array();
-        foreach ($tree as $key => $data) {
-            if (isset($data[$child])) {
-                $data['level'] = $level;
-                $select[] = $data;
-                $child_list = genSelectByTree($data[$child], $child, $level + 1);
-                foreach ($child_list as $k => $v) {
-                    $select[] = $v;
-                }
-            } else {
-                $data['level'] = $level;
-                $select[] = $data;
-            }
-        }
-        return $select;
-    }
-}
 
 /**
  * 将list_to_tree的树还原成列表
