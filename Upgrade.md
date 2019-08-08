@@ -10,8 +10,8 @@
     修改app/makeIndex.php文件 
 4. (升级至v2.0.1版本) 修改Admin/Controller/QueueController、Behaviors/AppInitBehavior、Common/Model/QueueModel、用到Job状态的DBCont的命名空间
      删除Gy_Library/DBcont与Job状态有关的代码
-5. (升级至v2.0.5版本)修改CateHelperTrait和ContentHelperTrait的命名空间
-    修改CusUpload的命名空间
+5. (升级至v2.0.5版本)修改CateHelperTrait和ContentHelperTrait的命名空间,移除Gy_library里的文件
+    修改CusUpload的命名空间,移除Gy_library里的文件
     GyController和GyListController更名为QsController和QsListController，修改GyController和GyListController，分别继承QsController和QsListController
     GyModel和GyListModel更名为QsModel和QsListModel，修改GyModel和GyListController，分别继承QsModel和QsListModel
     删掉Common\function.php里的genSelectByTree、isAdminLogin、list_to_tree函数
