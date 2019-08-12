@@ -251,6 +251,13 @@ QINIU_SK=************
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
 ```
 
+设置ue的option参数
+```php
+//如：想通过form.options来配置ue的toolbars参数
+//组件会自动完成php数组--》js json对象的转换，并传入ue中
+->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
+```
+
 ## Builder
 
 #### setNID 
