@@ -418,6 +418,10 @@ Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了�
 
 样例代码: lara/tests/LoginTest.php
 
+
+#### 压缩前端js代码
+压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)
+
 ## 文档
 由于工作量大，文档会逐步补全。
 
