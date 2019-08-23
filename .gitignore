@@ -5,5 +5,6 @@
 /vendor
 .env
 /package
+/www/Public/libs
 
 .phpunit.result.cache
