@@ -226,6 +226,45 @@ class PostController extends GyListController{
 
 ```
 
+筛选导出列
+```php
+//列配置，default为true表示默认选中状态
+$cols_options = [
+    [
+        'key' => 'name',
+        'title' => '商家名称',
+        'default' => true
+    ],
+    [
+        'key' => 'account',
+        'title' => '账号',
+        'default' => true
+    ],
+    [
+        'key' => 'address',
+        'title' => '商家地址'
+    ],
+    [
+        'key' => 'num',
+        'title' => '核销次数'
+    ],
+    [
+        'key' => 'status',
+        'title' => '状态'
+    ],
+    [
+        'key' => 'explain',
+        'title' => '优惠券使用说明'
+    ]
+];
+
+//将列配置复制给第二个参数的键值 export_cols
+//控件会将选择的列数据post至url,可通过I('post.exportCol')获取，再进行数据筛选逻辑处理。
+$builder->addTopButton('export', array('export_cols' => $cols_options, 'title' => '样例导出', 'data-url' => U('/admin/post/export'), 'data-filename' => '文章列表', 'data-streamrownum' => '10'));
+
+
+```
+
 ## Formbuilder
 
 ####事件
