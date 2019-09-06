@@ -207,7 +207,7 @@ class PostController extends GyListController{
     //导出excel请求的action
     public function export(){
     
-        //exportExcelByXlsx为 ExportExcelByXlsx trait提供的方法
+        //exportExcelByXlsx为 Qscmf\Builder\ExportExcelByXlsx trait提供的方法
         //参数为一个闭包函数，接收两个参数， page为请求的页数， rownnum为请求的数据行数
         $this->exportExcelByXlsx(function($page, $rownum){
              //闭包函数必须返回如下数据格式
@@ -328,6 +328,12 @@ QINIU_SK=************
 //如：想通过form.options来配置ue的toolbars参数
 //组件会自动完成php数组--》js json对象的转换，并传入ue中
 ->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
+```
+
+自定义上传config设置
+
+```blade
+在app/Common/Conf 下新增ueditor_config.json，该文件将会替换掉默认的config.json。如有客制化config.json的需求，定制该文件即可。
 ```
 
 ## Builder
