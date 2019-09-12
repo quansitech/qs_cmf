@@ -265,6 +265,12 @@ $builder->addTopButton('export', array('export_cols' => $cols_options, 'title' =
 
 ```
 
+业务层错误提示
+```php
+可在导出数据处理的action位置进行错误验证，使用$this->errro("test") 抛出错误
+插件可自动获取错误信息并alert提示用户
+```
+
 ## Formbuilder
 
 ####事件
