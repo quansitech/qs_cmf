@@ -21,6 +21,7 @@
 <img src="https://user-images.githubusercontent.com/1665649/55472251-36458e80-563e-11e9-87c0-10c386d5bd78.png" />
 
 ## 安装
+第一种安装方法
 ```
 git clone https://github.com/tiderjian/qs_cmf.git
 ```
@@ -30,6 +31,12 @@ git clone https://github.com/tiderjian/qs_cmf.git
 composer install
 ```
 
+第二种安装方法，composer create project
+```php
+composer create-project tiderjian/qscmf qscmf
+```
+
+完成第一种或者第二种安装后
 1. 复制.env.example并重命名为.env，配置数据库参数
 2. 执行migrate数据库迁移命令。
 
@@ -38,6 +45,42 @@ php artisan migrate
 ```
 
 将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
+
+## 维护模式
+在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中
+
+## imageproxy
+[imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
+
++ env的地址格式配置
+```blade
+IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
+```
++ 占位符替换规则
+```
+占位符用{}包裹
+schema 当前地址的协议类型 http 或者 https
+domain 当前网站使用的域名
+options 图片处理规则 https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
+remote_uri 代理的图片uri，如果外网图片，该占位符会替换成该地址，否则是网站图片的uri
+path 网站图片的相对地址，如 http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg，path则为Uploads/image/20190826/5d634f5f6570f.jpeg
+```
+
++ imageproxy全局函数
+```php
+// imageproxy图片格式处理
+//options 图片处理规则
+//file_id 图片id
+// return 返回与.env配置格式对应的图片地址
+imageproxy($options, $file_id)
+
+如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
+imageproxy('100x150', 1)
+返回地址 http://localhost/ip/100x150/http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg
+
+如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{path} (这种格式通常配合imageproxy -baseURL使用)
+返回地址 http://localhost/ip/100x150/Uploads/image/20190826/5d634f5f6570f.jpeg
+```
 
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
@@ -51,10 +94,10 @@ php artisan migrate
     以ChapterModel添加title和summary到全文索引为例
     ```php
     // ChapterModel类必须继承接口
-    class ChapterModel  extends \Gy_Library\GyListModel implements \Common\Lib\ElasticsearchModelContract{
+    class ChapterModel  extends \Gy_Library\GyListModel implements \Qscmf\Lib\Elasticsearch\ElasticsearchModelContract{
  
        // ElasticsearchHelper已经实现了一些帮助函数
-       use \Common\Lib\ElasticsearchHelper;
+       use \Qscmf\Lib\Elasticsearch\ElasticsearchHelper;
         
        // 初始化全文索引时需要指定该Model要添加的索引记录
        public function elasticsearchIndexList()
@@ -164,7 +207,7 @@ class PostController extends GyListController{
     //导出excel请求的action
     public function export(){
     
-        //exportExcelByXlsx为 ExportExcelByXlsx trait提供的方法
+        //exportExcelByXlsx为 Qscmf\Builder\ExportExcelByXlsx trait提供的方法
         //参数为一个闭包函数，接收两个参数， page为请求的页数， rownnum为请求的数据行数
         $this->exportExcelByXlsx(function($page, $rownum){
              //闭包函数必须返回如下数据格式
@@ -183,7 +226,58 @@ class PostController extends GyListController{
 
 ```
 
+筛选导出列
+```php
+//列配置，default为true表示默认选中状态
+$cols_options = [
+    [
+        'key' => 'name',
+        'title' => '商家名称',
+        'default' => true
+    ],
+    [
+        'key' => 'account',
+        'title' => '账号',
+        'default' => true
+    ],
+    [
+        'key' => 'address',
+        'title' => '商家地址'
+    ],
+    [
+        'key' => 'num',
+        'title' => '核销次数'
+    ],
+    [
+        'key' => 'status',
+        'title' => '状态'
+    ],
+    [
+        'key' => 'explain',
+        'title' => '优惠券使用说明'
+    ]
+];
+
+//将列配置复制给第二个参数的键值 export_cols
+//控件会将选择的列数据post至url,可通过I('post.exportCol')获取，再进行数据筛选逻辑处理。
+$builder->addTopButton('export', array('export_cols' => $cols_options, 'title' => '样例导出', 'data-url' => U('/admin/post/export'), 'data-filename' => '文章列表', 'data-streamrownum' => '10'));
+
+
+```
+
+业务层错误提示
+```php
+可在导出数据处理的action位置进行错误验证，使用$this->errro("test") 抛出错误
+插件可自动获取错误信息并alert提示用户
+```
+
 ## Formbuilder
+
+####事件
++ startHandlePostData   
+确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
++ endHandlePostData  
+确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
 
 #### qiniu_audio/qiniu_video组件
 
@@ -216,6 +310,38 @@ QINIU_SK=************
 )
 ```
 
+#### ueditor
+指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
+```php
+//addFormItem第七个参数，传递指定的上传处理地址，加上urldomain参数，设为1
+->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?urldomain=1"')
+```
+
+使用oss作为文件存储服务
+```php
+//addFormItem第七个参数，传递指定的上传处理地址, oss设为1表示开始oss上传处理，type为指定的上传配置类型
+->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
+```
+
+复制外链文章时，强制要求抓取外链图片至本地，未抓取完会显示loadding图片(默认也会抓取外联图片，但如果未等全部抓取完就保存，此时图片还是外链)
+```php
+//addFormItem第七个参数，设置data-forcecatchremote="true"
+->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
+```
+
+设置ue的option参数
+```php
+//如：想通过form.options来配置ue的toolbars参数
+//组件会自动完成php数组--》js json对象的转换，并传入ue中
+->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
+```
+
+自定义上传config设置
+
+```blade
+在app/Common/Conf 下新增ueditor_config.json，该文件将会替换掉默认的config.json。如有客制化config.json的需求，定制该文件即可。
+```
+
 ## Builder
 
 #### setNID 
@@ -234,7 +360,6 @@ $module 需要高亮左侧菜单的module_name
 $controller 需要高亮左侧菜单的controller_name
 $action 需要高亮左侧菜单的action_name
 ```
-
 
 ## 全局函数
 
@@ -376,6 +501,10 @@ $foo->say();
 Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了一下，只需继承Lara\Tests\DuskTestCase类即可使用，具体的使用方法可查看[laravel文档](https://learnku.com/docs/laravel/5.8/dusk/3943)。
 
 样例代码: lara/tests/LoginTest.php
+
+
+#### 压缩前端js代码
+压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)
 
 ## 文档
 由于工作量大，文档会逐步补全。

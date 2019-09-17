@@ -2,7 +2,7 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
-use Gy_Library\CateHelperTrait;
+use Qscmf\Lib\Cms\CateHelperTrait;
 
 //自动生成代码
 class PostCateController extends GyListController{

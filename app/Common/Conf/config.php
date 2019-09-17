@@ -29,10 +29,11 @@ return array(
 
     'QUEUE' => array(
         'type' => 'redis',
-        'host' => '127.0.0.1',
-        'port' =>  '6379',
+        'host' => env("QUEUE_REDIS", 'redis'),
+        'port' =>  env("QUEUE_REDIS_PORT", 6379),
         'prefix' => 'queue',
         'auth' =>  '',
+        'database_index' => env("QUEUE_REDIS_DATABASE", 0),
     ),
 
     'RESQUE_JOB_REPEAT_TIMES' => 3,
@@ -210,8 +211,6 @@ return array(
         'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
     ),
 
-    //分页参数
-    'VAR_PAGE' => 'page',
 
    // 'URL_ROUTER_ON' => true,
 

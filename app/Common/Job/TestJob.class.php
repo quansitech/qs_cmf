@@ -4,19 +4,8 @@ class TestJob
 {
     public function perform()
     {
-        $data = array();
-        $data['args'] = json_encode($this->args);
-        $data['create_date'] = time();
+        echo 'test_job Finished!';
 
-        $model = new \Think\Model('test', 'qs_');
-        $r = $model->add($data);
-        if($r !== false){
-            echo 'test_job Finished!';
-        }
-        else{
-            echo $model->getError();
-        }
-        
 //        $dbh = new \PDO('mysql:host=127.0.0.1;dbname=nxf', 'root', 'bb85b6df06');    
 //        $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);    
 //        $dbh->exec('set names utf8');   
