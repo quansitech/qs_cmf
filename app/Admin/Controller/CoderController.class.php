@@ -18,7 +18,7 @@ class CoderController extends GyListController{
             $data_list[] = $data;
         }
         
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder->setMetaTitle('代码生成器列表')
                     ->setNID(301)

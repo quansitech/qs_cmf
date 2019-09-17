@@ -57,7 +57,7 @@ class ConfigController extends GyListController{
         }
 
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('配置管理')  // 设置页面标题
                                     ->addTopButton('addnew');   // 添加新增按钮
@@ -166,7 +166,7 @@ class ConfigController extends GyListController{
             
             $group_options = C('CONFIG_GROUP_LIST');
             
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('新增配置') //设置页面标题
                     ->setNID(61)
                     ->setPostUrl(U('add'))    //设置表单提交地址
@@ -208,7 +208,7 @@ class ConfigController extends GyListController{
             
             $form_data = D('Config')->getOne($id);
             
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑配置') //设置页面标题
                     ->setNID(61)
                     ->setPostUrl(U('edit'))    //设置表单提交地址
@@ -254,7 +254,7 @@ class ConfigController extends GyListController{
             $data_list   = $config->getConfigList($map);
             
             // 使用FormBuilder快速建立表单页面。
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $form_data = array();
 
             foreach($data_list as $data){

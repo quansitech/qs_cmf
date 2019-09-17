@@ -2,7 +2,6 @@
 
 namespace Common\TagLib;
 use Think\Template\TagLib;
-use Common\Util\GyRbac;
 
 class Gy extends TagLib{
     

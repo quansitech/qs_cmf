@@ -1,15 +1,18 @@
 #!/usr/bin/env php
 <?php
-ini_set('display_errors', true);
-error_reporting(E_ERROR);
 set_time_limit(0);
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = \Dotenv\Dotenv::create(__DIR__ . '/..' );
+$dotenv->load();
+
 define('MODE_NAME', 'cli'); // 自定义cli模式
-define('BIND_MODULE', 'Home');  // 绑定到Home模块
+define('BIND_MODULE', 'Qscmf');  // 绑定到Home模块
 define('BIND_CONTROLLER', 'Queue'); // 绑定到Queue控制器
 define('BIND_ACTION', 'index'); // 绑定到index方法
 
-define('APP_DEBUG', true);
+define('APP_DEBUG', env("APP_DEBUG", true));
 
 // 定义应用目录
 define('UPLOAD_DIR', realpath('../www/Uploads'));
@@ -17,7 +20,7 @@ define('UPLOAD_DIR', realpath('../www/Uploads'));
 // 处理自定义参数
 $act = isset($argv[1]) ? $argv[1] : 'start';
 putenv("Q_ACTION={$act}");
-putenv("Q_ARGV=" . json_encode($argv)); 
+putenv("Q_ARGV=" . json_encode($argv));
 
-require '../core/ThinkPHP.php';
+require __DIR__ . '/../vendor/tiderjian/think-core/src/ThinkPHP.php';
 

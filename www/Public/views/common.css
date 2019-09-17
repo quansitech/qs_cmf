@@ -2594,7 +2594,7 @@ Component: timeline
     padding: 0;
     width: 18px;
     height: 18px;
-    background: url(../libs/icheck/minimal/blue.png) no-repeat;
+    background: url(../../../package/tiderjian/think-core/asset/libs/icheck/minimal/blue.png) no-repeat;
     border: none;
     cursor: pointer;
 }
@@ -2640,7 +2640,7 @@ only screen and (-o-min-device-pixel-ratio: 3/2),
 only screen and (min-device-pixel-ratio: 1.5) {
     .icheckbox_minimal-blue,
     .iradio_minimal-blue {
-        background-image: url(../libs/icheck/minimal/blue@2x.png);
+        background-image: url(../../../package/tiderjian/think-core/asset/libs/icheck/minimal/blue@2x.png);
         -webkit-background-size: 200px 20px;
         background-size: 200px 20px;
     }

@@ -18,11 +18,6 @@ class DBCont{
     const EMAIL_RESULT_SUCCESS = 1;
     const EMAIL_RESULT_FAILURE = 2;
     
-    const JOB_STATUS_WAITING = 1;
-    const JOB_STATUS_RUNNING = 2;
-    const JOB_STATUS_FAILED = 3;
-    const JOB_STATUS_COMPLETE = 4;
-    
     const APPLICAT_STATUS_WAITING = 0;
     const APPLICAT_STATUS_PASS = 1;
     const APPLICAT_STATUS_FAIL = 2;
@@ -114,13 +109,6 @@ class DBCont{
         self::FAVOUR_PAINT => '画画',
         self::FAVOUR_FOOTBALL => '足球',
         self::FAVOUR_BASKETBALL => '篮球'
-    );
-    
-    static private $_job_status = array(
-        self::JOB_STATUS_WAITING => '等待',
-        self::JOB_STATUS_RUNNING => '运行中',
-        self::JOB_STATUS_FAILED => '失败',
-        self::JOB_STATUS_COMPLETE => '完成'
     );
     
     static private $_email_result = array(
@@ -269,14 +257,6 @@ class DBCont{
     
     static public function getFavourList(){
         return self::$_favour;
-    }
-    
-    static public function getJobStatus($status){
-        return self::$_job_status[$status];
-    }
-    
-    static public function getJobStatusList(){
-        return self::$_job_status;
     }
     
     static public function getApplicatStatus($status){

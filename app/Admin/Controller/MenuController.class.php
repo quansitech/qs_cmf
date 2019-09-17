@@ -29,7 +29,7 @@ class MenuController extends GyListController{
         }
 
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
 
         $builder = $builder->setMetaTitle('菜单管理')  // 设置页面标题
                                     ->addTopButton('addnew');   // 添加新增按钮
@@ -91,7 +91,7 @@ class MenuController extends GyListController{
             // $menu_list = $menu_model->where($map)->getField('id,title');
             $menu_list = $menu_model->getParentOptions("id","title");
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('新增菜单') //设置页面标题
                     ->setNID(24)
                     ->setPostUrl(U('add'))    //设置表单提交地址
@@ -145,7 +145,7 @@ class MenuController extends GyListController{
             $menu_list = D('Menu')->getParentOptions("id","title", $id);
 
             // 使用FormBuilder快速建立表单页面。
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑菜单')  // 设置页面标题
                     ->setNID(24)
                     ->setPostUrl(U('edit'))    //设置表单提交地址

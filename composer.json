@@ -1,0 +1,38 @@
+{
+    "name": "tiderjian/qscmf",
+    "description": "qscmf",
+    "type": "cmf",
+    "keywords": ["thinkphp", "admin", "grid", "form"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tiderjian",
+            "email": "tider_yatsen@hotmail.com"
+        }
+    ],
+    "require": {
+        "tiderjian/think-core": "^2.0",
+        "funkjedi/composer-include-files": "^1.0"
+    },
+    "extra": {
+        "include_files": [
+            "vendor/tiderjian/think-core/src/Common/functions.php",
+            "vendor/tiderjian/think-core/src/Library/Qscmf/Helper/function.php"
+        ]
+    },
+    "autoload": {
+        "classmap": [
+            "lara\/database\/seeds",
+            "lara\/database\/factories"
+        ],
+        "psr-4": {
+            "Lara\\": "lara",
+            "Lara\\Tests\\":"lara\/tests",
+            "App\\": "lara\/app"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "./vendor/bin/qsinstall",
+        "post-create-project-cmd": "./vendor/bin/qsinstall"
+    }
+}
