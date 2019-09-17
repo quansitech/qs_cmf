@@ -2,6 +2,8 @@
 
 namespace Api\Controller;
 
+use Qscmf\Lib\CusUpload;
+
 class UploadController extends \Think\Controller{
     
 //    private function uploadBase64($cate){
@@ -47,7 +49,7 @@ class UploadController extends \Think\Controller{
                 );
                 $this->ajaxReturn($ajax);
         }
-        $upload = new \Gy_Library\CusUpload(C($key));
+        $upload = new CusUpload(C($key));
         $info = $upload->upload();
         if (!$info) {
             $this->error($upload->getError());
@@ -67,7 +69,7 @@ class UploadController extends \Think\Controller{
             if(!$data['file']){
                 $this->error('文件获取失败,请重新上传');
             }
-            
+            C("TOKEN_ON", false);
             $id = $file_pic->createAdd($data);
             if ($id === false) {
                 $this->error($file_pic->getError());
@@ -82,8 +84,8 @@ class UploadController extends \Think\Controller{
                     'Status' => 1,
                     'info' => 'success',
                     'Time_stamp' => time(),
-                    'Data' => $data
                 );
+                $ajax = array_merge($ajax, $data);
                 $this->ajaxReturn($ajax);
             }
         }

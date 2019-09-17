@@ -33,7 +33,7 @@ class HooksController extends \Gy_Library\GyListController{
         }
 
         // 使用Builder快速建立列表页面。
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('钩子列表')  // 设置页面标题
                                     ->addTopButton('addnew');   // 添加新增按钮
@@ -82,7 +82,7 @@ class HooksController extends \Gy_Library\GyListController{
         }
         else {
             // 使用FormBuilder快速建立表单页面。
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('新增钩子') //设置页面标题
                     ->setNID(122)
                     ->setPostUrl(U('add'))    //设置表单提交地址
@@ -110,7 +110,7 @@ class HooksController extends \Gy_Library\GyListController{
             $info = D('Hooks')->getOne($id);
             
             // 使用FormBuilder快速建立表单页面。
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑钩子') //设置页面标题
                     ->setNID(122)
                     ->setPostUrl(U('edit'))    //设置表单提交地址

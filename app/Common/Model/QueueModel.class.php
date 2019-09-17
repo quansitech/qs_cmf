@@ -6,19 +6,21 @@ namespace Common\Model;
  * and open the template in the editor.
  */
 
+use Qscmf\Lib\DBCont;
+use Qscmf\Lib\Tp3Resque\Resque;
+use Qscmf\Lib\Tp3Resque\Resque\Job\Status;
+
 class QueueModel extends \Gy_Library\GyListModel{
     
     public function __construct($name = '', $tablePrefix = '', $connection = '') {
         parent::__construct($name, $tablePrefix, $connection);
-        
-        import('Common.Util.tp3-resque.autoload');
     }
     
     public function freshStatus(){
-        $map['status'] = array('neq', \Gy_Library\DBCont::JOB_STATUS_COMPLETE);
+        $map['status'] = array('neq', DBCont::JOB_STATUS_COMPLETE);
         $ents = $this->where($map)->select();
         foreach($ents as $ent){
-            $status = new \Resque\Job\Status($ent['id']);
+            $status = new Status($ent['id']);
             $new_status = $status->get();
             $ent['status'] = $new_status;
             $this->save($ent);
@@ -28,7 +30,7 @@ class QueueModel extends \Gy_Library\GyListModel{
     public function refreshStatusOne($job_id){
         $ent = $this->getOne($job_id);
         
-        $status = new \Resque\Job\Status($ent['id']);
+        $status = new Status($ent['id']);
         $new_status = $status->get();
         $ent['status'] = $new_status;
         $this->save($ent);
@@ -36,18 +38,18 @@ class QueueModel extends \Gy_Library\GyListModel{
     
     
     public function rebuildJob(){
-        $map['status'] = array('not in', array(\Gy_Library\DBCont::JOB_STATUS_WAITING, \Gy_Library\DBCont::JOB_STATUS_COMPLETE));
+        $map['status'] = array('not in', array(DBCont::JOB_STATUS_WAITING, DBCont::JOB_STATUS_COMPLETE));
         $ents = $this->where($map)->select();
         foreach($ents as $ent){
             $job = $ent['job'];
             $args = json_decode($ent['args'], true);
             
-            $job_id = \Resque::enqueue('default', $job, $args, true);
+            $job_id = Resque::enqueue('default', $job, $args, true);
             $this->where(array('id' => $ent['id']))->delete();
             
             
             $ent['id'] = $job_id;
-            $ent['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+            $ent['status'] = DBCont::JOB_STATUS_WAITING;
             $ent['create_date'] = time();
             
             $this->add($ent);
@@ -62,7 +64,7 @@ class QueueModel extends \Gy_Library\GyListModel{
             return false;
         }
         
-        if($ent['status'] == \Gy_Library\DBCont::JOB_STATUS_WAITING || $ent['status'] == \Gy_Library\DBCont::JOB_STATUS_COMPLETE){
+        if($ent['status'] == DBCont::JOB_STATUS_WAITING || $ent['status'] == DBCont::JOB_STATUS_COMPLETE){
             $this->error = "任务状态为等待或者完成，不可重启";
             return false;
         }
@@ -70,12 +72,12 @@ class QueueModel extends \Gy_Library\GyListModel{
         $job = $ent['job'];
         $args = json_decode($ent['args'], true);
 
-        $new_job_id = \Resque::enqueue('default', $job, $args, true);
+        $new_job_id = Resque::enqueue('default', $job, $args, true);
         $this->where(array('id' => $ent['id']))->delete();
 
 
         $ent['id'] = $new_job_id;
-        $ent['status'] = \Gy_Library\DBCont::JOB_STATUS_WAITING;
+        $ent['status'] = DBCont::JOB_STATUS_WAITING;
         $ent['create_date'] = time();
 
         $this->add($ent);
