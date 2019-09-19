@@ -228,12 +228,13 @@ class PostController extends GyListController{
 
 筛选导出列
 ```php
-//列配置，default为true表示默认选中状态
+//列配置，default为true表示默认选中状态, required为true表示必选
 $cols_options = [
     [
         'key' => 'name',
         'title' => '商家名称',
-        'default' => true
+        'default' => true,
+        'required' => true
     ],
     [
         'key' => 'account',
