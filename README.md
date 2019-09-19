@@ -342,9 +342,9 @@ QINIU_SK=************
 在app/Common/Conf 下新增ueditor_config.json，该文件将会替换掉默认的config.json。如有客制化config.json的需求，定制该文件即可。
 ```
 
-##CompareBuilder
+## CompareBuilder
 实现数据对比简化
-####代码示例
+#### 代码示例
 ```php
     $builder = new CompareBuilder();
         $old=[
@@ -363,7 +363,7 @@ QINIU_SK=************
             ->addCompareItem('html',CompareBuilder::ITEM_TYPE_HTMLDIFF,'html对比')
             ->display();
 ```
-####截图
+#### 截图
 ![image](https://user-images.githubusercontent.com/13673962/65034234-34b41c80-d979-11e9-8be6-6a50c546a9c2.png)
 
 
