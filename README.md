@@ -386,6 +386,18 @@ $controller 需要高亮左侧菜单的controller_name
 $action 需要高亮左侧菜单的action_name
 ```
 
+## 前台js错误收集
+#### 用法
+在前端head中引入log.js后调用frontLog方法
+```php
+    <script src="__PUBLIC__/libs/log.js"></script>
+    <script>
+      frontLog({
+        url:'/api/jsLog/index'
+      });
+    </script>
+```
+
 ## 全局函数
 
 #### showThumbUrl
