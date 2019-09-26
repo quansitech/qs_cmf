@@ -47,7 +47,10 @@ php artisan migrate
 将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
 
 ## 维护模式
-在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中
+在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中。如需要在维护模式下执行升级脚本，可传递"maintenance"给第三个参数
+```php
+php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
+```
 
 ## imageproxy
 [imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
