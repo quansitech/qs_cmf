@@ -404,6 +404,12 @@ $action 需要高亮左侧菜单的action_name
 
 ## 全局函数
 
+#### base64_url_encode
+对url进行base64转码，转码前会先对+ /，进行处理
+
+#### base64_url_decode
+将base64转回url，与base64_url_encode搭配使用
+
 #### showThumbUrl
 
 ```php
