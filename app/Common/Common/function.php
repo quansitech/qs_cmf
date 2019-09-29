@@ -26,13 +26,16 @@ if(!function_exists('gmt_iso8601')) {
         $expiration = substr($expiration, 0, $pos);
         return $expiration . "Z";
     }
+}
 
+if(!function_exists('is_json')){
     function is_json($string)
     {
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
 }
+
 
 if(!function_exists('getOpenId')) {
     function getOpenId()
@@ -189,7 +192,7 @@ if(!function_exists('isLogin')) {
     }
 }
 
-if(!function_exists('isLogin')) {
+if(!function_exists('isPersonLogin')) {
     function isPersonLogin()
     {
         return session('?pid');

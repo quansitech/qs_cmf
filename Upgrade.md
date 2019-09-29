@@ -1,3 +1,4 @@
+```php
 1. (升级至composer版本)修改原来buider类的命名空间, 修改Common/Conf/config.php里的相关配置 
      检查根目录与www目录下的文件差异，升级至最新文件
      从最新代码移植lara文件夹到根目录
@@ -18,3 +19,6 @@
     删除Common\Lib 的Flash和FlashError
     修改GyRbac的命名空间,更名为QsRbac
     GyPage更名为QsPage,原GyPage继承QsPage,删除Common/Conf/config 里的 VAR_PAGE
+6.(升级到v3.0.0以上版本)检查有无使用队列的计划任务功能，如使用了，可用升级脚本进行升级
+    项目根目录/www# php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/[计划队列名] maintenance
+```
