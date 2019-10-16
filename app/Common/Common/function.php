@@ -1482,6 +1482,15 @@ if(!function_exists('idToNameFromDBCont')) {
     }
 }
 
+if(!function_exists('cleanRbacKey')){
+    function cleanRbacKey(){
+        $inject_rbac_arr = C('INJECT_RBAC');
+        $keys = array_column($inject_rbac_arr, 'key');
+        array_map(function ($str){
+            session($str, null);
+        }, $keys);
+    }
+}
 
 
 //前台信息展示类函数 end

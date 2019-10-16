@@ -70,6 +70,7 @@ class PublicController extends Controller {
             session(C('ADMIN_AUTH_KEY'), null);
             session(C('USER_AUTH_KEY'), null);
             session('ADMIN_LOGIN', null);
+            cleanRbacKey();
         } 
         $this->redirect('Public/login');
     }
