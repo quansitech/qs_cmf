@@ -7,5 +7,5 @@ return array(
     'app_init'=>array('Behaviors\\InitHookBehavior','Behaviors\\AppInitBehavior'),
     'template_filter'  =>  array('Behaviors\\TemplateSectionBehavior'),
     'after_home_instance' => array('Behaviors\\WxAutoLoginBehavior'),
-    'reset_rbac' => array('Behaviors\\ResetRbacBehavior'),
+    'reset_rbac' => array('Behaviors\\ResetRbacBehavior')
 );
