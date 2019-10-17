@@ -15,7 +15,7 @@ class ResetRbacBehavior extends Behavior
 
     private function _injectRbac(){
         $inject_rbac_arr = C('INJECT_RBAC');
-        if ($inject_rbac_arr){
+        if (!empty($inject_rbac_arr)){
             array_map(function ($str){
                 if (session("?{$str['key']}")){
                     C('USER_AUTH_MODEL', $str['user'], 'User');

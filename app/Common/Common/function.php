@@ -1485,6 +1485,10 @@ if(!function_exists('idToNameFromDBCont')) {
 if(!function_exists('cleanRbacKey')){
     function cleanRbacKey(){
         $inject_rbac_arr = C('INJECT_RBAC');
+        if (env('RESET_RBAC') != true || empty($inject_rbac_arr)){
+            return true;
+        }
+
         $keys = array_column($inject_rbac_arr, 'key');
         array_map(function ($str){
             session($str, null);
