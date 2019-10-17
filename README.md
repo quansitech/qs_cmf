@@ -404,11 +404,6 @@ $action 需要高亮左侧菜单的action_name
 
 ## 重置RBAC用户表和用户与用户组关联表
 #### 用法
-+ env配置RESET_RBAC
-```blade
-RESET_RBAC=true
-```
-
 + config.php配置INJECT_RBAC  
 ```blade
 // key为标识字段，用户登录后存入session中
