@@ -402,6 +402,27 @@ $action 需要高亮左侧菜单的action_name
     </script>
 ```
 
+## 重置RBAC用户表和用户与用户组关联表
+#### 用法
++ env配置RESET_RBAC
+```blade
+RESET_RBAC=true
+```
+
++ config.php配置INJECT_RBAC  
+```blade
+// key为标识字段，用户登录后存入session中
+// user为RBAC对应的用户数据表（程序使用D函数）
+// role_user为用户与用户组关联数据表（程序使用原生sql）
+'INJECT_RBAC' => [
+    ['key' => 'PUBLIC_USER_LOGIN_ID', 'user' => 'User', 'role_user' => 'qs_role_user']
+]
+```
+
++ 用户登录后使用cleanRbacKey清空key的session值再重置对应key的session值
+
++ 用户登出后使用cleanRbacKey清空key的session值
+
 ## 全局函数
 
 #### base64_url_encode
@@ -425,6 +446,9 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 如果$file_id对应的是用seed功能填充出来的图片，还可以依据前缀获取到所希望图片的大小，自动构造相同的大小的图片url。
 使用该函数即可在不做任何代码改动的情况下完好的作用在本地图片上传和填充伪造图片的两种场景。
 ```
+
+#### cleanRbacKey
+清空INJECT_RBAC标识key的session值
 
 ## 测试
 
