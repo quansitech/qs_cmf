@@ -318,9 +318,9 @@ class PostController extends GyListController{
                 ....
             ]
         }
-        返回值注解：
+        返回值注解（下面所有键名必填）：
         count   总记录数
-        pageSize 单页最大记录数    注意：如果是下载单页的数据，请将count和pageSize相等即可
+        pageSize 单页最大记录数    注意：如果是下载单页的数据，令count<=pageSize即可
         list    下载的数据列表
             id  数据的id
             name  重命名的文件名
