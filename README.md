@@ -282,8 +282,6 @@ $builder->addTopButton('export', array('export_cols' => $cols_options, 'title' =
 .
 .
 class PostController extends GyListController{
-    //继承ExportExcelByXlsx
-    use ExportExcelByXlsx;
 .
 .
 .
@@ -313,7 +311,7 @@ class PostController extends GyListController{
             "list": [
                 {
                     "id": "1",
-                    "name": "哈哈动画动画",
+                    "name": "下载重命名的文件名",
                     "url": "https://media.t4tstudio.com/TJlJL2wlKB4Ezb5_qQrp0okWb2c=/Fv2T8J6s6Pupj6zbs2xvdMf9GKN2",
                     "suffix": "mp3"
                 },
