@@ -323,7 +323,7 @@ class PostController extends GyListController{
         pageSize 单页最大记录数    注意：如果是下载单页的数据，令count<=pageSize即可
         list    下载的数据列表
             id  数据的id
-            name  重命名的文件名   注意：请遵守操作系统命名文件名的规范
+            name  重命名的文件名   注意：请遵守操作系统文件命名规范
             url   下载链接地址
             suffix 文件后缀名
     */
