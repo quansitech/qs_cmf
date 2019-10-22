@@ -33,4 +33,9 @@ class AreaController extends Controller{
         $this->ajaxReturn($district_list);
     }
 
+    public function getAreaEnt($id){
+        $ent = D('Area')->find($id);
+        $this->ajaxReturn($ent);
+    }
+
 }
