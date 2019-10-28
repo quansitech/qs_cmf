@@ -12,25 +12,36 @@ namespace Common\Lib;
 class RedisLock
 {
     protected $redis;
-    protected $host;
-    protected $port;
-    protected $auth;
-    protected $database_index;
 
     static private $_instance = array();
 
-    private function __construct($config)
+    private function __construct($config = [])
     {
-        $this->redis = new \Redis();
+        if ( !extension_loaded('redis') ) {
+            E(L('_NOT_SUPPORT_').':redis');
+        }
+        $config = array_merge(array (
+            'host'          => C('REDIS_HOST') ? : '127.0.0.1',
+            'port'          => C('REDIS_PORT') ? : 6379,
+            'password'      => C('REDIS_PASSWORD') ?: '',
+            'timeout'       => C('DATA_CACHE_TIMEOUT') ? : false,
+            'persistent'    => false,
+            'database_index'    => C('REDIS_DATABASE_INDEX') ? : 0,
+        ),$config);
 
-        $this->host = $config['host'];
-        $this->port = $config['port'] ? $config['port'] : 6379;
-        $this->auth = $config['auth'];
-        $this->database_index = $config['database_index'];
+        $this->options =  $config;
+        $this->options['expire'] =  isset($config['expire'])?  $config['expire']  :   C('DATA_CACHE_TIMEOUT');
+        $this->options['prefix'] =  isset($config['prefix'])?  $config['prefix']  :   C('DATA_CACHE_PREFIX');
+        $this->options['length'] =  isset($config['length'])?  $config['length']  :   0;
+        $func = $config['persistent'] ? 'pconnect' : 'connect';
+        $this->redis = new \Redis;
 
-        $this->redis->connect($this->host, $this->port);
-        $this->redis->auth($this->auth);
-        $this->redis->select($this->database_index);
+        $config['timeout'] === false ?
+            $this->redis->$func($config['host'], $config['port']) :
+            $this->redis->$func($config['host'], $config['port'], $config['timeout']);
+
+        $this->options['password'] && $this->redis->auth($config['password']);
+        $this->options['database_index'] && $this->redis->select($this->options['database_index']);
     }
 
     /**
@@ -40,7 +51,7 @@ class RedisLock
      * @param $config   array
      * @return self   object
      */
-    static function getInstance($config){
+    static function getInstance($config = []){
         $guid = to_guid_string($config);
         if (!(self::$_instance[$guid] instanceof self)){
             self::$_instance[$guid] = new self($config);
