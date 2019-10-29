@@ -383,6 +383,12 @@ QINIU_SK=************
 )
 ```
 
+勾子：qiniu_notify  
+```php
+跟根据业务需要，自定义该勾子的行为，传递参数为数组，数组包含file_id 和 duration。
+```
+
+
 #### ueditor
 指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
 ```php
