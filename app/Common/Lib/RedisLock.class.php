@@ -9,54 +9,15 @@
 namespace Common\Lib;
 
 
+use Think\Cache;
+
 class RedisLock
 {
     protected $redis;
 
-    static private $_instance = array();
-
-    private function __construct($config = [])
+    public function __construct($config = [])
     {
-        if ( !extension_loaded('redis') ) {
-            E(L('_NOT_SUPPORT_').':redis');
-        }
-        $config = array_merge(array (
-            'host'          => C('REDIS_HOST') ? : '127.0.0.1',
-            'port'          => C('REDIS_PORT') ? : 6379,
-            'password'      => C('REDIS_PASSWORD') ?: '',
-            'timeout'       => C('DATA_CACHE_TIMEOUT') ? : false,
-            'persistent'    => false,
-            'database_index'    => C('REDIS_DATABASE_INDEX') ? : 0,
-        ),$config);
-
-        $this->options =  $config;
-        $this->options['expire'] =  isset($config['expire'])?  $config['expire']  :   C('DATA_CACHE_TIMEOUT');
-        $this->options['prefix'] =  isset($config['prefix'])?  $config['prefix']  :   C('DATA_CACHE_PREFIX');
-        $this->options['length'] =  isset($config['length'])?  $config['length']  :   0;
-        $func = $config['persistent'] ? 'pconnect' : 'connect';
-        $this->redis = new \Redis;
-
-        $config['timeout'] === false ?
-            $this->redis->$func($config['host'], $config['port']) :
-            $this->redis->$func($config['host'], $config['port'], $config['timeout']);
-
-        $this->options['password'] && $this->redis->auth($config['password']);
-        $this->options['database_index'] && $this->redis->select($this->options['database_index']);
-    }
-
-    /**
-     *
-     * 取得类实例化对象
-     *
-     * @param $config   array
-     * @return self   object
-     */
-    static function getInstance($config = []){
-        $guid = to_guid_string($config);
-        if (!(self::$_instance[$guid] instanceof self)){
-            self::$_instance[$guid] = new self($config);
-        }
-        return self::$_instance[$guid];
+        $this->redis = Cache::getInstance('redis', $config);
     }
 
     /**
@@ -68,6 +29,8 @@ class RedisLock
      * @return bool             锁成功返回true 锁失败返回false
      */
     public function lock($key, $expire){
+        $key = $this->redis->getOptions('prefix').$key;
+
         $is_lock = $this->redis->setnx($key, time()+$expire);
         if (!$is_lock){
             $current_expire = $this->redis->get($key);
@@ -100,7 +63,9 @@ class RedisLock
      * @return int                  释放锁的个数
      */
     public function unlock($key){
-        return $this->redis->del($key);
+        $key = $this->redis->getOptions('prefix').$key;
+
+        return $this->redis->rm($key);
     }
 
     /**
