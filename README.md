@@ -560,6 +560,15 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
 
+## 常量
+DOMAIN  域名，可通过env去改写，默认采用$_SERVER["HTTP_HOST"]
+
+ROOT 指定子目录，默认为空
+
+SITE_URL 包含子目录的网站根地址
+
+HTTP_PROTOCOL  返回http或者https协议字符串
+
 ## 测试
 
 在看以下文档时，建议结合qscmf自带的测试用例代码阅读。
