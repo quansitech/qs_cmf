@@ -18,7 +18,7 @@ return array(
     'COOKIE_PREFIX' => 'qs_',
 
     //通过$_SERVER数组获取当前访问的http协议的关键值
-    'HTTP_PROTOCOL_KEY' => 'HTTP_X_FORWARDED_PROTO',
+    'HTTP_PROTOCOL_KEY' => 'REQUEST_SCHEME',
 
     //阿里云oss
     'ALIOSS_ACCESS_KEY_ID' => env('ALIOSS_ACCESS_KEY_ID'),

@@ -51,11 +51,6 @@ class AppInitBehavior extends \Think\Behavior
     }
     
     public function run(&$parm){
-        //定义常量
-        define('SITE_URL', $_SERVER['HTTP_HOST']);
-        
-        define('HTTP_PROTOCOL', $_SERVER[C('HTTP_PROTOCOL_KEY')]);
-
         //header安全
         header("X-XSS-Protection: 1; mode=block");
         header("X-Content-Type-Options: nosniff");
