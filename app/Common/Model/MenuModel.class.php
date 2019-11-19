@@ -30,7 +30,7 @@ class MenuModel extends \Gy_Library\GyListModel{
         }
         $list = $this->where($map)->order($order)->select();
         foreach ($list as &$v){
-            $v['url'] = U("{$v['url']}");
+            $v['url'] = $v['url'] ? U("{$v['url']}") : $v['url'];
         }
 
         return (array)$list;
