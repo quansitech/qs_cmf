@@ -92,7 +92,7 @@ class InitDatabase extends Migration
         Schema::create('qs_file_pic', function(Blueprint $table){
             $table->bigIncrements('id');
             $table->string('title', 200)->default('');
-            $table->string('file', 100);
+            $table->string('file', 100)->default('');
             $table->string('url', 500)->default('');
             $table->string('ref_id', 200)->default('');
             $table->boolean('ref_status')->default(0)->comment('关联处理标记 如七牛的媒体转码，0 未完成 1已完成');
