@@ -260,7 +260,7 @@ class InitDatabase extends Migration
             $table->string('modulename', 30)->default('');
             $table->string('actionname', 30)->default('');
             $table->string('opname', 30)->default('');
-            $table->text('message')->default('');
+            $table->text('message');
             $table->string('userid', 64)->default('');
             $table->string('userip', 40);
             $table->integer('create_time');
