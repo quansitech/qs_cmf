@@ -92,7 +92,7 @@ class InitDatabase extends Migration
         Schema::create('qs_file_pic', function(Blueprint $table){
             $table->bigIncrements('id');
             $table->string('title', 200)->default('');
-            $table->string('file', 100);
+            $table->string('file', 100)->default('');
             $table->string('url', 500)->default('');
             $table->string('ref_id', 200)->default('');
             $table->boolean('ref_status')->default(0)->comment('关联处理标记 如七牛的媒体转码，0 未完成 1已完成');
@@ -260,7 +260,7 @@ class InitDatabase extends Migration
             $table->string('modulename', 30)->default('');
             $table->string('actionname', 30)->default('');
             $table->string('opname', 30)->default('');
-            $table->text('message')->default('');
+            $table->text('message');
             $table->string('userid', 64)->default('');
             $table->string('userip', 40);
             $table->integer('create_time');
