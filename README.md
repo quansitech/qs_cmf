@@ -272,11 +272,11 @@ $builder->addTopButton('export', array('export_cols' => $cols_options, 'title' =
 导出数据为多张工作表  
 ```php
  $export_arr = [
-    ['sheetName' => 'Sheet1', 'url' => U('/admin/post/export')],
-    ['sheetName' => 'Sheet2', 'url' => U('/admin/post/export')],
+    ['sheetName' => 'Sheet1', 'url' => U('/admin/post/export'), 'rownum' => '15'],
+    ['sheetName' => 'Sheet2', 'url' => U('/admin/post/export'), 'rownum' => '15'],
  ];
  
- $builder->addTopButton('export', ['data-url' => json_encode($export_arr), 'data-filename' => '导出列表', 'data-streamrownum' =>  $per_page?$per_page:300]);
+ $builder->addTopButton('export', ['data-url' => json_encode($export_arr), 'data-filename' => '导出列表', 'data-streamrownum' => intval($export_arr[0]['rownum'])]);
 ```
 业务层错误提示
 ```php
