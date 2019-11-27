@@ -269,6 +269,15 @@ $builder->addTopButton('export', array('export_cols' => $cols_options, 'title' =
 
 ```
 
+导出数据为多张工作表  
+```php
+ $export_arr = [
+    ['sheetName' => 'Sheet1', 'url' => U('/admin/post/export'), 'rownum' => '15'],
+    ['sheetName' => 'Sheet2', 'url' => U('/admin/post/export'), 'rownum' => '15'],
+ ];
+ 
+ $builder->addTopButton('export', ['data-url' => json_encode($export_arr), 'data-filename' => '导出列表', 'data-streamrownum' => intval($export_arr[0]['rownum'])]);
+```
 业务层错误提示
 ```php
 可在导出数据处理的action位置进行错误验证，使用$this->errro("test") 抛出错误
