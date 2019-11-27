@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "tiderjian/think-core": "^4.0",
+        "tiderjian/think-core": "^5.0",
         "funkjedi/composer-include-files": "^1.0"
     },
     "extra": {
