@@ -469,9 +469,17 @@ $nid  需要高亮的左菜单栏的node_id
 该方法是setNID的封装，通过module controller action动态获取nid
 
 参数 
-$module 需要高亮左侧菜单的module_name
-$controller 需要高亮左侧菜单的controller_name
-$action 需要高亮左侧菜单的action_name
+$module 需要高亮左侧菜单的module_nam，默认为MODULE_NAME
+$controller 需要高亮左侧菜单的controller_name，默认为CONTROLLER_NAME
+$action 需要高亮左侧菜单的action_name，默认为index
+```
+
+#### setTopHtml
+```blade
+该方法用于设置页面顶部自定义html代码
+
+参数
+$top_html 顶部自定义html代码
 ```
 
 ## 前台js错误收集
