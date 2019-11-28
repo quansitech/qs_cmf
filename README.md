@@ -474,15 +474,6 @@ $controller 需要高亮左侧菜单的controller_name，默认为CONTROLLER_NAM
 $action 需要高亮左侧菜单的action_name，默认为index
 ```
 
-#### setTopHtml
-```blade
-该方法用于设置页面顶部自定义html代码
-
-参数
-$top_html 顶部自定义html代码
-```
-
-
 ## 前台js错误收集
 #### 用法
 在前端head中引入log.js后调用frontLog方法
