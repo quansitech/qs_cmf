@@ -355,7 +355,7 @@ class PostController extends GyListController{
 
 ## Formbuilder
 
-####事件
+#### 事件
 + startHandlePostData   
 确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
 + endHandlePostData  
