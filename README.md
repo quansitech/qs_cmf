@@ -355,7 +355,7 @@ class PostController extends GyListController{
 
 ## Formbuilder
 
-####事件
+#### 事件
 + startHandlePostData   
 确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
 + endHandlePostData  
@@ -481,6 +481,18 @@ $action 需要高亮左侧菜单的action_name，默认为index
 参数
 $top_html 顶部自定义html代码
 ```
+截图  
+ListBuilder，如图所示
+
+![image](https://user-images.githubusercontent.com/35066497/69775189-fd60b800-11d2-11ea-9438-1a1d3dc9190b.png)
+
+FormBuilder，如图所示
+
+![image](https://user-images.githubusercontent.com/35066497/69775187-fb96f480-11d2-11ea-8447-438dd1585982.png)
+
+CompareBuilder，如图所示
+
+![image](https://user-images.githubusercontent.com/35066497/69775169-ea4de800-11d2-11ea-8a5e-60f6a1f7e792.png)
 
 ## 前台js错误收集
 #### 用法
