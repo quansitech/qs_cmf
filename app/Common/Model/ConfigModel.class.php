@@ -14,6 +14,7 @@ class ConfigModel extends \Gy_Library\GyListModel{
         array('group','require', '配置分组必填'),
         array('group','/^[0-9]+$/','{%MUST_BE_INTEGER}',parent::MUST_VALIDATE,'regex'),
         array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('name', '', '已存在配置名称', parent::MUST_VALIDATE, 'unique', parent::MODEL_BOTH),
     );
     
     protected $_delete_validate = array(

@@ -55,14 +55,14 @@ class QueueController extends GyListController {
         $builder = new \Qscmf\Builder\ListBuilder();
 
         $builder = $builder->setMetaTitle('队列任务')->setCheckBox(false)
-            ->addSearchItem('schedule', 'select', '是否计划任务', \Gy_Library\DBCont::getBoolStatusList())
-        ->addSearchItem('status', 'select', '所有状态', DBCont::getJobStatusList())->addSearchItem('', 'select_text', '搜索内容', array('title'=>'描述'));
+            ->addSearchItem('schedule', 'select', '是否计划任务', DBCont::getBoolStatusList())
+        ->addSearchItem('status', 'select', '所有状态', DBCont::getJobStatusList())->addSearchItem('', 'select_text', '搜索内容', array('description'=>'描述'));
         $builder->addTopButton('self', array('title' => '重启全部失败任务', 'href' => U('rebuildAllFail'), 'class' => 'btn btn-primary ajax-get confirm'))
         ->addTopButton('self', array('title' => '刷新所有等待', 'href' => U('refreshWait'), 'class' => 'btn btn-primary ajax-get confirm'));
-        $builder->setNID(969)
+        $builder->setNIDByNode()
         ->addTableColumn('id', 'Job_id', '', '', false)
         ->addTableColumn('job', 'job','','', false)
-        ->addTableColumn('description', '说明', '', '', false)->addTableColumn('status', '状态', 'fun', '\Gy_Library\DBCont::getJobStatus(__data_id__)', false)
+        ->addTableColumn('description', '说明', '', '', false)->addTableColumn('status', '状态', 'fun', 'Qscmf\Lib\DBCont::getJobStatus(__data_id__)', false)
             ->addTableColumn('schedule', '计划任务', '', '', false)
             ->addTableColumn('create_date', '创建时间', 'fun', 'date("Y-m-d H:i:s", __data_id__)')
         ->addTableColumn('right_button', '操作', 'btn')

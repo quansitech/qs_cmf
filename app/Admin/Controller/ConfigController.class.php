@@ -170,7 +170,7 @@ class ConfigController extends GyListController{
             $builder->setMetaTitle('新增配置') //设置页面标题
                     ->setNID(61)
                     ->setPostUrl(U('add'))    //设置表单提交地址
-                    ->addFormItem('name', 'text', '配置标识', '用于C函数调用，只能使用英文+下划线且不能重复')
+                    ->addFormItem('name', 'text', '配置名称', '用于C函数调用，只能使用英文+下划线且不能重复')
                     ->addFormItem('title', 'text', '配置标题', '用于后台显示的配置标题')
                     ->addFormItem('sort', 'text', '排序', '显示顺序')
                     ->addFormItem('type', 'select', '配置类型', '系统会根据不同类型解析配置值', $type_options)
@@ -213,7 +213,7 @@ class ConfigController extends GyListController{
                     ->setNID(61)
                     ->setPostUrl(U('edit'))    //设置表单提交地址
                     ->addFormItem('id', 'hidden', 'ID')
-                    ->addFormItem('name', 'text', '配置标识', '用于C函数调用，只能使用英文+下划线且不能重复')
+                    ->addFormItem('name', 'text', '配置名称', '用于C函数调用，只能使用英文+下划线且不能重复')
                     ->addFormItem('title', 'text', '配置标题', '用于后台显示的配置标题')
                     ->addFormItem('sort', 'text', '排序', '显示顺序')
                     ->addFormItem('type', 'select', '配置类型', '系统会根据不同类型解析配置值', $type_options)
