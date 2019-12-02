@@ -62,7 +62,7 @@ class QueueController extends GyListController {
         $builder->setNIDByNode()
         ->addTableColumn('id', 'Job_id', '', '', false)
         ->addTableColumn('job', 'job','','', false)
-        ->addTableColumn('description', '说明', '', '', false)->addTableColumn('status', '状态', 'fun', 'DBCont::getJobStatus(__data_id__)', false)
+        ->addTableColumn('description', '说明', '', '', false)->addTableColumn('status', '状态', 'fun', 'Qscmf\Lib\DBCont::getJobStatus(__data_id__)', false)
             ->addTableColumn('schedule', '计划任务', '', '', false)
             ->addTableColumn('create_date', '创建时间', 'fun', 'date("Y-m-d H:i:s", __data_id__)')
         ->addTableColumn('right_button', '操作', 'btn')
