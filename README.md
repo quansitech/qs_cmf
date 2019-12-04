@@ -179,6 +179,21 @@ protected function _initialize() {
 
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
+## 后台JS
+#### 跳转js执行机制
+
+```php
+可通过$this->success('修改成功', 'javascript:js代码') 的方式，让页面提交后执行对应的js代码。
+该方法仅对使用ajax-post和ajax-form的页面有效。
+
+使用场景举例：
+当翻页后，对列表数据进行编辑操作，编辑成功后希望页面跳回之前的页码。
+
+$this->success('修改成功', 'javascript:location.href=document.referrer;');
+```
+
+
+
 ## Listbuilder
 ### xlsx导出excel
 由后端完成excel导出操作会极大占用服务器资源，同时数据太多时往往会需要处理很长时间，页面长时间处于卡死状态用户体验也极差，因此采用前端分批导出excel数据才是更合理的做法。
