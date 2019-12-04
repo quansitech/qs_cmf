@@ -192,6 +192,11 @@ protected function _initialize() {
 $this->success('修改成功', 'javascript:location.href=document.referrer;');
 ```
 
+#### 获取当前列表选中checkbox的值
+```blade
+var ids = $(".check-all").data('checkedIds');
+```
+
 
 
 ## Listbuilder
@@ -366,7 +371,6 @@ class PostController extends GyListController{
     }
 
 ```
-
 
 ## Formbuilder
 
