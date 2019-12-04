@@ -367,6 +367,11 @@ class PostController extends GyListController{
 
 ```
 
+### 其他
+#### 获取当前列表选中checkbox的值
+```blade
+var ids = $(".check-all").data('checkedIds');
+```
 
 ## Formbuilder
 
