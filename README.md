@@ -198,7 +198,6 @@ var ids = $(".check-all").data('checkedIds');
 ```
 
 
-
 ## Listbuilder
 ### xlsx导出excel
 由后端完成excel导出操作会极大占用服务器资源，同时数据太多时往往会需要处理很长时间，页面长时间处于卡死状态用户体验也极差，因此采用前端分批导出excel数据才是更合理的做法。
