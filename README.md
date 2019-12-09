@@ -54,7 +54,7 @@ php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
 
 ## Excel操作类
 
-[传送门](https://)
+[传送门](https://github.com/tiderjian/qs_cmf/blob/master/docs/QsExcel.md)
 
 ## imageproxy
 [imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
