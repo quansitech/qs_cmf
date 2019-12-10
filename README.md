@@ -611,6 +611,43 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
 
+## js组件
+### selectAddr
+```blade
+select框的地址选择器
+
+参数 
+addressLevel: @array 省/市/县的select框默认值，默认为：['选择省','选择市','选择区']
+level: @int 1|2|3 地址的等级：省/市/区，默认为：3
+url: @array 分别获取地址的接口url，默认为：['/api/area/getProvince.html','/api/area/getCityByProvince.html','/api/area/getDistrictByCity.html']
+onSelected: function (val,changeEle){}  每个select框选择地址后执行自定义function，val： 隐藏域的值 changeEle： 触发事件的select
+```
+
+代码示例
+
+```php
+<input type="hidden" id="hidden_position" name="city_id" value="{$city_id}">
+ 
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/libs/addrSelect/selectAddr.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        $('#hidden_position').selectAddr({
+            addressLevel: ['省','市','区'],
+            level: 3,
+            onSelected: function (val,changeEle){
+                log(val);
+            }
+        });
+
+        function log(str) {
+            console.log(str+"-111");
+        }    
+    });
+</script>
+</block>
+```
+
 ## 常量
 DOMAIN  域名，可通过env去改写，默认采用$_SERVER["HTTP_HOST"]
 
