@@ -201,6 +201,57 @@ $this->success('修改成功', 'javascript:location.href=document.referrer;');
 var ids = $(".check-all").data('checkedIds');
 ```
 
+#### select2_ajax
+```blade
+根据API重置select2组件的值
+
+参数
+select_dom：dom select2元素节点
+url：string 获取数据的API，需返回数据格式：['total_count' => 12,'data' => [['id' => 1, 'text' => 'text']]]
+query：json 筛选API的参数，search为dom的值，pageSize最小值为20，最少会包括的参数有：search=xxx&page=1&pageSize=20,数据格式:{pageSize: "{:C('ADMIN_PER_PAGE_NUM')}"}
+```
+
+代码示例
+```php
+    // API
+    public function getLibrary($city){
+        $search = I('search');
+        $page = I('page');
+        $page == '' && $page = 1;
+        $pageSize = I('pageSize');
+        $pageSize == '' && $pageSize = 20;
+        $map['status'] = DBCont::NORMAL_STATUS;
+        $map['city'] = $city;
+        
+        if ($search){
+            $map['name'] = ['like', "%{$search}%"];
+        }
+
+        $library_name = D('Library')->where($map)->field(['id, name'])->page($page, $pageSize)->select();
+        $total_count = D('Library')->getListforCount($map);
+        
+        $lib_data = [];
+        foreach ($library_name as $k => $v){
+            $lib_data[$k]['id'] = $v['id'];
+            $lib_data[$k]['text'] = $v['name'];
+        }
+        $data = [
+            'total_count' => $total_count,
+            'data' => $lib_data,
+        ];
+
+        $this->ajaxReturn($data);
+    }
+            
+    // js使用代码    
+    var city = $('input[name=city]').val();
+    var query = {
+        city:city,
+        pageSize: "{:C('ADMIN_PER_PAGE_NUM')}"
+    };
+    
+    select2_ajax($('.select-two'), "{:U('getLibrary')}", query);
+```
 
 ## Listbuilder
 ### xlsx导出excel
@@ -617,9 +668,9 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 select框的地址选择器
 
 参数 
-addressLevel: @array 省/市/县的select框默认值，默认为：['选择省','选择市','选择区']
-level: @int 1|2|3 地址的等级：省/市/区，默认为：3
-url: @array 分别获取地址的接口url，默认为：['/api/area/getProvince.html','/api/area/getCityByProvince.html','/api/area/getDistrictByCity.html']
+addressLevel: array 省/市/县的select框默认值，默认为：['选择省','选择市','选择区']
+level: int 1|2|3 地址的等级：省/市/区，默认为：3
+url: array 分别获取地址的接口url，默认为：['/api/area/getProvince.html','/api/area/getCityByProvince.html','/api/area/getDistrictByCity.html']
 onSelected: function (val,changeEle){}  每个select框选择地址后执行自定义function，val： 隐藏域的值 changeEle： 触发事件的select
 ```
 
