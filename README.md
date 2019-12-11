@@ -208,7 +208,7 @@ var ids = $(".check-all").data('checkedIds');
 参数
 select_dom：dom select2元素节点
 url：string 获取数据的API，需返回数据格式：['total_count' => 12,'data' => [['id' => 1, 'text' => 'text']]]
-query：json 筛选API的参数，最少会包括的参数有：search=xxx&page=1&pageSize=20,数据格式:{pageSize: "{:C('ADMIN_PER_PAGE_NUM')}"}
+query：json 筛选API的参数，search为dom的值，pageSize最小值为20，最少会包括的参数有：search=xxx&page=1&pageSize=20,数据格式:{pageSize: "{:C('ADMIN_PER_PAGE_NUM')}"}
 ```
 
 代码示例
