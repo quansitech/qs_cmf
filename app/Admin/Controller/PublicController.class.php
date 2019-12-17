@@ -67,12 +67,11 @@ class PublicController extends Controller {
     public function logout() {
         if (isAdminLogin()) {
             cleanRbacKey();
+            cleanAuthFilterKey();
 
-            sysLogs('后台登出');
-            session(C('ADMIN_AUTH_KEY'), null);
-            session(C('USER_AUTH_KEY'), null);
             session('ADMIN_LOGIN', null);
-        } 
+            sysLogs('后台登出');
+        }
         $this->redirect('Public/login');
     }
 

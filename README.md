@@ -595,6 +595,115 @@ CompareBuilder，如图所示
 
 + 用户登出后使用cleanRbacKey清空key的session值
 
+## 扩展auth_ref_rule配置，可自定义不同用户类型的权限过滤
+#### 用法
++ 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
+
+```blade
+    protected $_auth_ref_rule = array(
+        'center' => [
+            'auth_ref_key' => 'org_id',
+            'ref_path' => 'LibraryCompany.id'
+        ],
+        'library' => [
+            'auth_ref_key' => 'id',
+            'ref_path' => 'Library.id'
+        ]
+    );
+```
+
++ 不同用户类型的登录方法需要设置”AUTH_RULE_ID“、”AUTH_ROLE_TYPE“对应的值
+
+```blade
+
+    // 用户类型为”library“的登录方法
+    public function libraryUserLogin($name,$pwd){
+        // 省略登录逻辑处理
+        ……
+        ……
+        ……
+
+        // 登录成功后
+        if ($r !== false){
+            cleanRbacKey();
+            cleanAuthFilterKey();
+                   
+            session('LIBRARY_USER_LOGIN_ID',$ent['id']);            
+            session(C('USER_AUTH_KEY'), $ent['id']);
+            session('AUTH_RULE_ID', $ent['library_id'] ? $ent['library_id'] : null);
+            session('AUTH_ROLE_TYPE', 'library');
+
+            session('ADMIN_LOGIN', true);
+            session('HOME_LOGIN', null);
+            sysLogs('书库点管理员后台登录');
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    // 用户类型为”center“的登录方法
+    public function adminLogin($user_name, $pwd){
+        // 省略登录逻辑处理
+        ……
+        ……
+        ……
+        
+        // 登录成功后            
+        if (!$ent){
+            return false;
+        }             
+        cleanRbacKey();
+        cleanAuthFilterKey();
+
+        // 设置超级管理员权限
+        if ($ent['id'] == C('USER_AUTH_ADMINID')) {
+            session(C('ADMIN_AUTH_KEY'), true);
+        } else {
+            session(C('ADMIN_AUTH_KEY'), false);
+        }        
+        
+        session('CENTER_USER_LOGIN_ID', $ent['id']);      
+        session(C('USER_AUTH_KEY'), $ent['id']);
+        session('AUTH_RULE_ID', $ent['company_id'] ? $ent['company_id'] : null);
+        session('AUTH_ROLE_TYPE', 'center');
+        
+        session('ADMIN_LOGIN', true);
+        session('HOME_LOGIN', null);
+        sysLogs($ent['company_id'] ? '机构后台登录' : '平台用户后台登录');
+
+        return true;
+    }
+    
+```
++ 不同用户类型的登出方法需要使用函数”cleanRbacKey“、”cleanAuthFilterKey“清空对应的值
+
+```blade
+    // 用户类型为"center"的登出方法
+    public function sso_out(){
+        if (isAdminLogin()) {
+            cleanRbacKey();
+            cleanAuthFilterKey();
+
+            session('ADMIN_LOGIN', null);
+            sysLogs('后台登出');
+        }
+    }
+    
+    // 用户类型为"library"的登出方法
+    public function libraryUserLogout(){
+        if (isAdminLogin()) {
+            cleanRbacKey();
+            cleanAuthFilterKey();
+
+            session('ADMIN_LOGIN', null);
+            sysLogs('后台登出');
+        }
+        
+        $this->redirect('Public/libraryUserLogin');
+    }
+```
 ## 工具类
 
 #### RedisLock类：基于Redis改造的悲观锁
@@ -661,6 +770,9 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
+
+#### cleanAuthFilterKey
+清空权限过滤标识key的session值
 
 ## js组件
 ### selectAddr
