@@ -612,11 +612,11 @@ CompareBuilder，如图所示
     );
 ```
 
-+ 不同用户类型的登录方法需要设置”AUTH_RULE_ID“、”AUTH_ROLE_TYPE“对应的值
++ 登录方法需先清空再设置“AUTH_RULE_ID”、“AUTH_ROLE_TYPE”对应的值
 
 ```blade
 
-    // 用户类型为”library“的登录方法
+    // 用户类型为“library”的登录方法
     public function libraryUserLogin($name,$pwd){
         // 省略登录逻辑处理
         ……
@@ -643,7 +643,7 @@ CompareBuilder，如图所示
         }
     }
     
-    // 用户类型为”center“的登录方法
+    // 用户类型为“center”的登录方法
     public function adminLogin($user_name, $pwd){
         // 省略登录逻辑处理
         ……
@@ -677,10 +677,10 @@ CompareBuilder，如图所示
     }
     
 ```
-+ 不同用户类型的登出方法需要使用函数”cleanRbacKey“、”cleanAuthFilterKey“清空对应的值
++ 登出方法需要使用函数“cleanRbacKey”、“cleanAuthFilterKey”清空对应的值
 
 ```blade
-    // 用户类型为"center"的登出方法
+    // 用户类型为“center”的登出方法
     public function sso_out(){
         if (isAdminLogin()) {
             cleanRbacKey();
@@ -691,7 +691,7 @@ CompareBuilder，如图所示
         }
     }
     
-    // 用户类型为"library"的登出方法
+    // 用户类型为“library”的登出方法
     public function libraryUserLogout(){
         if (isAdminLogin()) {
             cleanRbacKey();
