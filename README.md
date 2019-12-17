@@ -626,12 +626,12 @@ CompareBuilder，如图所示
         // 登录成功后
         if ($r !== false){
             cleanRbacKey();
-            cleanAuthFilterKey();
                    
             session('LIBRARY_USER_LOGIN_ID',$ent['id']);            
             session(C('USER_AUTH_KEY'), $ent['id']);
-            session('AUTH_RULE_ID', $ent['library_id'] ? $ent['library_id'] : null);
-            session('AUTH_ROLE_TYPE', 'library');
+            
+            $auth_chain = new AuthChain();
+            $auth_chain -> setAuthFilterKey($ent['library_id'], 'library');
 
             session('ADMIN_LOGIN', true);
             session('HOME_LOGIN', null);
@@ -655,7 +655,6 @@ CompareBuilder，如图所示
             return false;
         }             
         cleanRbacKey();
-        cleanAuthFilterKey();
 
         // 设置超级管理员权限
         if ($ent['id'] == C('USER_AUTH_ADMINID')) {
@@ -666,8 +665,9 @@ CompareBuilder，如图所示
         
         session('CENTER_USER_LOGIN_ID', $ent['id']);      
         session(C('USER_AUTH_KEY'), $ent['id']);
-        session('AUTH_RULE_ID', $ent['company_id'] ? $ent['company_id'] : null);
-        session('AUTH_ROLE_TYPE', 'center');
+        
+        $auth_chain = new AuthChain();
+        $auth_chain -> setAuthFilterKey($ent['company_id'], 'center');
         
         session('ADMIN_LOGIN', true);
         session('HOME_LOGIN', null);
@@ -684,8 +684,12 @@ CompareBuilder，如图所示
     public function sso_out(){
         if (isAdminLogin()) {
             cleanRbacKey();
-            cleanAuthFilterKey();
+            
+            $auth_chain = new AuthChain();
+            $auth_chain -> cleanAuthFilterKey();
 
+            session(C('ADMIN_AUTH_KEY'), null);
+            session(C('USER_AUTH_KEY'), null);
             session('ADMIN_LOGIN', null);
             sysLogs('后台登出');
         }
@@ -695,8 +699,12 @@ CompareBuilder，如图所示
     public function libraryUserLogout(){
         if (isAdminLogin()) {
             cleanRbacKey();
-            cleanAuthFilterKey();
+            
+            $auth_chain = new AuthChain();
+            $auth_chain -> cleanAuthFilterKey();
 
+            session(C('ADMIN_AUTH_KEY'), null);
+            session(C('USER_AUTH_KEY'), null);
             session('ADMIN_LOGIN', null);
             sysLogs('后台登出');
         }
@@ -770,9 +778,6 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
-
-#### cleanAuthFilterKey
-清空权限过滤标识key的session值
 
 ## js组件
 ### selectAddr

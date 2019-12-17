@@ -207,7 +207,6 @@ class UserModel extends \Gy_Library\GyListModel implements \Gy_Library\ICheckAva
         if ($r !== false) {
 
             cleanRbacKey();
-            cleanAuthFilterKey();
 
             if (!C('USER_AUTH_ADMINID')) {
                 E('C("USER_AUTH_ADMINID") is null');
