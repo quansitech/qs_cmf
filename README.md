@@ -604,7 +604,7 @@ CompareBuilder，如图所示
 + 配置对应Model类的$_auth_ref_rule
 
 如某机构（全思小伙伴）只能看到自己创建的书库点，则：
-```blade
+```php
     // 机构用户OrganizationUserModel的配置
     protected $_auth_ref_rule = array(
         // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
@@ -640,7 +640,7 @@ CompareBuilder，如图所示
 #### 用法
 + 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
 
-```blade
+```php
     protected $_auth_ref_rule = array(
         'center' => [
             'auth_ref_key' => 'org_id',
@@ -655,7 +655,7 @@ CompareBuilder，如图所示
 
 + 登录方法需先清空再设置“AUTH_RULE_ID”、“AUTH_ROLE_TYPE”对应的值
 
-```blade
+```php
 
     // 用户类型为“library”的登录方法
     public function libraryUserLogin($name,$pwd){
@@ -720,7 +720,7 @@ CompareBuilder，如图所示
 ```
 + 登出方法需要使用函数“cleanRbacKey”、“cleanAuthFilterKey”清空对应的值
 
-```blade
+```php
     // 用户类型为“center”的登出方法
     public function sso_out(){
         if (isAdminLogin()) {
