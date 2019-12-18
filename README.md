@@ -596,12 +596,12 @@ CompareBuilder，如图所示
 + 用户登出后使用cleanRbacKey清空key的session值
 
 ## 权限过滤机制
-该机制可以限制后台用户访问数据的权限，不用针对不同用户分别处理where表达式，降低开放难度。
+不同用户一般只能看到与自己相关的数据，该机制可以限制后台用户访问数据的权限，不用针对不同用户分别处理where表达式，降低开放难度。
 
 #### 用法
-+ 在用户登录成功后设置AUTH_RULE_ID的session值；
++ 用户登录成功后设置AUTH_RULE_ID的session值；
 
-+ 配置对应Model类的$_auth_ref_rule
++ 配置对应Model类的$_auth_ref_rule，定义权限过滤对应的字段
 
 ```blade
     protected $_auth_ref_rule = array(
