@@ -620,7 +620,7 @@ CompareBuilder，如图所示
         'ref_path' => 'Organization.id'
     );
     
-    // 书库点BoxModel的配置
+    // 书箱BoxModel的配置
     protected $_auth_ref_rule = array(
         'auth_ref_key' => 'library_id',
         'ref_path' => 'Library.id'
