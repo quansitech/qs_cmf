@@ -653,50 +653,51 @@ CompareBuilder，如图所示
 ```
 
 ## 扩展权限过滤机制
-需求：某机构只能查看其创建的书箱模板，而书库点管理员可以查看其书库点创建机构所创建的书箱模板。
+如系统存在机构用户OrgUser与书库点管理员LibraryUser，有书箱Box数据分别与他们关联（org_id与library_id）时，对应的BoxModel应该这样配置：
+```php
+// 对于OrgUser，书箱BoxModel的配置
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'org_id',
+    'ref_path' => 'Organization.id'
+);
 
-按照目前的权限过滤机制，机构可以查看其创建的书箱模板，但是书库点管理员查看的结果为空数据，是不能满足需求的。所以扩展了权限过滤机制，添加可自定义不同用户类型的权限过滤功能。
+// 对于LibraryUser，书箱BoxModel的配置
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'library_id',
+    'ref_path' => 'Library.id'
+);
+```
+
+当系统存在多种不同类型的用户，而这些用户与数据相关联的字段不一致，扩展后可以根据不同类型的用户配置不同的权限过滤。
 
 #### 用法
 + 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
 
 ```php
-    // 机构用户OrganizationUserModel的配置
-    protected $_auth_ref_rule = array(
-        'auth_ref_key' => 'org_id',
-        'ref_path' => 'Organization.id'
-    );
-    
     // 机构OrganizationModel的配置
     protected $_auth_ref_rule = array(
         'auth_ref_key' => 'id',
         'ref_path' => 'Organization.id'
     );
     
-    // 书库点管理员LibraryUserModel的配置
-    protected $_auth_ref_rule = array(
-        'auth_ref_key' => 'library_id',
-        'ref_path' => 'Library.id'
-    );
-    
-    // 用户类型center为机构
+    // 用户类型org为机构
     // 用户类型library为书库点管理员
 
-    // 书箱模板BoxTplModel的配置
+    // 书箱BoxModel的配置
     protected $_auth_ref_rule = array(
-        'center' => [
+        'org' => [
             'auth_ref_key' => 'org_id',
             'ref_path' => 'Organization.id'
         ],
         'library' => [
-            'auth_ref_key' => 'org_id',
-            'ref_path' => 'Library.org_id'
+            'auth_ref_key' => 'library_id',
+            'ref_path' => 'Library.id'
         ]
     );
     
      // 书库点LibraryModel的配置
     protected $_auth_ref_rule = array(
-        'center' => [
+        'org' => [
            'auth_ref_key' => 'org_id',
            'ref_path' => 'Organization.id'
        ],
@@ -737,7 +738,7 @@ CompareBuilder，如图所示
         }
     }
     
-    // 用户类型为“center”的登录方法
+    // 用户类型为“org”的登录方法
     public function adminLogin($user_name, $pwd){
         // 省略登录逻辑处理
         ……
@@ -757,10 +758,10 @@ CompareBuilder，如图所示
             session(C('ADMIN_AUTH_KEY'), false);
         }        
         
-        session('CENTER_USER_LOGIN_ID', $ent['id']);      
+        session('ORG_USER_LOGIN_ID', $ent['id']);      
         session(C('USER_AUTH_KEY'), $ent['id']);
         
-        \Qscmf\Core\AuthChain::setAuthFilterKey($ent['company_id'], 'center');
+        \Qscmf\Core\AuthChain::setAuthFilterKey($ent['company_id'], 'org');
         
         session('ADMIN_LOGIN', true);
         session('HOME_LOGIN', null);
@@ -773,7 +774,7 @@ CompareBuilder，如图所示
 + 登出方法需要使用函数“cleanRbacKey”、“cleanAuthFilterKey”清空对应的值
 
 ```php
-    // 用户类型为“center”的登出方法
+    // 用户类型为“org”的登出方法
     public function sso_out(){
         if (isAdminLogin()) {
             cleanRbacKey();
@@ -804,44 +805,6 @@ CompareBuilder，如图所示
     }
 ```
 
-若不扩展该机制，则需要根据不同登录用户来处理where表达式，会导致查询的层级越高、用户类型越多，代码量就越多：
-```php
-    // 机构查询书箱模板数据，则需要根据登录用户获取org_id，再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：
-    if (!session('?LIBRARY_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
-        $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
-        if ($org_id){
-            $box_tpl_ids = D('BoxTpl')->where(['org_id' => $org_ids])->getField('id',true);
-            $box_tpl_ids && $org_map['id'] = ['IN', $box_tpl_ids];
-            !$box_tpl_ids && $org_map['_string'] = "1=0";
-        }else{
-            $org_map['_string'] = "1=0";
-        }
-        $org_map && $map = array_merge($map, $org_map);
-    }
-
-    // 书库点管理员查询书箱模板数据，则需要根据登录用户获取library_id，再根据library_id获取org_id,再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：    
-    if (!session('?CENTER_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
-            $library_id = D('LibraryUser')->where(['id' => session('USER_AUTH_KEY')])->getField('library_id');
-            if ($library_id){
-                $org_id = D('Library')->where(['id' => $library_id])->getField('org_id');
-                !$org_id && $library_map['_string'] = "1=0";
-                $org_id && $box_tpl_ids = D('BoxTpl')->where(['org_id' => $org_ids])->getField('id',true);
-                $box_tpl_ids && $library_map['id'] = ['IN', $box_tpl_ids];
-                !$box_tpl_ids && $library_map['_string'] = "1=0";
-            }else{
-                $library_map['_string'] = "1=0";
-            }
-            $library_map && $map = array_merge($map, $library_map);
-        }
-    
-    D('BoxTpl')->where($map)->select();
-    
-```
-
-扩展该机制后，同样的功能用更少的代码实现：
-```php
-    D('BoxTpl')->where($map)->select();
-```
 ## 工具类
 
 #### RedisLock类：基于Redis改造的悲观锁
