@@ -620,7 +620,7 @@ CompareBuilder，如图所示
         'ref_path' => 'Organization.id'
     );
     
-    // 书库点BoxModel的配置
+    // 书箱BoxModel的配置
     protected $_auth_ref_rule = array(
         'auth_ref_key' => 'library_id',
         'ref_path' => 'Library.id'
@@ -630,8 +630,8 @@ CompareBuilder，如图所示
 若不使用该机制，则需要根据登录用户来处理where表达式，会导致查询的层级越高，代码量就越多：
 ```php
     // 不使用该机制，机构查询书箱数据，则需要根据登录用户获取org_id，再根据org_id获取library_id，再根据library_id获取书箱id，最后根据书箱id找出书箱数据：
-    if (session('?USER_AUTH_KEY')){
-        $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
+    if (session('?' . C('USER_AUTH_KEY')){
+        $org_id = D('OrganizationUser')->where(['id' => session(C('USER_AUTH_KEY'))])->getField('org_id');
         !$org_id && $org_map['_string'] = "1=0";
         $org_id && $library_ids = D('Library')->where(['org_id' => $org_id])->getField('id', true);
         if ($library_ids){
