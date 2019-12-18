@@ -627,8 +627,9 @@ CompareBuilder，如图所示
     );
 ```
 
+若不使用该机制，则需要根据登录用户来处理where表达式，会导致查询的层级越高，代码量就越多：
 ```php
-    // 机构查询书箱数据，不使用该机制，则需要根据登录用户获取org_id，再根据org_id获取library_id，再根据library_id获取书箱id，最后根据书箱id找出书箱数据，查询的层级越高，代码量就越多：
+    // 不使用该机制，机构查询书箱数据，则需要根据登录用户获取org_id，再根据org_id获取library_id，再根据library_id获取书箱id，最后根据书箱id找出书箱数据：
     if (session('?USER_AUTH_KEY')){
         $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
         !$org_id && $org_map['_string'] = "1=0";
@@ -644,7 +645,10 @@ CompareBuilder，如图所示
     }
     D('Box')->where($map)->select();
     
-    // 机构查询书箱数据，使用该机制后：
+```
+
+使用该机制后，机构查询书箱数据：
+```php
     D('Box')->where($map)->select();
 ```
 
@@ -804,8 +808,9 @@ CompareBuilder，如图所示
     }
 ```
 
+若不扩展该机制，则需要根据不同登录用户来处理where表达式，会导致查询的层级越高、用户类型越多，代码量就越多：
 ```php
-    // 机构查询书箱模板数据，不扩展该机制，则需要根据登录用户获取org_id，再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：
+    // 机构查询书箱模板数据，则需要根据登录用户获取org_id，再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：
     if (!session('?LIBRARY_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
         $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
         if ($org_id){
@@ -818,7 +823,7 @@ CompareBuilder，如图所示
         $org_map && $map = array_merge($map, $org_map);
     }
 
-    // 书库点管理员查询书箱模板数据，不扩展该机制，则需要根据登录用户获取library_id，再根据library_id获取org_id,再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：    
+    // 书库点管理员查询书箱模板数据，则需要根据登录用户获取library_id，再根据library_id获取org_id,再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：    
     if (!session('?CENTER_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
             $library_id = D('LibraryUser')->where(['id' => session('USER_AUTH_KEY')])->getField('library_id');
             if ($library_id){
@@ -835,7 +840,10 @@ CompareBuilder，如图所示
     
     D('BoxTpl')->where($map)->select();
     
-    // 扩展该机制后：
+```
+
+扩展该机制后，同样的功能用更少的代码实现：
+```php
     D('BoxTpl')->where($map)->select();
 ```
 ## 工具类
