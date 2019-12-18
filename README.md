@@ -603,16 +603,10 @@ CompareBuilder，如图所示
 
 + 配置对应Model类的$_auth_ref_rule
 
-如某机构（全思小伙伴）只能看到自己创建的书库点，则：
+如某机构（全思小伙伴）只能查看其创建书库点的书箱，则：
 ```php
     // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
     // ref_path是该字段有关的数据表及其对应字段
-    
-    // 机构用户OrganizationUserModel的配置
-    protected $_auth_ref_rule = array(
-        'auth_ref_key' => 'org_id',
-        'ref_path' => 'Organization.id'
-    );
     
     // 机构OrganizationModel的配置
     protected $_auth_ref_rule = array(
@@ -625,16 +619,34 @@ CompareBuilder，如图所示
         'auth_ref_key' => 'org_id',
         'ref_path' => 'Organization.id'
     );
+    
+    // 书库点BoxModel的配置
+    protected $_auth_ref_rule = array(
+        'auth_ref_key' => 'library_id',
+        'ref_path' => 'Library.id'
+    );
 ```
 
-截图 
-
-未使用权限过滤机制，机构查看的书库点数据为：
-![image](https://user-images.githubusercontent.com/35066497/71054608-93ae4b00-218d-11ea-9c30-957a3f589334.png)
-
-使用权限过滤机制，机构查看的书库点数据为：
-![image](https://user-images.githubusercontent.com/35066497/71054579-724d5f00-218d-11ea-8024-1a3e197c297e.png)
-
+```php
+    // 机构查询书箱数据，不使用该机制，则需要根据登录用户获取org_id，再根据org_id获取library_id，再根据library_id获取书箱id，最后根据书箱id找出书箱数据，查询的层级越高，代码量就越多：
+    if (session('?USER_AUTH_KEY')){
+        $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
+        !$org_id && $org_map['_string'] = "1=0";
+        $org_id && $library_ids = D('Library')->where(['org_id' => $org_id])->getField('id', true);
+        if ($library_ids){
+            $box_ids = D('Box')->where(['library_id'=>['IN',$library_ids]]) -> getField('id',true);
+            $box_ids && $org_map['id'] = ['IN', $box_ids];
+            !$box_ids && $org_map['_string'] = "1=0";
+        }else{
+            $org_map['_string'] = "1=0";
+        }
+        $org_map && $map = array_merge($map, $org_map);
+    }
+    D('Box')->where($map)->select();
+    
+    // 机构查询书箱数据，使用该机制后：
+    D('Box')->where($map)->select();
+```
 
 ## 扩展权限过滤机制
 需求：某机构只能查看其创建的书箱模板，而书库点管理员可以查看其书库点创建机构所创建的书箱模板。
@@ -792,17 +804,40 @@ CompareBuilder，如图所示
     }
 ```
 
-截图 
+```php
+    // 机构查询书箱模板数据，不扩展该机制，则需要根据登录用户获取org_id，再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：
+    if (!session('?LIBRARY_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
+        $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
+        if ($org_id){
+            $box_tpl_ids = D('BoxTpl')->where(['org_id' => $org_ids])->getField('id',true);
+            $box_tpl_ids && $org_map['id'] = ['IN', $box_tpl_ids];
+            !$box_tpl_ids && $org_map['_string'] = "1=0";
+        }else{
+            $org_map['_string'] = "1=0";
+        }
+        $org_map && $map = array_merge($map, $org_map);
+    }
 
-机构用户查询书箱模板的结果：
-![image](https://user-images.githubusercontent.com/35066497/71061823-e98ded80-21a3-11ea-9d04-a82a396479f9.png)
-
-扩展前，书库点管理员查询书箱模板的结果：
-![image](https://user-images.githubusercontent.com/35066497/71061900-29ed6b80-21a4-11ea-9736-8c13d6f5a7a0.png)
-
-扩展后，书库点管理员查询书箱模板的结果：
-![image](https://user-images.githubusercontent.com/35066497/71061902-2b1e9880-21a4-11ea-9682-ead5c0ed4531.png)
-
+    // 书库点管理员查询书箱模板数据，不扩展该机制，则需要根据登录用户获取library_id，再根据library_id获取org_id,再根据org_id获取书箱模板id，最后根据书箱模板id找出书箱模板数据：    
+    if (!session('?CENTER_USER_LOGIN_ID') && session('?USER_AUTH_KEY')){
+            $library_id = D('LibraryUser')->where(['id' => session('USER_AUTH_KEY')])->getField('library_id');
+            if ($library_id){
+                $org_id = D('Library')->where(['id' => $library_id])->getField('org_id');
+                !$org_id && $library_map['_string'] = "1=0";
+                $org_id && $box_tpl_ids = D('BoxTpl')->where(['org_id' => $org_ids])->getField('id',true);
+                $box_tpl_ids && $library_map['id'] = ['IN', $box_tpl_ids];
+                !$box_tpl_ids && $library_map['_string'] = "1=0";
+            }else{
+                $library_map['_string'] = "1=0";
+            }
+            $library_map && $map = array_merge($map, $library_map);
+        }
+    
+    D('BoxTpl')->where($map)->select();
+    
+    // 扩展该机制后：
+    D('BoxTpl')->where($map)->select();
+```
 ## 工具类
 
 #### RedisLock类：基于Redis改造的悲观锁
