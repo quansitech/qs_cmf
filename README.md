@@ -630,7 +630,7 @@ CompareBuilder，如图所示
 若不使用该机制，则需要根据登录用户来处理where表达式，会导致查询的层级越高，代码量就越多：
 ```php
     // 不使用该机制，机构查询书箱数据，则需要根据登录用户获取org_id，再根据org_id获取library_id，再根据library_id获取书箱id，最后根据书箱id找出书箱数据：
-    if (session('USER_AUTH_KEY')){
+    if (session('?USER_AUTH_KEY')){
         $org_id = D('OrganizationUser')->where(['id' => session('USER_AUTH_KEY')])->getField('org_id');
         !$org_id && $org_map['_string'] = "1=0";
         $org_id && $library_ids = D('Library')->where(['org_id' => $org_id])->getField('id', true);
