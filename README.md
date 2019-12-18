@@ -653,15 +653,15 @@ CompareBuilder，如图所示
 ```
 
 ## 扩展权限过滤机制
-如系统存在机构用户OrgUser与书库点管理员LibraryUser，有书箱Box数据分别与他们关联（org_id与library_id）时，对应的BoxModel应该这样配置：
+如系统存在机构用户OrgUser与书库点管理员LibraryUser，有书库点Library数据分别与他们关联（org_id与library_id）时，对应的LibraryModel应该这样配置：
 ```php
-// 对于OrgUser，书箱BoxModel的配置
+// 对于OrgUser，书库点LibraryModel的配置
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'org_id',
     'ref_path' => 'Organization.id'
 );
 
-// 对于LibraryUser，书箱BoxModel的配置
+// 对于LibraryUser，书库点LibraryModel的配置
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'library_id',
     'ref_path' => 'Library.id'
@@ -685,7 +685,7 @@ protected $_auth_ref_rule = array(
     // 用户类型org为机构
     // 用户类型library为书库点管理员
 
-    // 书箱BoxModel的配置
+    // 书库点LibraryModel的配置
     protected $_auth_ref_rule = array(
         'org' => [
             'auth_ref_key' => 'org_id',
@@ -695,18 +695,6 @@ protected $_auth_ref_rule = array(
             'auth_ref_key' => 'library_id',
             'ref_path' => 'Library.id'
         ]
-    );
-    
-     // 书库点LibraryModel的配置
-    protected $_auth_ref_rule = array(
-        'org' => [
-           'auth_ref_key' => 'org_id',
-           'ref_path' => 'Organization.id'
-       ],
-       'library' => [
-           'auth_ref_key' => 'id',
-           'ref_path' => 'Library.id'
-       ]
     );
 ```
 
