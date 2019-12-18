@@ -629,29 +629,65 @@ CompareBuilder，如图所示
 
 截图 
 
-全部书库点数据为：
+未使用权限过滤机制，机构查看的书库点数据为：
 ![image](https://user-images.githubusercontent.com/35066497/71054608-93ae4b00-218d-11ea-9c30-957a3f589334.png)
 
-当机构用户登录后，它查看的书库点数据是：
+使用权限过滤机制，机构查看的书库点数据为：
 ![image](https://user-images.githubusercontent.com/35066497/71054579-724d5f00-218d-11ea-8024-1a3e197c297e.png)
 
 
 ## 扩展权限过滤机制
-在权限过滤机制基础上，扩展了可自定义不同用户类型的权限过滤功能
+需求：某机构只能查看其创建的书箱模板，而书库点管理员可以查看其书库点创建机构所创建的书箱模板。
+
+按照目前的权限过滤机制，机构可以查看其创建的书箱模板，但是书库点管理员查看的结果为空数据，是不能满足需求的。所以扩展了权限过滤机制，添加可自定义不同用户类型的权限过滤功能。
 
 #### 用法
 + 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
 
 ```php
+    // 机构用户OrganizationUserModel的配置
+    protected $_auth_ref_rule = array(
+        'auth_ref_key' => 'org_id',
+        'ref_path' => 'Organization.id'
+    );
+    
+    // 机构OrganizationModel的配置
+    protected $_auth_ref_rule = array(
+        'auth_ref_key' => 'id',
+        'ref_path' => 'Organization.id'
+    );
+    
+    // 书库点管理员LibraryUserModel的配置
+    protected $_auth_ref_rule = array(
+        'auth_ref_key' => 'library_id',
+        'ref_path' => 'Library.id'
+    );
+    
+    // 用户类型center为机构
+    // 用户类型library为书库点管理员
+
+    // 书箱模板BoxTplModel的配置
     protected $_auth_ref_rule = array(
         'center' => [
             'auth_ref_key' => 'org_id',
-            'ref_path' => 'LibraryCompany.id'
+            'ref_path' => 'Organization.id'
         ],
         'library' => [
-            'auth_ref_key' => 'id',
-            'ref_path' => 'Library.id'
+            'auth_ref_key' => 'org_id',
+            'ref_path' => 'Library.org_id'
         ]
+    );
+    
+     // 书库点LibraryModel的配置
+    protected $_auth_ref_rule = array(
+        'center' => [
+           'auth_ref_key' => 'org_id',
+           'ref_path' => 'Organization.id'
+       ],
+       'library' => [
+           'auth_ref_key' => 'id',
+           'ref_path' => 'Library.id'
+       ]
     );
 ```
 
@@ -755,6 +791,18 @@ CompareBuilder，如图所示
         $this->redirect('Public/libraryUserLogin');
     }
 ```
+
+截图 
+
+机构用户查询书箱模板的结果：
+![image](https://user-images.githubusercontent.com/35066497/71061823-e98ded80-21a3-11ea-9d04-a82a396479f9.png)
+
+扩展前，书库点管理员查询书箱模板的结果：
+![image](https://user-images.githubusercontent.com/35066497/71061900-29ed6b80-21a4-11ea-9736-8c13d6f5a7a0.png)
+
+扩展后，书库点管理员查询书箱模板的结果：
+![image](https://user-images.githubusercontent.com/35066497/71061902-2b1e9880-21a4-11ea-9682-ead5c0ed4531.png)
+
 ## 工具类
 
 #### RedisLock类：基于Redis改造的悲观锁
