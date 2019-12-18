@@ -2,7 +2,6 @@
 
 namespace Admin\Controller;
 
-use Qscmf\Core\AuthChain;
 use Think\Controller;
 
 class PublicController extends Controller {
@@ -68,8 +67,7 @@ class PublicController extends Controller {
     public function logout() {
         if (isAdminLogin()) {
             cleanRbacKey();
-            $auth_chain = new AuthChain();
-            $auth_chain -> cleanAuthFilterKey();
+            \Qscmf\Core\AuthChain::cleanAuthFilterKey();
 
             session(C('ADMIN_AUTH_KEY'), null);
             session(C('USER_AUTH_KEY'), null);
