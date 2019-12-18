@@ -725,8 +725,7 @@ CompareBuilder，如图所示
             session('LIBRARY_USER_LOGIN_ID',$ent['id']);            
             session(C('USER_AUTH_KEY'), $ent['id']);
             
-            $auth_chain = new AuthChain();
-            $auth_chain -> setAuthFilterKey($ent['library_id'], 'library');
+            \Qscmf\Core\AuthChain::setAuthFilterKey($ent['library_id'], 'library');
 
             session('ADMIN_LOGIN', true);
             session('HOME_LOGIN', null);
@@ -761,8 +760,7 @@ CompareBuilder，如图所示
         session('CENTER_USER_LOGIN_ID', $ent['id']);      
         session(C('USER_AUTH_KEY'), $ent['id']);
         
-        $auth_chain = new AuthChain();
-        $auth_chain -> setAuthFilterKey($ent['company_id'], 'center');
+        \Qscmf\Core\AuthChain::setAuthFilterKey($ent['company_id'], 'center');
         
         session('ADMIN_LOGIN', true);
         session('HOME_LOGIN', null);
@@ -780,8 +778,7 @@ CompareBuilder，如图所示
         if (isAdminLogin()) {
             cleanRbacKey();
             
-            $auth_chain = new AuthChain();
-            $auth_chain -> cleanAuthFilterKey();
+            \Qscmf\Core\AuthChain::cleanAuthFilterKey();
 
             session(C('ADMIN_AUTH_KEY'), null);
             session(C('USER_AUTH_KEY'), null);
@@ -795,8 +792,7 @@ CompareBuilder，如图所示
         if (isAdminLogin()) {
             cleanRbacKey();
             
-            $auth_chain = new AuthChain();
-            $auth_chain -> cleanAuthFilterKey();
+            \Qscmf\Core\AuthChain::cleanAuthFilterKey();
 
             session(C('ADMIN_AUTH_KEY'), null);
             session(C('USER_AUTH_KEY'), null);
