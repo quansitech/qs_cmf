@@ -605,11 +605,12 @@ CompareBuilder，如图所示
 
 如某机构（全思小伙伴）只能看到自己创建的书库点，则：
 ```php
+    // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
+    // ref_path是该字段有关的数据表及其对应字段
+    
     // 机构用户OrganizationUserModel的配置
     protected $_auth_ref_rule = array(
-        // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
         'auth_ref_key' => 'org_id',
-        // ref_path是该字段有关的数据表及其对应字段
         'ref_path' => 'Organization.id'
     );
     
