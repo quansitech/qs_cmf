@@ -595,41 +595,24 @@ CompareBuilder，如图所示
 
 + 用户登出后使用cleanRbacKey清空key的session值
 
-## 通过权限过滤机制来修改数据表的where表达式：auth_ref_rule的介绍与使用
-当需要只显示与登录用户相关联的数据时，我们可以在Model类配置auth_ref_rule值，而不需要在控制器类针对不同用户做不同的判断。数据查询、数据的写入与修改均使用了该机制。
+## 权限过滤机制
+该机制可以限制后台用户访问数据的权限，不用针对不同用户分别处理where表达式，降低开放难度。
 
 #### 用法
-+ 用户登录后，设置“AUTH_RULE_ID”的session值，该值是“auth_ref_key”对应的值
++ 在用户登录成功后设置AUTH_RULE_ID的session值；
 
 + 配置对应Model类的$_auth_ref_rule
+
 ```blade
     protected $_auth_ref_rule = array(
         'auth_ref_key' => 'org_id',
         'ref_path' => 'LibraryCompany.id'
     );
 ```
-#### 逻辑
-分析操作数据表的表达式时_parseOptions($options)，会调用表达式过滤方法：_options_filter($option),当同时满足以下条件，就会修改option的where表达式：
-+ 开启过滤机制（默认为开启，开启：enableOptionsFilter()；关闭：notOptionsFilter()）；
-+ 该模块为后台模块；
-+ 配置了$_auth_ref_rule的值；
-+ 设置了“AUTH_RULE_ID”的session值；
-+ 配置了$_auth_ref_rule的ref_path值。
 
-根据不同Model类的ref_path值来递归修改option的where表达式：
-+ 将$_auth_ref_rule的ref_path值分割为对应的Model类和字段值，如以上配置中，Model类为LibraryCompany，字段为id；
-+ 程序先判断where表达式是否已含有auth_ref_key对应的值：
-    + 若有，则分别筛选出值（原表达式的筛选不使用权限过滤），比较是否在范围内:
-        + 若不在，则将表达式的值修改为权限过滤后的值
-        + 若存在，则为原表达式
-    + 若无，判断是否为当前Model类：
-        + 若是，则修改where表达式：
-            ```blade
-                  $options['where']['id'] = session('AUTH_RULE_ID');
-            ```
-        + 若否，则将表达式的值修改为权限过滤后的值
+## 扩展权限过滤机制
+在权限过滤机制基础上，扩展了可自定义不同用户类型的权限过滤功能
 
-## 扩展auth_ref_rule配置，可自定义不同用户类型的权限过滤
 #### 用法
 + 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
 
