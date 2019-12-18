@@ -663,7 +663,7 @@ protected $_auth_ref_rule = array(
 
 // 对于LibraryUser，书库点LibraryModel的配置
 protected $_auth_ref_rule = array(
-    'auth_ref_key' => 'library_id',
+    'auth_ref_key' => 'id',
     'ref_path' => 'Library.id'
 );
 ```
@@ -692,7 +692,7 @@ protected $_auth_ref_rule = array(
             'ref_path' => 'Organization.id'
         ],
         'library' => [
-            'auth_ref_key' => 'library_id',
+            'auth_ref_key' => 'id',
             'ref_path' => 'Library.id'
         ]
     );
