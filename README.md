@@ -601,16 +601,38 @@ CompareBuilder，如图所示
 #### 用法
 + 用户登录成功后设置AUTH_RULE_ID的session值；
 
-+ 配置对应Model类的$_auth_ref_rule，定义权限过滤对应的字段
++ 配置对应Model类的$_auth_ref_rule
 
+如某机构（全思小伙伴）只能看到自己创建的书库点，则：
 ```blade
-    // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
-    // ref_path是该字段有关的数据表及其对应字段
+    // 机构用户OrganizationUserModel的配置
+    protected $_auth_ref_rule = array(
+        // auth_ref_key是与用户关联的字段，即AUTH_RULE_ID的值
+        'auth_ref_key' => 'org_id',
+        // ref_path是该字段有关的数据表及其对应字段
+        'ref_path' => 'Organization.id'
+    );
+    
+    // 机构OrganizationModel的配置
+    protected $_auth_ref_rule = array(
+        'auth_ref_key' => 'id',
+        'ref_path' => 'Organization.id'
+    );
+    
+    // 书库点LibraryModel的配置
     protected $_auth_ref_rule = array(
         'auth_ref_key' => 'org_id',
-        'ref_path' => 'LibraryCompany.id'
+        'ref_path' => 'Organization.id'
     );
 ```
+
+截图
+全部书库点数据为：
+![image](https://user-images.githubusercontent.com/35066497/71054608-93ae4b00-218d-11ea-9c30-957a3f589334.png)
+
+当机构用户登录后，它查看的书库点数据是：
+![image](https://user-images.githubusercontent.com/35066497/71054579-724d5f00-218d-11ea-8024-1a3e197c297e.png)
+
 
 ## 扩展权限过滤机制
 在权限过滤机制基础上，扩展了可自定义不同用户类型的权限过滤功能
