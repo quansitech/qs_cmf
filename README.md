@@ -797,6 +797,7 @@ protected $_auth_ref_rule = array(
 
 ## 阿里云视频点播服务(vod)
 
+阿里云配置 [传送门](https://help.aliyun.com/document_detail/57114.html?spm=a2c4g.11186623.6.613.3cd06a58TPsKSf)
 #### env配置
 ```dotenv
 # 阿里云点播服务
@@ -824,6 +825,7 @@ FULL_ROLE_RAN=
     $this->playAuth = $vod->getPlayAuth($video_id)['PlayAuth'];
     $this->address = $vod->getPlayAddress($video_id);
 ```
+#### 视图
 ```html
 <link rel="stylesheet" href="__PUBLIC__/libs/vod/aliplayer-min.css" />
 <script type="text/javascript" src="__PUBLIC__/libs/vod/aliplayer-min.js"  charset="UTF-8"></script>
