@@ -601,7 +601,7 @@ CompareBuilder，如图所示
 #### 用法
 + 用户登录成功后设置AUTH_RULE_ID的session值；
 
-+ 配置对应Model类的$_auth_ref_rule
++ 配置对应Model类的$_auth_ref_rule（若查询数据表存在别名，自动处理auth_ref_key为“别名.字段名”）
 
 如某机构（全思小伙伴）只能查看其创建书库点的书箱，则：
 ```php
