@@ -24,6 +24,13 @@ return array(
     'ALIOSS_ACCESS_KEY_ID' => env('ALIOSS_ACCESS_KEY_ID'),
     'ALIOSS_ACCESS_KEY_SECRET' => env('ALIOSS_ACCESS_KEY_SECRET'),
 
+    //视频点播
+    'VOD_ACCESS_KEY' =>env('VOD_ACCESS_KEY',''),
+    'VOD_ACCESS_SECRET' =>env('VOD_ACCESS_SECRET',''),
+    'UPLOADER_ROLE_RAN' =>env('UPLOADER_ROLE_RAN',''),
+    'PLAY_ROLE_RAN' =>env('PLAY_ROLE_RAN',''),
+    'FULL_ROLE_RAN' =>env('FULL_ROLE_RAN',''),
+
     'ELASTIC_ALLOW_EXCEPTION' => true,
     'ELASTICSEARCH_HOSTS' => explode(',', ENV('ELASTICSEARCH_HOSTS')),
 
