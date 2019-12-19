@@ -820,7 +820,7 @@ FULL_ROLE_RAN=
 ##### 控制器
 ```php
     /** @var $video_id string 视频ID **/    
-    $vod = new Common\Util\Vod\Vod();
+    $vod = new \Qscmf\Lib\Vod\Vod();
     $this->playAuth = $vod->getPlayAuth($video_id)['PlayAuth'];
     $this->address = $vod->getPlayAddress($video_id);
 ```
