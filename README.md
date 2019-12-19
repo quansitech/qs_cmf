@@ -825,7 +825,7 @@ FULL_ROLE_RAN=
     $this->playAuth = $vod->getPlayAuth($video_id)['PlayAuth'];
     $this->address = $vod->getPlayAddress($video_id);
 ```
-#### 视图
+##### 视图
 ```html
 <link rel="stylesheet" href="__PUBLIC__/libs/vod/aliplayer-min.css" />
 <script type="text/javascript" src="__PUBLIC__/libs/vod/aliplayer-min.js"  charset="UTF-8"></script>
