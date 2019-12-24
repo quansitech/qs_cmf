@@ -861,7 +861,7 @@ FULL_ROLE_RAN=
 </script>
 ```
 
-### 微信登录
+## 微信登录
 为解决第三方平台网站应用的PC扫码后openid不可操作问题，对PC端的微信扫码登录进行封装。
 * 从[微信公众平台](https://mp.weixin.qq.com/)中获取公众号的app_id和app_secret，并进行相关配置，放入.env文件
 ```dotenv
@@ -869,63 +869,23 @@ FULL_ROLE_RAN=
 WX_APPID=
 WX_APPSECRET=
 ```
-* 添加微信端登录action或Behavior
+
+* PC扫码页面，在需要显示二维码的地方加入iframe
+```html
+<iframe id="scan" src="{:U('qscmf/weixinLogin/scan')}"></iframe>
+```
+PS:
+1. 构造iframe的src时，可通过goto_url参数来指定PC端扫码后跳转的地址，默认为首页
+2. 构造iframe的src时，可通过mobile_goto_url参数来指定微信端扫码后跳转的地址，默认为首页
+
+* 微信端获取登录信息
 ```php
     public function mobile(){
-        $uni_code=I('get.uni_code');
-        
-        $wx_info=\Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile($uni_code);
-        //todo 进行注册/登录操作
-        
-        //若带有uni_code则需要通知PC端已登录
-        if ($uni_code){
-            \Qscmf\Lib\WeixinLogin::getInstance()->notify($uni_code,$wx_info);
-        }
-        //登录后的操作
+        $wx_info=Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile();
     }
 ```
 
-* PC扫码页面，需要轮询接口
-```php
-    public function scan(){
-        $uni_code=\Qscmf\Lib\WeixinLogin::getInstance()->getUniCode();
-        $this->uni_code=$uni_code;
-
-        // 手机端应访问的地址
-        $this->goto_url=U('mobile',['uni_code'=>$uni_code],true,true);
-
-        // PC端轮询地址
-        $this->check_url=U('checkLogin',['uni_code'=>$uni_code],true,true);
-        $this->display();
-    }
-```
-
-* PC轮询接口
-```php
-    public function checkLogin($uni_code){
-        $info=\Qscmf\Lib\WeixinLogin::getInstance()->getNotifyInfo($uni_code);
-        if (!$info){
-            // uni_code过期，需要刷新页面
-            $this->ajaxReturn([
-                'status'=>0,
-                'info'=>'need_refresh'
-            ]);
-        }
-        if ($info==='no_scan'){
-            // 未扫码或通知PC端
-            $this->ajaxReturn([
-                'status'=>0,
-                'info'=>'no_scan'
-            ]);
-        }
-        //todo 进行PC登录操作
-
-        $this->ajaxReturn([
-            'status'=>1,
-            'info'=>$info
-        ]);
-    }
-```
+* 运行/扫码后可用``` session('wx_info') ```获取
 
 ## 工具类
 
