@@ -862,7 +862,7 @@ FULL_ROLE_RAN=
 ```
 
 ## 微信登录
-为解决第三方平台网站应用的PC扫码后openid不可操作问题，对PC端的微信扫码登录进行封装。
+为解决第三方平台网站应用的PC扫码后openid不可操作问题，统一PC端微信扫码以及微信端登录。
 * 从[微信公众平台](https://mp.weixin.qq.com/)中获取公众号的app_id和app_secret，并进行相关配置，放入.env文件
 ```dotenv
 # 微信公众号
