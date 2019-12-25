@@ -897,7 +897,7 @@ PS:
 ```
 * 登录/注册业务处理（对应上一步的"/home/index/wxLogin"）
 ```php
-$wx_info=session('wx_info');
+$wx_info=json_decode(session('wx_info'),true);
 // 若用户表为member表
 $member=D('Member')->where(['openid'=>$wx_info['id']])->find();
 if ($member){
