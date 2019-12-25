@@ -861,6 +861,76 @@ FULL_ROLE_RAN=
 </script>
 ```
 
+## 微信登录
+为解决第三方平台网站应用的PC扫码后openid不可操作问题，统一对PC端微信扫码以及微信端登录进行封装。
+* 从[微信公众平台](https://mp.weixin.qq.com/)中获取公众号的app_id和app_secret，并进行相关配置，放入.env文件
+```dotenv
+# 微信公众号
+WX_APPID=
+WX_APPSECRET=
+```
+
+* PC扫码页面，在需要显示二维码的地方加入iframe
+```html
+<iframe src="{:U('qscmf/weixinLogin/scan')}"></iframe>
+```
+PS:
+1. 构造iframe的src时，可通过goto_url参数来指定PC端扫码后跳转的地址，默认为首页
+2. 构造iframe的src时，可通过mobile_goto_url参数来指定微信端扫码后跳转的地址，默认为首页
+
+* 微信端获取登录信息
+```php
+    $wx_info=Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile();
+```
+
+* 运行/扫码后可用``` session('wx_info') ```获取微信登录信息
+* 若'wx_info'的session值已设置，可通过设置config.php中的'WX_INFO_SESSION_KEY'来改变
+
+### 场景模拟
+一、 PC端实现扫码登录/注册
+* 扫码页面（扫码后需要跳转到'/home/index/wxLogin'）
+```html
+<!-- 其它代码 -->
+    <!-- 此处是放入二维码的位置 -->
+    <iframe id="scan" src="{:U('qscmf/weixinLogin/scan',['goto_url'=>urlencode('/home/index/wxLogin')])}"></iframe>
+<!-- 其它代码 -->
+```
+* 登录/注册业务处理（对应上一步的"/home/index/wxLogin"）
+```php
+$wx_info=session('wx_info');
+// 若用户表为member表
+$member=D('Member')->where(['openid'=>$wx_info['id']])->find();
+if ($member){
+    //登录
+    session('mid',$member['id']);
+}else{
+    //注册
+    $ent=[
+        'openid'=>$wx_info['id'],
+        'nickname'=>$wx_info['nickname']
+    ];
+    $r=D('Member')->createAdd($ent);
+    if ($r===false){
+        E(D('Member')->getError());    
+    }
+    session('mid',$r);
+}
+redirect(U('home/user/index'));
+```
+
+二、 微信端实现授权登录/注册
+1. 授权页面 （授权后需要跳转到'/home/index/wxLogin'）
+```php
+    $wx_info=Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile();
+    if ($wx_info){
+        redirect(U('/home/index/wxLogin'));    
+    }   
+```
+2. 登录/注册业务处理（对应上一步的"/home/index/wxLogin"）
+```php
+// 与PC端扫码后登录/注册业务处理一致
+```
+
 ## 工具类
 
 #### RedisLock类：基于Redis改造的悲观锁
