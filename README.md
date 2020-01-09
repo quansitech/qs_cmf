@@ -1000,12 +1000,12 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 ```blade
 参数
 $file_id 存放在qs_file_pic表的文件id
-$default_img 默认图片的url地址
+$default_file 默认文件的URL地址
 
 返回值
-图片url地址
+文件的URL地址
 
-该函数一般用于展示数据库存储文件URL地址。
+该函数一般用于展示数据库存储文件的URL地址。
 ```
 
 #### cleanRbacKey
