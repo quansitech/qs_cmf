@@ -995,6 +995,19 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 使用该函数即可在不做任何代码改动的情况下完好的作用在本地图片上传和填充伪造图片的两种场景。
 ```
 
+#### showFileUrl
+
+```blade
+参数
+$file_id 存放在qs_file_pic表的文件id
+$default_file 默认文件的URL地址
+
+返回值
+文件的URL地址
+
+该函数一般用于展示数据库存储文件的URL地址。
+```
+
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
 
