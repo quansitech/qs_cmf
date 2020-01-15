@@ -27,4 +27,5 @@
 9.(升级到v6.0.0以上版本)检查有无在www/Public/views/Admin/common/common.js和www/Public/views/common.css中自定义客制化代码，如有，请
    将代码迁移处理。上述两文件将移植核心库。并在app/Admin/View/default/common/dashboard_layout.html中将以上两文件的引用分别指向
    __PUBLIC__/libs/admin/common.js和__PUBLIC__/libs/admin/common.css。
+10.(升级到v7.0.0以上版本)7.0版本移除了位于Qscmf/Lib下的QsExcel代码，检查有无使用该类，如果使用了，请安装使用https://github.com/quansitech/qs-excel。
 ```
