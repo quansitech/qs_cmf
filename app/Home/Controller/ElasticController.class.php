@@ -51,6 +51,9 @@ class ElasticController{
         $sum = 0;
         foreach($result as $v){
             $table = array_pop($v);
+            if(strpos($table, C('DB_PREFIX')) === false){
+                continue;
+            }
             $model_name = parse_name(Str::replaceFirst(C('DB_PREFIX'), '', $table), 1);
             if(D($model_name) instanceof ElasticsearchModelContract){
                 $sum += D($model_name)->createIndex();
