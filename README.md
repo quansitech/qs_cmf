@@ -77,7 +77,7 @@ path 网站图片的相对地址，如 http://localhost/Uploads/image/20190826/5
 ```php
 // imageproxy图片格式处理
 //options 图片处理规则
-//file_id 图片id
+//file_id 图片id，若为ulr，则返回该url
 // return 返回与.env配置格式对应的图片地址
 imageproxy($options, $file_id)
 
@@ -999,7 +999,7 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 
 ```blade
 参数
-$file_id 存放在qs_file_pic表的文件id
+$file_id 存放在qs_file_pic表的文件id，若为url,则返回该url
 $default_file 默认文件的URL地址
 
 返回值
