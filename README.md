@@ -999,7 +999,7 @@ $replace_img 如获取图片失败，适应该指定的图片url代替
 
 ```blade
 参数
-$file_id 存放在qs_file_pic表的文件id，若为url则直接返回该url
+$file_id 存放在qs_file_pic表的文件id，若为url,则返回该url
 $default_file 默认文件的URL地址
 
 返回值
