@@ -426,6 +426,14 @@ class PostController extends GyListController{
 
 ```
 
+### setPageTemplate
+```blade
+该方法用于设置页码模板
+
+参数
+$page_template 页码模板自定义html代码
+```
+
 ## Formbuilder
 
 #### 事件
