@@ -33,6 +33,10 @@
     },
     "scripts": {
         "post-install-cmd": "./vendor/bin/qsinstall",
-        "post-create-project-cmd": "./vendor/bin/qsinstall"
+        "post-autoload-dump": [
+            "./vendor/bin/installed-copy",
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ]
     }
 }
