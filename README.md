@@ -515,6 +515,7 @@ QINIU_SK=************
 ```blade
 该方法用于加入一个表单项
 
+参数
 $type 表单类型(取值参考系统配置FORM_ITEM_TYPE)
 $title 表单标题
 $tip 表单提示说明
