@@ -1,5 +1,5 @@
-#### 重置RBAC用户表和用户与用户组关联表
-##### 用法
+### 重置RBAC用户表和用户与用户组关联表
+#### 用法
 + config.php配置INJECT_RBAC  
 ```blade
 // key为标识字段，用户登录后存入session中
@@ -14,10 +14,10 @@
 
 + 用户登出后使用cleanRbacKey清空key的session值
 
-#### 权限过滤机制
+### 权限过滤机制
 不同用户一般只能看到与自己相关的数据，该机制可以限制后台用户访问数据的权限，不用针对不同用户分别处理where表达式，降低开发难度。
 
-##### 用法
+#### 用法
 + 用户登录成功后设置AUTH_RULE_ID的session值；
 
 + 配置对应Model类的$_auth_ref_rule（若查询数据表存在别名，自动处理auth_ref_key为“别名.字段名”）
@@ -71,7 +71,7 @@
     D('Box')->where($map)->select();
 ```
 
-#### 扩展权限过滤机制
+### 扩展权限过滤机制
 如系统存在机构用户OrgUser与书库点管理员LibraryUser，有书库点Library数据分别与他们关联（org_id与id）时，对应的LibraryModel应该这样配置：
 ```php
 // 对于OrgUser，书库点LibraryModel的配置
@@ -91,7 +91,7 @@ protected $_auth_ref_rule = array(
 
 当系统存在多种不同类型的用户，而这些用户与数据相关联的字段不一致，扩展后可以根据不同类型的用户配置不同的权限过滤。
 
-##### 用法
+#### 用法
 + 配置对应Model类的$_auth_ref_rule，自定义不同用户类型的权限过滤
 
 ```php
@@ -214,12 +214,12 @@ protected $_auth_ref_rule = array(
     }
 ```
 
-#### 字段权限过滤机制
+### 字段权限过滤机制
 ```blade
 当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，通过权限过滤的机制处理该逻辑。
 ```
 
-##### 场景模拟
+#### 场景模拟
 ```blade
 如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增书箱Box，但是捐赠方company_id与冠名caption字段书库点管理员没有操作权限。
 按照以前的做法需要检测登录的用户，然后针对不同类型用户分别做这些字段的显示和逻辑限制。
@@ -227,9 +227,9 @@ protected $_auth_ref_rule = array(
 使用该机制可以解决这个需求。
 ```
 
-##### 用法
+#### 用法
 
-###### 在Model类配置$_auth_node_colunm的值
++ 在Model类配置$_auth_node_colunm的值
 ```php
     // 在BoxModel配置需要权限过滤的字段
     // auth_node：权限点，格式为：模块.控制器.方法名，支持数组
@@ -241,7 +241,7 @@ protected $_auth_ref_rule = array(
     ];
 ```
 
-###### 使用addFormItem设置表单并配置auth_node属性
++ 使用addFormItem设置表单并配置auth_node属性
 ```php
     // 在BoxController中，在新增或者编辑方法构建表单时，设置auth_node属性
     // auth_node：权限点，格式为：模块.控制器.方法名，支持数组，这个值应与BoxModel中$_auth_node_colunm该字段的auth_node一致
@@ -250,4 +250,4 @@ protected $_auth_ref_rule = array(
     ->addFormItem('caption', 'text', '冠名', '冠名长度不得超过10个字', '', '', '', ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'])
 ```
 
-###### 创建auth_node的节点
++ 创建auth_node的节点
