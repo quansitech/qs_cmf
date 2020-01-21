@@ -511,7 +511,7 @@ QINIU_SK=************
 在app/Common/Conf 下新增ueditor_config.json或者ueditor_config.php(返回数组)，该文件将会替换掉默认的config.json。如有客制化config.json的需求，定制该文件即可。
 ```
 
-###addFormItem
+### addFormItem
 ```blade
 该方法用于加入一个表单项
 
