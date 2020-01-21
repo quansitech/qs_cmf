@@ -523,7 +523,7 @@ $name 表单名
 $options 表单options
 $extra_class 表单项是否隐藏
 $extra_attr 表单项额外属性
-$auth_node 字段权限点，若该用户无此权限则unset该表单，需要先添加该节点，格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
+$auth_node 字段权限点，需要先添加该节点，若该用户无此权限则unset该表单；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
 
 若auth_node存在多个值，则需要该用户拥有全部权限才会显示该表单
 
