@@ -239,7 +239,7 @@ protected $_auth_ref_rule = array(
     
     protected $_auth_node_colunm = [
         'company_id' => ['auth_node' => 'admin.Box.allColumns'],
-        'caption' => ['auth_node' => ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'],'default' => '满天星公益流动书箱']
+        'caption' => ['auth_node' => ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'],'default' => 'quansitech']
     ];
 ```
 
