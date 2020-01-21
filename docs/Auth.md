@@ -216,7 +216,7 @@ protected $_auth_ref_rule = array(
 
 ### 字段权限过滤机制
 ```blade
-当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，通过权限过滤的机制处理。
+当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，有该权限点的用户才可以操作该字段。
 ```
 
 #### 场景模拟
@@ -232,10 +232,17 @@ protected $_auth_ref_rule = array(
 #### 用法
 
 + 在Model类配置$_auth_node_colunm的值
+```blade
+字段说明
+
+字段名
+auth_node：权限点，格式为：模块.控制器.方法名，如：'admin.Box.allColumns'；多个值需使用数组，如：['admin.Box.allColumns','admin.Box.add','admin.Box.edit']
+default：默认值
+
+若auth_node存在多个值，则需要该用户拥有全部权限才可以操作该字段
+```
 ```php
-    // 在BoxModel配置需要权限过滤的字段
-    // auth_node：权限点，格式为：模块.控制器.方法名，支持数组
-    // default：默认值
+    // 在BoxModel配置需要权限过滤的字段，只有拥有该权限点的用户才可以操作字段
     
     protected $_auth_node_colunm = [
         'company_id' => ['auth_node' => 'admin.Box.allColumns'],
@@ -243,10 +250,9 @@ protected $_auth_ref_rule = array(
     ];
 ```
 
-+ 使用addFormItem设置表单并配置auth_node属性
++ 使用addFormItem设置表单并配置auth_node属性，具体规则参考FormBuilder的addFormItem方法
 ```php
     // 在构建新增或者编辑书箱表单时，设置auth_node属性
-    // auth_node：权限点，格式为：模块.控制器.方法名，支持数组
     // auth_node值应与$_auth_node_colunm对应字段的auth_node值一致
     
     ->addFormItem('company_id', 'select', '捐赠方', '', D('Company')->where(['status' => DBCont::NORMAL_STATUS])->getField('id,name'), '', '', ['admin.Box.allColumns'])
