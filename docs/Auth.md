@@ -221,8 +221,10 @@ protected $_auth_ref_rule = array(
 
 #### 场景模拟
 ```blade
-如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增书箱Box，但是捐赠方company_id与冠名caption字段书库点管理员没有操作权限。
-按照以前的做法需要检测登录的用户，然后针对不同类型用户分别做这些字段的显示和逻辑限制。
+如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增或者编辑书箱Box。
+但是捐赠方company_id与冠名caption字段书库点管理员没有操作权限。
+
+按照以前的做法需要检测登录的用户，然后针对不同类型用户分别做这些字段的显示和操作逻辑限制。
 
 使用该机制可以解决这个需求。
 ```
@@ -243,8 +245,9 @@ protected $_auth_ref_rule = array(
 
 + 使用addFormItem设置表单并配置auth_node属性
 ```php
-    // 在BoxController中，在新增或者编辑方法构建表单时，设置auth_node属性
-    // auth_node：权限点，格式为：模块.控制器.方法名，支持数组，这个值应与BoxModel中$_auth_node_colunm该字段的auth_node一致
+    // 在构建新增或者编辑书箱表单时，设置auth_node属性
+    // auth_node：权限点，格式为：模块.控制器.方法名，支持数组
+    // auth_node值应与$_auth_node_colunm对应字段的auth_node值一致
     
     ->addFormItem('company_id', 'select', '捐赠方', '', D('Company')->where(['status' => DBCont::NORMAL_STATUS])->getField('id,name'), '', '', ['admin.Box.allColumns'])
     ->addFormItem('caption', 'text', '冠名', '冠名长度不得超过10个字', '', '', '', ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'])
