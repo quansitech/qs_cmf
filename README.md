@@ -358,73 +358,6 @@ $builder->addTopButton('export', array('export_cols' => $cols_options, 'title' =
 插件可自动获取错误信息并alert提示用户
 ```
 
-### 文件批量导出并打包（zip）
-使用样例
-```php
-.
-.
-.
-class PostController extends GyListController{
-.
-.
-.
-    
-        $builder = new \Common\Builder\ListBuilder();
-        //第一个参数指定download类型，第二个参数是指定需要覆盖的html组件属性
-        /*属性值如下
-                必填：data-url   为点击导出按钮后ajax请求的地址
-                选填：
-                    data-filename  批量导出压缩包文件名
-                    title           按钮名称
-                    data-select     值为bool类型，判断是否勾选，默认true，即默认开启
-                    data-tips       承接data-select属性，如果开启，在未勾选内容情况下提示的信息
-         */
-        $builder->addTopButton('download', array('data-url' => U('download')));
-    
-.
-.
-.
-    
-    /*
-    导出下载链接请求的action
-    ajax返回json数据格式如下：
-        {
-            "count": "5",
-            "pageSize": 2,
-            "list": [
-                {
-                    "id": "1",
-                    "name": "下载重命名的文件名",
-                    "url": "https://media.t4tstudio.com/TJlJL2wlKB4Ezb5_qQrp0okWb2c=/Fv2T8J6s6Pupj6zbs2xvdMf9GKN2",
-                    "suffix": "mp3"
-                },
-                ....
-            ]
-        }
-        返回值注解（下面所有键名必填）：
-        count   总记录数
-        pageSize 单页最大记录数    注意：如果是下载单页的数据，令count<=pageSize即可
-        list    下载的数据列表
-            id  数据的id
-            name  重命名的文件名   注意：请遵守操作系统文件命名规范
-            url   下载链接地址
-            suffix 文件后缀名
-    */
-    public function download(){
-        //$page 为页码，若不需要请忽略该值
-        $page = I('page',1);
-        $count = M('Test')->count();
-        $pageSize = C('ADMIN_PER_PAGE_NUM', null, false);
-        $data = M('Test')->page($page,$pageSize)->select();
-        $return_data = [
-            'count' => $count,
-            'pageSize' => $pageSize,
-            'list'=>$data,
-        ];
-        $this->ajaxReturn($return_data);
-    }
-
-```
 
 ### setPageTemplate
 ```blade
@@ -441,43 +374,6 @@ $page_template 页码模板自定义html代码
 确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
 + endHandlePostData  
 确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
-
-#### qiniu_audio/qiniu_video组件
-
-```php
-$options = [
-    'multiple' => true, //是否开启多文件上传 默认关闭
-    'url' => U('api/qiniu/upToken', ['type' => 'bigaudio']), //重置uptoken的获取地址，或者修改类型设置 type都可以直接修改url属性   默认地址为 U('api/qiniu/upToken', ['type' => 'audio'])
-];
-//如没有特别需求，$options可不传
-addFormItem('audio_id', 'qiniu_audio', '音频文件', '', $options)
-```
-
-设置.env 七牛的ak 和 sk
-```blade
-QINIU_AK=**********
-QINIU_SK=************
-```
-
-修改/app/Common/Conf/config.php，配置上传类型
-```php
-//UPLOAD_TYPE_*** 其中***为对应的type
-'UPLOAD_TYPE_VIDEO' => array(
-        'mimes'    => 'video/mp4,video/webm', //允许上传的文件MiMe类型，多个值用逗号分隔
-        'maxSize'  => 500*1024*1024, //上传的文件大小限制
-        'saveName' => array('uniqid', ''), //上传文件命名规则，[0]-函数名，[1]-参数，>多个参数使用数组
-        'pfopOps' => "avthumb/mp4/ab/160k/ar/44100/acodec/libfaac/r/30/vb/2400k/vcodec/libx264/s/1280x720/autoscale/1/stripmeta/0", //七牛转码策略
-        'pipeline' => 'video', //处理管道
-        'bucket' => 'video', //七牛bucket
-        'domain' => 'https://***.qscmf.test' //上传至七牛后，访问文件的domain
-)
-```
-
-勾子：qiniu_notify  
-```php
-七牛处理通知执行完后处理的回调，可根据业务需要，自定义该勾子的行为，传递参数为数组，数组包含file_id 和 duration。
-```
-
 
 #### ueditor
 指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
@@ -870,6 +766,48 @@ ROOT 指定子目录，默认为空
 SITE_URL 包含子目录的网站根地址
 
 HTTP_PROTOCOL  返回http或者https协议字符串
+
+## 扩展
+#### 如何开发composer扩展包
+以下说明需要具备composer包开发的相关基础
+
++ 新增provider
+> ```php
+> class CustomProvider implements \Bootstrap\Provider {
+>  
+>      public function register(){
+>          // 相关注册代码
+>      }
+>  }
+> ```
+
++ 框架提供的注册接口
+> 1. registerController
+>> + 说明：注册controller
+>> + 参数：module_name 模块、 controller_name 控制器、controller_cls 需要映射的controller类名
+>
+> 2. registerListTopButton
+>> + 说明: 注册列表按钮类型
+>> + 参数：type 类型、 type_cls 继承\Qscmf\Builder\ButtonType\ButtonType的实现类
+>
+> 3. registerFormItem
+>> + 说明：注册表单控件
+>> + 参数：type 类型、 type_cls 继承\Qscmf\Builder\FormType\FormType的实现类
+>
+> 4. registerSymLink
+>> + 说明: 注册软连接
+>> + 参数：link_path 软连接绝对路径、 source_path 源绝对路径
+
++ 配置composer.json
+> 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
+> ```php
+> "qscmf": {
+>    "providers": [
+>       #扩展包provider类名#
+>    ]
+> }
+> ```
+
 
 ## 测试
 
