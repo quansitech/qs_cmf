@@ -768,46 +768,7 @@ SITE_URL 包含子目录的网站根地址
 HTTP_PROTOCOL  返回http或者https协议字符串
 
 ## 扩展
-#### 如何开发composer扩展包
-以下说明需要具备composer包开发的相关基础
-
-+ 新增provider
-> ```php
-> class CustomProvider implements \Bootstrap\Provider {
->  
->      public function register(){
->          // 相关注册代码
->      }
->  }
-> ```
-
-+ 框架提供的注册接口
-> 1. registerController
->> + 说明：注册controller
->> + 参数：module_name 模块、 controller_name 控制器、controller_cls 需要映射的controller类名
->
-> 2. registerListTopButton
->> + 说明: 注册列表按钮类型
->> + 参数：type 类型、 type_cls 继承\Qscmf\Builder\ButtonType\ButtonType的实现类
->
-> 3. registerFormItem
->> + 说明：注册表单控件
->> + 参数：type 类型、 type_cls 继承\Qscmf\Builder\FormType\FormType的实现类
->
-> 4. registerSymLink
->> + 说明: 注册软连接
->> + 参数：link_path 软连接绝对路径、 source_path 源绝对路径
-
-+ 配置composer.json
-> 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
-> ```php
-> "qscmf": {
->    "providers": [
->       #扩展包provider类名#
->    ]
-> }
-> ```
-
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
 
 ## 测试
 
