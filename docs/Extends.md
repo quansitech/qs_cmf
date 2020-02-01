@@ -27,6 +27,10 @@
 > 4. registerSymLink
 >> + 说明: 注册软连接
 >> + 参数：link_path 软连接绝对路径、 source_path 源绝对路径
+>
+> 5. registerListSearchType
+>> + 说明: 注册列表搜索控件
+>> + 参数: type 类型、 type_cls 继承\namespace Qscmf\Builder\ListSearchType\ListSearchType的实现类
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
@@ -86,12 +90,10 @@ class CustomButton extends ButtonType{
 
         $view = new View();
         $view->assign('gid', $gid);
+        //仅需渲染按钮外的内容，按钮的渲染由框架完成
         $content = $view->fetch(__DIR__ . '/custom.html');
-        //按钮渲染辅助函数，也可以完全自定义
-        $button_html = $this->compileButton($option);
         //返回渲染结果
         return <<<HTML
-{$button_html}
 {$content}
 HTML;
     }
