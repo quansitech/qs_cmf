@@ -28,4 +28,11 @@
    将代码迁移处理。上述两文件将移植核心库。并在app/Admin/View/default/common/dashboard_layout.html中将以上两文件的引用分别指向
    __PUBLIC__/libs/admin/common.js和__PUBLIC__/libs/admin/common.css。
 10.(升级到v7.0.0以上版本)7.0版本移除了位于Qscmf/Lib下的QsExcel代码，检查有无使用该类，如果使用了，请安装使用https://github.com/quansitech/qs-excel。
+11.(升级到v8.0.0以上版本)8.0提供了许多扩展机制，部分原来继承在框架里的功能都移到了独立的composer扩展。
+    因此升级到该版本，必须注意业务系统有无使用了已经移除的组件功能，如果有，则需要查看组件的安装方法，安装后才会不影响原有的功能
+    移除的组件有以下内容
+    （1）formbuilder formitem的vedio_vod类型 (https://github.com/quansitech/qscmf-formitem-vod)
+     (2) formbuilder formitem的qiniu_video和qiniu_audio类型 (https://github.com/quansitech/qscmf-formitem-qiniu)
+     (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
+     (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
 ```
