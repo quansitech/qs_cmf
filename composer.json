@@ -36,7 +36,9 @@
         "post-autoload-dump": [
             "./vendor/bin/installed-copy",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan qscmf:discover --ansi",
+            "@php ./www/index.php /qscmf/createSymlink"
         ]
     }
 }
