@@ -43,4 +43,6 @@
         "@php artisan qscmf:discover --ansi",
         "@php ./www/index.php /qscmf/createSymlink"
     ]
+    检查根目录下的tp.php文件，有无LARA_DIR的常量定义，没有加上
+    defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
 ```
