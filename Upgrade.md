@@ -35,4 +35,12 @@
      (2) formbuilder formitem的qiniu_video和qiniu_audio类型 (https://github.com/quansitech/qscmf-formitem-qiniu)
      (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
      (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
+    在项目的composer.json文件的scripts设置项添加
+    "post-autoload-dump": [
+        "./vendor/bin/installed-copy",
+        "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+        "@php artisan package:discover --ansi",
+        "@php artisan qscmf:discover --ansi",
+        "@php ./www/index.php /qscmf/createSymlink"
+    ]
 ```
