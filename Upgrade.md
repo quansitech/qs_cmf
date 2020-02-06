@@ -10,7 +10,7 @@
 3. (升级至v2.0.0版本)如该项目之前有使用ElasticsearchController, 修改Home/Controller/ElasticsearchController的Elasticsearch类的命名空间，修改Model里跟Elasticsearch相关的命名空间
     修改app/makeIndex.php文件 
 4. (升级至v2.0.1版本) 修改Admin/Controller/QueueController、Behaviors/AppInitBehavior、Common/Model/QueueModel、用到Job状态的DBCont的命名空间
-     删除Gy_Library/DBcont与Job状态有关的代码
+    删除Gy_Library/DBcont与Job状态有关的代码
 5. (升级至v2.0.5版本)修改CateHelperTrait和ContentHelperTrait的命名空间,移除Gy_library里的文件
     修改CusUpload的命名空间,移除Gy_library里的文件
     GyController和GyListController更名为QsController和QsListController，修改GyController和GyListController，分别继承QsController和QsListController
@@ -35,14 +35,30 @@
      (2) formbuilder formitem的qiniu_video和qiniu_audio类型 (https://github.com/quansitech/qscmf-formitem-qiniu)
      (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
      (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
+
     在项目的composer.json文件的scripts设置项添加
     "post-autoload-dump": [
-        "./vendor/bin/installed-copy",
-        "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+        "./vendor/bin/qsautoload",
         "@php artisan package:discover --ansi",
         "@php artisan qscmf:discover --ansi",
         "@php ./www/index.php /qscmf/createSymlink"
     ]
+
     检查根目录下的tp.php文件，有无LARA_DIR的常量定义，没有加上
     defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+    
+    检查composer.json文件，并添加以下内容
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "laravel/dusk": "^5.0",
+        "mockery/mockery": "^1.2",
+        "fzaninotto/faker": "^1.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lara\\Tests\\":"lara\/tests"
+        }
+    },
+
+    如果是采用swoole-webhook的部署方式，拉取下最新的镜像
 ```

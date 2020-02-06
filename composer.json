@@ -11,8 +11,14 @@
         }
     ],
     "require": {
-        "tiderjian/think-core": "^6.0",
+        "tiderjian/think-core": "^8.0",
         "funkjedi/composer-include-files": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "laravel/dusk": "^5.0",
+        "mockery/mockery": "^1.2",
+        "fzaninotto/faker": "^1.4"
     },
     "extra": {
         "include_files": [
@@ -27,18 +33,21 @@
         ],
         "psr-4": {
             "Lara\\": "lara",
-            "Lara\\Tests\\":"lara\/tests",
             "App\\": "lara\/app"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lara\\Tests\\":"lara\/tests"
         }
     },
     "scripts": {
         "post-install-cmd": "./vendor/bin/qsinstall",
         "post-autoload-dump": [
-            "./vendor/bin/installed-copy",
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "./vendor/bin/qsautoload",
             "@php artisan package:discover --ansi",
             "@php artisan qscmf:discover --ansi",
             "@php ./www/index.php /qscmf/createSymlink"
         ]
     }
-}
+},
