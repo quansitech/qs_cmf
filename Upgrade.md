@@ -44,8 +44,9 @@
         "@php ./www/index.php /qscmf/createSymlink"
     ]
 
-    检查根目录下的tp.php文件，有无LARA_DIR的常量定义，没有加上
+    检查根目录下的tp.php文件，有无LARA_DIR 和 ROOT_PATH的常量定义，没有则添加
     defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+    defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
     
     检查composer.json文件，并添加以下内容
     "require-dev": {
