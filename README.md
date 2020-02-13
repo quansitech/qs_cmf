@@ -512,7 +512,7 @@ public function execShell(){
 }
 ```
 ## 全局函数
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/helper.md)
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Helper.md)
 
 ## js组件
 ### selectAddr
