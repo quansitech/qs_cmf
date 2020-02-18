@@ -50,4 +50,4 @@
             "@php ./www/index.php /qscmf/createSymlink"
         ]
     }
-},
+}
