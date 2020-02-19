@@ -47,7 +47,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-autoload-dump": [
-            "./vendor/bin/qsautoload copy('.env.example', '.env');",
+            "./vendor/bin/qsautoload",
             "@php artisan package:discover --ansi",
             "@php artisan qscmf:discover --ansi",
             "@php ./www/index.php /qscmf/createSymlink"
