@@ -37,12 +37,17 @@
      (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
 
     在项目的composer.json文件的scripts设置项添加
+    "post-root-package-install": [
+        "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
     "post-autoload-dump": [
         "./vendor/bin/qsautoload",
         "@php artisan package:discover --ansi",
         "@php artisan qscmf:discover --ansi",
         "@php ./www/index.php /qscmf/createSymlink"
     ]
+    
+    删除app/Behaviors文件架下的InitHookBehavior.class.php、LoadDBConfigBehavior.class.php
 
     检查根目录下的tp.php文件，有无LARA_DIR 和 ROOT_PATH的常量定义，没有则添加
     defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
