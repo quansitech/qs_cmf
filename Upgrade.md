@@ -48,6 +48,7 @@
     ]
     
     删除app/Behaviors文件架下的InitHookBehavior.class.php、LoadDBConfigBehavior.class.php
+    删除app/Common/Conf/tags.php 中 InitHook 和 LoadDBConfig的设置
 
     检查根目录下的tp.php文件，有无LARA_DIR 和 ROOT_PATH的常量定义，没有则添加
     defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
