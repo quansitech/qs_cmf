@@ -42,11 +42,11 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "./vendor/bin/qsinstall",
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-autoload-dump": [
+            "./vendor/bin/qsinstall",
             "./vendor/bin/qsautoload",
             "@php artisan package:discover --ansi",
             "@php artisan qscmf:discover --ansi",
