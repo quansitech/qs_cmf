@@ -36,16 +36,19 @@
      (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
      (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
 
-    在项目的composer.json文件的scripts设置项添加
-    "post-root-package-install": [
-        "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ],
-    "post-autoload-dump": [
-        "./vendor/bin/qsautoload",
-        "@php artisan package:discover --ansi",
-        "@php artisan qscmf:discover --ansi",
-        "@php ./www/index.php /qscmf/createSymlink"
-    ]
+    在项目的composer.json文件的scripts设置项修改为
+    "scripts": {
+            "post-root-package-install": [
+                "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            ],
+            "post-autoload-dump": [
+                "./vendor/bin/qsinstall",
+                "./vendor/bin/qsautoload",
+                "@php artisan package:discover --ansi",
+                "@php artisan qscmf:discover --ansi",
+                "@php ./www/index.php /qscmf/createSymlink"
+            ]
+        }
     
     删除app/Behaviors文件架下的InitHookBehavior.class.php、LoadDBConfigBehavior.class.php
     删除app/Common/Conf/tags.php 中 InitHook 和 LoadDBConfig的设置
