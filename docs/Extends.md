@@ -30,7 +30,11 @@
 >
 > 5. registerListSearchType
 >> + 说明: 注册列表搜索控件
->> + 参数: type 类型、 type_cls 继承\namespace Qscmf\Builder\ListSearchType\ListSearchType的实现类
+>> + 参数: type 类型、 type_cls 继承\Qscmf\Builder\ListSearchType\ListSearchType的实现类
+>
+> 6. registerListRightButtonType
+>> + 说明: 注册列表表格按钮
+>> + 参数: type 类型、 type_cls 继承\Qscmf\Builder\ListRightButton\ListRightButton的实现类
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
