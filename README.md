@@ -560,6 +560,8 @@ SITE_URL 包含子目录的网站根地址
 
 HTTP_PROTOCOL  返回http或者https协议字符串
 
+REQUEST_URI 获取方向代理前的REQUEST_URI值
+
 ## 扩展
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
 
