@@ -13,8 +13,8 @@
     删除Gy_Library/DBcont与Job状态有关的代码
 5. (升级至v2.0.5版本)修改CateHelperTrait和ContentHelperTrait的命名空间,移除Gy_library里的文件
     修改CusUpload的命名空间,移除Gy_library里的文件
-    GyController和GyListController更名为QsController和QsListController，修改GyController和GyListController，分别继承QsController和QsListController
-    GyModel和GyListModel更名为QsModel和QsListModel，修改GyModel和GyListController，分别继承QsModel和QsListModel
+    修改GyController和GyListController，分别继承QsController和QsListController，删除同名方法
+    修改GyModel和GyListModel，分别继承QsModel和QsListModel，删除同名方法
     删掉Common\function.php里的genSelectByTree、isAdminLogin、list_to_tree函数
     删除Common\Lib 的Flash和FlashError
     修改GyRbac的命名空间,更名为QsRbac
