@@ -35,6 +35,7 @@
      (2) formbuilder formitem的qiniu_video和qiniu_audio类型 (https://github.com/quansitech/qscmf-formitem-qiniu)
      (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
      (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
+     (5) formbuilder formitem的 audio_oss、audios_oss、file_oss、files_oss、picture_oss、pictures_oss、picture_oss_intercept、pictures_oss_intercept (https://github.com/quansitech/qscmf-formitem-aliyun-oss)
 
     在项目的composer.json文件的scripts设置项修改为
     "scripts": {
