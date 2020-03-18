@@ -8,5 +8,6 @@
 /www/Public/libs
 
 /lara/storage
+/lara/vendor/composer/installed.json
 
 .phpunit.result.cache
