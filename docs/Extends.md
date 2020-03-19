@@ -22,6 +22,9 @@
 >     public function registerLara(){
 >          //注册迁移目录代码
 >     } 
+> 
+>     // register的方法是由TP发起的，TP相关的常量，函数可以使用
+>     // registerLara是由laravel发起的，这里不要使用TP的内置方法，仅可执行TP的注册迁移函数
 >  }
 > ```
 
