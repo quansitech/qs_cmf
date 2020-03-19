@@ -27,30 +27,6 @@ option: {
         ready: function () { 
             croppable = true;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     },
     show_msg:           //function optional 展示提示消息的函数,默认为window.alert
     limit:              //number optional 上传图片张数的限制,默认值32
