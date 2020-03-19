@@ -1,8 +1,11 @@
 <?php
 namespace Home\Controller;
 
-use Common\Lib\Elasticsearch;
-use Common\Lib\ElasticsearchModelContract;
+
+use Illuminate\Support\Str;
+use Qscmf\Lib\Elasticsearch\Elasticsearch;
+use Exception;
+use Qscmf\Lib\Elasticsearch\ElasticsearchModelContract;
 
 if (!IS_CLI)  die('The file can only be run in cli mode!');
 
@@ -17,7 +20,7 @@ class ElasticController{
         try{
             $client->indices()->delete($params);
         }
-        catch (\Exception $e){
+        catch (Exception $e){
 
         }
 
@@ -48,7 +51,10 @@ class ElasticController{
         $sum = 0;
         foreach($result as $v){
             $table = array_pop($v);
-            $model_name = parse_name(str_replace_first(C('DB_PREFIX'), '', $table), 1);
+            if(strpos($table, C('DB_PREFIX')) === false){
+                continue;
+            }
+            $model_name = parse_name(Str::replaceFirst(C('DB_PREFIX'), '', $table), 1);
             if(D($model_name) instanceof ElasticsearchModelContract){
                 $sum += D($model_name)->createIndex();
                 S('Elasticsearch_index_creating', $sum);

@@ -1,9 +1,13 @@
 /nbproject/
-/app/Runtime/
-/www/Uploads/
-/app/Uploads/
 /.idea
 /js-src
 /.vscode
 /vendor
+.env
 /package
+/www/Public/libs
+
+/lara/storage
+/lara/vendor/composer/installed.json
+
+.phpunit.result.cache

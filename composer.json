@@ -1,0 +1,56 @@
+{
+    "name": "tiderjian/qscmf",
+    "description": "qscmf",
+    "type": "cmf",
+    "keywords": ["thinkphp", "admin", "grid", "form"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tiderjian",
+            "email": "tider_yatsen@hotmail.com"
+        }
+    ],
+    "require": {
+        "tiderjian/think-core": "^8.0",
+        "funkjedi/composer-include-files": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "laravel/dusk": "^5.0",
+        "mockery/mockery": "^1.2",
+        "fzaninotto/faker": "^1.4"
+    },
+    "extra": {
+        "include_files": [
+            "vendor/tiderjian/think-core/src/Common/functions.php",
+            "vendor/tiderjian/think-core/src/Library/Qscmf/Helper/function.php"
+        ]
+    },
+    "autoload": {
+        "classmap": [
+            "lara\/database\/seeds",
+            "lara\/database\/factories"
+        ],
+        "psr-4": {
+            "Lara\\": "lara",
+            "App\\": "lara\/app"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lara\\Tests\\":"lara\/tests"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-autoload-dump": [
+            "./vendor/bin/qsinstall",
+            "./vendor/bin/qsautoload",
+            "@php artisan package:discover --ansi",
+            "@php artisan qscmf:discover --ansi",
+            "@php ./www/index.php /qscmf/createSymlink"
+        ]
+    }
+}

@@ -2,7 +2,7 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
-use Gy_Library\CateHelperTrait;
+use Qscmf\Lib\Cms\CateHelperTrait;
 
 //自动生成代码
 class PostCateController extends GyListController{
@@ -46,7 +46,7 @@ class PostCateController extends GyListController{
         }
         
 
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('分类管理')
         
@@ -93,7 +93,7 @@ class PostCateController extends GyListController{
             }
         }
         else {
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             
             $data_list = array(
             "status"=>1,            );
@@ -137,7 +137,7 @@ class PostCateController extends GyListController{
             $info = D('PostCate')->getOne($id);
 
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑分类') 
                     ->setPostUrl(U('edit'))    
                     ->setNID(933)

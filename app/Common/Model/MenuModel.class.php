@@ -28,7 +28,12 @@ class MenuModel extends \Gy_Library\GyListModel{
         if($pid != ''){
             $map['pid'] = $pid;
         }
-        return $this->where($map)->order($order)->select();
+        $list = $this->where($map)->order($order)->select();
+        foreach ($list as &$v){
+            $v['url'] = $v['url'] ? U("{$v['url']}") : $v['url'];
+        }
+
+        return (array)$list;
     }
     
     //获取以菜单类型为键值的菜单数组
