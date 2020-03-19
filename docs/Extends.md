@@ -11,6 +11,20 @@
 >  }
 > ```
 
++ 注册迁移目录
+> ```php
+> class CustomProvider implements \Bootstrap\Provider, \Bootstrap\LaravelProvider {
+>  
+>     public function register(){
+>         // 相关注册代码
+>     }
+> 
+>     public function registerLara(){
+>          //注册迁移目录代码
+>     } 
+>  }
+> ```
+
 + 框架提供的注册接口
 > 1. registerController
 >> + 说明：注册controller
