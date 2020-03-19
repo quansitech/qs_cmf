@@ -44,6 +44,7 @@ defined('CRON_DIR') || define("CRON_DIR", APP_DIR . DIRECTORY_SEPARATOR . 'Cron'
 defined('CODER_DIR') || define('CODER_DIR', APP_DIR . DIRECTORY_SEPARATOR . 'Common/Coder');
 defined('ADDON_PATH') || define('ADDON_PATH', APP_PATH . 'Addons/');
 defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
 
 
 ////执行https规则的网址

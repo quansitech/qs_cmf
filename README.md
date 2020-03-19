@@ -254,177 +254,6 @@ query：json 筛选API的参数，search为dom的值，pageSize最小值为20，
 ```
 
 ## Listbuilder
-### xlsx导出excel
-由后端完成excel导出操作会极大占用服务器资源，同时数据太多时往往会需要处理很长时间，页面长时间处于卡死状态用户体验也极差，因此采用前端分批导出excel数据才是更合理的做法。
-
-使用样例
-```php
-.
-.
-.
-
-class PostController extends GyListController{
-    //继承ExportExcelByXlsx
-    use ExportExcelByXlsx;
-.
-.
-.
-    
-        $builder = new \Common\Builder\ListBuilder();
-        //第一个参数指定export类型，第二个参数是指定需要覆盖的html组件属性
-        //title为按钮名称，默认导出excel
-        //data-url为点击导出按钮后ajax请求的地址,必填
-        //data-filename 为生成的excel文件名,默认为浏览器的默认生成文件名
-        //data-streamrownum 为每次请求获取的数据数
-        $builder->addTopButton('export', array('title' => '样例导出', 'data-url' => U('/admin/post/export'), 'data-filename' => '文章列表', 'data-streamrownum' => '10'));
-    
-.
-.
-.
-    //导出excel请求的action
-    public function export(){
-    
-        //exportExcelByXlsx为 Qscmf\Builder\ExportExcelByXlsx trait提供的方法
-        //参数为一个闭包函数，接收两个参数， page为请求的页数， rownnum为请求的数据行数
-        $this->exportExcelByXlsx(function($page, $rownum){
-             //闭包函数必须返回如下数据格式
-             //[
-             //    [  'excel表头1' =>  行1数据1, 'excel表头2' => 行1数据2 ..... ]
-             //    [  'excel表头1' =>  行2数据1, 'excel表头2' => 行2数据2 ..... ]
-             //    ...
-             //]
-            return [
-                 [  '姓名' =>  'tt', '性别' => 'male', '年龄' => 23 ]
-                 [  '姓名' =>  'ff', '性别' => 'female', '年龄' => 19 ]
-            ];
-        });
-
-    }
-
-```
-
-筛选导出列
-```php
-//列配置，default为true表示默认选中状态, required为true表示必选
-$cols_options = [
-    [
-        'key' => 'name',
-        'title' => '商家名称',
-        'default' => true,
-        'required' => true
-    ],
-    [
-        'key' => 'account',
-        'title' => '账号',
-        'default' => true
-    ],
-    [
-        'key' => 'address',
-        'title' => '商家地址'
-    ],
-    [
-        'key' => 'num',
-        'title' => '核销次数'
-    ],
-    [
-        'key' => 'status',
-        'title' => '状态'
-    ],
-    [
-        'key' => 'explain',
-        'title' => '优惠券使用说明'
-    ]
-];
-
-//将列配置复制给第二个参数的键值 export_cols
-//控件会将选择的列数据post至url,可通过I('post.exportCol')获取，再进行数据筛选逻辑处理。
-$builder->addTopButton('export', array('export_cols' => $cols_options, 'title' => '样例导出', 'data-url' => U('/admin/post/export'), 'data-filename' => '文章列表', 'data-streamrownum' => '10'));
-
-
-```
-
-导出数据为多张工作表  
-```php
- $export_arr = [
-    ['sheetName' => 'Sheet1', 'url' => U('/admin/post/export'), 'rownum' => '15'],
-    ['sheetName' => 'Sheet2', 'url' => U('/admin/post/export'), 'rownum' => '15'],
- ];
- 
- $builder->addTopButton('export', ['data-url' => json_encode($export_arr), 'data-filename' => '导出列表', 'data-streamrownum' => intval($export_arr[0]['rownum'])]);
-```
-业务层错误提示
-```php
-可在导出数据处理的action位置进行错误验证，使用$this->errro("test") 抛出错误
-插件可自动获取错误信息并alert提示用户
-```
-
-### 文件批量导出并打包（zip）
-使用样例
-```php
-.
-.
-.
-class PostController extends GyListController{
-.
-.
-.
-    
-        $builder = new \Common\Builder\ListBuilder();
-        //第一个参数指定download类型，第二个参数是指定需要覆盖的html组件属性
-        /*属性值如下
-                必填：data-url   为点击导出按钮后ajax请求的地址
-                选填：
-                    data-filename  批量导出压缩包文件名
-                    title           按钮名称
-                    data-select     值为bool类型，判断是否勾选，默认true，即默认开启
-                    data-tips       承接data-select属性，如果开启，在未勾选内容情况下提示的信息
-         */
-        $builder->addTopButton('download', array('data-url' => U('download')));
-    
-.
-.
-.
-    
-    /*
-    导出下载链接请求的action
-    ajax返回json数据格式如下：
-        {
-            "count": "5",
-            "pageSize": 2,
-            "list": [
-                {
-                    "id": "1",
-                    "name": "下载重命名的文件名",
-                    "url": "https://media.t4tstudio.com/TJlJL2wlKB4Ezb5_qQrp0okWb2c=/Fv2T8J6s6Pupj6zbs2xvdMf9GKN2",
-                    "suffix": "mp3"
-                },
-                ....
-            ]
-        }
-        返回值注解（下面所有键名必填）：
-        count   总记录数
-        pageSize 单页最大记录数    注意：如果是下载单页的数据，令count<=pageSize即可
-        list    下载的数据列表
-            id  数据的id
-            name  重命名的文件名   注意：请遵守操作系统文件命名规范
-            url   下载链接地址
-            suffix 文件后缀名
-    */
-    public function download(){
-        //$page 为页码，若不需要请忽略该值
-        $page = I('page',1);
-        $count = M('Test')->count();
-        $pageSize = C('ADMIN_PER_PAGE_NUM', null, false);
-        $data = M('Test')->page($page,$pageSize)->select();
-        $return_data = [
-            'count' => $count,
-            'pageSize' => $pageSize,
-            'list'=>$data,
-        ];
-        $this->ajaxReturn($return_data);
-    }
-
-```
 
 ### setPageTemplate
 ```blade
@@ -441,43 +270,6 @@ $page_template 页码模板自定义html代码
 确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
 + endHandlePostData  
 确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
-
-#### qiniu_audio/qiniu_video组件
-
-```php
-$options = [
-    'multiple' => true, //是否开启多文件上传 默认关闭
-    'url' => U('api/qiniu/upToken', ['type' => 'bigaudio']), //重置uptoken的获取地址，或者修改类型设置 type都可以直接修改url属性   默认地址为 U('api/qiniu/upToken', ['type' => 'audio'])
-];
-//如没有特别需求，$options可不传
-addFormItem('audio_id', 'qiniu_audio', '音频文件', '', $options)
-```
-
-设置.env 七牛的ak 和 sk
-```blade
-QINIU_AK=**********
-QINIU_SK=************
-```
-
-修改/app/Common/Conf/config.php，配置上传类型
-```php
-//UPLOAD_TYPE_*** 其中***为对应的type
-'UPLOAD_TYPE_VIDEO' => array(
-        'mimes'    => 'video/mp4,video/webm', //允许上传的文件MiMe类型，多个值用逗号分隔
-        'maxSize'  => 500*1024*1024, //上传的文件大小限制
-        'saveName' => array('uniqid', ''), //上传文件命名规则，[0]-函数名，[1]-参数，>多个参数使用数组
-        'pfopOps' => "avthumb/mp4/ab/160k/ar/44100/acodec/libfaac/r/30/vb/2400k/vcodec/libx264/s/1280x720/autoscale/1/stripmeta/0", //七牛转码策略
-        'pipeline' => 'video', //处理管道
-        'bucket' => 'video', //七牛bucket
-        'domain' => 'https://***.qscmf.test' //上传至七牛后，访问文件的domain
-)
-```
-
-勾子：qiniu_notify  
-```php
-七牛处理通知执行完后处理的回调，可根据业务需要，自定义该勾子的行为，传递参数为数组，数组包含file_id 和 duration。
-```
-
 
 #### ueditor
 指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
@@ -609,72 +401,6 @@ CompareBuilder，如图所示
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Auth.md)
 
-## 阿里云视频点播服务(vod)
-
-阿里云配置 [传送门](https://help.aliyun.com/document_detail/57114.html?spm=a2c4g.11186623.6.613.3cd06a58TPsKSf)
-#### env配置
-```dotenv
-# 阿里云点播服务
-VOD_ACCESS_KEY=
-VOD_ACCESS_SECRET=
-UPLOADER_ROLE_RAN=
-PLAY_ROLE_RAN=
-FULL_ROLE_RAN=
-```
-
-#### 后台上传
-```php
-    public function add(){
-        $builder = new \Qscmf\Builder\FormBuilder();
-        $builder->setMetaTitle('测试Vod上传')
-            ->addFormItem('video_id','video_vod','视频')
-            ->display();
-    }
-```
-#### 前台播放
-##### 控制器
-```php
-    /** @var $video_id string 视频ID **/    
-    $vod = new \Qscmf\Lib\Vod\Vod();
-    $this->playAuth = $vod->getPlayAuth($video_id)['PlayAuth'];
-    $this->address = $vod->getPlayAddress($video_id);
-```
-##### 视图
-```html
-<link rel="stylesheet" href="__PUBLIC__/libs/vod/aliplayer-min.css" />
-<script type="text/javascript" src="__PUBLIC__/libs/vod/aliplayer-min.js"  charset="UTF-8"></script>
-<!--     支持ie8-->
-<script type="text/javascript" src=" __PUBLIC__/libs/vod/json.min.js"></script>
-<script>
-    var player = new Aliplayer({
-            id: "J_prismPlayer",
-            autoplay: false,
-            isLive:false,
-            playsinline:true,
-            width:"100%",
-            height:"400px",
-            useFlashPrism:true,            
-                //播放方式二：点播用户推荐
-                 vid : "{$video_id}",
-                 playauth: "{$playAuth}" , 
-                //自定义控制栏样式 
-         skinLayout:[{"name":"controlBar","align":"blabs","x":0,"y":0,"children":[
-                {"name":"timeDisplay","align":"tl","x":10,"y":24},
-                {"name":"playButton","align":"tl","x":15,"y":26},
-                {"name":"progress","align":"tlabs","x":0,"y":0}]},
-                {"name":"infoDisplay","align":"cc"}]
-
-            
-           },function(player){
-                player.on('ready',function(e) {
-                });
-                
-                player.on('error', function(){
-                });
-           });       
-</script>
-```
-
 ## 微信登录
 为解决第三方平台网站应用的PC扫码后openid不可操作问题，统一对PC端微信扫码以及微信端登录进行封装。
 * 从[微信公众平台](https://mp.weixin.qq.com/)中获取公众号的app_id和app_secret，并进行相关配置，放入.env文件
@@ -786,44 +512,7 @@ public function execShell(){
 }
 ```
 ## 全局函数
-
-#### base64_url_encode
-对url进行base64转码，转码前会先对+ /，进行处理
-
-#### base64_url_decode
-将base64转回url，与base64_url_encode搭配使用
-
-#### showThumbUrl
-
-```php
-参数
-$file_id 存放在qs_file_pic表的图片id
-$prefix 缩略图的前缀，与裁图插件的前缀相对应
-$replace_img 如获取图片失败，适应该指定的图片url代替
-
-返回值
-图片url地址
-
-该函数一般用于获取裁剪插件所裁出来的本地缩略图。
-如果$file_id对应的是用seed功能填充出来的图片，还可以依据前缀获取到所希望图片的大小，自动构造相同的大小的图片url。
-使用该函数即可在不做任何代码改动的情况下完好的作用在本地图片上传和填充伪造图片的两种场景。
-```
-
-#### showFileUrl
-
-```blade
-参数
-$file_id 存放在qs_file_pic表的文件id，若为url,则返回该url
-$default_file 默认文件的URL地址
-
-返回值
-文件的URL地址
-
-该函数一般用于展示数据库存储文件的URL地址。
-```
-
-#### cleanRbacKey
-清空INJECT_RBAC标识key的session值
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Helper.md)
 
 ## js组件
 ### selectAddr
@@ -870,6 +559,11 @@ ROOT 指定子目录，默认为空
 SITE_URL 包含子目录的网站根地址
 
 HTTP_PROTOCOL  返回http或者https协议字符串
+
+REQUEST_URI 获取方向代理前的REQUEST_URI值
+
+## 扩展
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
 
 ## 测试
 

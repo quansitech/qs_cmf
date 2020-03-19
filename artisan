@@ -32,6 +32,10 @@ $app->useEnvironmentPath(__DIR__);
 |
 */
 
+defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+\Bootstrap\Context::providerRegister(true);
+\Larafortp\ArtisanHack::init($app);
+
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $status = $kernel->handle(

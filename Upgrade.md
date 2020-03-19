@@ -10,11 +10,11 @@
 3. (升级至v2.0.0版本)如该项目之前有使用ElasticsearchController, 修改Home/Controller/ElasticsearchController的Elasticsearch类的命名空间，修改Model里跟Elasticsearch相关的命名空间
     修改app/makeIndex.php文件 
 4. (升级至v2.0.1版本) 修改Admin/Controller/QueueController、Behaviors/AppInitBehavior、Common/Model/QueueModel、用到Job状态的DBCont的命名空间
-     删除Gy_Library/DBcont与Job状态有关的代码
+    删除Gy_Library/DBcont与Job状态有关的代码
 5. (升级至v2.0.5版本)修改CateHelperTrait和ContentHelperTrait的命名空间,移除Gy_library里的文件
     修改CusUpload的命名空间,移除Gy_library里的文件
-    GyController和GyListController更名为QsController和QsListController，修改GyController和GyListController，分别继承QsController和QsListController
-    GyModel和GyListModel更名为QsModel和QsListModel，修改GyModel和GyListController，分别继承QsModel和QsListModel
+    修改GyController和GyListController，分别继承QsController和QsListController，删除同名方法
+    修改GyModel和GyListModel，分别继承QsModel和QsListModel，删除同名方法
     删掉Common\function.php里的genSelectByTree、isAdminLogin、list_to_tree函数
     删除Common\Lib 的Flash和FlashError
     修改GyRbac的命名空间,更名为QsRbac
@@ -28,4 +28,60 @@
    将代码迁移处理。上述两文件将移植核心库。并在app/Admin/View/default/common/dashboard_layout.html中将以上两文件的引用分别指向
    __PUBLIC__/libs/admin/common.js和__PUBLIC__/libs/admin/common.css。
 10.(升级到v7.0.0以上版本)7.0版本移除了位于Qscmf/Lib下的QsExcel代码，检查有无使用该类，如果使用了，请安装使用https://github.com/quansitech/qs-excel。
+11.(升级到v8.0.0以上版本)8.0提供了许多扩展机制，部分原来继承在框架里的功能都移到了独立的composer扩展。
+    因此升级到该版本，必须注意业务系统有无使用了已经移除的组件功能，如果有，则需要查看组件的安装方法，安装后才会不影响原有的功能
+    移除的组件有以下内容
+    （1）formbuilder formitem的vedio_vod类型 (https://github.com/quansitech/qscmf-formitem-vod)
+     (2) formbuilder formitem的qiniu_video和qiniu_audio类型 (https://github.com/quansitech/qscmf-formitem-qiniu)
+     (3) listbuilder topbutton的 download类型 (https://github.com/quansitech/qscmf-topbutton-download)
+     (4) listbuilder topbutton的 export类型 (https://github.com/quansitech/qscmf-topbutton-export)
+     (5) formbuilder formitem的 audio_oss、audios_oss、file_oss、files_oss、picture_oss、pictures_oss、picture_oss_intercept、pictures_oss_intercept (https://github.com/quansitech/qscmf-formitem-aliyun-oss)
+
+    在项目的composer.json文件的scripts设置项修改为
+    "scripts": {
+            "post-root-package-install": [
+                "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            ],
+            "post-autoload-dump": [
+                "./vendor/bin/qsinstall",
+                "./vendor/bin/qsautoload",
+                "@php artisan package:discover --ansi",
+                "@php artisan qscmf:discover --ansi",
+                "@php ./www/index.php /qscmf/createSymlink"
+            ]
+        }
+    
+    删除app/Behaviors文件架下的InitHookBehavior.class.php、LoadDBConfigBehavior.class.php
+    删除app/Common/Conf/tags.php 中 InitHook 和 LoadDBConfig的设置
+
+    检查根目录下的tp.php文件，有无LARA_DIR 和 ROOT_PATH的常量定义，没有则添加
+    defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+    defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
+    
+    检查composer.json文件，并添加以下内容
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "laravel/dusk": "^5.0",
+        "mockery/mockery": "^1.2",
+        "fzaninotto/faker": "^1.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lara\\Tests\\":"lara\/tests"
+        }
+    },
+
+    如果是采用swoole-webhook的部署方式，拉取下最新的镜像
+
+12.(升级到v9.0.0以上版本)
+   ----------------------------------
+   defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
+   \Bootstrap\Context::providerRegister(true);
+   \Larafortp\ArtisanHack::init($app);
+   ----------------------------------
+   将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
 ```
+
+
+   
+   
