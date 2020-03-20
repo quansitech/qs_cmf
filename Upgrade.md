@@ -76,7 +76,7 @@
 12.(升级到v9.0.0以上版本)
    ----------------------------------
    defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
-   \Bootstrap\Context::providerRegister();
+   \Bootstrap\Context::providerRegister(true);
    \Larafortp\ArtisanHack::init($app);
    ----------------------------------
    将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
