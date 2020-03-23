@@ -397,11 +397,6 @@ CompareBuilder，如图所示
     </script>
 ```
 
-## ossUpload
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/jquery.oss_uploader.README.md)
-#### ossUpload扩展
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/jquery.oss_uploader_extend.README.md)
-
 ## 权限功能
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Auth.md)
