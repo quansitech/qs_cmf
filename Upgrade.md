@@ -80,6 +80,8 @@
    \Larafortp\ArtisanHack::init($app);
    ----------------------------------
    将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
+
+   检查 app/Admin/View/default/common/head.html 中的 <div class="navbar-left"> 元素前面有没包裹 <div class="navbar-container"> ，没有则加上
 ```
 
 
