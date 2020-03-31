@@ -188,6 +188,14 @@ protected function _initialize() {
 
 ## Listbuilder
 
+addRightButton使用技巧
+1. 使用占位符动态替换数据
+```php
+//按钮点击跳转链接，链接需要带该记录的name，只需用__name__作为占位符，生成list后会自动替换成该记录的真实name值
+//如变量存在下划线，project_id，那么占位符就是 __project_id__，以此类推
+->addRightButton('self', array('title' => '跳转', 'class' => 'label label-primary', 'href' => U('index', ['name' => '__name__'])));
+```
+
 ### setPageTemplate
 ```blade
 该方法用于设置页码模板
