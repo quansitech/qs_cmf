@@ -67,6 +67,32 @@
 > }
 > ```
 
+#### 扩展的自定义配置
+读取扩展的自定义配置，可在扩展代码的任意位置通过该函数读取到用户定义的配置
+
+配置文件: 放在根目录下的PackageConfig.php
+
+packageConfig($package_name, $config)
+
+参数：
+
+package_name 扩展名
+
+config 配置名 
+
+举例:
+```php
+//PackageConfig.php
+return [
+     //quansitech/send-msg 扩展名
+     //module 配置名
+    'quansitech/send-msg' => [
+        'module' => 'extendAdmin'
+    ]
+];
+```
+
+
 #### 如何开发表单控件
 ```php
 use Think\View;
