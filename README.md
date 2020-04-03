@@ -629,6 +629,14 @@ Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了�
 
 样例代码: lara/tests/LoginTest.php
 
+#### 命令行测试
+在Testing\TestCase下增加了 cli的命令行模拟执行
+
+```php
+$content = $this->cli('app/cliMode', 'Home', 'Controller', 'action', '参数1', '参数2'...);
+//content为返回的输出结果
+```
+
 
 #### 压缩前端js代码
 压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)
