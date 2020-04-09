@@ -637,6 +637,16 @@ $content = $this->cli('app/cliMode', 'Home', 'Controller', 'action', '参数1', 
 //content为返回的输出结果
 ```
 
+#### 在phpunit里调用tp的代码片段
+使用runTp方法，参数接收一个匿名函数，匿名函数可调用tp里的代码，return后可在phpunit接收
+```php
+$test_ent = $this->runTp(function (){
+            return D('Test')->find(1);
+        });
+
+$this->assertTrue($test_ent['name'] == '测试');
+```
+可用该方法测试Tp的代码，但如果只是要验证数据库值，建议还是使用 assertDatabaseHas等测试方法，性能更佳。
 
 #### 压缩前端js代码
 压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)
