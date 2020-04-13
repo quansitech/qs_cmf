@@ -1,6 +1,6 @@
 ## ListBuilder
 
-addRightButton使用技巧
+#### addRightButton使用技巧
 1. 使用占位符动态替换数据
 ```php
 //按钮点击跳转链接，链接需要带该记录的name，只需用__name__作为占位符，生成list后会自动替换成该记录的真实name值
@@ -8,7 +8,7 @@ addRightButton使用技巧
 ->addRightButton('self', array('title' => '跳转', 'class' => 'label label-primary', 'href' => U('index', ['name' => '__name__'])));
 ```
 
-### setPageTemplate
+#### setPageTemplate
 ```blade
 该方法用于设置页码模板
 
@@ -22,12 +22,11 @@ $page_template 页码模板自定义html代码
 
 参数
 $name 表格名 
-$title  标题
-$type 表格类型（目前支持类型：status、icon、date、time、picture、type、fun、a、self）  
-$value 表格value
+$title 表格标题
+$type 表格类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self）  
+$value 表格value，默认为''，当type为使用fun/a/self时有效，value为其属性值
 $editable 表格是否可编辑，默认为false  
-$tip 表格数据提示文字  
-$th_extra_attr 表格表头额外属性  
-$td_extra_attr 表格列额外属性
-
+$tip 表格数据提示文字，默认为''  
+$th_extra_attr 表格表头额外属性，默认为''  
+$td_extra_attr 表格列额外属性，默认为''
 ```
