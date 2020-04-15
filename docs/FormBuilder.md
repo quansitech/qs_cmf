@@ -43,19 +43,19 @@
 该方法用于加入一个表单项
 
 参数
-$type 表单类型(取值参考系统配置FORM_ITEM_TYPE)
-$title 表单标题
-$tip 表单提示说明
-$name 表单名
-$options 表单options
-$extra_class 表单项额外样式，如使用hidden则隐藏表单
-$extra_attr 表单项额外属性
-$auth_node 字段权限点，需要先添加该节点，若该用户无此权限则unset该表单；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
+$name item名
+$type item类型(取值参考系统配置FORM_ITEM_TYPE)
+$title item标题
+$tip item提示说明
+$options item options
+$extra_class item项额外样式，如使用hidden则隐藏item
+$extra_attr item项额外属性
+$auth_node item权限点，需要先添加该节点，若该用户无此权限则unset该item；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
 
-若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该表单，默认为and：
-and：用户拥有全部权限则显示该表单，格式为：
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该item，默认为and：
+and：用户拥有全部权限则显示该item，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
-or：用户一个权限都没有则隐藏该表单，格式为：
+or：用户一个权限都没有则隐藏该item，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 
 ```

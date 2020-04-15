@@ -12,15 +12,15 @@ __data_id__会在display方法里自动替换成数据的真实ID
 
 参数
 $type 按钮类型，取值参考registerBaseRightButtonType
-$attribute 按钮属性，一个定了标题/链接/CSS类名等的属性描述数组
+$attribute 按钮属性，一个定义标题/链接/CSS类名等的属性描述数组
 $tips 按钮提示
-$auth_node 字段权限点
-$options 字段options
+$auth_node 按钮权限点
+$options 按钮options
 
-若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该表单，默认为and：
-and：用户拥有全部权限则显示该表单，格式为：
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该按钮，默认为and：
+and：用户拥有全部权限则显示该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
-or：用户一个权限都没有则隐藏该表单，格式为：
+or：用户一个权限都没有则隐藏该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
 
@@ -45,23 +45,23 @@ $page_template 页码模板自定义html代码
 
 #### addTableColumn
 ```blade
-该方法用于加一个表格标题字段
+该方法用于加一个表格列标题字段
 
 参数
-$name 表格名 
-$title 表格标题
-$type 表格类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self）  
-$value 表格value，默认为''，当type为使用fun/a/self时有效，value为其属性值
-$editable 表格是否可编辑，默认为false  
-$tip 表格数据提示文字，默认为''  
-$th_extra_attr 表格表头额外属性，默认为''  
-$td_extra_attr 表格列额外属性，默认为''
-$auth_node 字段权限点，需要先添加该节点，若该用户无此权限则unset该表单；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
+$name 列名 
+$title 列标题
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self）  
+$value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
+$editable 列是否可编辑，默认为false  
+$tip 列标题提示文字，默认为''  
+$th_extra_attr 列标题额外属性，默认为''  
+$td_extra_attr 列值额外属性，默认为''
+$auth_node 列权限点，需要先添加该节点，若该用户无此权限则unset该列；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
 
-若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该表单，默认为and：
-and：用户拥有全部权限则显示该表单，格式为：
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该列，默认为and：
+and：用户拥有全部权限则显示该列，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
-or：用户一个权限都没有则隐藏该表单，格式为：
+or：用户一个权限都没有则隐藏该列，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
 
@@ -75,14 +75,14 @@ or：用户一个权限都没有则隐藏该表单，格式为：
 
 参数
 $type 按钮类型，取值参考registerBaseTopButtonType
-$attribute 按钮属性，一个定了标题/链接/CSS类名等的属性描述数组
+$attribute 按钮属性，一个定义标题/链接/CSS类名等的属性描述数组
 $tips 按钮提示
-$auth_node 字段权限点
-$options 字段options
+$auth_node 按钮权限点
+$options 按钮options
 
-若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该表单，默认为and：
-and：用户拥有全部权限则显示该表单，格式为：
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该按钮，默认为and：
+and：用户拥有全部权限则显示该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
-or：用户一个权限都没有则隐藏该表单，格式为：
+or：用户一个权限都没有则隐藏该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
