@@ -63,3 +63,24 @@ and：用户拥有全部权限则显示该表单，格式为：
 or：用户一个权限都没有则隐藏该表单，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
+
+#### addTopButton
+```blade
+加入一个列表顶部工具栏按钮
+
+在使用预置的几种按钮时，比如我想改变新增按钮的名称
+那么只需要$builder->addTopButton('addnew', array('title' => '换个马甲'))
+如果想改变地址甚至新增一个属性用上面类似的定义方法
+
+$type 按钮类型，主要有add/resume/forbid/recycle/restore/delete/self七种取值
+$attribute 按钮属性，一个定了标题/链接/CSS类名等的属性描述数组
+$tips 按钮提示
+$auth_node 字段权限点
+$options 字段options
+
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该表单，默认为and：
+and：用户拥有全部权限则显示该表单，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
+or：用户一个权限都没有则隐藏该表单，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
+```
