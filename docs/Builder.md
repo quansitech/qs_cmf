@@ -35,3 +35,8 @@ FormBuilder，如图所示
 CompareBuilder，如图所示
 
 ![image](https://user-images.githubusercontent.com/35066497/69775169-ea4de800-11d2-11ea-8a5e-60f6a1f7e792.png)
+
+#### checkAuthNode
+```blade
+该方法用于检测字段的权限点，无权限则unset该item
+```
