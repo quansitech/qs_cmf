@@ -59,8 +59,9 @@
 >
 > 8. registerHeadJs
 >> + 说明: 在dashboard_layout head注册 js连接
->> + 参数: src js连接地址
->> +      async 是否异步加载（默认false）
+>> + 参数: 
+>> + src js连接地址
+>> + async 是否异步加载（默认false）
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
