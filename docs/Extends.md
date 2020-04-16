@@ -56,6 +56,12 @@
 > 7. registerMigration
 >> + 说明：注册迁移文件目录
 >> + 参数: paths 迁移文件存放的目录数组，只有一个目录时，可以只写一个字符串
+>
+> 8. registerHeadJs
+>> + 说明: 在dashboard_layout head注册 js连接
+>> + 参数: 
+>> + src js连接地址
+>> + async 是否异步加载（默认false）
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
