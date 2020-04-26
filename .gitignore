@@ -6,6 +6,7 @@
 .env
 /package
 /www/Public/libs
+/www/Uploads
 
 /lara/storage
 /lara/vendor/composer/installed.json

@@ -62,6 +62,12 @@
 >> + 参数: 
 >> + src js连接地址
 >> + async 是否异步加载（默认false）
+>
+> 9. registerListColumnType
+>> + 说明: 注册ListBuilder column类型组件
+>> + 参数: 
+>> + type 类型
+>> + type_cls 继承\Qscmf\Builder\ColumnType\ColumnType的实现类
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
@@ -156,6 +162,8 @@ HTML;
     }
 }
 ```
+
+没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表
 + [阿里云视频点播vod](https://github.com/quansitech/qscmf-formitem-vod)
