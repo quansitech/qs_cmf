@@ -7,10 +7,19 @@
 确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
 
 #### ueditor
-指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
+设置上传文件（或抓取远程图）的url前缀，和url后缀
 ```php
-//addFormItem第七个参数，传递指定的上传处理地址，加上urldomain参数，设为1
-->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?urldomain=1"')
+//addFormItem第七个参数，传递指定的上传处理地址，加上url_prefix参数和url_suffix
+//拼接出的url结果： url_prefix . url原来的相对路径. url_suffix
+->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?url_prefix=prefix地址&url_suffix=后缀"')
+
+//场景举例：
+//某些管理员在上传富文本图片时，会上传一张非常大的图片，这样会导致用户访问该页面异常缓慢
+//这时可以利用url_prefix配合imageproxy做到自动降低图片大小，降低图片占用的网络带宽
+
+$url_prefix = U('/ip/q90', '', false, true) . U('/', '', false, true);
+//url_prefix = http://域名/ip/q90/http://域名/图片地址
+->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?url_prefix=' . $url_prefix . '"')
 ```
 
 使用oss作为文件存储服务
