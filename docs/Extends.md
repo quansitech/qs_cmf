@@ -56,6 +56,18 @@
 > 7. registerMigration
 >> + 说明：注册迁移文件目录
 >> + 参数: paths 迁移文件存放的目录数组，只有一个目录时，可以只写一个字符串
+>
+> 8. registerHeadJs
+>> + 说明: 在dashboard_layout head注册 js连接
+>> + 参数: 
+>> + src js连接地址
+>> + async 是否异步加载（默认false）
+>
+> 9. registerListColumnType
+>> + 说明: 注册ListBuilder column类型组件
+>> + 参数: 
+>> + type 类型
+>> + type_cls 继承\Qscmf\Builder\ColumnType\ColumnType的实现类
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
@@ -66,6 +78,32 @@
 >    ]
 > }
 > ```
+
+#### 扩展的自定义配置
+读取扩展的自定义配置，可在扩展代码的任意位置通过该函数读取到用户定义的配置
+
+配置文件: 放在根目录下的PackageConfig.php
+
+packageConfig($package_name, $config)
+
+参数：
+
+package_name 扩展名
+
+config 配置名 
+
+举例:
+```php
+//PackageConfig.php
+return [
+     //quansitech/send-msg 扩展名
+     //module 配置名
+    'quansitech/send-msg' => [
+        'module' => 'extendAdmin'
+    ]
+];
+```
+
 
 #### 如何开发表单控件
 ```php
@@ -124,6 +162,8 @@ HTML;
     }
 }
 ```
+
+没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表
 + [阿里云视频点播vod](https://github.com/quansitech/qscmf-formitem-vod)

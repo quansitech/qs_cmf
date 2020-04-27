@@ -86,7 +86,19 @@
    在app/Admin/View/default/common/dashboard_layout.html 加入
    <link href="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
    <script src="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
+
+13.(升级到v10.0.0以上版本)
+  全局搜索有无使用ListBuilder->alterTableData 方法，如果有，则将里面的变量占位符{$字段名} 改为 __字段名__
+
+  lara/server.php 文件，找到$uri的定义，在其后面加上以下代码
+  ----------------------------------
+    $_SERVER['DUSK_TEST'] = true;
+  ----------------------------------
+
 ```
+
+
+
 
 
    

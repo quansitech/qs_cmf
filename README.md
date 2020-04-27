@@ -11,7 +11,7 @@
 + 支持composer依赖管理
 + 支持phpunit及laravel dusk自动化测试
 + 集成laravel数据库管理工具及依赖注入容器
-+ 支持Listbuilder、Formbuilder后台管理界面模块化开发
++ 支持ListBuilder、FormBuilder后台管理界面模块化开发
 + 插件系统
 + 简单易用，可自定义的配置管理
 + 消息队列系统
@@ -51,10 +51,6 @@ php artisan migrate
 ```php
 php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
 ```
-
-## Excel操作类
-
-[传送门](https://github.com/tiderjian/qs_cmf/blob/master/docs/QsExcel.md)
 
 ## imageproxy
 [imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
@@ -186,145 +182,17 @@ protected function _initialize() {
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
-## Listbuilder
+## ListBuilder
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/ListBuilder.md)
 
-addRightButton使用技巧
-1. 使用占位符动态替换数据
-```php
-//按钮点击跳转链接，链接需要带该记录的name，只需用__name__作为占位符，生成list后会自动替换成该记录的真实name值
-//如变量存在下划线，project_id，那么占位符就是 __project_id__，以此类推
-->addRightButton('self', array('title' => '跳转', 'class' => 'label label-primary', 'href' => U('index', ['name' => '__name__'])));
-```
-
-### setPageTemplate
-```blade
-该方法用于设置页码模板
-
-参数
-$page_template 页码模板自定义html代码
-```
-
-## Formbuilder
-
-#### 事件
-+ startHandlePostData   
-确定按钮会监听该事件类型，可传递一个按钮描述。触发该事件后确定按钮会无效，描述会改成传递的字符串。
-+ endHandlePostData  
-确定按钮会监听该事件类型，触发该事件，确定按钮会重新生效，按钮描述会恢复。
-
-#### ueditor
-指定上传文件的url格式采用包含域名的url格式（默认采用相对url路径）
-```php
-//addFormItem第七个参数，传递指定的上传处理地址，加上urldomain参数，设为1
-->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?urldomain=1"')
-```
-
-使用oss作为文件存储服务
-```php
-//addFormItem第七个参数，传递指定的上传处理地址, oss设为1表示开始oss上传处理，type为指定的上传配置类型
-->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
-```
-
-复制外链文章时，强制要求抓取外链图片至本地，未抓取完会显示loadding图片(默认也会抓取外联图片，但如果未等全部抓取完就保存，此时图片还是外链)
-```php
-//addFormItem第七个参数，设置data-forcecatchremote="true"
-->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
-```
-
-设置ue的option参数
-```php
-//如：想通过form.options来配置ue的toolbars参数
-//组件会自动完成php数组--》js json对象的转换，并传入ue中
-->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
-```
-
-自定义上传config设置
-
-```blade
-在app/Common/Conf 下新增ueditor_config.json或者ueditor_config.php(返回数组)，该文件将会替换掉默认的config.json。如有客制化config.json的需求，定制该文件即可。
-```
-
-### addFormItem
-```blade
-该方法用于加入一个表单项
-
-参数
-$type 表单类型(取值参考系统配置FORM_ITEM_TYPE)
-$title 表单标题
-$tip 表单提示说明
-$name 表单名
-$options 表单options
-$extra_class 表单项是否隐藏
-$extra_attr 表单项额外属性
-$auth_node 字段权限点，需要先添加该节点，若该用户无此权限则unset该表单；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
-
-若auth_node存在多个值，则需要该用户拥有全部权限才会显示该表单
-
-```
+## FormBuilder
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/FormBuilder.md)
 
 ## CompareBuilder
-实现数据对比简化
-#### 代码示例
-```php
-    $builder = new CompareBuilder();
-        $old=[
-            'title'=>'123',
-            'no_change'=>'aaa',
-            'html'=>'<h1>456</h1><p>123</p>'
-        ];
-        $new=[
-            'title'=>'456',
-            'no_change'=>'aaa',
-            'html'=>'<h1>123</h1><p>456</p>'
-        ];
-        $builder->setData($old,$new)
-            ->addCompareItem('title',CompareBuilder::ITEM_TYPE_TEXT,'标题')
-            ->addCompareItem('no_change',CompareBuilder::ITEM_TYPE_TEXT,'没有变化')
-            ->addCompareItem('html',CompareBuilder::ITEM_TYPE_HTMLDIFF,'html对比')
-            ->display();
-```
-#### 截图
-![image](https://user-images.githubusercontent.com/13673962/65034234-34b41c80-d979-11e9-8be6-6a50c546a9c2.png)
-
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/CompareBuilder.md)
 
 ## Builder
-
-#### setNID 
-
-```blade
-参数 
-$nid  需要高亮的左菜单栏的node_id
-```
-
-#### setNIDByNode
-```blade
-该方法是setNID的封装，通过module controller action动态获取nid
-
-参数 
-$module 需要高亮左侧菜单的module_nam，默认为MODULE_NAME
-$controller 需要高亮左侧菜单的controller_name，默认为CONTROLLER_NAME
-$action 需要高亮左侧菜单的action_name，默认为index
-```
-
-#### setTopHtml
-```blade
-该方法用于设置页面顶部自定义html代码
-
-参数
-$top_html 顶部自定义html代码
-```
-截图  
-ListBuilder，如图所示
-
-![image](https://user-images.githubusercontent.com/35066497/69775189-fd60b800-11d2-11ea-9438-1a1d3dc9190b.png)
-
-FormBuilder，如图所示
-
-![image](https://user-images.githubusercontent.com/35066497/69775187-fb96f480-11d2-11ea-8447-438dd1585982.png)
-
-CompareBuilder，如图所示
-
-![image](https://user-images.githubusercontent.com/35066497/69775169-ea4de800-11d2-11ea-8a5e-60f6a1f7e792.png)
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Builder.md)
 
 ## 前台js错误收集
 #### 用法
@@ -337,6 +205,23 @@ CompareBuilder，如图所示
       });
     </script>
 ```
+
+## 数据库帮助函数
+generator
+> 低内存消耗迭代函数
+>
+> 参数 
+> 1. $map 查询参数 默认为空数组
+> 2. $count 一次查询的数据量，越大占用的内存会大，但运行效率会更高，根据情况灵活调整 默认为 1
+>
+> 举例
+>```php
+>
+>   foreach(D("Content")->generator([], 200) as $ent){
+>      var_dump($ent);
+>   }
+> 
+>```
 
 ## 权限功能
 
@@ -629,6 +514,24 @@ Dusk 是laravel的浏览器自动化测试 工具 ，qscmf将其稍微封装了�
 
 样例代码: lara/tests/LoginTest.php
 
+#### 命令行测试
+在Testing\TestCase下增加了 cli的命令行模拟执行
+
+```php
+$content = $this->cli('app/cliMode', 'Home', 'Controller', 'action', '参数1', '参数2'...);
+//content为返回的输出结果
+```
+
+#### 在phpunit里调用tp的代码片段
+使用runTp方法，参数接收一个匿名函数，匿名函数可调用tp里的代码，return后可在phpunit接收
+```php
+$test_ent = $this->runTp(function (){
+            return D('Test')->find(1);
+        });
+
+$this->assertTrue($test_ent['name'] == '测试');
+```
+可用该方法测试Tp的代码，但如果只是要验证数据库值，建议还是使用 assertDatabaseHas等测试方法，性能更佳。
 
 #### 压缩前端js代码
 压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)

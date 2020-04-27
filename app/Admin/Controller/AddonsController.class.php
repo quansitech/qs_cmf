@@ -43,7 +43,7 @@ class AddonsController extends GyListController{
                     ->addRightButton('self', array('title' => '卸载', 'href' => U('uninstall', array('id' => '__data_id__')), 'class' => 'label label-danger'))
                     ->alterTableData(  // 修改列表数据
                         array('key' => 'uninstall', 'value' => 1),
-                        array('right_button' => '<a class="label label-warning" href="/admin/addons/install/addon_name/{$name}">安装</a>')
+                        array('right_button' => '<a class="label label-warning" href="/admin/addons/install/addon_name/__name__">安装</a>')
                     )
                     ->display();
     }
