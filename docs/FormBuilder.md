@@ -17,7 +17,7 @@
 //某些管理员在上传富文本图片时，会上传一张非常大的图片，这样会导致用户访问该页面异常缓慢
 //这时可以利用url_prefix配合imageproxy做到自动降低图片大小，降低图片占用的网络带宽
 
-$url_prefix = U('/ip/q90', '', false, true) . U('/', '', false, true);
+$url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 //url_prefix = http://域名/ip/q90/http://域名/图片地址
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?url_prefix=' . $url_prefix . '"')
 ```

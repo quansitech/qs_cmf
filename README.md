@@ -179,6 +179,20 @@ protected function _initialize() {
 
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
+## TP数据库
+新增DB_STRICT模式, 在app/Common/Conf/config.php 设置true开启
+```php
+'DB_STRICT'             =>  env('DB_STRICT', true)
+```
+
+strict模式默认启动一下设置
+
+'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+
+而非strict模式是
+
+'NO_ENGINE_SUBSTITUTION'
+
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
