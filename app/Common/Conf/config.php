@@ -56,6 +56,7 @@ return array(
     'DB_PORT'               =>  env('DB_PORT', '3306'),        // 端口
     'DB_PREFIX'             =>  env('DB_PREFIX', 'qs_'),    // 数据库表前缀
     'DB_FIELDTYPE_CHECK'    =>  false,       // 是否进行字段类型检查
+    'DB_STRICT'             =>  env('DB_STRICT', true),
     //以下字段缓存没有其作用
     //① 如果是调试模式就不起作用
     //② false  也是不起作用
