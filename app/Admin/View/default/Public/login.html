@@ -1,38 +1,52 @@
 <layout name="common/layout" />
+<script>
+    function fontRem() {
+        var html = document.getElementsByTagName('html')[0];
+        var winW = html.offsetWidth;
+        var designW = winW > 768 ? 1920: 720;
+        html.style.fontSize = (winW / designW) * 100 + 'px';
+    }
+    fontRem();
+    window.onresize = fontRem;
+</script>
 <div class="background"></div>
 <div class="login-page">
     <div class="inner-login-page">
         <div class="container">
             <div class="row">
-                <div class="col-sm-5 col-sm-offset-1 hidden-xs">
+                <div class="col-md-6 col-sm-6 login-bg hidden-xs">
                 </div>
-                <div class="col-sm-4 col-sm-offset-1 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12 login-box">
                     <div class="login-form-box" id="login-box">
                         <div class="header">{:C('WEB_SITE_TITLE')}</div>
                         <form id='' method="post">
                             <div class="form-group">
+                                <img class="login-form-icon icon-login-user hidden-xs" src="__PUBLIC__/img/icon-login-user.png" alt="">
+                                <img class="login-form-icon icon-login-user-mobile hidden-md hidden-lg hidden-sm" src="__PUBLIC__/img/icon-login-user-mobile.png" alt="">
                                 <input autofocus type="text" name="uid" class="form-control" placeholder="{:L('username')}/{:L('email')}" />
                             </div>
                             <div class="form-group">
+                                <img class="login-form-icon icon-login-lock hidden-xs" src="__PUBLIC__/img/icon-login-lock.png" alt="">
+                                <img class="login-form-icon icon-login-lock-mobile hidden-md hidden-lg hidden-sm" src="__PUBLIC__/img/icon-login-lock-mobile.png" alt="">
                                 <input type="password" name="pwd" class="form-control" placeholder="******" />
                             </div>
                             <present name='verify_show'>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-xs-6">
                                             <input type="text" name='verify' class="form-control" placeholder="{:L('verify_code')}" />
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-xs-6">
                                             <a href="#" class="validate-img"><img src="{:U('verify')}" /></a>
                                         </div>
                                     </div>
                                 </div>
                             </present>
-                            <button type="submit" class="btn btn-mtx btn-block" data-loading-text="登录中...">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+                            <button type="submit" class="btn btn-mtx btn-block" data-loading-text="登录中...">登录</button>
                             <div class="error-info"></div>
                         </form>
-                        <hr>
-                        <p class="text-center">由 <a href="http://quansitech.com">全思科技</a> 技术驱动</p>
+                        <!--                        <hr>-->
+                        <p class="text-center tech-provider">由<a target="_blank" href="http://quansitech.com">全思科技</a>技术驱动</p>
                     </div>
                 </div>
             </div>
@@ -41,168 +55,513 @@
 </div>
 @section:script{%
 <script type="text/javascript">
-jQuery(document).ready(function($) {
-    // $('html').addClass('bg-login');
-    // $(document.body).addClass('bg-login');
-    $('.form-box').fadeIn(800);
-    $('a.validate-img').click(function() {
-        //重新加载验证码
-        $('#loadingimg').show();
-        var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
-            .load(function() {
-                if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
-                    alert('验证码图片加载出错，请刷新');
-                } else {
-                    $(".validate-img").html('').append(img);
-                }
-            });
-        return false;
-    });
-    $('#login_form').submit(function(e) {
-        e.preventDefault();
-        var formValues = $(this).serialize();
-        $.ajax({
-            url: $(this).attr('action') ? $(this).attr('action') : document.URL,
-            type: $(this).attr('method'),
-            data: formValues,
-            beforeSend: function() {
-                $('button[type=submit]').button('loading');
-                return true;
-            },
-            success: function(data) {
-                //成功状态，下面的是服务器返回的，数据库操作的状态
-                var type;
-                if (data.status === 1) {
-                    type = "success";
-                } else {
-                    type = "error";
-                    //在登录按钮下面显示错误信息，并清空验证码字段
-                    $('.error-info').text(data.info);
-                    if ($('a.validate-img').length) {
-                        $('input[name="verify"]').val('');
-                    }
-                }
-                if (type === 'success') {
-                    //成功则跳转到返回的网址
-                    setTimeout(function() {
-                        window.location = data.url;
+    jQuery(document).ready(function($) {
+
+        // $('html').addClass('bg-login');
+        // $(document.body).addClass('bg-login');
+        $('.form-box').fadeIn(800);
+        $('a.validate-img').click(function() {
+            //重新加载验证码
+            $('#loadingimg').show();
+            var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
+                    .load(function() {
+                        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                            alert('验证码图片加载出错，请刷新');
+                        } else {
+                            $(".validate-img").html('').append(img);
+                        }
                     });
-                } else {
-                    //如果type=error，则不能执行跳转，需重新填写，重新启用提交按钮
-                    $('button[type=submit]').button('reset');
-                    //如果超过三次需要验证码，而验证码域未建立，则刷新页面以显示验证码
-                    if (data.verify_show && !$('a.validate-img').length) {
-                        location.reload(true);
+            return false;
+        });
+        $('#login_form').submit(function(e) {
+            e.preventDefault();
+            var formValues = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action') ? $(this).attr('action') : document.URL,
+                type: $(this).attr('method'),
+                data: formValues,
+                beforeSend: function() {
+                    $('button[type=submit]').button('loading');
+                    return true;
+                },
+                success: function(data) {
+                    //成功状态，下面的是服务器返回的，数据库操作的状态
+                    var type;
+                    if (data.status === 1) {
+                        type = "success";
+                    } else {
+                        type = "error";
+                        //在登录按钮下面显示错误信息，并清空验证码字段
+                        $('.error-info').text(data.info);
+                        if ($('a.validate-img').length) {
+                            $('input[name="verify"]').val('');
+                        }
                     }
-                    //若验证码域已存在，则重新载入新的验证码
-                    if ($('a.validate-img').length) {
-                        $('a.validate-img').trigger('click');
+                    if (type === 'success') {
+                        //成功则跳转到返回的网址
+                        setTimeout(function() {
+                            window.location = data.url;
+                        });
+                    } else {
+                        //如果type=error，则不能执行跳转，需重新填写，重新启用提交按钮
+                        $('button[type=submit]').button('reset');
+                        //如果超过三次需要验证码，而验证码域未建立，则刷新页面以显示验证码
+                        if (data.verify_show && !$('a.validate-img').length) {
+                            location.reload(true);
+                        }
+                        //若验证码域已存在，则重新载入新的验证码
+                        if ($('a.validate-img').length) {
+                            $('a.validate-img').trigger('click');
+                        }
                     }
-                }
-            },
-            error: function() {
-                $('.error-info').text('提交出错，请检查网络或浏览器设置');
-            },
+                },
+                error: function() {
+                    $('.error-info').text('提交出错，请检查网络或浏览器设置');
+                },
+            });
         });
     });
-});
 </script>
 %} @section:css{%
 <style>
-html,
-body {
-    height: 100%;
-    font-family: "Microsoft Yahei"
-}
-.background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: url('__PUBLIC__/img/admin-login-bg.jpg') no-repeat center;
-    background-size: cover;
-}
+    html,
+    body {
+        height: 100%;
+        font-family: "SimSun","Microsoft Yahei";
+    }
+    .background {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: url('__PUBLIC__/img/admin-login-bg.jpg') no-repeat center;
+        background-size: cover;
+    }
 
-.login-page {
-    height: 100%;
-    margin: 0 auto;
-    display: table;
-    position: relative;
-    z-index: 1000;
-}
+    .login-page {
+        height: 100%;
+        margin: 0 auto;
+        display: table;
+        position: relative;
+        z-index: 1000;
+    }
 
-#login_form {
-    margin: 20px 0 30px;
-}
-a.validate-img img{
-    width: 100%;
-    height: auto;
-}
-.error-info{
-    margin-top: 10px;
-    text-align: center;
-}
-.inner-login-page {
-    display: table-cell;
-    vertical-align: middle;
-}
+    #login_form {
+        margin: 20px 0 30px;
+    }
+    a.validate-img img{
+        width: 100%;
+        height: auto;
+    }
+    .error-info{
+        margin-top: 10px;
+        text-align: center;
+    }
+    .inner-login-page {
+        display: table-cell;
+        vertical-align: middle;
+    }
 
-.slogan p {
-    font-size: 28px;
-    color: #fff;
-    margin-bottom: 10px;
-    text-shadow: 1px 1px 1px #000;
-}
+    .slogan p {
+        font-size: 28px;
+        color: #fff;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 1px #000;
+    }
 
-.login-form-box {
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 20px 35px
-}
+    .login-form-box {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px 35px
+    }
 
-.login-form-box .header {
-    padding: 10px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: normal;
-}
-input{
-    border-radius: 0!important;
-}
-.login-form-box .body,
-.login-form-box .footer {
-    padding: 10px 20px;
-    color: #444;
-}
+    .login-form-box .header {
+        padding: 10px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: normal;
+    }
+    /*input{*/
+    /*    border-radius: 0!important;*/
+    /*}*/
+    .login-form-box .body,
+    .login-form-box .footer {
+        padding: 10px 20px;
+        color: #444;
+    }
 
-.login-form-box .body > .form-group,
-.login-form-box .footer > .form-group {
-    margin-top: 20px;
-}
+    .login-form-box .body > .form-group,
+    .login-form-box .footer > .form-group {
+        margin-top: 20px;
+    }
 
-.login-form-box .body > .form-group > input,
-.login-form-box .footer > .form-group > input {
-    border: #fff;
-}
+    .login-form-box .body > .form-group > input,
+    .login-form-box .footer > .form-group > input {
+        border: #fff;
+    }
 
-.login-form-box .body > .btn,
-.login-form-box .footer > .btn {
-    margin-bottom: 10px;
-}
+    .login-form-box .body > .btn,
+    .login-form-box .footer > .btn {
+        margin-bottom: 10px;
+    }
 
-.login-form-box .footer {}
+    .login-form-box .footer {}
 
-.btn-mtx {
-    background-color: #017ffc;
-    color: #ffffff;
-    border-radius: 0;
-}
+    .btn-mtx {
+        background-color: #017ffc;
+        color: #ffffff;
+        border-radius: 0;
+    }
 
-.btn.btn-mtx:focus,
-.btn.btn-mtx:hover,
-.btn.btn-mtx:active,
-.btn.btn-mtx.hover {
-    background-color: #0167f0;
-    color: #ffffff;
-}
+    .btn.btn-mtx:focus,
+    .btn.btn-mtx:hover,
+    .btn.btn-mtx:active,
+    .btn.btn-mtx.hover {
+        background-color: #0167f0;
+        color: #ffffff;
+    }
+
+
+
+
+    /*new styles start*/
+    .background{
+        background-image: unset;
+        background-color: #f0f8ff;
+    }
+
+    .inner-login-page>.container{
+        border-radius: 9px;
+        max-width: 970px;
+        overflow: hidden;
+    }
+
+    .login-form-box{
+        margin-left: 45px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0;
+    }
+
+    .login-form-box .header{
+        font-size: 28px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 28px;
+        padding: 0 10px;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.2;
+    }
+
+    .login-form-box form{
+        width: 100%;
+    }
+
+    .login-form-box .form-group{
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .login-form-box .form-group input[name=verify]{
+        padding-left: 20px;
+    }
+
+    .login-form-box .form-group .validate-img{
+        line-height: 60px;
+    }
+
+    .login-form-box .login-form-icon{
+        position: absolute;
+        top: 50%;
+        left: 30px;
+    }
+
+    .login-form-box .icon-login-user{
+        margin-top: -10px;
+
+    }
+    .login-form-box .icon-login-lock{
+        margin-top: -12px;
+    }
+
+    .login-form-box input[type=text],
+    .login-form-box input[type=password]{
+        border-radius: 50px;
+        padding-left: 60px;
+        font-size: 16px;
+    }
+
+    .login-form-box input[type=text],
+    .login-form-box input[type=password],
+    .login-form-box .btn-mtx{
+        height: 55px;
+    }
+
+    .login-form-box .btn-mtx{
+        font-size: 18px;
+        border-radius: 50px;
+        margin-top: 40px;
+        background-image: -moz-linear-gradient( 90deg, rgb(11,156,221) 0%, rgb(32,135,253) 100%);
+        background-image: -webkit-linear-gradient( 90deg, rgb(11,156,221) 0%, rgb(32,135,253) 100%);
+        background-image: -ms-linear-gradient( 90deg, rgb(11,156,221) 0%, rgb(32,135,253) 100%);
+        background-image: linear-gradient( 90deg, rgb(11,156,221) 0%, rgb(32,135,253) 100%);
+        box-shadow: 0 12px 60px 0 rgba(119, 117, 183, 0.2);
+    }
+
+
+    .login-form-box .btn-mtx:focus{
+        outline: none;
+    }
+
+    .tech-provider{
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        left: 0;
+        color: #939499;
+        font-size: 16px;
+        margin-bottom: 0;
+        line-height: 1.5;
+    }
+
+    .tech-provider a{
+        color: #0f98e4;
+    }
+
+    @media screen and (min-width: 768px) {
+        .inner-login-page>.container{
+            box-shadow: 0 12px 60px 0 rgba(114, 110, 212, 0.2);
+        }
+        .inner-login-page>.container>.row{
+            background: rgb(255, 255, 255);
+            border-radius: 4px;
+            background-image: url('__PUBLIC__/img/admin-login.png');
+            background-size: auto 100%;
+            background-repeat: no-repeat;
+        }
+
+        .login-form-box{
+            height: 550px;
+            max-width: 360px;
+            padding: 0;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password]{
+            border: 1px solid #ebecf0;
+            background-color: #f2f4fc;
+            box-shadow: unset;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .login-form-box{
+            height: 450px;
+            padding: 0 30px;
+        }
+
+        .login-form-box .header{
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .login-form-box form{
+            width: 100%;
+        }
+
+        .login-form-box .form-group{
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .login-form-box .form-group input[name=verify]{
+            padding-left: 15px;
+        }
+
+        .login-form-box .form-group .validate-img{
+            line-height: 45px;
+        }
+
+        .login-form-box .login-form-icon{
+            position: absolute;
+            top: 50%;
+            left: 15px;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password],
+        .login-form-box .btn-mtx{
+            height: 45px;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password]{
+            padding-left: 40px;
+        }
+
+        .login-form-box .btn-mtx{
+            margin-top: 35px;
+        }
+
+        .tech-provider{
+            font-size: 14px;
+            bottom: 10px;
+        }
+    }
+
+
+    @media screen and (max-width: 767px) {
+        .login-page{
+            padding-top: 2.35rem;
+            width: 5.6rem;
+        }
+
+        .login-page .inner-login-page{
+            display: block;
+        }
+
+        .login-page .inner-login-page .container{
+        }
+
+        .login-page .inner-login-page .login-bg{
+            display: none !important;
+        }
+
+        .login-form-box {
+            margin-left: auto;
+            margin-right: auto;
+            background-color: transparent;
+        }
+
+        .login-form-box .form-group{
+            margin-bottom: .4rem;
+        }
+
+        .background{
+            background-color: #fff;
+            background-image: url(__PUBLIC__/img/bg-admin-login-mobile.png);
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: center bottom;
+        }
+        .login-form-box{
+            height: calc(100vh - 2.35rem);
+            justify-content: flex-start;
+            padding: 0;
+        }
+
+        .login-form-box .header{
+            font-size: .42rem;
+            line-height: 1.5;
+            margin-bottom: .7rem;
+        }
+
+        .login-form-box .login-form-icon{
+            left: .3rem;
+        }
+
+        .icon-login-user-mobile{
+            width: .34rem;
+            height: .36rem;
+            margin-top: -.18rem;
+        }
+
+        .icon-login-lock-mobile{
+            width: .33rem;
+            height: .41rem;
+            margin-top: -.2rem;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password],
+        .login-form-box .btn-mtx{
+            height: .9rem;
+        }
+
+        .login-form-box .form-group .validate-img{
+            line-height: .9rem;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password]{
+            padding-left: .85rem;
+            height: .9rem;
+            font-size: .28rem;
+        }
+
+        .login-form-box .btn-mtx{
+            margin-top: .65rem;
+            box-shadow: 0 6px 9px 0 rgba(20, 46, 185, 0.16);
+        }
+
+        .login-form-box .form-group .validate-img{
+            display: block;
+        }
+
+        .tech-provider{
+            font-size: .24rem;
+            bottom: .35rem;
+        }
+    }
+
+    @media (min-width: 489px) and (max-width: 767px) {
+        .login-page{
+            padding-top: 1.4rem;
+            width: 4.6rem;
+        }
+        .login-form-box{
+            height: calc(100vh - 1.4rem);
+        }
+        .login-form-box .header{
+            font-size: .32rem;
+        }
+
+        .login-form-box .form-group{
+            margin-bottom: .3rem;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password],
+        .login-form-box .btn-mtx{
+            height: .6rem;
+        }
+
+        .login-form-box input[type=text],
+        .login-form-box input[type=password]{
+            font-size: .24rem;
+            padding-left: .7rem;
+        }
+
+        .login-form-box .form-group .validate-img{
+            line-height: .6rem;
+        }
+
+        .login-form-box .login-form-icon{
+            height: .3rem;
+            margin-top: -.15rem;
+            width: auto;
+        }
+
+        .login-form-box .btn-mtx{
+            margin-top: .45rem;
+        }
+
+        .tech-provider{
+            bottom: .2rem;
+        }
+
+    }
+
+
+
+
+
+    /*new styles end*/
 </style>
 %}
