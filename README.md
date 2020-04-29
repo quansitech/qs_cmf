@@ -193,6 +193,80 @@ strict模式默认启动一下设置
 
 'NO_ENGINE_SUBSTITUTION'
 
+## 数据库迁移
+扩展了laravel的迁移功能, 可在执行迁移前后插入一些操作。
+```php
+class CreateTestTable extends Migration
+{
+
+    public function beforeCmmUp()
+    {
+        echo "执行前置命令" . PHP_EOL;
+    }
+
+    public function beforeCmmDown()
+    {
+        echo "执行前置回滚命令" . PHP_EOL;
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('test', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('test');
+    }
+
+    public function afterCmmUp()
+    {
+        echo "执行后置命令" . PHP_EOL;
+    }
+
+    public function afterCmmDown()
+    {
+        echo "执行后置回滚命令" . PHP_EOL;
+    }
+}
+```
+
+运用场景：
+
+迁移文件是为了方便我们对数据库结构进行变更管理。那么是所有的数据库变更都会放到迁移文件处理吗？当然不是，像一些跟业务逻辑有关的数据处理就不应该放到迁移文件，否则这部分代码跟
+业务数据捆绑，很容易导致执行迁移时出错。而只有那些跟业务数据无关，用于构造系统数据存储结构的变更操作才应该放到迁移中。但一个业务系统维护久了，难免必须处理一些数据后才能正常
+执行数据库结构变更，例如唯一索引的创建往往就需要我们清理掉一些重复的业务数据。这时就有了不能放在迁移里的业务数据维护脚本的管理需求。
+
+依托上面的场景，就有了在迁移文件中加入了前后置的操作点的构思。默认情况下，只要设置了前后置操作点，执行迁移时就会自动执行一遍，回滚类同。
+
+那么如果只是想执行迁移而不执行前后置操作怎么办呢（例如执行自动测试脚本前，我们会自动构建系统的数据库）。只需在命令后面加入 --no-cmd即可
+
+下面是支持加入--no-cmd操作的命令
+```php
+php artisan migrate --no-cmd
+
+php artisan migrate:rollback --no-cmd
+
+php artisan migrate:fresh --no-cmd
+
+php artisan migrate:refresh --no-cmd
+
+php artisan migrate:reset --no-cmd
+```
+
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
