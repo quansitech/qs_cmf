@@ -87,6 +87,31 @@
    <link href="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
    <script src="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
 
+   删除tp.php 里内容，替换成以下的
+   --------------------------------
+   <?php
+   // 应用入口文件
+   ini_set('display_errors', '0');
+   
+   if(!function_exists('show_bug')){
+       function show_bug($object){
+           echo "<pre style='color:red'>";
+           var_dump($object);
+           echo "</pre>";
+       }
+   }
+   
+   //require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
+   //require __DIR__ . '/app/Common/Common/function.php';
+   require_once __DIR__ . '/vendor/autoload.php';
+   
+   $dotenv = \Dotenv\Dotenv::create(__DIR__ );
+   $dotenv->load();
+   
+   // 引入ThinkPHP入口文件
+   require 'vendor/tiderjian/think-core/src/ThinkPHP.php';
+   -----------------------------------
+
 13.(升级到v10.0.0以上版本)
   全局搜索有无使用ListBuilder->alterTableData 方法，如果有，则将里面的变量占位符{$字段名} 改为 __字段名__
 
