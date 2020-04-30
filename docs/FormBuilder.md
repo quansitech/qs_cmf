@@ -21,7 +21,7 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 //url_prefix = http://域名/ip/q90/http://域名/图片地址
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-url="/Public/libs/ueditor/php/controller.php?url_prefix=' . $url_prefix . '"')
 ```
-+ insertframe: 默认启用。用于插入```<iframe></iframe>```代码，不能插入url，可以编辑宽高，边框，是否允许滚动,对齐方式等属性,其他属性会被删除。
++ insertframe: 默认启用。用于插入```<iframe></iframe>```或```url```，可以编辑宽高，边框，是否允许滚动,对齐方式等属性,其他属性会被删除。
 
 使用oss作为文件存储服务
 ```php
