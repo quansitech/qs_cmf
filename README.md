@@ -180,7 +180,18 @@ protected function _initialize() {
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## TP数据库
-新增DB_STRICT模式, 在app/Common/Conf/config.php 设置true开启
++ 原生sql写法 Db::Raw
+> tp会对字符串的sql进行分析，对关键字自动加上``，但做的并不好，会将table方法和field方法的sql解析出语法问题
+>
+> 因此加入了 Db::Raw的方法来阻止tp解析
+> ```php
+> D('Test')
+> ->table(Db::Raw(( 'SELECT @box_id:=null, @rank:=0 ) a'))
+> ->field(Db::Raw('tmp.*, if(@box_id=tmp.box_id, @rank:=@rank+1, @rank:=1) AS rk, @box_id:=tmp.box_id'))
+> ```
+
+
++ 新增DB_STRICT模式, 在app/Common/Conf/config.php 设置true开启
 ```php
 'DB_STRICT'             =>  env('DB_STRICT', true)
 ```
