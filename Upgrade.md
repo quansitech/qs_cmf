@@ -79,15 +79,17 @@
    \Bootstrap\Context::providerRegister(true);
    \Larafortp\ArtisanHack::init($app);
    ----------------------------------
-   将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
+   1. 将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
 
-   检查 app/Admin/View/default/common/head.html 中的 <div class="navbar-left"> 元素前面有没包裹 <div class="navbar-container"> ，没有则加上
+   2. 检查 app/Admin/View/default/common/head.html 中的 <div class="navbar-left"> 元素前面有没包裹 <div class="navbar-container"> ，没有则加上
 
    在app/Admin/View/default/common/dashboard_layout.html 加入
    <link href="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
    <script src="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
 
-   删除tp.php 里内容，替换成以下的
+   
+
+   3. 删除tp.php 里内容，替换成以下的
    --------------------------------
    <?php
    // 应用入口文件
@@ -111,6 +113,21 @@
    // 引入ThinkPHP入口文件
    require 'vendor/tiderjian/think-core/src/ThinkPHP.php';
    -----------------------------------
+
+   4. 检查composer.json的scripts, 将"post-root-package-install" 里的执行脚本移到"post-autoload-dump"第一行，如下
+   -----------------------------------
+   "scripts": {
+           "post-autoload-dump": [
+               "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+               "./vendor/bin/qsinstall",
+               "./vendor/bin/qsautoload",
+               "@php artisan package:discover --ansi",
+               "@php artisan qscmf:discover --ansi",
+               "php ./www/index.php /qscmf/CreateSymlink"
+           ]
+       }
+   -----------------------------------
+
 
 13.(升级到v10.0.0以上版本)
   全局搜索有无使用ListBuilder->alterTableData 方法，如果有，则将里面的变量占位符{$字段名} 改为 __字段名__
