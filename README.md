@@ -267,6 +267,16 @@ php artisan migrate:refresh --no-cmd
 php artisan migrate:reset --no-cmd
 ```
 
++ CmmProcess
+该类是为了方便在迁移中调用tp的脚本
+> 用法：
+>
+> ```php
+> $process = new \Larafortp\CmmMigrate\CmmProcess();
+> //timeout为程序的超时退出时间，默认60秒
+> $process->setTimeOut(100)->callTp('/var/www/move/www/index.php', '/home/index/test');
+> ```
+
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
