@@ -85,6 +85,20 @@ imageproxy('100x150', 1)
 返回地址 http://localhost/ip/100x150/Uploads/image/20190826/5d634f5f6570f.jpeg
 ```
 
++ 远程imageproxy代理
+
+有些项目，需要采用远程的一台服务器作为图片代理服务，此时可通过在.env设置IMAGEPROXY_REMOTE来设置远程服务器的域名
+```php
+//.env文件
+IMAGEPROXY_URL={schema}://{domain}/{options}/{remote_uri}
+IMAGEPROXY_REMOTE=http://www.test.com
+
+//imageporxy生成的地址
+$url = imageproxy('1920x540',$banner_id);
+echo $url;
+//http://www.test.com/1920x540/http://localhost/Uploads/images/xxxx.jpg
+```
+
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
