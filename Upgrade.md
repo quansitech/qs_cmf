@@ -137,6 +137,15 @@
     $_SERVER['DUSK_TEST'] = true;
   ----------------------------------
 
+14.(升级到v11以上版本)
+  数据库执行sql
+  --------------------------------
+  alter table migrations add column `after` tinyint(1) not null after migration
+  alter table migrations add column `run` tinyint(1) not null after migration
+  alter table migrations add column `before` tinyint(1) not null after migration
+
+  update migrations set `after`=1,`run`=1,`before`=1
+  --------------------------------
 ```
 
 
