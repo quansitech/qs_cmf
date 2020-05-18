@@ -141,9 +141,9 @@
   在v10版本先完成以下操作
   数据库执行sql
   --------------------------------
-  alter table migrations add column `after` tinyint(1) not null after migration
-  alter table migrations add column `run` tinyint(1) not null after migration
-  alter table migrations add column `before` tinyint(1) not null after migration
+  alter table migrations add column `after` tinyint(1) not null default 0 after migration
+  alter table migrations add column `run` tinyint(1) not null default 0 after migration
+  alter table migrations add column `before` tinyint(1) not null default 0 after migration
 
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
