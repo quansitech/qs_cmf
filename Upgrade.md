@@ -138,6 +138,7 @@
   ----------------------------------
 
 14.(升级到v11以上版本)
+  在v10版本先完成以下操作
   数据库执行sql
   --------------------------------
   alter table migrations add column `after` tinyint(1) not null after migration
