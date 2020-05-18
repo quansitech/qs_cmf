@@ -67,8 +67,6 @@ class AppInitBehavior extends \Think\Behavior
             if(isset($config['prefix']) && !empty($config['prefix']))
             RedisCluster::prefix($config['prefix']);
 
-//            Resque::getRedisLock($config);
-
             Event::listen('afterScheduleRun', function($args){
                 $job_id = $args['job_id'];
                 $job_desc = $args['job_desc'];
