@@ -129,7 +129,7 @@
    -----------------------------------
 
 
-13.(升级到v10.0.0以上版本)
+13.(升级到v10.0.0以上版本)(该版本仅做升级过渡，勿使用，命令行运行模式存在重大缺陷)
   全局搜索有无使用ListBuilder->alterTableData 方法，如果有，则将里面的变量占位符{$字段名} 改为 __字段名__
 
   lara/server.php 文件，找到$uri的定义，在其后面加上以下代码
@@ -138,11 +138,12 @@
   ----------------------------------
 
 14.(升级到v11以上版本)
+  在v10版本先完成以下操作
   数据库执行sql
   --------------------------------
-  alter table migrations add column `after` tinyint(1) not null after migration
-  alter table migrations add column `run` tinyint(1) not null after migration
-  alter table migrations add column `before` tinyint(1) not null after migration
+  alter table migrations add column `after` tinyint(1) not null default 0 after migration
+  alter table migrations add column `run` tinyint(1) not null default 0 after migration
+  alter table migrations add column `before` tinyint(1) not null default 0 after migration
 
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
