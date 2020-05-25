@@ -32,7 +32,7 @@ class {$controller_name}Controller extends GyListController{
         $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'id desc');
 
 
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('{$list_title}管理');
         
@@ -111,7 +111,7 @@ class {$controller_name}Controller extends GyListController{
             }
         }
         else {
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             
             $data_list = array(
             <volist name="add_columns" id="column">
@@ -168,7 +168,7 @@ class {$controller_name}Controller extends GyListController{
             $info = D('{$model_name}')->getOne($id);
 
 
-            $builder = new \Common\Builder\FormBuilder();
+            $builder = new \Qscmf\Builder\FormBuilder();
             $builder->setMetaTitle('编辑{$list_title}') 
                     ->setPostUrl(U('edit'))    
                     ->setNID({$nid})

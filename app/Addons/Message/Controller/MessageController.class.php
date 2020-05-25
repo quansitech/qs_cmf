@@ -36,7 +36,7 @@ class MessageController extends AddonsController {
         }
         $data_list = D('Addons://Message/Message')->getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
         
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder->setMetaTitle('评论列表')
                 ->addTopButton('forbid', array('title' => '删除', 'href' => addons_url('Message://Message/forbid')))
