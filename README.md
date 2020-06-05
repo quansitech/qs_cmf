@@ -433,6 +433,8 @@ redirect(U('home/user/index'));
 参数 
 $key 名称
 $expire 过期时间 单位为秒
+$timeout  循环取锁时间 单位为秒，默认为0
+$interval 取锁失败后重试间隔时间 单位为微秒，默认为100000
 
 返回值
 锁成功返回true 锁失败返回false
@@ -513,6 +515,9 @@ REQUEST_URI 获取方向代理前的REQUEST_URI值
 
 ## 扩展
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
+
+## 消息队列
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Resque.md)
 
 ## 测试
 

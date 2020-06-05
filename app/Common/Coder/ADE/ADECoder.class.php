@@ -43,7 +43,7 @@ class ADECoder extends Coder{
         
         $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'id desc');
         
-        $builder = new \Common\Builder\ListBuilder();
+        $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle($this->_name . '生成记录')         
         ->addTopButton('delete');                
