@@ -170,6 +170,16 @@ echo $url;
 8. 可通过在config文件设置 "ELASTIC_ALLOW_EXCEPTION" 来禁止抛出异常，即使搜索引擎关闭，也不会影响原来的业务操作。
 9. 更新操作的索引重建仅会在索引字段发生变化时才会触发。
 
+## Model auto
+增加传递新增记录给function或者callback的方法
+```php
+protected $_auto = array(
+    //第六个参数设置为true，可以接收到新增的记录
+    //此时如果不需要通过第五个参数额外传递数据，可设置为null
+    ['sample_filed', 'sampleCallback', parent::MODEL_INSERT, 'callback', null, true]
+);
+```
+
 ## 联动删除
 在进行一些表删除操作时，很可能要删除另外几张表的特定数据。联动删除功能只需在Model里定义好联动删除规则，在删除数据时即可自动完成另外多张表的删除操作，可大大简化开发的复杂度。
 
