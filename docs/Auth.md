@@ -231,7 +231,7 @@ protected $_auth_ref_rule = array(
 
 #### 用法
 
-+ 在Model类配置$_auth_node_colunm的值
++ 在Model类配置$_auth_node_column的值
 ```blade
 字段说明
 
@@ -244,7 +244,7 @@ default：默认值
 ```php
     // 在BoxModel配置需要权限过滤的字段，只有拥有该权限点的用户才可以操作字段
     
-    protected $_auth_node_colunm = [
+    protected $_auth_node_column = [
         'company_id' => ['auth_node' => 'admin.Box.allColumns'],
         'caption' => ['auth_node' => ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'],'default' => 'quansitech']
     ];
@@ -253,7 +253,7 @@ default：默认值
 + 使用addFormItem设置表单并配置auth_node属性，具体规则参考FormBuilder的addFormItem方法
 ```php
     // 在构建新增或者编辑书箱表单时，设置auth_node属性
-    // auth_node值应与$_auth_node_colunm对应字段的auth_node值一致
+    // auth_node值应与$_auth_node_column对应字段的auth_node值一致
     
     ->addFormItem('company_id', 'select', '捐赠方', '', D('Company')->where(['status' => DBCont::NORMAL_STATUS])->getField('id,name'), '', '', ['admin.Box.allColumns'])
     ->addFormItem('caption', 'text', '冠名', '冠名长度不得超过10个字', '', '', '', ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'])
