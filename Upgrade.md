@@ -79,15 +79,57 @@
    \Bootstrap\Context::providerRegister(true);
    \Larafortp\ArtisanHack::init($app);
    ----------------------------------
-   将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
+   1. 将上面的代码复制到根目录下的artisan |   $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);   |  前
 
-   检查 app/Admin/View/default/common/head.html 中的 <div class="navbar-left"> 元素前面有没包裹 <div class="navbar-container"> ，没有则加上
+   2. 检查 app/Admin/View/default/common/head.html 中的 <div class="navbar-left"> 元素前面有没包裹 <div class="navbar-container"> ，没有则加上
 
    在app/Admin/View/default/common/dashboard_layout.html 加入
    <link href="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
    <script src="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
 
-13.(升级到v10.0.0以上版本)
+   
+
+   3. 删除tp.php 里内容，替换成以下的
+   --------------------------------
+   <?php
+   // 应用入口文件
+   ini_set('display_errors', '0');
+   
+   if(!function_exists('show_bug')){
+       function show_bug($object){
+           echo "<pre style='color:red'>";
+           var_dump($object);
+           echo "</pre>";
+       }
+   }
+   
+   //require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
+   //require __DIR__ . '/app/Common/Common/function.php';
+   require_once __DIR__ . '/vendor/autoload.php';
+   
+   $dotenv = \Dotenv\Dotenv::create(__DIR__ );
+   $dotenv->load();
+   
+   // 引入ThinkPHP入口文件
+   require 'vendor/tiderjian/think-core/src/ThinkPHP.php';
+   -----------------------------------
+
+   4. 检查composer.json的scripts, 将"post-root-package-install" 里的执行脚本移到"post-autoload-dump"第一行，如下
+   -----------------------------------
+   "scripts": {
+           "post-autoload-dump": [
+               "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+               "./vendor/bin/qsinstall",
+               "./vendor/bin/qsautoload",
+               "@php artisan package:discover --ansi",
+               "@php artisan qscmf:discover --ansi",
+               "php ./www/index.php /qscmf/CreateSymlink"
+           ]
+       }
+   -----------------------------------
+
+
+13.(升级到v10.0.0以上版本)(该版本仅做升级过渡，勿使用，命令行运行模式存在重大缺陷)
   全局搜索有无使用ListBuilder->alterTableData 方法，如果有，则将里面的变量占位符{$字段名} 改为 __字段名__
 
   lara/server.php 文件，找到$uri的定义，在其后面加上以下代码
@@ -95,6 +137,16 @@
     $_SERVER['DUSK_TEST'] = true;
   ----------------------------------
 
+14.(升级到v11以上版本)
+  在v10版本先完成以下操作
+  数据库执行sql
+  --------------------------------
+  alter table migrations add column `after` tinyint(1) not null default 0 after migration
+  alter table migrations add column `run` tinyint(1) not null default 0 after migration
+  alter table migrations add column `before` tinyint(1) not null default 0 after migration
+
+  update migrations set `after`=1,`run`=1,`before`=1
+  --------------------------------
 ```
 
 

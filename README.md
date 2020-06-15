@@ -85,6 +85,20 @@ imageproxy('100x150', 1)
 返回地址 http://localhost/ip/100x150/Uploads/image/20190826/5d634f5f6570f.jpeg
 ```
 
++ 远程imageproxy代理
+
+有些项目，需要采用远程的一台服务器作为图片代理服务，此时可通过在.env设置IMAGEPROXY_REMOTE来设置远程服务器的域名
+```php
+//.env文件
+IMAGEPROXY_URL={schema}://{domain}/{options}/{remote_uri}
+IMAGEPROXY_REMOTE=http://www.test.com
+
+//imageporxy生成的地址
+$url = imageproxy('1920x540',$banner_id);
+echo $url;
+//http://www.test.com/1920x540/http://localhost/Uploads/images/xxxx.jpg
+```
+
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
@@ -156,6 +170,16 @@ imageproxy('100x150', 1)
 8. 可通过在config文件设置 "ELASTIC_ALLOW_EXCEPTION" 来禁止抛出异常，即使搜索引擎关闭，也不会影响原来的业务操作。
 9. 更新操作的索引重建仅会在索引字段发生变化时才会触发。
 
+## Model auto
+增加传递新增记录给function或者callback的方法
+```php
+protected $_auto = array(
+    //第六个参数设置为true，可以接收到新增的记录
+    //此时如果不需要通过第五个参数额外传递数据，可设置为null
+    ['sample_filed', 'sampleCallback', parent::MODEL_INSERT, 'callback', null, true]
+);
+```
+
 ## 联动删除
 在进行一些表删除操作时，很可能要删除另外几张表的特定数据。联动删除功能只需在Model里定义好联动删除规则，在删除数据时即可自动完成另外多张表的删除操作，可大大简化开发的复杂度。
 
@@ -180,7 +204,18 @@ protected function _initialize() {
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
 
 ## TP数据库
-新增DB_STRICT模式, 在app/Common/Conf/config.php 设置true开启
++ 原生sql写法 Db::Raw
+> tp会对字符串的sql进行分析，对关键字自动加上``，但做的并不好，会将table方法和field方法的sql解析出语法问题
+>
+> 因此加入了 Db::Raw的方法来阻止tp解析
+> ```php
+> D('Test')
+> ->table(Db::Raw(( 'SELECT @box_id:=null, @rank:=0 ) a'))
+> ->field(Db::Raw('tmp.*, if(@box_id=tmp.box_id, @rank:=@rank+1, @rank:=1) AS rk, @box_id:=tmp.box_id'))
+> ```
+
+
++ 新增DB_STRICT模式, 在app/Common/Conf/config.php 设置true开启
 ```php
 'DB_STRICT'             =>  env('DB_STRICT', true)
 ```
@@ -192,6 +227,90 @@ strict模式默认启动一下设置
 而非strict模式是
 
 'NO_ENGINE_SUBSTITUTION'
+
+## 数据库迁移
+扩展了laravel的迁移功能, 可在执行迁移前后插入一些操作。
+```php
+class CreateTestTable extends Migration
+{
+
+    public function beforeCmmUp()
+    {
+        echo "执行前置命令" . PHP_EOL;
+    }
+
+    public function beforeCmmDown()
+    {
+        echo "执行前置回滚命令" . PHP_EOL;
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('test', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('test');
+    }
+
+    public function afterCmmUp()
+    {
+        echo "执行后置命令" . PHP_EOL;
+    }
+
+    public function afterCmmDown()
+    {
+        echo "执行后置回滚命令" . PHP_EOL;
+    }
+}
+```
+
+运用场景：
+
+迁移文件是为了方便我们对数据库结构进行变更管理。那么是所有的数据库变更都会放到迁移文件处理吗？当然不是，像一些跟业务逻辑有关的数据处理就不应该放到迁移文件，否则这部分代码跟
+业务数据捆绑，很容易导致执行迁移时出错。而只有那些跟业务数据无关，用于构造系统数据存储结构的变更操作才应该放到迁移中。但一个业务系统维护久了，难免必须处理一些数据后才能正常
+执行数据库结构变更，例如唯一索引的创建往往就需要我们清理掉一些重复的业务数据。这时就有了不能放在迁移里的业务数据维护脚本的管理需求。
+
+依托上面的场景，就有了在迁移文件中加入了前后置的操作点的构思。默认情况下，只要设置了前后置操作点，执行迁移时就会自动执行一遍，回滚类同。
+
+那么如果只是想执行迁移而不执行前后置操作怎么办呢（例如执行自动测试脚本前，我们会自动构建系统的数据库）。只需在命令后面加入 --no-cmd即可
+
+下面是支持加入--no-cmd操作的命令
+```php
+php artisan migrate --no-cmd
+
+php artisan migrate:rollback --no-cmd
+
+php artisan migrate:fresh --no-cmd
+
+php artisan migrate:refresh --no-cmd
+
+php artisan migrate:reset --no-cmd
+```
+
++ CmmProcess
+该类是为了方便在迁移中调用tp的脚本
+> 用法：
+>
+> ```php
+> $process = new \Larafortp\CmmMigrate\CmmProcess();
+> //timeout为程序的超时退出时间，默认60秒
+> $process->setTimeOut(100)->callTp('/var/www/move/www/index.php', '/home/index/test');
+> ```
 
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
@@ -324,6 +443,8 @@ redirect(U('home/user/index'));
 参数 
 $key 名称
 $expire 过期时间 单位为秒
+$timeout  循环取锁时间 单位为秒，默认为0
+$interval 取锁失败后重试间隔时间 单位为微秒，默认为100000
 
 返回值
 锁成功返回true 锁失败返回false
@@ -404,6 +525,9 @@ REQUEST_URI 获取方向代理前的REQUEST_URI值
 
 ## 扩展
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
+
+## 消息队列
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Resque.md)
 
 ## 测试
 
