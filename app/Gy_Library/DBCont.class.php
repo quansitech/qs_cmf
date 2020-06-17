@@ -44,35 +44,14 @@ class DBCont{
     const ALIPAY_PAY_CHANNEL = 1;
     const WEIXIN_PAY_CHANNEL = 2;
     
-    const PERSON_DONATOR_TYPE = 1;
-    const COMPANY_DONATOR_TYPE = 2;
-    
     const WEB_CLIENT_TYPE = 1;
     const MOBILE_WEB_CLIENT_TYPE = 2;
-    
-    const APPLY_INVOICE_STATUS = 1;
-    const SEND_INVOICE_STATUS = 2;
 
-    
     static private $_applicat_status = array(
         self::APPLICAT_STATUS_WAITING => '申请中',
         self::APPLICAT_STATUS_PASS => '通过',
         self::APPLICAT_STATUS_FAIL => '失败'
     );
-    
-    
-    static private $_invoice_status = array(
-        self::APPLY_INVOICE_STATUS => '申请中',
-        self::SEND_INVOICE_STATUS => '已寄出'
-    );
-
-    static private $_clothes_size = array(
-        1 => 'XS(130/64A)（儿童）',
-        2 => 'S(160/76A)',
-        3 => 'M(165/80A)',
-        4 => 'L(175/88A)',
-        5 => 'XL(180/92A)',
-        );
 
     static private $_client_type = array(
         self::WEB_CLIENT_TYPE => '网页',
@@ -82,11 +61,6 @@ class DBCont{
     static private $_code_type = array(
         self::CODE_TYPE_ID => '身份证',
         self::CODE_TYPE_PASSPORT => '护照'
-    );
-    
-    static private $_donator_type = array(
-        self::PERSON_DONATOR_TYPE => '个人',
-        self::COMPANY_DONATOR_TYPE => '企业'
     );
     
     static private $_user_gender = array(
@@ -154,28 +128,12 @@ class DBCont{
         return self::$_applicat_status;
     }
     
-    static public function getInvoiceStatus($status){
-        return self::$_invoice_status[$status];
-    }
-    
-    static public function getInvoiceStatusList(){
-        return self::$_invoice_status;
-    }
-    
     static public function getClientType($type){
         return self::$_client_type[$type];
     }
     
     static public function getClientTypeList(){
         return self::$_client_type;
-    }
-    
-    static public function getDonatorType($type){
-        return self::$_donator_type[$type];
-    }
-    
-    static public function getDonatorTypeList(){
-        return self::$_donator_type;
     }
     
     static public function getPayChannel($pay_channel){
@@ -216,15 +174,6 @@ class DBCont{
     
     static public function getAuditStatusList3(){
         return self::$_audit_status_3;
-    }
-
-
-    static public function getClothesSizeList(){
-        return self::$_clothes_size;
-    }
-    
-    static public function getClothesSize($size){
-        return self::$_clothes_size[$size];
     }
     
     static function getCodeType($type){
