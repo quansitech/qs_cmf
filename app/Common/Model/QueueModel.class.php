@@ -71,8 +71,9 @@ class QueueModel extends \Gy_Library\GyListModel{
         
         $job = $ent['job'];
         $args = json_decode($ent['args'], true);
+        $queue = $ent['queue'] ?: 'default';
 
-        $new_job_id = Resque::enqueue('default', $job, $args, true);
+        $new_job_id = Resque::enqueue($queue, $job, $args, true);
         $this->where(array('id' => $ent['id']))->delete();
 
 
