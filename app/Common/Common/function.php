@@ -1,4 +1,9 @@
 <?php
+if(!function_exists('checkGt')){
+    function checkGt($value, $gt_value){
+        return $value > $gt_value;
+    }
+}
 
 if(!function_exists('arrToQueryStr')){
     function arrToQueryStr($arr){
