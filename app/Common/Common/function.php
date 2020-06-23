@@ -142,19 +142,6 @@ if(!function_exists('intConvertToArr')) {
     }
 }
 
-/**
- * 时间戳格式化
- * @param int $time
- * @return string 完整的时间显示
- */
-if(!function_exists('time_format')) {
-    function time_format($time = NULL, $format = 'Y-m-d H:i:s')
-    {
-        $time = $time === NULL ? NOW_TIME : intval($time);
-        return date($format, $time);
-    }
-}
-
 //遍历$path下的所有文件
 if(!function_exists('searchDir')) {
     function searchDir($path, &$data)
