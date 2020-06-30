@@ -1,5 +1,8 @@
 ## 全局函数
 
+#### isUrl
+验证是否合法的url
+
 #### normalizeRelativePath
 将相对路径转成绝对路径
 
