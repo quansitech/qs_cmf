@@ -68,6 +68,11 @@
 >> + 参数: 
 >> + type 类型
 >> + type_cls 继承\Qscmf\Builder\ColumnType\ColumnType的实现类
+>
+> 10. registerHeadCss
+>> + 说明: 在dashboard_layout head注册 css连接
+>> + 参数: 
+>> + src js连接地址
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册
