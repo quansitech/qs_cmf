@@ -108,17 +108,12 @@ $options 筛选项其它配置，特殊类型有效，如select、select_text
 ```
 
 ```javascript
-function beforeSearch(){
+$('body').on('click', '.builder #search', function() {
     var keyword = $("input[name='keyword']").val();
-
     if (!keyword){
         $(this).data('jump', 0);
         alert('关键字不能为空');
     }
-}
-
-$('body').on('click', '.builder #search', function() {
-    beforeSearch();
 });
 ```
 
