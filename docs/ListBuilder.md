@@ -100,6 +100,9 @@ $options 筛选项其它配置，特殊类型有效，如select、select_text
 用例：
 ->addSearchItem('keyword', 'text', 'id/昵称/email/手机号');
 
+用法：
+可以通过设置search元素data-jump属性（1为跳转，0为不跳转），确定点击该元素后是否跳转。
+
 使用技巧：
 可以给search元素添加”beforeSearch“事件，处理搜索前的动作。
 
