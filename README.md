@@ -170,6 +170,9 @@ echo $url;
 8. 可通过在config文件设置 "ELASTIC_ALLOW_EXCEPTION" 来禁止抛出异常，即使搜索引擎关闭，也不会影响原来的业务操作。
 9. 更新操作的索引重建仅会在索引字段发生变化时才会触发。
 
+## Controller
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Controller.md)
+
 ## Model
 ### auto
 增加传递新增记录给function或者callback的方法
