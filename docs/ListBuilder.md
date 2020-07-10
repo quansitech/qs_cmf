@@ -101,15 +101,16 @@ $options 筛选项其它配置，特殊类型有效，如select、select_text
 ->addSearchItem('keyword', 'text', 'id/昵称/email/手机号');
 
 使用技巧：
-如果不满足搜索条件，可以通过修改search元素的data-jump值（1为跳转，0为不跳转），判断是否需要筛选。
+可以给search元素添加”beforeSearch“事件，处理搜索前的动作。
 
 场景：
-用户没有填写搜索关键字，点击搜索需要提醒用户搜索关键字不能为空。
+用户没有填写搜索关键字，点击搜索需要提醒用户搜索关键字不能为空且不跳转。
 ```
 
 ```javascript
-$('body').on('click', '.builder #search', function() {
+$('body').on('beforeSearch', '.builder #search', function() {
     var keyword = $("input[name='keyword']").val();
+
     if (!keyword){
         $(this).data('jump', 0);
         alert('关键字不能为空');
