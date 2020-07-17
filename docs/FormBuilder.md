@@ -35,11 +35,29 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
 ```
 
+重新指定UE的JS CONFIG文件的路径
+```php
+//在Common/Conf/config.php中新增配置值
+'CUSTOM_UEDITOR_JS_CONFIG' => __ROOT__ . '/Public/static/ueditor.config.js'  //注意必须加上__ROOT__，为了兼容根目录是网站子路径的情况
+```
+
+
 设置ue的option参数
 ```php
 //如：想通过form.options来配置ue的toolbars参数
 //组件会自动完成php数组--》js json对象的转换，并传入ue中
 ->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
+```
+
+自定义UE色板
+```php
+全局配置
+1.先COPYueditor.config.js文件到项目路径，重新指定JS CONFIG路径
+2.修改ueditor.config.js 的customColors配置项，第一行10色块为主题色块， 最后一行10色块为标准色块，可按照需要自行增删改里面的色值。
+
+
+局部配置
+1. 在Formbuilder设置formItem时，可传递customColors的设置，详细方法查看“设置ue的option参数”
 ```
 
 自定义上传config设置
