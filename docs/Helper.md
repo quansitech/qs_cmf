@@ -49,3 +49,15 @@ $default_file 默认文件的URL地址
 
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
+
+#### uniquePageData
+分页去重辅助函数
+```php
+$member_list = D('Person')->getList($map, $page, $per_page);
+
+//第一个参数，数据缓存唯一标识
+//第二个参数，数据唯一键值
+//第三个参数，第几页
+//第四个参数，去重数据
+$member_list = uniquePageData('Person->getList', 'id', $page, $member_list);
+```
