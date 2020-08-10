@@ -532,11 +532,11 @@ onSelected: function (val,changeEle){}  每个select框选择地址后执行自�
 ## 常量
 DOMAIN  域名，可通过env去改写，默认采用$_SERVER["HTTP_HOST"]
 
-ROOT 指定子目录，默认为空
+ROOT 指定子目录，默认为空, 可通过env改写，如子路径 ROOT=/move
 
 SITE_URL 包含子目录的网站根地址
 
-HTTP_PROTOCOL  返回http或者https协议字符串
+HTTP_PROTOCOL  返回http或者https协议字符串, 可通过env指定
 
 REQUEST_URI 获取方向代理前的REQUEST_URI值
 
