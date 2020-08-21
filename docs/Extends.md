@@ -59,7 +59,7 @@
 >
 > 8. registerHeadJs
 >> + 说明: 若html存在配置值 ***C('QS_REGISTER_JS_TAG_END')*** 标识，则注入js连接 
-自定义html字符串可以使用系统常量 ***\_\_QS_REGISTER_JS_TAG_END\_\_*** 获取该值
+> 自定义html字符串可以使用系统常量 ***\_\_QS_REGISTER_JS_TAG_END\_\_*** 获取该值
 >> + 参数: 
 >> + src js连接地址
 >> + async 是否异步加载（默认false）
@@ -72,7 +72,7 @@
 >
 > 10. registerHeadCss
 >> + 说明: 若html存在配置值 ***C('QS_REGISTER_CSS_TAG_END')*** 标识，则注入css连接 
-自定义html字符串可以使用系统常量 ***\_\_QS_REGISTER_CSS_TAG_END\_\_*** 获取该值
+> 自定义html字符串可以使用系统常量 ***\_\_QS_REGISTER_CSS_TAG_END\_\_*** 获取该值
 >> + 参数: 
 >> + src css连接地址
 
