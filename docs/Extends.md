@@ -58,7 +58,7 @@
 >> + 参数: paths 迁移文件存放的目录数组，只有一个目录时，可以只写一个字符串
 >
 > 8. registerHeadJs
->> + 说明: 检查dashboard_layout是否有***\<!-- qs-register-js --\>***标识，存在则向head注入js连接
+>> + 说明: 检查dashboard_layout是否有 ***\<!-- qs-register-js --\>*** 标识，存在则向head注入js连接
 >> + 参数: 
 >> + src js连接地址
 >> + async 是否异步加载（默认false）
@@ -70,7 +70,7 @@
 >> + type_cls 继承\Qscmf\Builder\ColumnType\ColumnType的实现类
 >
 > 10. registerHeadCss
->> + 说明: 检查dashboard_layout是否有***\<!-- qs-register:css --\>***标识，存在则向head注入css连接
+>> + 说明: 检查dashboard_layout是否有 ***\<!-- qs-register:css --\>*** 标识，存在则向head注入css连接
 >> + 参数: 
 >> + src css连接地址
 
