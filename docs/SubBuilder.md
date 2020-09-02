@@ -71,18 +71,7 @@ $sub_builder = $sub_builder
 返回所有表单项的html，可以根据需要嵌入FormBuilder
 ```
 
-+ select2新增了自定义标签功能
-```php
-$subBuilder = new \Qscmf\Builder\SubTableBuilder();
-$subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
-                -> addFormItem('keywords_id', 'select2', [
-                    'tags' => true,
-                    'options' => [ 1 => '测试', 2 => '测试2']
-                    ]);
-
-$builder = new FormBuilder();
-$builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
-```
+#### 类型说明
 
 + 支持类型
 > 1. checkbox
@@ -97,3 +86,16 @@ $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtm
 >> + 下拉选择，支持模糊搜索
 > 6. textarea
 >> + 多行文本
+
++ select2新增了自定义标签功能
+```php
+$subBuilder = new \Qscmf\Builder\SubTableBuilder();
+$subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
+                -> addFormItem('keywords_id', 'select2', [
+                    'tags' => true,
+                    'options' => [ 1 => '测试', 2 => '测试2']
+                    ]);
+
+$builder = new FormBuilder();
+$builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
+```
