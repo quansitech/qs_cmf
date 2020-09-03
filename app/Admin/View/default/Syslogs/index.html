@@ -13,14 +13,14 @@
         <div class="col-md-7">
             <form action="" class="pull-right">
                 <div class="input-group">
-                            <input type="text" name="search_value" class="form-control input-sm pull-right" style="width: 150px;" value="{$Think.get.search_value}" placeholder="搜索">
+                            <input type="text" name="search_value" class="form-control input-sm pull-right" style="width: 150px;" value="{:I('get.search_value')}" placeholder="搜索">
 
                             <select name="search_key" id="" class="pull-right form-control input-sm" style="width: 120px;">
 
-                            <option value="act" <eq name='Think.get.search_key' value='act'>selected</eq> >操作方法
+                            <option value="act" <eq name='I("get.search_key")' value='act'>selected</eq> >操作方法
                             </option>
 
-                                <option value="uid" <eq name='Think.get.search_key' value='uid'>selected</eq> >用户ID
+                                <option value="uid" <eq name='I("get.search_key")' value='uid'>selected</eq> >用户ID
                                 </option>
 
                             </select>
