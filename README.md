@@ -44,7 +44,7 @@ composer create-project tiderjian/qscmf qscmf
 php artisan migrate
 ```
 
-将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
+将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:Qs123!@#
 
 ## 维护模式
 在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中。如需要在维护模式下执行升级脚本，可传递"maintenance"给第三个参数

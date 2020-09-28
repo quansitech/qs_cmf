@@ -286,8 +286,8 @@ class InitDatabase extends Migration
         $user = [
             'id' => 1,
             'nick_name' => 'admin',
-            'salt' => 487371,
-            'pwd' => '9b5240844dedd8003660e6ee0433d6f3',
+            'salt' => 534307,
+            'pwd' => 'e9dc5bd1bad0797c878e7010e3ef5937',
             'email' => 'admin@admin.com',
             'telephone' => '15300000000',
             'register_date' => 1464594432,

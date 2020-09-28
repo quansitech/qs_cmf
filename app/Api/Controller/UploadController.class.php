@@ -81,7 +81,7 @@ class UploadController extends \Think\Controller{
                 $data['url'] = $file_url;
                 $data['size'] = format_filesize($data['size']);
                 $ajax = array(
-                    'Status' => 1,
+                    'status' => 1,
                     'info' => 'success',
                     'Time_stamp' => time(),
                 );
