@@ -1,4 +1,9 @@
 <?php
+if(!function_exists('checkGt')){
+    function checkGt($value, $gt_value){
+        return $value > $gt_value;
+    }
+}
 
 if(!function_exists('arrToQueryStr')){
     function arrToQueryStr($arr){
@@ -134,19 +139,6 @@ if(!function_exists('intConvertToArr')) {
             $arr[] = $str[$i];
         }
         return $arr;
-    }
-}
-
-/**
- * 时间戳格式化
- * @param int $time
- * @return string 完整的时间显示
- */
-if(!function_exists('time_format')) {
-    function time_format($time = NULL, $format = 'Y-m-d H:i:s')
-    {
-        $time = $time === NULL ? NOW_TIME : intval($time);
-        return date($format, $time);
     }
 }
 

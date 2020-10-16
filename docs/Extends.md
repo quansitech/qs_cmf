@@ -58,7 +58,12 @@
 >> + 参数: paths 迁移文件存放的目录数组，只有一个目录时，可以只写一个字符串
 >
 > 8. registerHeadJs
->> + 说明: 在dashboard_layout head注册 js连接
+>> + 说明: 
+>>
+>>   将组件的js注入dashboard_layout头部，
+>>
+>>   也可以通过在模板文件添加__QS_REGISTER_JS_TAG_BEGIN__和__QS_REGISTER_JS_TAG_END__指定js注入的位置
+>>
 >> + 参数: 
 >> + src js连接地址
 >> + async 是否异步加载（默认false）
@@ -68,6 +73,16 @@
 >> + 参数: 
 >> + type 类型
 >> + type_cls 继承\Qscmf\Builder\ColumnType\ColumnType的实现类
+>
+> 10. registerHeadCss
+>> + 说明: 
+>>
+>>   将组件的css注入dashboard_layout头部，
+>>
+>>   也可以通过在模板文件添加__QS_REGISTER_CSS_TAG_BEGIN__和__QS_REGISTER_CSS_TAG_END__指定css注入的位置
+>>
+>> + 参数: 
+>> + src css连接地址
 
 + 配置composer.json
 > 在composer.json文件添加下面注册信息, 框架可通过该配置自动完成provider注册

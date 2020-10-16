@@ -35,11 +35,29 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
 ```
 
+重新指定UE的JS CONFIG文件的路径
+```php
+//在Common/Conf/config.php中新增配置值
+'CUSTOM_UEDITOR_JS_CONFIG' => __ROOT__ . '/Public/static/ueditor.config.js'  //注意必须加上__ROOT__，为了兼容根目录是网站子路径的情况
+```
+
+
 设置ue的option参数
 ```php
 //如：想通过form.options来配置ue的toolbars参数
 //组件会自动完成php数组--》js json对象的转换，并传入ue中
 ->addFormItem('content', 'ueditor', '内容', '', ['toolbars' => [['attachment']]])
+```
+
+自定义UE色板
+```php
+全局配置
+1.先COPYueditor.config.js文件到项目路径，重新指定JS CONFIG路径
+2.修改ueditor.config.js 的customColors配置项，第一行10色块为主题色块， 最后一行10色块为标准色块，可按照需要自行增删改里面的色值。
+
+
+局部配置
+1. 在Formbuilder设置formItem时，可传递customColors的设置，详细方法查看“设置ue的option参数”
 ```
 
 自定义上传config设置
@@ -69,3 +87,54 @@ or：用户一个权限都没有则隐藏该item，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 
 ```
+
+#### 只读模式
+可通过setReadOnly(true)方法设置form为只读模式，默认是关闭
+
+只读模式需要组件支持
+
+组件可通过传入的设置项获取是否只读模式，然后做相应的展示适配
+
+如Text组件
+```php
+class Text implements FormType {
+
+    public function build(array $form_type){
+        $view = new View();
+        $view->assign('form', $form_type);
+        if($form_type['item_option']['read_only']){
+            $content = $view->fetch(__DIR__ . '/text_read_only.html');
+        }
+        else{
+            $content = $view->fetch(__DIR__ . '/text.html');
+        }
+        return $content;
+    }
+}
+```
+
+#### 扩展表单与按扭间的底部内容
+通过addBottom向表单加入需要的html/js代码
+```php
+//TableBuilder 和 DividerBuilder 为 qscmf-antd-builder的模块功能
+$table_builder = new TableBuilder();
+$table_builder->addColumn([ 'title' => 'Name', 'dataIndex' => 'name']);
+$table_builder->addColumn([ 'title' => 'Age', 'dataIndex' => 'age']);
+$table_builder->addColumn([ 'title' => 'Address', 'dataIndex' => 'address']);
+$table_builder->addRow(['key' => 1, 'name' => 'John Brown', 'age' => 32, 'address' => 'New York No. 1 Lake Park']);
+$table_builder->addRow(['key' => 2, 'name' => 'Jim Green', 'age' => 42, 'address' => 'London No. 1 Lake Park']);
+$table_builder->addRow(['key' => 3, 'name' => 'Joe Black', 'age' => 32, 'address' => 'Sidney No. 1 Lake Park']);
+
+$formbuilder = new FormBuilder();
+.
+.
+.
+
+    $formbuilder->setReadOnly(true)
+    ->addBottom((new DividerBuilder())->setTitle('筹款记录'))
+    ->addBottom($table_builder)
+    ->display();
+```
+
+效果图
+<img src='https://user-images.githubusercontent.com/1665649/85219268-f5699f00-b3d4-11ea-98a0-6192336872b8.png' />

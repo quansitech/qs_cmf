@@ -42,7 +42,7 @@ return array(
 
     //资源调用设置
     'ASSET' => array(
-        'prefix' => '/Public/',
+        'prefix' => __ROOT__ . '/Public/',
     ),
 
     'UPLOAD_FILE_SIZE' => 5,

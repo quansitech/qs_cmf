@@ -219,6 +219,12 @@ protected $_auth_ref_rule = array(
 当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，有该权限点的用户才可以操作该字段。
 ```
 
+### 开启前台过滤机制
+可以config文件中将 'FRONT_AUTH_FILTER' 设置为true
+```blade
+'FRONT_AUTH_FILTER'=>true,
+```
+
 #### 场景模拟
 ```blade
 如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增或者编辑书箱Box。

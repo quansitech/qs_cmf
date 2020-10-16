@@ -19,7 +19,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-12 login-box">
                     <div class="login-form-box" id="login-box">
                         <div class="header">{:C('WEB_SITE_TITLE')}</div>
-                        <form id='' method="post">
+                        <form id='' method="post" class="ajax-form">
                             <div class="form-group">
                                 <img class="login-form-icon icon-login-user hidden-xs" src="__PUBLIC__/img/icon-login-user.png" alt="">
                                 <img class="login-form-icon icon-login-user-mobile hidden-md hidden-lg hidden-sm" src="__PUBLIC__/img/icon-login-user-mobile.png" alt="">
@@ -64,13 +64,13 @@
             //重新加载验证码
             $('#loadingimg').show();
             var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
-                    .load(function() {
-                        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
-                            alert('验证码图片加载出错，请刷新');
-                        } else {
-                            $(".validate-img").html('').append(img);
-                        }
-                    });
+                .load(function() {
+                    if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                        alert('验证码图片加载出错，请刷新');
+                    } else {
+                        $(".validate-img").html('').append(img);
+                    }
+                });
             return false;
         });
         $('#login_form').submit(function(e) {

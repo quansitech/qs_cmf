@@ -86,3 +86,42 @@ and：用户拥有全部权限则显示该按钮，格式为：
 or：用户一个权限都没有则隐藏该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
+
+#### addSearchItem
+```blade
+加入一个筛选项，提交的url默认为当前页
+
+参数
+$name 筛选项字段
+$type 筛选项类型（目前支持类型可查看ListSearchType）  
+$title 筛选项提示标题
+$options 筛选项其它配置，特殊类型有效，如select、select_text
+
+用例：
+->addSearchItem('keyword', 'text', 'id/昵称/email/手机号');
+
+用法：
+可以通过设置search元素data-jump属性（1为跳转，0为不跳转），确定点击该元素后是否跳转。
+
+使用技巧：
+可以给search元素添加”beforeSearch“事件，处理搜索前的动作。
+
+场景：
+用户没有填写搜索关键字，点击搜索需要提醒用户搜索关键字不能为空且不跳转。
+```
+
+```javascript
+$('body').on('beforeSearch', '.builder #search', function() {
+    var keyword = $("input[name='keyword']").val();
+
+    if (!keyword){
+        $(this).data('jump', 0);
+        alert('关键字不能为空');
+    }
+});
+```
+
+#### setSearchUrl
+```blade
+设置筛选提交的url
+```

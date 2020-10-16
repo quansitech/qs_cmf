@@ -44,7 +44,7 @@ composer create-project tiderjian/qscmf qscmf
 php artisan migrate
 ```
 
-将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:admin123
+将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:Qs123!@#
 
 ## 维护模式
 在.env将 APP_MAINTENANCE 设成true，系统进入维护状态，所有请求都只会提示系统维护中。如需要在维护模式下执行升级脚本，可传递"maintenance"给第三个参数
@@ -170,7 +170,11 @@ echo $url;
 8. 可通过在config文件设置 "ELASTIC_ALLOW_EXCEPTION" 来禁止抛出异常，即使搜索引擎关闭，也不会影响原来的业务操作。
 9. 更新操作的索引重建仅会在索引字段发生变化时才会触发。
 
-## Model auto
+## Controller
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Controller.md)
+
+## Model
+### auto
 增加传递新增记录给function或者callback的方法
 ```php
 protected $_auto = array(
@@ -178,6 +182,19 @@ protected $_auto = array(
     //此时如果不需要通过第五个参数额外传递数据，可设置为null
     ['sample_filed', 'sampleCallback', parent::MODEL_INSERT, 'callback', null, true]
 );
+```
+
+### 封印字段
+可设置不可修改和新增的字段
+
+场景：有些字段是由触发器维护的，应用层不应该修改这些字段。但随着系统开发的深入，维护时间的增加。经常会忘记了这个原则，导致了不经意间修改了该字段，产生了难以调试的bug。
+
+用法：
+```php
+//在model设置 触发器维护字段order_no
+protected $_seal_fields = [
+    'order_no'
+];
 ```
 
 ## 联动删除
@@ -515,11 +532,11 @@ onSelected: function (val,changeEle){}  每个select框选择地址后执行自�
 ## 常量
 DOMAIN  域名，可通过env去改写，默认采用$_SERVER["HTTP_HOST"]
 
-ROOT 指定子目录，默认为空
+ROOT 指定子目录，默认为空, 可通过env改写，如子路径 ROOT=/move
 
 SITE_URL 包含子目录的网站根地址
 
-HTTP_PROTOCOL  返回http或者https协议字符串
+HTTP_PROTOCOL  返回http或者https协议字符串, 可通过env指定
 
 REQUEST_URI 获取方向代理前的REQUEST_URI值
 

@@ -4,35 +4,9 @@ namespace Gy_Library;
 
 class DBCont{
     
-    const HELP_STATUS_UNSOLVE = 0;
-    const HELP_STATUS_SOLVE = 1;
-    
-    const VOLUNTEER_STATUS_APPLICATING = 1;
-    const VOLUNTEER_STATUS_ACTIVE = 2;
-    const VOLUNTEER_STATUS_FORBIDDEN = 0;
-    
-    const CHILD_STATUS_APPLICATING = 1;
-    const CHILD_STATUS_ACTIVE = 2;
-    const CHILD_STATUS_FORBIDDEN = 0;
-    
-    const EMAIL_RESULT_SUCCESS = 1;
-    const EMAIL_RESULT_FAILURE = 2;
-    
     const APPLICAT_STATUS_WAITING = 0;
     const APPLICAT_STATUS_PASS = 1;
     const APPLICAT_STATUS_FAIL = 2;
-    
-    const ORDER_STATUS_PROCESS = 1;
-    const ORDER_STATUS_FINISH = 2;
-    const ORDER_STATUS_CANCEL = 3;
-    
-    const PROCESS_STATUS_NONE = 0;
-    const PROCESS_STATUS_FINISH = 1;
-    const PROCESS_STATUS_DELAY = 2;
-    const PROCESS_STATUS_CHANGE = 3;
-    
-    const BILL_ITEM_TYPE_TOTAL = 1;
-    const BILL_ITEM_TYPE_TRAVEL = 2;
     
     const LEVEL_MODULE = 1;
     const LEVEL_CONTROLLER = 2;
@@ -70,89 +44,14 @@ class DBCont{
     const ALIPAY_PAY_CHANNEL = 1;
     const WEIXIN_PAY_CHANNEL = 2;
     
-    const PERSON_DONATOR_TYPE = 1;
-    const COMPANY_DONATOR_TYPE = 2;
-    
     const WEB_CLIENT_TYPE = 1;
     const MOBILE_WEB_CLIENT_TYPE = 2;
-    
-    const APPLY_INVOICE_STATUS = 1;
-    const SEND_INVOICE_STATUS = 2;
-    
-    const FAVOUR_READ = 1;
-    const FAVOUR_MUSIC = 2;
-    const FAVOUR_PAINT =3 ;
-    const FAVOUR_FOOTBALL = 4;
-    const FAVOUR_BASKETBALL = 5;
-    
-    static private $_help_status = array(
-        self::HELP_STATUS_UNSOLVE => '未解决',
-        self::HELP_STATUS_SOLVE => '已解决'
-    );
-    
-    
-    static private $_volunteer_status = array(
-        self::VOLUNTEER_STATUS_FORBIDDEN => '禁用',
-        self::VOLUNTEER_STATUS_APPLICATING => '申请中',
-        self::VOLUNTEER_STATUS_ACTIVE => '正常'
-    );
-    
-    static private $_child_status = array(
-        self::CHILD_STATUS_FORBIDDEN => '禁用',
-        self::CHILD_STATUS_APPLICATING => '申请中',
-        self::CHILD_STATUS_ACTIVE => '正常'
-    );
-    
-    static private $_favour = array(
-        self::FAVOUR_READ => '读书',
-        self::FAVOUR_MUSIC => '音乐',
-        self::FAVOUR_PAINT => '画画',
-        self::FAVOUR_FOOTBALL => '足球',
-        self::FAVOUR_BASKETBALL => '篮球'
-    );
-    
-    static private $_email_result = array(
-        self::EMAIL_RESULT_SUCCESS => '成功',
-        self::EMAIL_RESULT_FAILURE => '失败'
-    );
-    
+
     static private $_applicat_status = array(
         self::APPLICAT_STATUS_WAITING => '申请中',
         self::APPLICAT_STATUS_PASS => '通过',
         self::APPLICAT_STATUS_FAIL => '失败'
     );
-    
-    static private $_order_status = array(
-        self::ORDER_STATUS_PROCESS => '进行中',
-        self::ORDER_STATUS_FINISH => '已结项',
-        self::ORDER_STATUS_CANCEL => '合同终止'
-    );
-    
-    static private $_bill_item_type = array(
-        self::BILL_ITEM_TYPE_TOTAL => '按总价分配',
-        self::BILL_ITEM_TYPE_TRAVEL => '差旅费'
-    );
-    
-    static private $_process_status = array(
-        self::PROCESS_STATUS_NONE => '',
-        self::PROCESS_STATUS_FINISH => '已完成',
-        self::PROCESS_STATUS_DELAY => '延期',
-        self::PROCESS_STATUS_CHANGE => '改期'
-    );
-    
-    
-    static private $_invoice_status = array(
-        self::APPLY_INVOICE_STATUS => '申请中',
-        self::SEND_INVOICE_STATUS => '已寄出'
-    );
-
-    static private $_clothes_size = array(
-        1 => 'XS(130/64A)（儿童）',
-        2 => 'S(160/76A)',
-        3 => 'M(165/80A)',
-        4 => 'L(175/88A)',
-        5 => 'XL(180/92A)',
-        );
 
     static private $_client_type = array(
         self::WEB_CLIENT_TYPE => '网页',
@@ -162,11 +61,6 @@ class DBCont{
     static private $_code_type = array(
         self::CODE_TYPE_ID => '身份证',
         self::CODE_TYPE_PASSPORT => '护照'
-    );
-    
-    static private $_donator_type = array(
-        self::PERSON_DONATOR_TYPE => '个人',
-        self::COMPANY_DONATOR_TYPE => '企业'
     );
     
     static private $_user_gender = array(
@@ -226,39 +120,6 @@ class DBCont{
         self::WEIXIN_PAY_CHANNEL => '微信'
     );
     
-    static public function getHelpStatus($status){
-        return self::$_help_status[$status];
-    }
-    
-    static public function getHelpStatusList(){
-        return self::$_help_status;
-    }
-    
-    
-    static public function getChildStatus($status){
-        return self::$_child_status[$status];
-    }
-    
-    static public function getChildStatusList(){
-        return self::$_child_status;
-    }
-    
-    static public function getVolunteerStatus($status){
-        return self::$_volunteer_status[$status];
-    }
-    
-    static public function getVolunteerStatusList(){
-        return self::$_volunteer_status;
-    }
-    
-    static public function getFavour($favour){
-        return self::$_favour[$favour];
-    }
-    
-    static public function getFavourList(){
-        return self::$_favour;
-    }
-    
     static public function getApplicatStatus($status){
         return self::$_applicat_status[$status];
     }
@@ -267,60 +128,12 @@ class DBCont{
         return self::$_applicat_status;
     }
     
-    static public function getEmailResult($result){
-        return self::$_email_result[$result];
-    }
-    
-    static public function getEmailResultList(){
-        return self::$_email_result;
-    }
-    
-    static public function getBillItemType($type){
-        return self::$_bill_item_type[$type];
-    }
-    
-    static public function getBillItemTypeList(){
-        return self::$_bill_item_type;
-    }
-    
-    static public function getOrderStatus($status){
-        return self::$_order_status[$status];
-    }
-    
-    static public function getOrderStatusList(){
-        return self::$_order_status;
-    }
-    
-    static public function getProcessStatus($status){
-        return self::$_process_status[$status];
-    }
-    
-    static public function getProcessStatusList(){
-        return self::$_process_status;
-    }
-    
-    static public function getInvoiceStatus($status){
-        return self::$_invoice_status[$status];
-    }
-    
-    static public function getInvoiceStatusList(){
-        return self::$_invoice_status;
-    }
-    
     static public function getClientType($type){
         return self::$_client_type[$type];
     }
     
     static public function getClientTypeList(){
         return self::$_client_type;
-    }
-    
-    static public function getDonatorType($type){
-        return self::$_donator_type[$type];
-    }
-    
-    static public function getDonatorTypeList(){
-        return self::$_donator_type;
     }
     
     static public function getPayChannel($pay_channel){
@@ -361,15 +174,6 @@ class DBCont{
     
     static public function getAuditStatusList3(){
         return self::$_audit_status_3;
-    }
-
-
-    static public function getClothesSizeList(){
-        return self::$_clothes_size;
-    }
-    
-    static public function getClothesSize($size){
-        return self::$_clothes_size[$size];
     }
     
     static function getCodeType($type){

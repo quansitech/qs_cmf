@@ -16,7 +16,7 @@
                                                     <select class="form-control input-sm" name='channel_id'>
                                                         <option value=''>选择捐赠渠道</option>
                                                         <volist name="channel_list" id='channel'>
-                                                            <option value='{$key}' <eq name='Think.get.channel_id' value='$key'>selected='selected'</eq>>{$channel}</option>
+                                                            <option value='{$key}' <if condition="I('get.channel_id') eq $key">selected='selected'</if>>{$channel}</option>
                                                         </volist>
                                                     </select>
                                                 </div>
