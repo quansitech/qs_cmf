@@ -7,7 +7,7 @@ return array(
 
     'LOG_RECORD'            =>  true,
 
-    'UPLOAD_FILE_SIZE' => 5,
+    'UPLOAD_FILE_SIZE' => 10,
 
     'JS_ERROR_LOG' => true,
 
@@ -87,7 +87,7 @@ return array(
     /* 编辑器图片上传相关配置 */
     'UPLOAD_TYPE_EDITOR' => array(
 		'mimes'    => '', //允许上传的文件MiMe类型
-		'maxSize'  => 2*1024*1024, //上传的文件大小限制 (0-不做限制)
+		'maxSize'  => 10*1024*1024, //上传的文件大小限制 (0-不做限制)
 		'exts'     => 'jpg,gif,png,jpeg', //允许上传的文件后缀
 		'autoSub'  => true, //自动子目录保存文件
 		'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
@@ -120,7 +120,7 @@ return array(
     /* 图片上传相关配置 */
     'UPLOAD_TYPE_IMAGE' => array(
 		'mimes'    => 'image/jpeg,image/png,image/gif,image/bmp', //允许上传的文件MiMe类型
-		'maxSize'  => 5*1024*1024, //上传的文件大小限制 (0-不做限制)
+		'maxSize'  => 10*1024*1024, //上传的文件大小限制 (0-不做限制)
 		'exts'     => 'jpg,gif,png,jpeg', //允许上传的文件后缀
 		'autoSub'  => true, //自动子目录保存文件
 		'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
@@ -137,7 +137,7 @@ return array(
 
     'UPLOAD_TYPE_VIDEO' => array(
 		'mimes'    => '', //允许上传的文件MiMe类型
-		'maxSize'  => 30*1024*1024, //上传的文件大小限制 (0-不做限制)
+		'maxSize'  => 500*1024*1024, //上传的文件大小限制 (0-不做限制)
 		'exts'     => 'mp4,avi,rmvb,rm,mpg,mpeg,wmv,mkv,flv', //允许上传的文件后缀
 		'autoSub'  => true, //自动子目录保存文件
 		'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
@@ -153,7 +153,7 @@ return array(
     /* 文件上传相关配置 */
     'UPLOAD_TYPE_FILE' => array(
 		'mimes'    => '', //允许上传的文件MiMe类型
-		'maxSize'  => 10*1024*1024, //上传的文件大小限制 (0-不做限制)
+		'maxSize'  => 50*1024*1024, //上传的文件大小限制 (0-不做限制)
 		'exts'     => 'doc,docx,xls,xlsx,pdf,ppt,txt,rar', //允许上传的文件后缀
 		'autoSub'  => true, //自动子目录保存文件
 		'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
@@ -201,7 +201,7 @@ return array(
 
     'UPLOAD_TYPE_JOB_IMAGE' => array(
         'mimes'    => '', //允许上传的文件MiMe类型
-        'maxSize'  => 5*1024*1024, //上传的文件大小限制 (0-不做限制)
+        'maxSize'  => 10*1024*1024, //上传的文件大小限制 (0-不做限制)
         'exts'     => 'jpg,gif,png,jpeg', //允许上传的文件后缀
         'autoSub'  => true, //自动子目录保存文件
         'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
