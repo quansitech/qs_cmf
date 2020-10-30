@@ -76,7 +76,7 @@ class UserController extends GyListController{
         ->setNID(5)
         ->setTabNav($tab_list, $status)  // 设置页面Tab导航
         ->addTableColumn('id', 'ID')
-        ->addTableColumn('nick_name', '昵称')
+        ->addTableColumn('nick_name', '用户名')
         ->addTableColumn('email', '邮箱')
         ->addTableColumn('telephone', '手机')
         ->addTableColumn('role', '用户组')  
@@ -313,6 +313,67 @@ class UserController extends GyListController{
                 syslogs('修改密码, 用户id:' . I('id'));
                 $this->success('修改密码成功');
             }
+        }
+    }
+
+    /**
+     * 登陆者编辑自己的资料
+     */
+    public function editUser(){
+        $id = session('auth_id');
+        if (IS_POST) {
+            parent::autoCheckToken();
+            $data = I('post.');
+            if($data['pwd'] != $data['pwd1']){
+                $this->error('密码不一致');
+            }
+            $user_model = D('User');
+            $user_ent = $user_model->getOne($id);
+            if(!$user_ent){
+                E('不存在用户');
+            }
+            $user_model->startTrans();
+            try{
+                $save = [
+                    'id' => $id,
+                    'nick_name' => $data['nick_name'],
+                    'email' => $data['email'],
+                    'telephone' => $data['telephone'],
+                ];
+                if($user_model->createSave($save) === false){
+                    E($user_model->getError());
+                }
+                if (!empty($data['pwd'])){
+                    if($user_model->modifyPwdByAdmin($id, $data['pwd']) === false){
+                        E($user_model->getError());
+                    }
+                }
+                $user_model->commit();
+            } catch (\Exception $e){
+                $user_model->rollback();
+                $this->error($e->getMessage());
+            }
+            if (empty($data['referer'])){
+                $this->success('修改成功', U('admin/dashboard/index'));
+            } else {
+                $this->success('修改成功', $data['referer']);
+            }
+        } else {
+            // 获取账号信息
+            $info = D('User')->getOne($id);
+            unset($info['pwd']);
+            $info['referer'] = $_SERVER['HTTP_REFERER'];
+            $builder = new \Qscmf\Builder\FormBuilder();
+            $builder->setMetaTitle('编辑用户')  // 设置页面标题
+            ->setPostUrl(U(''))
+                ->addFormItem('nick_name', 'text', '用户名*')
+                ->addFormItem('email', 'text', '电子邮箱')
+                ->addFormItem('telephone', 'text', '手机')
+                ->addFormItem('pwd', 'password', '密码')
+                ->addFormItem('pwd1', 'password', '重复密码')
+                ->addFormItem('referer', 'hidden', '跳转地址')
+                ->setFormData($info)
+                ->display();
         }
     }
     
