@@ -20,7 +20,7 @@ class SyslogsController extends GyListController{
         // 使用Builder快速建立列表页面。
         $builder = new \Qscmf\Builder\ListBuilder();
         
-        $builder = $builder->setMetaTitle('系统日记')  // 设置页面标题
+        $builder = $builder->setMetaTitle('系统日志')  // 设置页面标题
         ->setNID(24)
         ->addTableColumn('modulename', '模块名称')
         ->addTableColumn('actionname', '方法名称')

@@ -42,7 +42,7 @@ class UploadController extends \Think\Controller{
         
         if(C($key, null, '') == ''){
             $ajax = array(
-                    'Status' => 0,
+                    'status' => 0,
                     'info' => '没有该类型的上传项',
                     'Time_stamp' => time(),
                     'Data' => null
