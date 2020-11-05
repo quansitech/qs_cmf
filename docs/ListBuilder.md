@@ -125,3 +125,30 @@ $('body').on('beforeSearch', '.builder #search', function() {
 ```blade
 设置筛选提交的url
 ```
+
+#### setLockRow
+```blade
+锁定行
+用法
+->setLockRow(1)
+参数
+$row 锁定行数
+```
+
+#### setLockCol
+```blade
+锁定列（左）
+用法
+->setLockCol(1)
+参数
+$row 锁定列数
+```
+
+#### setLockColRight
+```blade
+锁定列（右）
+用法
+->setLockCol(1)
+参数
+$row 锁定列数
+```
