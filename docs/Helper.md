@@ -64,3 +64,23 @@ $member_list = D('Person')->getList($map, $page, $per_page);
 //第四个参数，去重数据
 $member_list = uniquePageData('Person->getList', 'id', $page, $member_list);
 ```
+
+#### D
+```blade
+实例化模型类
+
+参数
+$name 模型名称，为''则实例化Think\Model
+$layer 模型层名称，为''则使用DEFAULT_M_LAYER值
+$close_type 关闭类型，默认为false，可通过\Qscmf\Lib\DBCont::getCloseTypeList()查看目前支持的类型
+```
+
+```php
+// 使用技巧
+// 需要关闭所有的数据库连接（以下写法等效）
+D('','', true);
+D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_CONNECTION);
+
+// 若修改了数据库连接的配置，要使全部模型生效，则需要同时关闭数据库连接和已经清除已经实例化的模型
+D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_ALL);
+```

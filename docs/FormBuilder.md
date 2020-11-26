@@ -136,5 +136,21 @@ $formbuilder = new FormBuilder();
     ->display();
 ```
 
+#### setShowBtn
+```blade
+该方法用于设置是否展示按钮
+
+参数
+$is_show 是否展示，默认为true
+```
+
+#### display
+```blade
+该方法用于显示页面，支持获取输出页面的内容
+
+参数
+$render 是否输出页面的内容，默认为false
+```
+
 效果图
 <img src='https://user-images.githubusercontent.com/1665649/85219268-f5699f00-b3d4-11ea-98a0-6192336872b8.png' />
