@@ -81,6 +81,6 @@ $close_type 关闭类型，默认为false，可通过\Qscmf\Lib\DBCont::getClose
 D('','', true);
 D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_CONNECTION);
 
-// 若修改了数据库连接的配置，要使全部模型生效，则需要同时关闭数据库连接和已经清除已经实例化的模型
+// 若修改了数据库连接的配置，要使全部模型生效，则需要同时关闭数据库连接和清除已实例化的模型
 D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_ALL);
 ```
