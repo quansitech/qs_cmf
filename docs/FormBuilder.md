@@ -159,7 +159,7 @@ $render 是否输出页面的内容，默认为false
 ```blade
 省市区三级联动
 
-支持自定义省市区数据源api，默认为Api/Area/getArea，自定义的api需注意返回的数据类型
+支持自定义省市区数据源api，默认为U('Api/Area/getArea')
 ```
 
 ```php
