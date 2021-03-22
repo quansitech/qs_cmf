@@ -154,3 +154,34 @@ $render 是否输出页面的内容，默认为false
 
 效果图
 <img src='https://user-images.githubusercontent.com/1665649/85219268-f5699f00-b3d4-11ea-98a0-6192336872b8.png' />
+
+#### district组件
+```blade
+省市区三级联动
+
+支持自定义省市区数据源api，默认为Api/Area/getArea，自定义的api需注意返回的数据类型
+```
+
+```php
+// 使用说明
+// addFormItem第五个参数，传递自定义api，加上area_api_url
+->addFormItem('city_id', 'district', '城市', '', ['area_api_url' => U('Api/Area/fetchLimitCity', '', '', true)]);
+```
+
+#### select2组件
+```blade
+下拉选择，支持模糊搜索
+
+支持多选
+```
+
+```php
+// 使用说明
+// addFormItem第七个参数，传递extra_attr，值包括multiple="multiple"
+$project_info = [
+    '41' => 'text1',
+    '42' => 'text2',
+    '43' => 'text3',
+];
+->addFormItem('project_id','项目','select2', '', $project_info, '', 'multiple="multiple"');
+```
