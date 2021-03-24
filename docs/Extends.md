@@ -178,7 +178,7 @@ HTML;
 }
 ```
 
-#### 如何开发列表列扩展
+#### 如何开发列表列字段扩展
 ```php
 use Qscmf\Builder\ColumnType\ColumnType;
 use Qscmf\Builder\ColumnType\EditableInterface;
