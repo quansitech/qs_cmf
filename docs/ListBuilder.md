@@ -50,7 +50,7 @@ $page_template 页码模板自定义html代码
 参数
 $name 列名 
 $title 列标题
-$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self）  
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $editable 列是否可编辑，默认为false  
 $tip 列标题提示文字，默认为''  
@@ -64,6 +64,17 @@ and：用户拥有全部权限则显示该列，格式为：
 or：用户一个权限都没有则隐藏该列，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
+
+##### type类型说明
+```blade
+通过实现接口EditableInterface，可自定义编辑状态的html
+```
+
+1. date
+> + 通过value设置转换的日期格式，默认为'Y-m-d'
+2. time
+> + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+
 
 #### addTopButton
 ```blade
