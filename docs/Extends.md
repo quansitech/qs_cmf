@@ -178,6 +178,33 @@ HTML;
 }
 ```
 
+#### 如何开发列表列字段扩展
+```php
+use Qscmf\Builder\ColumnType\ColumnType;
+use Qscmf\Builder\ColumnType\EditableInterface;
+
+// 必须继承Qscmf\Builder\ColumnType\ColumnType抽象类
+// 可以通过实现接口Qscmf\Builder\ColumnType\EditableInterface来自定义该组件编辑状态下的html
+class Num extends ColumnType implements EditableInterface
+{
+    // 实现抽象类build，完成列渲染
+    // option为创建列组件需要的参数，如name、title、type、value、editable等
+    // data为该行数据，通过$data[$option['name']]可以获取该值
+    // listBuilder为渲染列表类
+    public function build(array &$option, array $data, $listBuilder)
+    {
+        return $data[$option['name']];
+    }
+
+    // 实现接口editBuild函数，可自定义编辑状态的html
+    // 参数说明参考build函数
+    public function editBuild(&$option, $data, $listBuilder){
+        return "<input class='form-control input text' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
+    }
+
+}
+```
+
 没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表
