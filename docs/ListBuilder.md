@@ -50,7 +50,7 @@ $page_template 页码模板自定义html代码
 参数
 $name 列名 
 $title 列标题
-$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num、modal）  
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $editable 列是否可编辑，默认为false  
 $tip 列标题提示文字，默认为''  
@@ -70,38 +70,6 @@ or：用户一个权限都没有则隐藏该列，格式为：
 > + 通过value设置转换的日期格式，默认为'Y-m-d'
 2. time
 > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
-3. modal
-```blade
-点击弹出对话框
-```
-> + 通过value可设置模态框html
-> + 使用技巧
->> ```php
->> // 与formBuilder结合使用，可将渲染后的html直接放入弹窗
->> 
->>     public function genModelHtml(){
->>           $info = [
->>               'title' => 'title',
->>               'summary' => 'summary',
->>               'cover' => 2
->>           ];
->>           $builder = new FormBuilder();
->>           $builder
->>               ->addFormItem('title', 'text', '标题')
->>               ->addFormItem('summary', 'textarea', '简介')
->>               ->addFormItem('cover', 'picture', '封面', '尺寸为214*250px', ['width' => 214, 'height' => 250])
->>               ->setFormData($info)
->>               ->setShowBtn(false)
->>               ->setReadOnly(true);
->>   
->>           return $builder->display(true);
->>       }
->> 
->> // ListBuilder对应列配置
->>  ->addTableColumn('nick_name', '用户名', 'modal', $this->genModelHtml(), false, '点击查看更多信息')
->>
->> 
->> ```
 
 #### addTopButton
 ```blade
