@@ -180,26 +180,31 @@ HTML;
 
 #### 如何开发列表列字段扩展
 ```php
+use Qscmf\Builder\ButtonType\Save\TargetFormTrait;
 use Qscmf\Builder\ColumnType\ColumnType;
 use Qscmf\Builder\ColumnType\EditableInterface;
 
 // 必须继承Qscmf\Builder\ColumnType\ColumnType抽象类
 // 可以通过实现接口Qscmf\Builder\ColumnType\EditableInterface来自定义该组件编辑状态下的html
+// 自定义编辑状态html时，input标签的样式必须包括top button save类型的target_form，否则不会提交该列值
+// 通过Qscmf\Builder\ButtonType\Save\TargetFormTrait获取top button save类型的target_form
 class Num extends ColumnType implements EditableInterface
 {
-    // 实现抽象类build，完成列渲染
-    // option为创建列组件需要的参数，如name、title、type、value、editable等
-    // data为该行数据，通过$data[$option['name']]可以获取该值
-    // listBuilder为渲染列表类
+    use TargetFormTrait;
+
     public function build(array &$option, array $data, $listBuilder)
     {
         return $data[$option['name']];
     }
 
-    // 实现接口editBuild函数，可自定义编辑状态的html
-    // 参数说明参考build函数
     public function editBuild(&$option, $data, $listBuilder){
-        return "<input class='form-control input text' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
+        $class = "form-control input text ". $this->getTargetForm();
+        return "<input class='{$class}' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
+    }
+
+    public function getSaveTargetForm()
+    {
+        return $this->getTargetForm();
     }
 
 }
