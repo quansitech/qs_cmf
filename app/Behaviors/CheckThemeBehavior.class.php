@@ -17,7 +17,7 @@ class CheckThemeBehavior extends Behavior {
     // 行为扩展的执行入口必须是run
     public function run(&$content){
         $mobile_detect = new \Common\Util\Mobile_Detect();
-       if($mobile_detect->isMobile() && MODULE_NAME != 'Admin'){
+       if(!$mobile_detect->isTablet() && $mobile_detect->isMobile() && MODULE_NAME != 'Admin'){
            C('DEFAULT_THEME', 'mobile');
        }
        else{
