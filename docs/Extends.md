@@ -187,7 +187,7 @@ use Qscmf\Builder\ColumnType\EditableInterface;
 // 必须继承Qscmf\Builder\ColumnType\ColumnType抽象类
 // 可以通过实现接口Qscmf\Builder\ColumnType\EditableInterface来自定义该组件编辑状态下的html
 // 自定义编辑状态html时，input标签的样式必须包括top button save类型的target_form，否则不会提交该列值
-// 通过Qscmf\Builder\ButtonType\Save\TargetFormTrait获取top button save类型的target_form
+// Qscmf\Builder\ButtonType\Save\TargetFormTrait已经实现getSaveTargetForm()，即获取top button save类型的target_form，使用该trait类即可
 class Num extends ColumnType implements EditableInterface
 {
     use TargetFormTrait;
@@ -198,15 +198,9 @@ class Num extends ColumnType implements EditableInterface
     }
 
     public function editBuild(&$option, $data, $listBuilder){
-        $class = "form-control input text ". $this->getTargetForm();
+        $class = "form-control input text ". $this->getSaveTargetForm();
         return "<input class='{$class}' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
     }
-
-    public function getSaveTargetForm()
-    {
-        return $this->getTargetForm();
-    }
-
 }
 ```
 
