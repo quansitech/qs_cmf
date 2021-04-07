@@ -18,7 +18,7 @@
 ```
 
 ```php
-php ../app/resque start --queue=default
+php 应用目录/resque start --queue=default
 ```
 
 ##### 安全停止队列
@@ -26,5 +26,5 @@ php ../app/resque start --queue=default
 当前任务执行完后再停止队列
 ```
 ```php
-php ../app/resque stop
+php 应用目录/resque stop
 ```
