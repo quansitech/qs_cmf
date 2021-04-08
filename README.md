@@ -329,6 +329,42 @@ php artisan migrate:reset --no-cmd
 > $process->setTimeOut(100)->callTp('/var/www/move/www/index.php', '/home/index/test');
 > ```
 
++ ConfigGenerator
+   迁移中处理系统配置的工具类
+
+   addGroup($name) //添加配置分组
+
+   deleteGroup($name) //删除配置分组
+
+   以下为新增配置项的操作函数
+   > $name 配置名
+   > 
+   > $title 配置标题
+   > 
+   > $value 配置值
+   > 
+   > $remark 配置说明
+   > 
+   > $group 配置分组
+   > 
+   > $sort 排序
+
+   addNum($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增数字类型配置值
+
+   addText($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增字符类型配置值
+
+   addArray($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增数组类型配置值
+
+   addPicture($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增图片类型配置值
+
+   addUeditor($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增富文本类型配置值
+
+   addSelect($name, $title, $value, $options, $remark = '', $group = 1, $sort = 0) //新增下拉选择配置值 $options 是下拉配置数组
+
+   add($name, $type, $title, $group, $extra, $remark, $value, $sort) //新增配置方法，未预设的第三方组件可使用该函数
+
+   delete($name) //删除配置
+
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
