@@ -258,7 +258,7 @@ class ConfigController extends GyListController{
             $form_data = array();
 
             foreach($data_list as $data){
-                if($data['type'] == 'file'){
+                if(in_array($data['type'], ['file', 'ueditor'])){
                     $builder->addFormItem('config[' . $data['name'] . ']', $data['type'], $data['title'], $data['remark'], '', '', $data['extra']);
                 }
                 else{
