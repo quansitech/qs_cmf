@@ -29,7 +29,10 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
 ```
 
-复制外链文章时，强制要求抓取外链图片至本地，未抓取完会显示loadding图片(默认也会抓取外联图片，但如果未等全部抓取完就保存，此时图片还是外链)
+通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
+```blade
+复制外链文章时，会抓取外链图片至本地。若该属性为true，则未抓取完会显示loadding图片且不能保存；若该属性为false，如果未等全部抓取完就保存，此时图片还是外链。
+```
 ```php
 //addFormItem第七个参数，设置data-forcecatchremote="true"
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
