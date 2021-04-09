@@ -147,6 +147,18 @@
 
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
+
+
+
+ps. v12版本更新计划
+   将 
+   Larafortp/MenuGenerate、
+   Larafortp/ConfigGenerator、 
+   Qscmf/Lib/RedisLock、
+   Larafortp/CmmMigrate/CmmProcess
+   移出核心
+
+   
 ```
 
 
