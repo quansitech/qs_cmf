@@ -336,6 +336,8 @@ php artisan migrate:reset --no-cmd
 
    deleteGroup($name) //删除配置分组
 
+   updateGroup($config_name, $group_name)  //将配置转移到指定分组
+
    以下为新增配置项的操作函数
    > $name 配置名
    > 
