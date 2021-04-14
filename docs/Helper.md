@@ -84,3 +84,25 @@ D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_CONNECTION);
 // 若修改了数据库连接的配置，要使全部模型生效，则需要同时关闭数据库连接和清除已实例化的模型
 D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_ALL);
 ```
+
+#### getFullAreaIdsWithPid
+```blade
+根据一个地区id获取其下属的所有地区
+
+参数
+$id 地区id
+$model 模型层名称，默认为Area
+$max_level 最大级数据，默认为区级，即3（省级为1，市级为2，区级为3）
+$all_city_ids 需要合并的地区，默认为空数组
+```
+
+#### getFullAreaIdsWithMultiPids
+```blade
+根据多个地区id获取其下属的所有地区
+
+参数
+$ids 地区id
+$model 模型层名称，默认为Area
+$max_level 最大级数据，默认为区级，即3（省级为1，市级为2，区级为3）
+$all_city_ids 需要合并的地区，默认为空数组
+```

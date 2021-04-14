@@ -266,3 +266,45 @@ default：默认值
 ```
 
 + 创建auth_node的节点
+
+
+### 权限过滤机制支持使用回调函数处理关联数据
+目前的权限过滤功能不支持处理父子级关系的数据，例如用户与父级数据关联，那么他应该可以看到这个父级以及其子级的数据。
+
+可以通过该功能，定义回调处理需要过滤的关联数据。
+
+```blade
+如系统某用户关联了多个省级地区，那么他只可以查看这些省份所有地区的数据；但是如果该用户没有关联地区数据，则可以查看所有地区的数据。
+该需求可以通过 此功能以及公共函数：getFullAreaIdsWithMultiPids 实现。
+```
+
+#### 用法
++ 配置对应Model类属性$_auth_ref_rule的auth_ref_value_callback，定义回调函数及其参数
+
+```php
+// 使用公共函数作为回调函数
+// __id__为占位符，执行时会将关联的实际值传给回调函数，注意该值为数组
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => ['getFullAreaIdsWithMultiPids','__id__'],
+);
+
+// 使用某个类的方法作为回调函数
+// __id__为占位符，执行时会将关联的实际值传给回调函数，注意该值为数组
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'ref_callback' => [[UserAreaModel::class,'getCityId'],'__id__'],
+    'not_exists_then_ignore' => true
+);
+
+public function getCityId($id){
+    return $id;
+}
+```
+
++ 配置对应Model类属性$_auth_ref_rule的not_exists_then_ignore，设置该值为true时，可以实现找不到关联数据则不过滤
+```blade
+目前的权限过滤是只能查看关联的数据，当这种关联关系为限制的性质时，可以将该值设置为true，意为解除这种限制，取消过滤。
+```
