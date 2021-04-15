@@ -220,43 +220,128 @@ protected $_auth_ref_rule = array(
 'FRONT_AUTH_FILTER'=>true,
 ```
 
-### 权限过滤机制支持使用回调函数处理关联数据
-目前的权限过滤功能不支持处理父子级关系的数据，例如用户与父级数据关联，那么他应该可以看到这个父级以及其子级的数据。
 
-可以通过该功能，定义回调处理需要过滤的关联数据。
-
-```blade
-如系统某用户关联了多个省级地区，那么他只可以查看这些省份所有地区的数据；但是如果该用户没有关联地区数据，则可以查看所有地区的数据。
-该需求可以通过 此功能以及公共函数：getFullAreaIdsWithMultiPids 实现。
-```
+### 权限过滤机制支持配置若不存在关联数据则取消过滤
+不存在关联数据时，默认返回空。使用此功能可以实现用户存在关联数据则只能查看关联的数据，若不存在关联数据则可以查看所有数据。
 
 #### 用法
-+ 配置对应Model类属性$_auth_ref_rule的auth_ref_value_callback，定义回调函数及其参数
-
++ 配置对应Model类属性$_auth_ref_rule的not_exists_then_ignore，其值为true
 ```php
-// 使用公共函数作为回调函数
-// __id__为占位符，执行时会将关联的实际值传给回调函数，注意该值为数组
+// 设置该值为true
+// XXXModel类的配置
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
-    'auth_ref_value_callback' => ['getFullAreaIdsWithMultiPids','__id__'],
-);
-
-// 使用某个类的方法作为回调函数
-// __id__为占位符，执行时会将关联的实际值传给回调函数，注意该值为数组
-protected $_auth_ref_rule = array(
-    'auth_ref_key' => 'id',
-    'ref_path' => 'UserArea.city_id',
-    'ref_callback' => [[UserAreaModel::class,'getCityId'],'__id__'],
     'not_exists_then_ignore' => true
 );
+```
 
-public function getCityId($id){
-    return $id;
+
+### 权限过滤机制支持使用回调函数修改关联数据
+权限过滤的关联数据为回调函数的结果。
+
+#### 用法
++ 定义回调函数
+
++ 配置对应Model类属性$_auth_ref_rule的auth_ref_value_callback
+```blade
+auth_ref_value_callback的值为索引数组。 
+数组第一个值为被调用的回调函数，若为公共函数，则为字符串；若为某个类的方法，则为数组，如[类名，方法名]；
+数组之后的值是要被传入回调函数的参数。
+
+回调函数接收关联数据的参数位置没有硬性规定，可以根据实际情况使用占位符__auth_ref_value__，程序执行时会根据ref_path的设置，获取关联字段的实际值传给回调函数，注意该值为数组。
+```
+
+```php
+// XXXModel类的配置
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => ['callback_fun_name','__auth_ref_value__','param2'],
+);
+```
+
+#### 场景举例
+##### 若关联数据为同类型的树状结构数据，例如省市区、商品的类目，关联数据应扩展为该节点的子树。
+
+```blade
+若用户A与省市区的关联数据为：广东省、湖南省，则该用户可以查看这些省份及其下属所有地区的数据；
+若用户B没有关联地区数据，则该用户可以查看所有地区的数据。
+```
+
+```php
+// 不使用权限过滤功能，则每次获取用户能查看的地区数据时，都需要过滤地区数据。
+public function getArea(){
+    $user_id = D('User')->getLoginUserId();
+    $map = [];
+    D('Area')->genWhereByUid($user_id, $map, 'id');
+    
+    $area = D('Area')->where($map)->select();
+    return $area;
+}
+
+// AreaModel类
+// 根据uid获取可以查看的地区数据
+public function genWhereByUid($uid, &$map, $field){ 
+    $city_id = D('UserArea')->where(['user_id'=>$uid])->getField('city_id', true);
+    $all_city_id = $city_id ? getFullAreaIdsWithMultiPids($city_id) : null;
+    if ($all_city_id){
+        $map[$field] = ['IN', $all_city_id];
+    }
 }
 ```
 
-+ 配置对应Model类属性$_auth_ref_rule的not_exists_then_ignore，设置该值为true时，可以实现找不到关联数据则不过滤
 ```blade
-目前的权限过滤是只能查看关联的数据，当这种关联关系为限制的性质时，可以将该值设置为true，意为解除这种限制，取消过滤。
+若使用之前的权限过滤功能，用户A只能查看广东省、湖南省的数据，而属于广东省的广州市的数据会被过滤掉；
+用户B可以查看的数据为空。
+
+以下是使用此功能的步骤与效果。
+```
+
++ 定义回调函数getFullAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
+
+```php
+function getFullAreaIdsWithMultiPids($city_ids, $model = 'Area'){
+    $all_city_ids = [];
+    foreach ($city_ids as $v){
+        // 具体实现算法省略
+        // $all_city_ids = （根据一个地区id获取其下属的所有地区）;
+    }
+
+    return $all_city_ids;
+}
+```
+
++ 配置对应Model类属性$_auth_ref_rule，定义回调函数及其参数
+```php
+// 配置地区AreaModel类
+// 方式一：使用公共函数作为回调函数
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => ['getFullAreaIdsWithMultiPids','__auth_ref_value__'],
+    'not_exists_then_ignore' => true
+);
+
+// 方式二：使用某个类的方法作为回调函数
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => [[FullAreaModel::class,'getFullAreaIdsWithMultiPids'],'__auth_ref_value__'],
+    'not_exists_then_ignore' => true
+);
+
+// 配置UserAreaModel类 
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'user_id',
+    'ref_path' => 'UserArea.city_id'
+);
+```
+
+```php
+// 只需要正确配置权限链使用此功能就可以实现需求，不再需要额外代码去过滤用户的关联地区数据。
+public function getArea(){
+    $area = D('Area')->select();
+    return $area;
+}
 ```
