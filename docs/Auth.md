@@ -226,9 +226,13 @@ protected $_auth_ref_rule = array(
 
 #### 用法
 + 配置对应Model类属性$_auth_ref_rule的not_exists_then_ignore，其值为true
+```blade
+该值应设置在需要获取的关联数据主表对应的Model类，如用户（UserModel类）与地区（AreaModel类）关联，需要获取地区的数据，应在AreaModel类设置该值为true。
+```
+
 ```php
 // 设置该值为true
-// XXXModel类的配置
+// AreaModel类的配置
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
@@ -250,10 +254,12 @@ auth_ref_value_callback的值为索引数组。
 数组之后的元素是要被传入回调函数的参数。
 
 回调函数接收关联数据的参数位置没有硬性规定，可以根据实际情况使用占位符__auth_ref_value__，程序执行时会根据ref_path的设置，获取关联字段的实际值传给回调函数，注意该值为数组。
+
+该值应设置在需要获取的关联数据主表对应的Model类，如用户（UserModel类）与地区（AreaModel类）关联，需要获取地区的数据，应在AreaModel类设置该值。
 ```
 
 ```php
-// XXXModel类的配置
+// AreaModel类的配置
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
@@ -284,7 +290,7 @@ public function getArea(){
 // 根据uid获取可以查看的地区数据
 public function genWhereByUid($uid, &$map, $field){ 
     $city_id = D('UserArea')->where(['user_id'=>$uid])->getField('city_id', true);
-    $all_city_id = $city_id ? getFullAreaIdsWithMultiPids($city_id) : null;
+    $all_city_id = $city_id ? getAllAreaIdsWithMultiPids($city_id) : null;
     if ($all_city_id){
         $map[$field] = ['IN', $all_city_id];
     }
@@ -301,11 +307,10 @@ public function genWhereByUid($uid, &$map, $field){
 + 定义回调函数getFullAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
 
 ```php
-function getFullAreaIdsWithMultiPids($city_ids, $model = 'Area'){
+function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaFullDataV'){
+    // 根据多个地区id获取其下属的所有地区，具体算法省略
     $all_city_ids = [];
     foreach ($city_ids as $v){
-        // 具体实现算法省略
-        // $all_city_ids = （根据一个地区id获取其下属的所有地区）;
     }
 
     return $all_city_ids;
@@ -319,7 +324,7 @@ function getFullAreaIdsWithMultiPids($city_ids, $model = 'Area'){
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
-    'auth_ref_value_callback' => ['getFullAreaIdsWithMultiPids','__auth_ref_value__'],
+    'auth_ref_value_callback' => ['getAllAreaIdsWithMultiPids','__auth_ref_value__'],
     'not_exists_then_ignore' => true
 );
 
@@ -327,7 +332,7 @@ protected $_auth_ref_rule = array(
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
-    'auth_ref_value_callback' => [[FullAreaModel::class,'getFullAreaIdsWithMultiPids'],'__auth_ref_value__'],
+    'auth_ref_value_callback' => [[FullAreaModel::class,'getAllAreaIdsWithMultiPids'],'__auth_ref_value__'],
     'not_exists_then_ignore' => true
 );
 

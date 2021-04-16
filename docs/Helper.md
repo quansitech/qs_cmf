@@ -85,23 +85,22 @@ D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_CONNECTION);
 D('','', \Qscmf\Lib\DBCont::CLOSE_TYPE_ALL);
 ```
 
-#### getFullAreaIdsWithPid
+#### getAreaFullCname1ByID
 ```blade
-根据一个地区id获取其下属的所有地区
+根据地区id获取其中文全名称
 
 参数
 $id 地区id
-$model 模型层名称，默认为Area
-$max_level 最大级数据，默认为区级，即3（省级为1，市级为2，区级为3）
-$all_city_ids 需要合并的地区，默认为空数组
+$model 模型层名称，默认为AreaFullDataV（需要检查模型层对应的数据表是否存在）
+$field 字段名称，默认为full_cname1
 ```
 
-#### getFullAreaIdsWithMultiPids
+#### getAllAreaIdsWithMultiPids
 ```blade
 根据多个地区id获取其下属的所有地区
 
 参数
 $ids 地区id
-$model 模型层名称，默认为Area
+$model 模型层名称，默认为AreaFullDataV（需要检查模型层对应的数据表是否存在）
 $max_level 最大级数据，默认为区级，即3（省级为1，市级为2，区级为3）
 ```
