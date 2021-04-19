@@ -307,7 +307,7 @@ public function genWhereByUid($uid, &$map, $field){
 + 定义回调函数getFullAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
 
 ```php
-function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaFullDataV'){
+function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaV', $max_level = 3, $need_exist = true, $cache = ''){
     // 根据多个地区id获取其下属的所有地区，具体算法省略
     $all_city_ids = [];
     foreach ($city_ids as $v){
@@ -324,7 +324,7 @@ function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaFullDataV'){
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
-    'auth_ref_value_callback' => ['getAllAreaIdsWithMultiPids','__auth_ref_value__'],
+    'auth_ref_value_callback' => ['getAllAreaIdsWithMultiPids','__auth_ref_value__','AreaV',3,false],
     'not_exists_then_ignore' => true
 );
 
@@ -332,7 +332,7 @@ protected $_auth_ref_rule = array(
 protected $_auth_ref_rule = array(
     'auth_ref_key' => 'id',
     'ref_path' => 'UserArea.city_id',
-    'auth_ref_value_callback' => [[FullAreaModel::class,'getAllAreaIdsWithMultiPids'],'__auth_ref_value__'],
+    'auth_ref_value_callback' => [[FullAreaModel::class,'getAllAreaIdsWithMultiPids'],'__auth_ref_value__','AreaV',3,false],
     'not_exists_then_ignore' => true
 );
 
