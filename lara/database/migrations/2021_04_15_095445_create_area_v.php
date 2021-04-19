@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAreaFullDataV extends Migration
+class CreateAreaV extends Migration
 {
 
     /**
@@ -16,7 +16,7 @@ class CreateAreaFullDataV extends Migration
     public function up()
     {
         $sql = <<<sql
-CREATE VIEW qs_area_full_data_v AS SELECT *,id as country_id,0 as p_id,0 as c_id,0 as d_id,cname as full_cname1 FROM qs_area WHERE level = 0
+CREATE VIEW qs_area_v AS SELECT *,id as country_id,0 as p_id,0 as c_id,0 as d_id,cname as full_cname1 FROM qs_area WHERE level = 0
 UNION
 SELECT *,upid as country_id,id as p_id,0 as c_id,0 as d_id,cname as full_cname1 FROM qs_area WHERE level = 1
 UNION
@@ -35,7 +35,7 @@ sql;
      */
     public function down()
     {
-        DB::unprepared("DROP VIEW qs_area_full_data_v;");
+        DB::unprepared("DROP VIEW qs_area_v;");
     }
 
 }
