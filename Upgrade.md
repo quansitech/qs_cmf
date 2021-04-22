@@ -155,7 +155,8 @@ ps. v12版本更新计划
    Larafortp/MenuGenerate、
    Larafortp/ConfigGenerator、 
    Qscmf/Lib/RedisLock、
-   Larafortp/CmmMigrate/CmmProcess
+   Larafortp/CmmMigrate/CmmProcess、
+   全局方法 imageproxy
    移出核心
 
    

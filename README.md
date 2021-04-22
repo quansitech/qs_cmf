@@ -52,53 +52,6 @@ php artisan migrate
 php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
 ```
 
-## imageproxy
-[imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
-
-+ env的地址格式配置
-```blade
-IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
-```
-+ 占位符替换规则
-```
-占位符用{}包裹
-schema 当前地址的协议类型 http 或者 https
-domain 当前网站使用的域名
-options 图片处理规则 https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
-remote_uri 代理的图片uri，如果外网图片，该占位符会替换成该地址，否则是网站图片的uri
-path 网站图片的相对地址，如 http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg，path则为Uploads/image/20190826/5d634f5f6570f.jpeg
-```
-
-+ imageproxy全局函数
-```php
-// imageproxy图片格式处理
-//options 图片处理规则
-//file_id 图片id，若为ulr，则返回该url
-// return 返回与.env配置格式对应的图片地址
-imageproxy($options, $file_id)
-
-如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
-imageproxy('100x150', 1)
-返回地址 http://localhost/ip/100x150/http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg
-
-如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{path} (这种格式通常配合imageproxy -baseURL使用)
-返回地址 http://localhost/ip/100x150/Uploads/image/20190826/5d634f5f6570f.jpeg
-```
-
-+ 远程imageproxy代理
-
-有些项目，需要采用远程的一台服务器作为图片代理服务，此时可通过在.env设置IMAGEPROXY_REMOTE来设置远程服务器的域名
-```php
-//.env文件
-IMAGEPROXY_URL={schema}://{domain}/{options}/{remote_uri}
-IMAGEPROXY_REMOTE=http://www.test.com
-
-//imageporxy生成的地址
-$url = imageproxy('1920x540',$banner_id);
-echo $url;
-//http://www.test.com/1920x540/http://localhost/Uploads/images/xxxx.jpg
-```
-
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
