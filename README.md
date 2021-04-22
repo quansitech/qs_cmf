@@ -485,48 +485,6 @@ redirect(U('home/user/index'));
 // 与PC端扫码后登录/注册业务处理一致
 ```
 
-## 工具类
-
-#### RedisLock类：基于Redis改造的悲观锁
-+ 先获取锁再执行业务逻辑，执行结束释放锁。
-+ 保证同一个方法的并发重复操作请求只有一个请求可以获取锁，在不进行高延迟事务处理的场景下可以使用。
-
-##### lock
-```blade
-该方法可以获取锁
-
-参数 
-$key 名称
-$expire 过期时间 单位为秒
-$timeout  循环取锁时间 单位为秒，默认为0
-$interval 取锁失败后重试间隔时间 单位为微秒，默认为100000
-
-返回值
-锁成功返回true 锁失败返回false
-```
-
-##### unlock
-```blade
-该方法可以释放锁
-
-参数 
-$key 名称
-
-返回值
-释放锁的个数
-```
-##### 代码示例
-```php
-public function execShell(){
-    $redis_lock = \Qscmf\Lib\RedisLock::getInstance();
-    $is_lock = $redis_lock->lock('exec_shell_lock_key', 60);
-    $is_lock === false && $this->error('请一分钟后再操作');
-
-    shell_exec('ll >/dev/null');
-    
-    $redis_lock->unlock('exec_shell_lock_key');
-}
-```
 ## 全局函数
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Helper.md)
 
