@@ -350,3 +350,61 @@ public function getArea(){
     return $area;
 }
 ```
+
+### 自定义Session类用于处理权限过滤使用的标识值
+```blade
+若使用权限链功能，就需要设置AUTH_RULE_ID的值，AUTH_RULE_ID、AUTH_ROLE_TYPE的值默认使用公共函数session管理。
+
+但是在前后端分离开发方式的系统，不适用公共函数session。
+
+可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理AUTH_RULE_ID、AUTH_ROLE_TYPE的值。
+```
+
+```php
+// 建议使用\Qscmf\Core\AuthChain类获取AUTH_RULE_ID、AUTH_ROLE_TYPE的值
+
+\Qscmf\Core\AuthChain::get(AuthChain::AUTH_RULE_ID);
+\Qscmf\Core\AuthChain::get(AuthChain::AUTH_ROLE_TYPE);
+
+```
+
+#### 用法
++ 定义Session类，实现接口Qscmf/Core/AuthChain/IAuthChainSession
+```blade
+默认为\Qscmf\Core\AuthChain\CommonAuthChainSession类，使用公共函数session管理。
+```
+
+```php
+class CusAuthChainSession implements AuthChain\IAuthChainSession
+{
+    public function set($role_id,$role_type)
+    {
+        CusSession::set(AuthChain::AUTH_RULE_ID, $role_id);
+        CusSession::set(AuthChain::AUTH_ROLE_TYPE, $role_type);
+    }
+
+    public function get($key){
+        return CusSession::get($key);
+    }
+    
+    public function clear()
+    {
+        CusSession::set(AuthChain::AUTH_RULE_ID, null);
+        CusSession::set(AuthChain::AUTH_ROLE_TYPE, null);
+    }
+
+}
+```
+
++ 在app_init行为中加入注册该Session类
+```php
+class AppInitBehavior extends \Think\Behavior{
+
+    public function run(&$parm){
+        // 其它逻辑省略...
+
+        AuthChain::registerSessionCls(CusAuthChainSession::class);
+
+    }
+}
+```
