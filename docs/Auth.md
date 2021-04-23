@@ -353,15 +353,16 @@ public function getArea(){
 
 ### 自定义Session类用于处理权限过滤使用的标识值
 ```blade
-若使用权限链功能，就需要设置AUTH_RULE_ID的值，AUTH_RULE_ID、AUTH_ROLE_TYPE的值默认使用公共函数session管理。
+若使用权限链功能，就需要根据实际使用情况设置AUTH_RULE_ID、INJECT_RBAC等值，这些标识值默认使用公共函数session管理。
 
 但是在前后端分离开发方式的系统，不适用公共函数session。
 
-可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理AUTH_RULE_ID、AUTH_ROLE_TYPE的值。
+可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理标识值。
 ```
 
 ```php
-// 建议使用\Qscmf\Core\AuthChain类获取AUTH_RULE_ID、AUTH_ROLE_TYPE的值
+// 建议使用\Qscmf\Core\AuthChain类的get方法获取标识值
+// 如获取AUTH_RULE_ID、AUTH_ROLE_TYPE的值
 
 \Qscmf\Core\AuthChain::get(AuthChain::AUTH_RULE_ID);
 \Qscmf\Core\AuthChain::get(AuthChain::AUTH_ROLE_TYPE);
@@ -377,20 +378,18 @@ public function getArea(){
 ```php
 class CusAuthChainSession implements AuthChain\IAuthChainSession
 {
-    public function set($role_id,$role_type)
+     public function set($key, $value)
     {
-        CusSession::set(AuthChain::AUTH_RULE_ID, $role_id);
-        CusSession::set(AuthChain::AUTH_ROLE_TYPE, $role_type);
+        CusSession::set($key, $value);
     }
 
     public function get($key){
         return CusSession::get($key);
     }
     
-    public function clear()
+    public function clear($key)
     {
-        CusSession::set(AuthChain::AUTH_RULE_ID, null);
-        CusSession::set(AuthChain::AUTH_ROLE_TYPE, null);
+        $this->set($key,null);
     }
 
 }
