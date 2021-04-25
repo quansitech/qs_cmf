@@ -357,27 +357,27 @@ public function getArea(){
 
 但不是所有的系统都适用公共函数session，例如在前后端分离模式的系统。
 
-对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理标识值。
+对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法注册自定义Session类，处理标识值。
 ```
 
 #### 用法
-+ 定义Session类，实现接口Qscmf/Core/AuthChain/IAuthChainSession
++ 定义Session类，实现接口Qscmf/Core/Session/ISession
 ```blade
-默认为\Qscmf\Core\AuthChain\CommonAuthChainSession类，使用公共函数session管理。
+默认为\Qscmf\Core\Session\DefaultSession类，使用公共函数session管理。
 ```
 
 ```php
-class CusAuthChainSession implements AuthChain\IAuthChainSession
+class CusSession implements Session\ISession
 {
-     public function set($key, $value)
+    public function set($key, $value)
     {
-        CusSession::set($key, $value);
+        session($key, $value);
     }
 
     public function get($key){
-        return CusSession::get($key);
+        return session($key);
     }
-    
+
     public function clear($key)
     {
         $this->set($key,null);
@@ -393,7 +393,7 @@ class AppInitBehavior extends \Think\Behavior{
     public function run(&$parm){
         // 其它逻辑省略...
 
-        AuthChain::registerSessionCls(CusAuthChainSession::class);
+        AuthChain::registerSessionCls(CusSession::class);
 
     }
 }
