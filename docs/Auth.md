@@ -353,11 +353,11 @@ public function getArea(){
 
 ### 自定义Session类用于处理权限过滤使用的标识值
 ```blade
-若使用权限链功能，就需要根据实际使用情况设置AUTH_RULE_ID、INJECT_RBAC等值，这些标识值默认使用公共函数session管理。
+若使用权限链功能，就需要设置AUTH_RULE_ID、INJECT_RBAC等值，这些标识值默认使用公共函数session管理。
 
-但是在前后端分离开发方式的系统，不适用公共函数session。
+但不是所有的系统都适用公共函数session，例如在前后端分离模式的系统。
 
-可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理标识值。
+对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理标识值。
 ```
 
 ```php
