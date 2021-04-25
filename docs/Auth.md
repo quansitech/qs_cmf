@@ -350,3 +350,51 @@ public function getArea(){
     return $area;
 }
 ```
+
+### 自定义Session类用于处理权限过滤使用的标识值
+```blade
+若使用权限链功能，就需要设置AUTH_RULE_ID、INJECT_RBAC等值，这些标识值默认使用公共函数session管理。
+
+但不是所有的系统都适用公共函数session，例如在前后端分离模式的系统。
+
+对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法注册自定义Session类，处理标识值。
+```
+
+#### 用法
++ 定义Session类，实现接口Qscmf/Core/Session/ISession
+```blade
+默认为\Qscmf\Core\Session\DefaultSession类，使用公共函数session管理。
+```
+
+```php
+class CusSession implements Session\ISession
+{
+    public function set($key, $value)
+    {
+        session($key, $value);
+    }
+
+    public function get($key){
+        return session($key);
+    }
+
+    public function clear($key)
+    {
+        $this->set($key,null);
+    }
+
+}
+```
+
++ 在app_init行为中加入注册该Session类
+```php
+class AppInitBehavior extends \Think\Behavior{
+
+    public function run(&$parm){
+        // 其它逻辑省略...
+
+        AuthChain::registerSessionCls(CusSession::class);
+
+    }
+}
+```
