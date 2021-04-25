@@ -360,15 +360,6 @@ public function getArea(){
 对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法自定义Session类，处理标识值。
 ```
 
-```php
-// 建议使用\Qscmf\Core\AuthChain类的get方法获取标识值
-// 如获取AUTH_RULE_ID、AUTH_ROLE_TYPE的值
-
-\Qscmf\Core\AuthChain::get(AuthChain::AUTH_RULE_ID);
-\Qscmf\Core\AuthChain::get(AuthChain::AUTH_ROLE_TYPE);
-
-```
-
 #### 用法
 + 定义Session类，实现接口Qscmf/Core/AuthChain/IAuthChainSession
 ```blade
