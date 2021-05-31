@@ -169,6 +169,17 @@ protected function _initialize() {
         }],
     ];
 }
+
+//如需指定删除联动数据失败时的操作，默认为继续删除，请指定第四参数，如:
+$this->_delete_auto = [
+    ['delete','Message',['id'=>['post_id'],[
+        'error_operate'=>self::DELETE_CONTINUE //继续删除
+    ]],
+    //或
+    ['delete','Message',['id'=>['post_id'],[
+        'error_operate'=>self::DELETE_BREAK //删除停止并返回错误信息
+    ]],
+];
 ```
 
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
