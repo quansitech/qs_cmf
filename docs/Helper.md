@@ -108,3 +108,19 @@ $cache 开启数据库缓存，默认为空，即不开启（可支持传数组�
 
 cache参数说明：若需要开启缓存且缓存60秒，则传数组[true,60,'']或者字符串'60'或者数字60。
 ```
+
+#### parseModelClsName
+```blade
+解析模型类的类名
+
+参数
+$name string 资源地址
+$layer string 模型层名称，默认为C('DEFAULT_M_LAYER')
+```
+
+```php
+// 实例化一个模型类ConfigModel
+$ref_model_cls = parseModelClsName('Config');
+$ref_model_cls = new $ref_model_cls('Config');
+$ref_model_cls->getOne();
+```
