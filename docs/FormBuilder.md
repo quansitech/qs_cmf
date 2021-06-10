@@ -236,3 +236,16 @@ default：默认值
 ```
 
 + 创建auth_node的节点
+
+#### datetime日期时间组件
+```blade
+日期时间组件
+
+可以通过options自定义格式
+```
+
+```php
+->addFormItem('datetime', 'datetime', '日期时间')
+->addFormItem('year', 'datetime', '年', '', ['startView' => 'decade', 'minView' => "decade", 'format' => "yyyy", 'php_format' => "Y"])
+->addFormItem('month', 'datetime', '月', '', ['startView' => 'year', 'minView' => "year", 'format' => "yyyy-mm", 'php_format' => "Y-m"])
+```
