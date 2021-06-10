@@ -241,7 +241,7 @@ default：默认值
 ```blade
 日期时间组件
 
-可以通过options自定义格式
+可以通过options自定义格式，修改format时需要配置对应的php_format
 ```
 
 ```php
