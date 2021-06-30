@@ -187,6 +187,12 @@ $project_info = [
     '43' => 'text3',
 ];
 ->addFormItem('project_id','项目','select2', '', $project_info, '', 'multiple="multiple"');
+
+// 初始化多选选中的值，选中键值的字符串或者数组
+// 字符串
+->setFormData(["project_id" => "41,42"]);
+// 数组
+->setFormData(["project_id" => ["41,42"]]);
 ```
 
 
