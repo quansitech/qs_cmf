@@ -124,3 +124,12 @@ $ref_model_cls = parseModelClsName('Config');
 $ref_model_cls = new $ref_model_cls('Config');
 $ref_model_cls->getOne();
 ```
+
+#### deleteEmptyDirectory
+```text
+递归删除目录下的空目录
+
+参数
+$directory string 目录路径
+$preserve bool 是否保留本身目录，默认为false，不保留
+```
