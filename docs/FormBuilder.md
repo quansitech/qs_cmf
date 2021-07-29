@@ -29,7 +29,10 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
 ```
 
-复制外链文章时，强制要求抓取外链图片至本地，未抓取完会显示loadding图片(默认也会抓取外联图片，但如果未等全部抓取完就保存，此时图片还是外链)
+通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
+```blade
+复制外链文章时，会抓取外链图片至本地。若该属性为true，则未抓取完会显示loadding图片且不能保存；若该属性为false，如果未等全部抓取完就保存，此时图片还是外链。
+```
 ```php
 //addFormItem第七个参数，设置data-forcecatchremote="true"
 ->addFormItem('desc', 'ueditor', '商家简介', '', '', '', 'data-forcecatchremote="true"')
@@ -154,3 +157,101 @@ $render 是否输出页面的内容，默认为false
 
 效果图
 <img src='https://user-images.githubusercontent.com/1665649/85219268-f5699f00-b3d4-11ea-98a0-6192336872b8.png' />
+
+#### district组件
+```blade
+省市区三级联动
+
+支持自定义省市区数据源api，默认为U('Api/Area/getArea')
+```
+
+```php
+// 使用说明
+// addFormItem第五个参数，传递自定义api，加上area_api_url
+->addFormItem('city_id', 'district', '城市', '', ['area_api_url' => U('Api/Area/fetchLimitCity', '', '', true)]);
+```
+
+#### select2组件
+```blade
+下拉选择，支持模糊搜索
+
+支持多选
+```
+
+```php
+// 使用说明
+// addFormItem第七个参数，传递extra_attr，值包括multiple="multiple"
+$project_info = [
+    '41' => 'text1',
+    '42' => 'text2',
+    '43' => 'text3',
+];
+->addFormItem('project_id','项目','select2', '', $project_info, '', 'multiple="multiple"');
+
+// 初始化多选选中的值，选中键值的字符串或者数组
+// 字符串
+->setFormData(["project_id" => "41,42"]);
+// 数组
+->setFormData(["project_id" => ["41,42"]]);
+```
+
+
+#### 字段权限过滤机制
+```blade
+当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，有该权限点的用户才可以操作该字段。
+```
+
+##### 场景模拟
+```blade
+如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增或者编辑书箱Box。
+但是捐赠方company_id与冠名caption字段书库点管理员没有操作权限。
+
+按照以前的做法需要检测登录的用户，然后针对不同类型用户分别做这些字段的显示和操作逻辑限制。
+
+使用该机制可以解决这个需求。
+```
+
+##### 用法
+
++ 在Model类配置$_auth_node_column的值
+```blade
+字段说明
+
+字段名
+auth_node：权限点，格式为：模块.控制器.方法名，如：'admin.Box.allColumns'；多个值需使用数组，如：['admin.Box.allColumns','admin.Box.add','admin.Box.edit']
+default：默认值
+
+若auth_node存在多个值，则需要该用户拥有全部权限才可以操作该字段
+```
+```php
+    // 在BoxModel配置需要权限过滤的字段，只有拥有该权限点的用户才可以操作字段
+    
+    protected $_auth_node_column = [
+        'company_id' => ['auth_node' => 'admin.Box.allColumns'],
+        'caption' => ['auth_node' => ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'],'default' => 'quansitech']
+    ];
+```
+
++ 使用addFormItem设置表单并配置auth_node属性，具体规则参考FormBuilder的addFormItem方法
+```php
+    // 在构建新增或者编辑书箱表单时，设置auth_node属性
+    // auth_node值应与$_auth_node_column对应字段的auth_node值一致
+    
+    ->addFormItem('company_id', 'select', '捐赠方', '', D('Company')->where(['status' => DBCont::NORMAL_STATUS])->getField('id,name'), '', '', ['admin.Box.allColumns'])
+    ->addFormItem('caption', 'text', '冠名', '冠名长度不得超过10个字', '', '', '', ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'])
+```
+
++ 创建auth_node的节点
+
+#### datetime日期时间组件
+```blade
+日期时间组件
+
+可以通过options自定义格式，修改format时需要配置对应的php_format
+```
+
+```php
+->addFormItem('datetime', 'datetime', '日期时间')
+->addFormItem('year', 'datetime', '年', '', ['startView' => 'decade', 'minView' => "decade", 'format' => "yyyy", 'php_format' => "Y"])
+->addFormItem('month', 'datetime', '月', '', ['startView' => 'year', 'minView' => "year", 'format' => "yyyy-mm", 'php_format' => "Y-m"])
+```

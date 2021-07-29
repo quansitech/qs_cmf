@@ -214,55 +214,187 @@ protected $_auth_ref_rule = array(
     }
 ```
 
-### 字段权限过滤机制
-```blade
-当系统存在多种不同类型的用户，特定字段只有部分用户有操作权限，可以添加虚拟节点为权限点，有该权限点的用户才可以操作该字段。
-```
-
 ### 开启前台过滤机制
 可以config文件中将 'FRONT_AUTH_FILTER' 设置为true
 ```blade
 'FRONT_AUTH_FILTER'=>true,
 ```
 
-#### 场景模拟
+
+### 权限过滤机制支持配置若不存在关联数据则取消过滤
+不存在关联数据时，默认返回空。使用此功能可以实现用户存在关联数据则只能查看关联的数据，若不存在关联数据则可以查看所有数据。
+
+#### 用法
++ 配置对应Model类属性$_auth_ref_rule的not_exists_then_ignore，其值为true
 ```blade
-如系统存在机构管理员OrgUser与书库点管理员LibraryUser，均可新增或者编辑书箱Box。
-但是捐赠方company_id与冠名caption字段书库点管理员没有操作权限。
+该值应设置在需要获取的关联数据主表对应的Model类，如用户（UserModel类）与地区（AreaModel类）关联，需要获取地区的数据，应在AreaModel类设置该值为true。
+```
 
-按照以前的做法需要检测登录的用户，然后针对不同类型用户分别做这些字段的显示和操作逻辑限制。
+```php
+// 设置该值为true
+// AreaModel类的配置
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'not_exists_then_ignore' => true
+);
+```
 
-使用该机制可以解决这个需求。
+
+### 权限过滤机制支持使用回调函数修改关联数据
+权限过滤的关联数据为回调函数的结果。
+
+#### 用法
++ 定义回调函数
+
++ 配置对应Model类属性$_auth_ref_rule的auth_ref_value_callback
+```blade
+auth_ref_value_callback的值为索引数组。 
+数组第一个元素为被调用的回调函数，若为公共函数，则为字符串；若为某个类的方法，则为数组，如[类名，方法名]；
+数组之后的元素是要被传入回调函数的参数。
+
+回调函数接收关联数据的参数位置没有硬性规定，可以根据实际情况使用占位符__auth_ref_value__，程序执行时会根据ref_path的设置，获取关联字段的实际值传给回调函数，注意该值为数组。
+
+该值应设置在需要获取的关联数据主表对应的Model类，如用户（UserModel类）与地区（AreaModel类）关联，需要获取地区的数据，应在AreaModel类设置该值。
+```
+
+```php
+// AreaModel类的配置
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => ['callback_fun_name','__auth_ref_value__','param2'],
+);
+```
+
+#### 场景举例
+##### 若关联数据为同类型的树状结构数据，例如省市区、商品的类目，关联数据应扩展为该节点的子树。
+
+```blade
+若用户A与省市区的关联数据为：广东省、湖南省，则该用户可以查看这些省份及其下属所有地区的数据；
+若用户B没有关联地区数据，则该用户可以查看所有地区的数据。
+```
+
+```php
+// 不使用权限过滤功能，则每次获取用户能查看的地区数据时，都需要过滤地区数据。
+public function getArea(){
+    $user_id = D('User')->getLoginUserId();
+    $map = [];
+    D('Area')->genWhereByUid($user_id, $map, 'id');
+    
+    $area = D('Area')->where($map)->select();
+    return $area;
+}
+
+// AreaModel类
+// 根据uid获取可以查看的地区数据
+public function genWhereByUid($uid, &$map, $field){ 
+    $city_id = D('UserArea')->where(['user_id'=>$uid])->getField('city_id', true);
+    $all_city_id = $city_id ? getAllAreaIdsWithMultiPids($city_id) : null;
+    if ($all_city_id){
+        $map[$field] = ['IN', $all_city_id];
+    }
+}
+```
+
+```blade
+若使用之前的权限过滤功能，用户A只能查看广东省、湖南省的数据，而属于广东省的广州市的数据会被过滤掉；
+用户B可以查看的数据为空。
+
+以下是使用此功能的步骤与效果。
+```
+
++ 定义回调函数getFullAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
+
+```php
+function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaV', $max_level = 3, $need_exist = true, $cache = ''){
+    // 根据多个地区id获取其下属的所有地区，具体算法省略
+    $all_city_ids = [];
+    foreach ($city_ids as $v){
+    }
+
+    return $all_city_ids;
+}
+```
+
++ 配置对应Model类属性$_auth_ref_rule，定义回调函数及其参数
+```php
+// 配置地区AreaModel类
+// 方式一：使用公共函数作为回调函数
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => ['getAllAreaIdsWithMultiPids','__auth_ref_value__','AreaV',3,false],
+    'not_exists_then_ignore' => true
+);
+
+// 方式二：使用某个类的方法作为回调函数
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'id',
+    'ref_path' => 'UserArea.city_id',
+    'auth_ref_value_callback' => [[FullAreaModel::class,'getAllAreaIdsWithMultiPids'],'__auth_ref_value__','AreaV',3,false],
+    'not_exists_then_ignore' => true
+);
+
+// 配置UserAreaModel类 
+protected $_auth_ref_rule = array(
+    'auth_ref_key' => 'user_id',
+    'ref_path' => 'UserArea.city_id'
+);
+```
+
+```php
+// 只需要正确配置权限链使用此功能就可以实现需求，不再需要额外代码去过滤用户的关联地区数据。
+public function getArea(){
+    $area = D('Area')->select();
+    return $area;
+}
+```
+
+### 自定义Session类用于处理权限过滤使用的标识值
+```blade
+若使用权限链功能，就需要设置AUTH_RULE_ID、INJECT_RBAC等值，这些标识值默认使用公共函数session管理。
+
+但不是所有的系统都适用公共函数session，例如在前后端分离模式的系统。
+
+对于以上系统，可以通过\Qscmf\Core\AuthChain类的registerSessionCls方法注册自定义Session类，处理标识值。
 ```
 
 #### 用法
-
-+ 在Model类配置$_auth_node_column的值
++ 定义Session类，实现接口Qscmf/Core/Session/ISession
 ```blade
-字段说明
-
-字段名
-auth_node：权限点，格式为：模块.控制器.方法名，如：'admin.Box.allColumns'；多个值需使用数组，如：['admin.Box.allColumns','admin.Box.add','admin.Box.edit']
-default：默认值
-
-若auth_node存在多个值，则需要该用户拥有全部权限才可以操作该字段
+默认为\Qscmf\Core\Session\DefaultSession类，使用公共函数session管理。
 ```
+
 ```php
-    // 在BoxModel配置需要权限过滤的字段，只有拥有该权限点的用户才可以操作字段
-    
-    protected $_auth_node_column = [
-        'company_id' => ['auth_node' => 'admin.Box.allColumns'],
-        'caption' => ['auth_node' => ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'],'default' => 'quansitech']
-    ];
+class CusSession implements Session\ISession
+{
+    public function set($key, $value)
+    {
+        session($key, $value);
+    }
+
+    public function get($key){
+        return session($key);
+    }
+
+    public function clear($key)
+    {
+        $this->set($key,null);
+    }
+
+}
 ```
 
-+ 使用addFormItem设置表单并配置auth_node属性，具体规则参考FormBuilder的addFormItem方法
++ 在app_init行为中加入注册该Session类
 ```php
-    // 在构建新增或者编辑书箱表单时，设置auth_node属性
-    // auth_node值应与$_auth_node_column对应字段的auth_node值一致
-    
-    ->addFormItem('company_id', 'select', '捐赠方', '', D('Company')->where(['status' => DBCont::NORMAL_STATUS])->getField('id,name'), '', '', ['admin.Box.allColumns'])
-    ->addFormItem('caption', 'text', '冠名', '冠名长度不得超过10个字', '', '', '', ['admin.Box.allColumns','admin.Box.add','admin.Box.edit'])
-```
+class AppInitBehavior extends \Think\Behavior{
 
-+ 创建auth_node的节点
+    public function run(&$parm){
+        // 其它逻辑省略...
+
+        AuthChain::registerSessionCls(CusSession::class);
+
+    }
+}
+```

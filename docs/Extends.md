@@ -178,6 +178,32 @@ HTML;
 }
 ```
 
+#### 如何开发列表列字段扩展
+```php
+use Qscmf\Builder\ButtonType\Save\TargetFormTrait;
+use Qscmf\Builder\ColumnType\ColumnType;
+use Qscmf\Builder\ColumnType\EditableInterface;
+
+// 必须继承Qscmf\Builder\ColumnType\ColumnType抽象类
+// 可以通过实现接口Qscmf\Builder\ColumnType\EditableInterface来自定义该组件编辑状态下的html
+// 自定义编辑状态html时，input标签的样式必须包括top button save类型的target_form，否则不会提交该列值
+// Qscmf\Builder\ButtonType\Save\TargetFormTrait已经实现getSaveTargetForm()，即获取top button save类型的target_form，使用该trait类即可
+class Num extends ColumnType implements EditableInterface
+{
+    use TargetFormTrait;
+
+    public function build(array &$option, array $data, $listBuilder)
+    {
+        return $data[$option['name']];
+    }
+
+    public function editBuild(&$option, $data, $listBuilder){
+        $class = "form-control input text ". $this->getSaveTargetForm();
+        return "<input class='{$class}' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
+    }
+}
+```
+
 没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表

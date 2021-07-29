@@ -52,53 +52,6 @@ php artisan migrate
 php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
 ```
 
-## imageproxy
-[imageproxy](https://github.com/willnorris/imageproxy) 是个图片裁剪、压缩、旋转的图片代理服务。框架集成了imageproxy全局函数来处理图片地址的格式化，通过.env来配置地址格式来处理不同环境下imageproxy的不同配置参数
-
-+ env的地址格式配置
-```blade
-IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
-```
-+ 占位符替换规则
-```
-占位符用{}包裹
-schema 当前地址的协议类型 http 或者 https
-domain 当前网站使用的域名
-options 图片处理规则 https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
-remote_uri 代理的图片uri，如果外网图片，该占位符会替换成该地址，否则是网站图片的uri
-path 网站图片的相对地址，如 http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg，path则为Uploads/image/20190826/5d634f5f6570f.jpeg
-```
-
-+ imageproxy全局函数
-```php
-// imageproxy图片格式处理
-//options 图片处理规则
-//file_id 图片id，若为ulr，则返回该url
-// return 返回与.env配置格式对应的图片地址
-imageproxy($options, $file_id)
-
-如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{remote_uri}
-imageproxy('100x150', 1)
-返回地址 http://localhost/ip/100x150/http://localhost/Uploads/image/20190826/5d634f5f6570f.jpeg
-
-如 IMAGEPROXY_URL={schema}://{domain}/ip/{options}/{path} (这种格式通常配合imageproxy -baseURL使用)
-返回地址 http://localhost/ip/100x150/Uploads/image/20190826/5d634f5f6570f.jpeg
-```
-
-+ 远程imageproxy代理
-
-有些项目，需要采用远程的一台服务器作为图片代理服务，此时可通过在.env设置IMAGEPROXY_REMOTE来设置远程服务器的域名
-```php
-//.env文件
-IMAGEPROXY_URL={schema}://{domain}/{options}/{remote_uri}
-IMAGEPROXY_REMOTE=http://www.test.com
-
-//imageporxy生成的地址
-$url = imageproxy('1920x540',$banner_id);
-echo $url;
-//http://www.test.com/1920x540/http://localhost/Uploads/images/xxxx.jpg
-```
-
 ## Elasticsearch
 框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
 
@@ -216,6 +169,17 @@ protected function _initialize() {
         }],
     ];
 }
+
+//如需指定删除联动数据失败时的操作，默认为继续删除，请指定第四参数，如:
+$this->_delete_auto = [
+    ['delete','Message',['id'=>['post_id'],[
+        'error_operate'=>self::DELETE_CONTINUE //继续删除
+    ]],
+    //或
+    ['delete','Message',['id'=>['post_id'],[
+        'error_operate'=>self::DELETE_BREAK //删除停止并返回错误信息
+    ]],
+];
 ```
 
 目前联动删除的定义规则暂时只有两种，第二种规则比第一种规则更灵活，可应用于更多复杂的场景。第一种规则仅能应用在两个表能通过一个外键表达关联的场景。第一种规则在性能上比第二种更优。
@@ -328,6 +292,44 @@ php artisan migrate:reset --no-cmd
 > //timeout为程序的超时退出时间，默认60秒
 > $process->setTimeOut(100)->callTp('/var/www/move/www/index.php', '/home/index/test');
 > ```
+
++ ConfigGenerator
+   迁移中处理系统配置的工具类
+
+   addGroup($name) //添加配置分组
+
+   deleteGroup($name) //删除配置分组
+
+   updateGroup($config_name, $group_name)  //将配置转移到指定分组
+
+   以下为新增配置项的操作函数
+   > $name 配置名
+   > 
+   > $title 配置标题
+   > 
+   > $value 配置值
+   > 
+   > $remark 配置说明
+   > 
+   > $group 配置分组
+   > 
+   > $sort 排序
+
+   addNum($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增数字类型配置值
+
+   addText($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增字符类型配置值
+
+   addArray($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增数组类型配置值
+
+   addPicture($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增图片类型配置值
+
+   addUeditor($name, $title, $value, $remark = '', $group = 1, $sort = 0) //新增富文本类型配置值
+
+   addSelect($name, $title, $value, $options, $remark = '', $group = 1, $sort = 0) //新增下拉选择配置值 $options 是下拉配置数组
+
+   add($name, $type, $title, $group, $extra, $remark, $value, $sort) //新增配置方法，未预设的第三方组件可使用该函数
+
+   delete($name) //删除配置
 
 ## 后台JS
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
@@ -447,48 +449,6 @@ redirect(U('home/user/index'));
 // 与PC端扫码后登录/注册业务处理一致
 ```
 
-## 工具类
-
-#### RedisLock类：基于Redis改造的悲观锁
-+ 先获取锁再执行业务逻辑，执行结束释放锁。
-+ 保证同一个方法的并发重复操作请求只有一个请求可以获取锁，在不进行高延迟事务处理的场景下可以使用。
-
-##### lock
-```blade
-该方法可以获取锁
-
-参数 
-$key 名称
-$expire 过期时间 单位为秒
-$timeout  循环取锁时间 单位为秒，默认为0
-$interval 取锁失败后重试间隔时间 单位为微秒，默认为100000
-
-返回值
-锁成功返回true 锁失败返回false
-```
-
-##### unlock
-```blade
-该方法可以释放锁
-
-参数 
-$key 名称
-
-返回值
-释放锁的个数
-```
-##### 代码示例
-```php
-public function execShell(){
-    $redis_lock = \Qscmf\Lib\RedisLock::getInstance();
-    $is_lock = $redis_lock->lock('exec_shell_lock_key', 60);
-    $is_lock === false && $this->error('请一分钟后再操作');
-
-    shell_exec('ll >/dev/null');
-    
-    $redis_lock->unlock('exec_shell_lock_key');
-}
-```
 ## 全局函数
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Helper.md)
 
