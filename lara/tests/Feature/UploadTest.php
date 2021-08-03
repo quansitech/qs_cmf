@@ -2,7 +2,7 @@
 namespace Lara\Tests\Feature;
 
 use Illuminate\Http\UploadedFile;
-use Testing\TestCase;
+use Lara\Tests\TestCase;
 
 class UploadTest extends TestCase {
 
