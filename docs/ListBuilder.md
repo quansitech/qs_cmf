@@ -103,6 +103,13 @@ $name 筛选项字段
 $type 筛选项类型（目前支持类型可查看ListSearchType）  
 $title 筛选项提示标题
 $options 筛选项其它配置，特殊类型有效，如select、select_text
+$auth_node 筛选项权限点
+
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该筛选项，默认为and：
+and：用户拥有全部权限则显示该按钮，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
+or：用户一个权限都没有则隐藏该按钮，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 
 用例：
 ->addSearchItem('keyword', 'text', 'id/昵称/email/手机号');
