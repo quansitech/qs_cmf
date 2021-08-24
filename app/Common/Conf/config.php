@@ -9,6 +9,8 @@ return array(
 
     'UPLOAD_FILE_SIZE' => 10,
 
+    'COOKIE_HTTPONLY' => true,
+
     'JS_ERROR_LOG' => true,
 
     'VAR_PATHINFO' => 'baobao_',
