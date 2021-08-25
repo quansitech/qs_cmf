@@ -7,7 +7,7 @@ return array(
 
     'LOG_RECORD'            =>  true,
 
-    'UPLOAD_FILE_SIZE' => 10,
+    'UPLOAD_FILE_SIZE' => 50,
 
     'COOKIE_HTTPONLY' => true,
 
@@ -46,8 +46,6 @@ return array(
     'ASSET' => array(
         'prefix' => __ROOT__ . '/Public/',
     ),
-
-    'UPLOAD_FILE_SIZE' => 5,
 
     //数据库连接配置
     'DB_TYPE'               =>  env('DB_CONNECTION', 'mysql'),     // 数据库类型
