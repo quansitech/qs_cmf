@@ -101,6 +101,14 @@ $sub_builder = $sub_builder
 >  $builder = new FormBuilder();
 >  $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
 >  ```
+>  + 数据源分组显示
+>  ```php
+>   $options = [
+>       ['text' => '分类一', 'children' => [['id' => '1', 'text' => '选项1'],['id' => '2', 'text' => '选项2']]],
+>       ['text' => '分类二', 'children' => [['id' => '3', 'text' => '选项3'],['id' => '4', 'text' => '选项4']]],
+>       ['text' => '分类三', 'children' => [['id' => '5', 'text' => '选项5'],['id' => '6', 'text' => '选项6']]],
+>  ];
+>  ```
 >
 6. textarea
 > + 多行文本
