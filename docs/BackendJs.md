@@ -76,3 +76,24 @@ $this：dom 当前列表checkbox元素节点
 selectIds：array 当前列表选中checkbox的值
 valDom：string 存放selectIds转换成字符串的元素节点，默认为:.check-all
 ```
+
+
+
+
+
+#### ajax-form
+
+1. 重写提交成功后的信息展示效果
+
+   在需要重写的页面执行以下代码, 回调里写客制化代码
+
+   ```
+   jQuery.data(document.querySelector('.ajax-form'), 'showMsg', function(info){
+       //信息展示代码
+       //todo something
+   });
+   ```
+
+2. 关闭提交成功后的reload页面效果
+
+   给form元素设置属性 reload='false'

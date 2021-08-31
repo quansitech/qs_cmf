@@ -12,7 +12,8 @@
     ],
     "require": {
         "tiderjian/think-core": "^11.0",
-        "funkjedi/composer-include-files": "^1.0"
+        "funkjedi/composer-include-files": "^1.0",
+        "quansitech/qscmf-utils": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
