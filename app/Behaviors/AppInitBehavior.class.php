@@ -55,7 +55,6 @@ class AppInitBehavior extends \Think\Behavior
         header("X-XSS-Protection: 1; mode=block");
         header("X-Content-Type-Options: nosniff");
         header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
-        header("Content-Security-Policy: script-src 'self'; object-src 'none'; style-src 'self'; child-src https:");
 
         $this->_setDBConfigWhileTesting();
         
