@@ -142,7 +142,7 @@ $formbuilder = new FormBuilder();
 
 #### setShowBtn
 ```blade
-该方法用于设置是否展示按钮
+该方法用于设置是否展示默认按钮（确定、返回）
 
 参数
 $is_show 是否展示，默认为true
@@ -256,3 +256,23 @@ default：默认值
 ->addFormItem('year', 'datetime', '年', '', ['startView' => 'decade', 'minView' => "decade", 'format' => "yyyy", 'php_format' => "Y"])
 ->addFormItem('month', 'datetime', '月', '', ['startView' => 'year', 'minView' => "year", 'format' => "yyyy-mm", 'php_format' => "Y-m"])
 ```
+
+#### addButton
+```blade
+向表单加入自定义按钮
+
+表单默认有提交按钮（确定）和返回按钮（返回），可以使用此方法加入其它按钮。
+此方法的用法和已支持的按钮类型，参考listBuilder的addRightButton方法。
+```
+
+用法
++ 使用默认类型按钮，如向表单页加入禁用、启用、删除功能
+```php
+->addButton('forbid')
+->addButton('delete');
+```
++ 使用自定义类型按钮，可根据业务自定义按钮属性
+```php
+->addButton('self', ['title' => '查看资料', 'class' => 'btn btn-info qs-form-btn', 'onclick'=>"javascript:window.location.href='".U('admin/User/info', ['id' => '__data_id__'])."';"]);
+```
+

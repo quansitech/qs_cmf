@@ -204,6 +204,55 @@ class Num extends ColumnType implements EditableInterface
 }
 ```
 
+#### 如何开发列表列右边按钮或者表单页按钮
+```php
+namespace Qs\ListRightButton\Modal;
+
+use Qs\ModalButton\ModalButtonBuilder;
+use Qscmf\Builder\ListRightButton\ListRightButton;
+
+// 列表的右边按钮和表单页的按钮，都是处理一条具体的数据
+// 所以它们所需的按钮类型应该是一样的，可以共同使用ListRightButton类型的按钮。
+
+// 必须继承Qscmf\Builder\ListRightButton\ListRightButton抽象类
+
+// 默认的颜色的样式目前有default、primary、warning、danger、success、info
+// 由于列表页按钮和表单页的按钮样式不一致，使用mergeAttr合并属性，注入对应的样式类名
+
+class Modal extends ListRightButton
+{
+    public function build(array &$option, array $data, $listBuilder)
+    {
+        $my_attribute['type'] = 'modal';
+        $my_attribute['title'] = '对话框';
+        $my_attribute['class'] = 'primary';
+        $my_attribute['data-toggle'] = "modal";
+
+        $builder = $option['options'] ?:$this->defaultModalBuilder();
+
+        $gid = $builder->getGid();
+
+        $my_attribute['data-target']="#".$gid.'Modal';
+
+        if ($option['attribute'] && is_array($option['attribute'])) {
+            $option['attribute'] = $listBuilder->mergeAttr($my_attribute, $option['attribute']);
+        }
+
+        $option['attribute']['id'] = $gid;
+
+        return (string)$builder;
+
+    }
+
+    protected function defaultModalBuilder(){
+        $builder = new ModalButtonBuilder();
+        $builder->setTitle('defaultModal');
+
+        return $builder;
+    }
+}
+```
+
 没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表
