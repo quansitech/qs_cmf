@@ -40,3 +40,8 @@ CompareBuilder，如图所示
 ```blade
 该方法用于检测字段的权限点，无权限则unset该item
 ```
+
+#### addContentBottom
+```blade
+该方法可以在content底部加入自定义html
+```
