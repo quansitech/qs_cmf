@@ -86,10 +86,18 @@
 > 
 > 11. registerBodyHtml
 >> + 说明:
-     >>
-     >>   将组件的html注入dashboard_layout body的底部，
-     >>
-     >>   也可以通过在模板文件添加__QS_REGISTER_BODY_TAG_BEGIN__和__QS_REGISTER_BODY_TAG_END__指定html注入的位置
+>>
+>>   将组件的html注入dashboard_layout body的底部，
+>>
+>>   也可以通过在模板文件添加__QS_REGISTER_BODY_TAG_BEGIN__和__QS_REGISTER_BODY_TAG_END__指定html注入的位置
+>>
+>> + 参数:
+>> + html 需要注入的html
+> 
+> 12. registerHeaderNavbarRightHtml
+>> + 说明:
+>>
+>>   向dashboard_layout 的header元素注入右侧导航项
 >>
 >> + 参数:
 >> + html 需要注入的html
