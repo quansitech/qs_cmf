@@ -29,7 +29,7 @@
 设置导航项类型
 
 参数说明
-$type 类型，取值参考registerNavbarRightLiType
+$type 类型，取值参考方法(new \Qscmf\Builder\HeaderBuilder())->registerNavbarRightLiType()
 ```
 
 #### setAttribute
