@@ -142,7 +142,7 @@ $preserve bool 是否保留本身目录，默认为false，不保留
     | 参数     | 说明                           | 类型 | 必填 | 默认值 |
     | :------- | :----------------------------- | ---- | ---- | :----- |
     | check_items | 内容 |  array | 是   |   |
-    | check_items.auth_node | 权限点，格式为 '模块.控制器.方法名' |  string I array | 否   |   |
+    | check_items.auth_node | 权限点，格式为 模块.控制器.方法名 |  string I array | 否   |   |
     
     若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示，默认为and：
     
@@ -161,7 +161,7 @@ $preserve bool 是否保留本身目录，默认为false，不保留
     | 参数     | 说明                           | 类型 | 必填 | 默认值 |
     | :------- | :----------------------------- | ---- | ---- | :----- |
     | item | 内容 |  string | 是   |   |
-    | item_auth_node | 权限点，格式为 '模块.控制器.方法名' |  string I array | 否   |   |
+    | item_auth_node | 权限点，格式为 模块.控制器.方法名 |  string I array | 否   |   |
     
     若item_auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示，默认为and：
     
