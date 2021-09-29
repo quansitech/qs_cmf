@@ -196,6 +196,22 @@ $project_info = [
 ->setFormData(["project_id" => ["41,42"]]);
 ```
 
+可使用extra_attr参数设置的属性说明 
++ multiple
+  ```text
+  多选
+  
+  multiple="multiple"
+  ```
+  
++ dropdownParent
+  ```text
+  select2组件默认追加在body元素末尾，在modal或者其它容器中使用select2会出现一些意外情况，如无法在搜索框输入内容。
+  可以使用此属性修改其位置，将组件放入容器内，避免意外情况。
+  
+  dropdownParent="dom_id"
+  ```
+
 
 #### 字段权限过滤机制
 ```blade
