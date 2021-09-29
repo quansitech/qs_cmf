@@ -28,6 +28,11 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ```php
 //addFormItem第七个参数，传递指定的上传处理地址, oss设为1表示开始oss上传处理，type为指定的上传配置类型
 ->addFormItem('content', 'ueditor', '正文内容','', '','','data-url="/Public/libs/ueditor/php/controller.php?oss=1&type=image"')
+
+//若oss采用cdn域名则需要在config.php对应的上传类型中加上
+'oss_options' => [
+    'bucket'=>'******真实的bucket名******',
+],
 ```
 
 通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
