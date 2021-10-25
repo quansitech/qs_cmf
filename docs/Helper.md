@@ -174,3 +174,11 @@ $preserve bool 是否保留本身目录，默认为false，不保留
 
 #### isJson
 判断字符串是否为json格式
+
+
+
+#### S
+
+缓存操作便捷函数, 见[[数据缓存 - ThinkPHP3.2完全开发手册](http://document.thinkphp.cn/manual_3_2.html#data_cache)]
+
+在此基础上，增加了第四个参数，是否保留缓存的过期时间。默认为false，开启的话设置true，开启后如果key有未过期，则保留当前的过期时间，不做刷新处理；否则将expire作为新的过期时间设置。
