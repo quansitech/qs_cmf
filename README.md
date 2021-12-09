@@ -65,7 +65,7 @@ php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
     ```php
     // ChapterModel类必须继承接口
     class ChapterModel  extends \Gy_Library\GyListModel implements \Qscmf\Lib\Elasticsearch\ElasticsearchModelContract{
- 
+     
        // ElasticsearchHelper已经实现了一些帮助函数
        use \Qscmf\Lib\Elasticsearch\ElasticsearchHelper;
         
@@ -82,7 +82,7 @@ php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
            if($ent['status'] != DBCont::NORMAL_STATUS || $ent['pid'] == 0){
                return false;
            }
-   
+      
            $course_ent = D('Course')->find($ent['course_id']);
            if($course_ent['status'] == DBCont::NORMAL_STATUS){
                return true;
@@ -91,7 +91,7 @@ php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
                return false;
            }
        }
-   
+      
        // 程序会自动生成索引的配置参数，此处是定义生成参数的规则
        // 以:开头的字母表示该处会自动替换成相应字段的实际值
        // {}表示里面的字符会与替换后的:字段值进行连接，如:id{_chapter}, id实际值为 12，则该处会替换成 12_chapter
@@ -150,7 +150,18 @@ protected $_seal_fields = [
 ];
 ```
 
+
+
+### 清除数据库缓存
+
+clearCache 方法
+
+参数options 通过该参数可以设置Modal对象的options属性
+
+
+
 ## 联动删除
+
 在进行一些表删除操作时，很可能要删除另外几张表的特定数据。联动删除功能只需在Model里定义好联动删除规则，在删除数据时即可自动完成另外多张表的删除操作，可大大简化开发的复杂度。
 
 使用样例
