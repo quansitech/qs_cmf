@@ -1,12 +1,32 @@
 ## SubBuilder
 
+<big>**此功能需要提供action genQsSubBuilderRowToJs**</big>
+```
+用于异步处理点击添加新字段所需HTML
+
+trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制器中引入
+```
+
 #### 用法
 
 #### 只读模式
-实例SubTableBuilder对象时可设置为只读模式，默认是关闭
-```php
-$sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
-```
+1. 实例SubTableBuilder对象时可控制隐藏/显示 删除、添加新字段 按钮，默认是false，即展示 
+   ```php
+   $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
+   ```
+   
+2. 表单项单个设置为只读
+  ```php
+   $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
+   $sub_builder->addTableHeader('text', '10%');
+   $sub_builder->addFormItem('text', 'text', '', true);
+   ```
+
+3. 表单项统一设置为只读
+   ```php
+   $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
+   $sub_builder->setColReadOnly(true);
+   ```
 
 #### addTableHeader
 ```blade
@@ -34,6 +54,14 @@ $options item options
 $readonly 是否开启只读模式，默认关闭，false
 $extra_class item项额外样式
 $extra_attr item项额外属性
+$value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
+$auth_node 列权限点，需要先添加该节点，若该用户无此权限则unset该列；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
+
+若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该列，默认为and：
+and：用户拥有全部权限则显示该列，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
+or：用户一个权限都没有则隐藏该列，格式为：
+['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
 ```php
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
@@ -48,12 +76,35 @@ $sub_builder = $sub_builder
 #### setData
 ```blade
 设置子表单项的数据
+
+该方法需要设置表单项属性，建议使用 setFormData 方法直接设置表单值
 ```
 ```php
 $data = [
     ['name' => 'id', 'type' => 'hidden', 'value' => 1],
     ['name' => 'title', 'type' => 'text', 'value' => 'title'],
     ['name' => 'summary', 'type' => 'textarea', 'value' => 'summary']
+];
+
+$sub_builder = new \Qscmf\Builder\SubTableBuilder();
+$sub_builder = $sub_builder
+        ->addTableHeader('标题', '30%')
+        ->addTableHeader('摘要', '30%')
+        ->addFormItem('id', 'hidden')
+        ->addFormItem('title', 'text')
+        ->addFormItem('summary', 'textarea')
+        ->setData($data);
+```
+
+#### setFormData
+```blade
+设置子表单的数据
+```
+```php
+$data = [
+    ['title' => 'title1', 'summary' => 'summary1'],
+    ['title' => 'title2', 'summary' => 'summary2'],
+    ['title' => 'title3', 'summary' => 'summary3'],
 ];
 
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
@@ -112,3 +163,9 @@ $sub_builder = $sub_builder
 >
 6. textarea
 > + 多行文本
+> 
+7. date
+> + 日期组件
+> 
+8. num
+> + 数字输入框

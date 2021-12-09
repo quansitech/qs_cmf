@@ -50,7 +50,7 @@ $page_template 页码模板自定义html代码
 参数
 $name 列名 
 $title 列标题
-$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num）  
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num、checkbox、select、select2、textarea）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $editable 列是否可编辑，默认为false  
 $tip 列标题提示文字，默认为''  
