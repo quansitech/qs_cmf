@@ -222,6 +222,22 @@ class Num extends ColumnType implements EditableInterface
 }
 ```
 
+```text
+subBuilder共用ColumnType的列类型
+
+当用户点击subBuilder的添加新字段时，会定义常量值 QS_SUB_RENEW_ROW
+避免重复加载静态文件，引入静态文件时，需要先判断常量值 QS_SUB_RENEW_ROW 是否已定义、后判断字段标识常量值是否已定义，
+```
+```html
+<notdefined name='QS_SUB_RENEW_ROW'>
+    <notdefined name='SELF_TYPE_NAME'>
+        <link rel='stylesheet' href="column_type.css">
+        <script type="text/javascript" src="column_type.min.js"></script>
+        <define name='SELF_TYPE_NAME' value='1' />
+    </notdefined>
+</notdefined>
+```
+
 #### 如何开发列表列右边按钮或者表单页按钮
 ```php
 namespace Qs\ListRightButton\Modal;
