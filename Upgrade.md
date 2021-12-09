@@ -148,23 +148,17 @@
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
 
-
-
-ps. v12版本更新计划
-   将 
-   Larafortp/MenuGenerate、
-   Larafortp/ConfigGenerator、 
-   Qscmf/Lib/RedisLock、
-   Larafortp/CmmMigrate/CmmProcess、
-   全局方法 imageproxy
-   移出核心
-
-   
 ```
 
 
 
+ <big>**v12版本更新计划**<big>
 
-
-   
-   
+1. 移出核心
+   1. Larafortp/MenuGenerate
+   2. Larafortp/ConfigGenerator
+   3. Qscmf/Lib/RedisLock
+   4. Larafortp/CmmMigrate/CmmProcess
+   5. 全局方法 imageproxy
+2. QsController 取消引入trait类 \Qscmf\Builder\TSubBuilder 
+3. 通过ListBuilder接收分页对象来限制查询页数不能超过最大页数  
