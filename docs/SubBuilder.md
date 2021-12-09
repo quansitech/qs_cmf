@@ -54,7 +54,6 @@ $options item options
 $readonly 是否开启只读模式，默认关闭，false
 $extra_class item项额外样式
 $extra_attr item项额外属性
-$value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $auth_node 列权限点，需要先添加该节点，若该用户无此权限则unset该列；格式为：模块.控制器.方法名，如：['admin.Box.allColumns']
 
 若auth_node存在多个值，支持配置不同逻辑（logic值为and或者or）判断是否显示该列，默认为and：
