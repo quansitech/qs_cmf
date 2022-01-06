@@ -1,16 +1,16 @@
-<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="rePwdModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+                <h4 class="modal-title" id="rePwdModalLabel">修改密码</h4>
             </div>
             <div class="modal-body">
                 <form class="ajax-form modal-form" action="{:U('/admin/user/repwd')}" method="post">
                     <div class="form-group">
                         <label for="newpassword">新密码</label>
                         <input type="password" class="form-control mb-10" id="newpassword" name="pwd" placeholder="输入新密码" required min="6" max="12">
-                        <input type="password" class="form-control" id="newpassword" name="pwd1" placeholder="请再输入一次" required data-validation-equals="pwd">
+                        <input type="password" class="form-control" id="reNewPassword" name="pwd1" placeholder="请再输入一次" required data-validation-equals="pwd">
                         <input type="hidden" name="id" id='repwd_user_id' />
                     </div>
 
@@ -55,19 +55,6 @@
         $('.browse-btn').on('click', function(){
             var uid = $(this).data('id');
             $('#browse').find('.modal-body').load("{:U('/admin/user/browse')}" + "?uid=" + uid);
-        });
-        
-        $('.export_excel').on('click',function(){
-            var url = $(this).data('url');
-            var query = $('.builder .search-input').serialize();
-            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
-            query = query.replace(/(^&)|(\+)/g, '');
-            if (url.indexOf('?') > 0) {
-                url += '&' + query;
-            } else {
-                url += '?' + query;
-            }
-            window.location.href = url;
         });
     });
 </script>
