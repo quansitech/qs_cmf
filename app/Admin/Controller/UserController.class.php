@@ -42,7 +42,7 @@ class UserController extends GyListController{
                 $role_map['id'] = array('in', $role_ids);
                 $role_map['status'] = DBCont::NORMAL_STATUS;
                 $data['role'] = D('Role')->where($role_map)->getField('name', true);
-                $data['role'] = implode(',', $data['role']);
+                $data['role'] = implode(',', (array)$data['role']);
             }
         }
        

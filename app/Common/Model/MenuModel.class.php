@@ -12,7 +12,7 @@ class MenuModel extends \Gy_Library\GyListModel{
         array('status','require', '{%STATUS_REQUIRED}'),
         array('sort','require', '{%SORT_REQUIRED}'),
         array('type','require', '{%TYPE_REQUIRED}'),
-        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
     );
     
     protected $_delete_validate = array(
