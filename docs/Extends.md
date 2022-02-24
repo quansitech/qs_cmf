@@ -28,7 +28,7 @@
 >  }
 > ```
 
-+ 框架提供的注册接口
++ 框架提供的注册接口 (RegisterContainer类)
 > 1. registerController
 >> + 说明：注册controller
 >> + 参数：module_name 模块、 controller_name 控制器、controller_cls 需要映射的controller类名
