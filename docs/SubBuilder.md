@@ -4,10 +4,12 @@
 ```
 用于异步处理点击添加新字段所需HTML
 
+trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制器中引入
+```
+
+```
 使用技巧：
 可以给.text-right .btn-sm元素添加”afterQsSubBuilderRowToJs“事件，处理新字段添加后的动作。
-
-trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制器中引入
 ```
 
 ```php
