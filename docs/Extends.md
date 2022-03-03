@@ -224,19 +224,39 @@ class Num extends ColumnType implements EditableInterface
 
 ```text
 subBuilder共用ColumnType的列类型
+```
 
-当用户点击subBuilder的添加新字段时，会定义常量值 QS_SUB_RENEW_ROW
-避免重复加载静态文件，引入静态文件时，需要先判断常量值 QS_SUB_RENEW_ROW 是否已定义、后判断字段标识常量值是否已定义，
+```text
+避免重复加载静态文件，需要提供以下方法引入不同模式下的静态资源。
 ```
-```html
-<notdefined name='QS_SUB_RENEW_ROW'>
-    <notdefined name='SELF_TYPE_NAME'>
-        <link rel='stylesheet' href="column_type.css">
-        <script type="text/javascript" src="column_type.min.js"></script>
-        <define name='SELF_TYPE_NAME' value='1' />
-    </notdefined>
-</notdefined>
-```
+
+***之后会强制ColumnType实现以下方法，需要升级对应组件***
+
++ 只读模式 registerCssAndJs
+  
+  ```php
+
+    static public function registerCssAndJs():?array {
+        return [
+            "<script src='".asset('libs/cui/cui.extend.min.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datepicker/bootstrap-datepicker.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js')."' ></script>",
+        ];
+    }
+  ```
++ 可编辑模式 registerEditCssAndJs
+  
+  ```php
+    static public function registerEditCssAndJs():?array {
+        return [
+            "<script src='".asset('libs/cui/cui.extend.min.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datepicker/bootstrap-datepicker.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')."' ></script>",
+            "<script src='".asset('libs/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js')."' ></script>",
+        ];
+    }
+  ```
 
 #### 如何开发列表列右边按钮或者表单页按钮
 ```php
