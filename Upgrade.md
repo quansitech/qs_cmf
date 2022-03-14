@@ -147,11 +147,7 @@
 
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
-
-14. [（升级到v12版本）](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
 ```
-
-
 
  <big>**v12版本更新计划**<big>
 
@@ -162,4 +158,8 @@
    4. Larafortp/CmmMigrate/CmmProcess
    5. 全局方法 imageproxy
 2. QsController 取消引入trait类 \Qscmf\Builder\TSubBuilder 
-3. 通过ListBuilder接收分页对象来限制查询页数不能超过最大页数  
+3. 通过ListBuilder接收分页对象来限制查询页数不能超过最大页数
+
+
++  [升级到v12版本步骤](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
+
