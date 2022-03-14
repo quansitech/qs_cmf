@@ -68,37 +68,37 @@
 + *each* 内置函数废除，需使用 *foreach* 代替
 
     + ```php
-    // 修改C123.class.php文件
+        // 修改C123.class.php文件
     
-    // 约23行 
-    while (list($k,$v) = each($data))  
-    // 改为 
-    foreach ($data as $k=>$v)
-    ```
+        // 约23行 
+        while (list($k,$v) = each($data))  
+        // 改为 
+        foreach ($data as $k=>$v)
+      ```
 
     + ```php
-    // 修改PHPMailer.class.php文件
-    // 检查继承父类是否存在，否则改成 extends \Common\Util\Mail\Driver
-    
-    // 约1775行
-     while( list(, $line) = each($lines) ) { 
-    // 改为 
-    foreach($lines as $line) {
-    ```
+        // 修改PHPMailer.class.php文件
+        // 检查继承父类是否存在，否则改成 extends \Common\Util\Mail\Driver
+        
+        // 约1775行
+         while( list(, $line) = each($lines) ) { 
+        // 改为 
+        foreach($lines as $line) {
+      ```
 
     + ```php
-    // 修改SMTP.class.php文件
-    
-    // 约393行 
-    while(list(,$line) = @each($lines)) { 
-    // 改为 
-    foreach($lines as $line) {
-    
-    // 约422行 
-    while(list(,$line_out) = @each($lines_out)) { 
-    // 改为 
-    foreach($lines_out as $line_out) {
-    ```
+        // 修改SMTP.class.php文件
+        
+        // 约393行 
+        while(list(,$line) = @each($lines)) { 
+        // 改为 
+        foreach($lines as $line) {
+        
+        // 约422行 
+        while(list(,$line_out) = @each($lines_out)) { 
+        // 改为 
+        foreach($lines_out as $line_out) {
+      ```
 
     + 其它程序需自行检查
 
