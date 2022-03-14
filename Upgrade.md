@@ -148,6 +148,7 @@
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
 
+14. [（升级到v12版本）](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
 ```
 
 
