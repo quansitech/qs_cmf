@@ -4,7 +4,7 @@
 
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，需用build方法替换
 
-#### 兼容php8.0的修改
+#### 使用php8.0的修改
 
 + 检测非常量值是否缺少引号
 
@@ -106,7 +106,7 @@
 
 **废弃函数其它解决方案：已理解原函数的输入输出值后创建一个同名全局函数。**
 
-#### 需要注意的不兼容变更
+#### 需要注意使用php8.0不兼容的变更
 
 + pdo 事务中[隐形提交的sql](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)将会使事务失效，因为它无论如何都不能回滚。如创建、修改、删除数据表的sql
 
