@@ -11,9 +11,9 @@ class NodeModel extends \Gy_Library\GyListModel{
         array('title', 'require', '标题是必填项'),
         array('sort','/^[0-9]+$/','{%MUST_BE_INTEGER}',parent::VALUE_VALIDATE,'regex'),
         array('level', 'require', 'level是必填项'),
-        array('level',array(DBCont::LEVEL_MODULE,DBCont::LEVEL_CONTROLLER,DBCont::LEVEL_ACTION),'level值不规范',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('level',array(DBCont::LEVEL_MODULE,DBCont::LEVEL_CONTROLLER,DBCont::LEVEL_ACTION),'level值不规范',parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
         array('pid', '/^[0-9]+$/','{%MUST_BE_INTEGER}',parent::MUST_VALIDATE,'regex'),
-        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
     );
     
 //    protected $_delete_auto = array(

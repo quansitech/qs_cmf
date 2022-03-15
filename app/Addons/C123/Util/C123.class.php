@@ -20,7 +20,7 @@ class C123 {
             $host = $row['host'];
             $port = $row['port'] ? $row['port']:80;
             $file = $row['path'];
-            while (list($k,$v) = each($data)) 
+            foreach ($data as $k=>$v)
             {
                     $post .= rawurlencode($k)."=".rawurlencode($v)."&";	//转URL标准码
             }

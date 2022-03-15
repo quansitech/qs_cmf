@@ -9,8 +9,8 @@ class AddonsModel extends \Gy_Library\GyListModel{
         array('name', 'require', '必选填写标识'),
         array('title', 'require', '必须填写名称'),
         array('description', 'require', '必须填写描述'),
-        array('status', array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS), '{%STATUS_OUT_OF_RANGE}', parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
-        array('has_adminlist', array(0,1), '后台列表值超出有效范围', parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('status', array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS), '{%STATUS_OUT_OF_RANGE}', parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
+        array('has_adminlist', array(0,1), '后台列表值超出有效范围', parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
     );
     
     protected $_auto = array(

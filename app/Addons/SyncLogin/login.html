@@ -1,8 +1,0 @@
-<php>if(!empty($config['type'])){</php>
-<div class="social-login">
-        <p>可以使用以下方式登录</p>
-        <?php if(in_array('Wechat',$config['type'])){ ?><a href="{:addons_url('SyncLogin://Base/login',array('type'=>'Wechat'))}"><img src="__PUBLIC__/img/login-wechat.png" alt=""></a><?php }?>
-        <?php if(in_array('Sina',$config['type'])){ ?><a href="{:addons_url('SyncLogin://Base/login',array('type'=>'Sina'))}"><img src="__PUBLIC__/img/login-weibo.png" alt=""></a><?php }?>
-        <?php if(in_array('Qq',$config['type'])){ ?><a href="{:addons_url('SyncLogin://Base/login',array('type'=>'Qq'))}"><img src="__PUBLIC__/img/login-qq.png" alt=""></a><?php }?>
-</div>
-<php>}</php>

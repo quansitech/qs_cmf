@@ -10,7 +10,7 @@ class UserModel extends \Gy_Library\GyListModel implements \Gy_Library\ICheckAva
         array('nick_name', 'require', '请填写用户名'),
         array('nick_name', '', '用户名已存在', parent::EXISTS_VALIDATE, 'unique',parent::MODEL_BOTH),
         array('status', 'require', '必选填写用户状态'),
-        array('status', array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS), '{%STATUS_OUT_OF_RANGE}', parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('status', array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS), '{%STATUS_OUT_OF_RANGE}', parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
         array('pwd', 'require', '{%PWD_REQUIRE}'),
         array('telephone', 'require', '手机号码必填'),
         array('telephone','/^1\d{10}$/','手机号码格式不正确',parent::MUST_VALIDATE,'regex'),
