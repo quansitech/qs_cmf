@@ -3,6 +3,14 @@
 + 将qs_cmf中的lara/config/cache.php文件复制到lara/config目录
 
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，需用build方法替换
+  
++ 修改composer.json文件，删除*require-dev*中的以下包的引入
+  ```php
+    "phpunit/phpunit": "^8.0",
+    "laravel/dusk": "^5.0",
+    "mockery/mockery": "^1.2",
+    "fzaninotto/faker": "^1.4"
+  ```
 
 + Larafortp/MenuGenerate已经删除，检查项目有无使用，使用 https://github.com/quansitech/qscmf-utils 的 MenuGenerate 代替
 
