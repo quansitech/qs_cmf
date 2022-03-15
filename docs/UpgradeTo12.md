@@ -3,6 +3,14 @@
 + 将qs_cmf中的lara/config/cache.php文件复制到lara/config目录
 
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，需用build方法替换
+  
++ 修改composer.json文件，删除require-dev中的以下包的引入
+  ```php
+    "phpunit/phpunit": "^9.3.0",
+    "laravel/dusk": "^6.9.0",
+    "mockery/mockery": "^1.2",
+    "fakerphp/faker": "^1.10.0"
+  ```
 
 #### 使用php8.0的修改
 
