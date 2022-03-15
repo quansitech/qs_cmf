@@ -9,7 +9,7 @@ class RoleModel extends \Gy_Library\GyListModel{
     protected $_validate = array(
         array('name', 'require', '用户组名称是必填项'),
         array('name', '', '已存在用户组名称', parent::MUST_VALIDATE, 'unique', parent::MODEL_BOTH),
-        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('status',array(DBCont::FORBIDDEN_STATUS, DBCont::NORMAL_STATUS),'{%STATUS_OUT_OF_RANGE}',parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
     );
     
     protected $_auto = array(

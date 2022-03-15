@@ -39,7 +39,7 @@ namespace Common\Util\Mail\Driver;
 
 if (version_compare(PHP_VERSION, '5.0.0', '<') ) exit("Sorry, this version of PHPMailer will only run on PHP version 5 or greater!\n");
 
-class PHPMailer extends \Gy_Library\Mail\Driver{
+class PHPMailer extends \Common\Util\Mail\Driver{
 
   /////////////////////////////////////////////////
   // PROPERTIES, PUBLIC
@@ -1772,7 +1772,7 @@ class PHPMailer extends \Gy_Library\Mail\Driver{
     $eol = "\r\n";
     $escape = '=';
     $output = '';
-    while( list(, $line) = each($lines) ) {
+    foreach($lines as $line) {
       $linlen = strlen($line);
       $newline = '';
       for($i = 0; $i < $linlen; $i++) {

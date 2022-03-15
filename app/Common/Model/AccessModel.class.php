@@ -10,7 +10,7 @@ class AccessModel extends GyModel{
         array('role_id', 'require', 'role_id是必填项'),
         array('node_id', 'require', 'node_id是必填项'),
         array('level', 'require', 'level是必填项'),
-        array('level',array(DBCont::LEVEL_MODULE,DBCont::LEVEL_CONTROLLER,DBCont::LEVEL_ACTION),'level值不规范',parent::MUST_VALIDATE, in, parent::MODEL_BOTH),
+        array('level',array(DBCont::LEVEL_MODULE,DBCont::LEVEL_CONTROLLER,DBCont::LEVEL_ACTION),'level值不规范',parent::MUST_VALIDATE, 'in', parent::MODEL_BOTH),
     );
     
     public function delAccess($map){
