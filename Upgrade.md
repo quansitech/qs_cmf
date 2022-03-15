@@ -50,14 +50,14 @@
                 "@php ./www/index.php /qscmf/createSymlink"
             ]
         }
-    
+
     删除app/Behaviors文件架下的InitHookBehavior.class.php、LoadDBConfigBehavior.class.php
     删除app/Common/Conf/tags.php 中 InitHook 和 LoadDBConfig的设置
 
     检查根目录下的tp.php文件，有无LARA_DIR 和 ROOT_PATH的常量定义，没有则添加
     defined('LARA_DIR') || define('LARA_DIR', __DIR__  .  '/lara');
     defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
-    
+
     检查composer.json文件，并添加以下内容
     "require-dev": {
         "phpunit/phpunit": "^8.0",
@@ -87,14 +87,14 @@
    <link href="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
    <script src="__PUBLIC__/libs/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
 
-   
+
 
    3. 删除tp.php 里内容，替换成以下的
    --------------------------------
    <?php
    // 应用入口文件
    ini_set('display_errors', '0');
-   
+
    if(!function_exists('show_bug')){
        function show_bug($object){
            echo "<pre style='color:red'>";
@@ -102,14 +102,14 @@
            echo "</pre>";
        }
    }
-   
+
    //require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
    //require __DIR__ . '/app/Common/Common/function.php';
    require_once __DIR__ . '/vendor/autoload.php';
-   
+
    $dotenv = \Dotenv\Dotenv::create(__DIR__ );
    $dotenv->load();
-   
+
    // 引入ThinkPHP入口文件
    require 'vendor/tiderjian/think-core/src/ThinkPHP.php';
    -----------------------------------
@@ -147,18 +147,20 @@
 
   update migrations set `after`=1,`run`=1,`before`=1
   --------------------------------
-
 ```
-
-
 
  <big>**v12版本更新计划**<big>
 
 1. 移出核心
+   
    1. Larafortp/MenuGenerate
    2. Larafortp/ConfigGenerator
    3. Qscmf/Lib/RedisLock
    4. Larafortp/CmmMigrate/CmmProcess
    5. 全局方法 imageproxy
+
 2. QsController 取消引入trait类 \Qscmf\Builder\TSubBuilder 
-3. 通过ListBuilder接收分页对象来限制查询页数不能超过最大页数  
+
+3. QsPage  原来的全局静态方法setPullStyle更名为setDefaultPullStyle，并且新增setPullStyle的对象方法。
+   
+   升级建议：检查有无使用setPullStyle静态方法，改名为setDefaultPullStyle。有些项目的导出excel功能采用了QsPage对象来获取当前页码，如果后台全局关闭了下拉风格，必须在导出前通过setPullStyle方法重置成下拉风格，否则会无法结束导出程序。
