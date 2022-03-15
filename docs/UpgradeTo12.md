@@ -19,7 +19,8 @@
 + QsPage 原来的全局静态方法setPullStyle更名为setDefaultPullStyle，并且新增setPullStyle的对象方法。
   
   升级建议：检查有无使用setPullStyle静态方法，改名为setDefaultPullStyle。有些项目的导出excel功能采用了QsPage对象来获取当前页码，如果后台全局关闭了下拉风格，必须在导出前通过setPullStyle方法重置成下拉风格，否则会无法结束导出程序。
-  
+
++ 删除项目目录下面的composer.json里的require-dev数据
   
 
 #### 使用php8.0的修改
