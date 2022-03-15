@@ -149,18 +149,4 @@
   --------------------------------
 ```
 
- <big>**v12版本更新计划**<big>
-
-1. 移出核心
-   
-   1. Larafortp/MenuGenerate
-   2. Larafortp/ConfigGenerator
-   3. Qscmf/Lib/RedisLock
-   4. Larafortp/CmmMigrate/CmmProcess
-   5. 全局方法 imageproxy
-
-2. QsController 取消引入trait类 \Qscmf\Builder\TSubBuilder 
-
-3. QsPage  原来的全局静态方法setPullStyle更名为setDefaultPullStyle，并且新增setPullStyle的对象方法。
-   
-   升级建议：检查有无使用setPullStyle静态方法，改名为setDefaultPullStyle。有些项目的导出excel功能采用了QsPage对象来获取当前页码，如果后台全局关闭了下拉风格，必须在导出前通过setPullStyle方法重置成下拉风格，否则会无法结束导出程序。
+v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
