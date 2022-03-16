@@ -1,5 +1,5 @@
 <?php
-return array(
+$common_config = array(
     'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
     'SHOW_PAGE_TRACE'       =>  false,
 
@@ -80,7 +80,6 @@ return array(
     'TMPL_PARSE_STRING' => array(
         '__ADDONSJS__' => __ROOT__ . '/Public/Addons'
     ),
-
-    include __DIR__.'/http_config.php',
-    include __DIR__.'/upload_config.php',
 );
+
+return array_merge($common_config, load_all_common_config());
