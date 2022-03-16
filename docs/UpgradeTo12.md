@@ -59,7 +59,7 @@
     $common_config = array(
     
     // 在尾部追加文件
-    return array_merge($common_config, load_all_common_config());
+    return array_merge($common_config, loadAllCommonConfig());
     ```
   
 
