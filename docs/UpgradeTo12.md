@@ -27,6 +27,40 @@
 + QsPage 原来的全局静态方法setPullStyle更名为setDefaultPullStyle，并且新增setPullStyle的对象方法。
   
   升级建议：检查有无使用setPullStyle静态方法，改名为setDefaultPullStyle。有些项目的导出excel功能采用了QsPage对象来获取当前页码，如果后台全局关闭了下拉风格，必须在导出前通过setPullStyle方法重置成下拉风格，否则会无法结束导出程序。
+
++ 拆分config.php文件
+  + 同目录下新增文件夹*Config*，将新增配置文件放在此目录
+  + 新增*upload_config.php*文件，并移动与上传相关的配置
+    ```php
+    //阿里云oss
+    'ALIOSS_ACCESS_KEY_ID' => env('ALIOSS_ACCESS_KEY_ID'),
+    'ALIOSS_ACCESS_KEY_SECRET' => env('ALIOSS_ACCESS_KEY_SECRET'),
+
+    'UPLOAD_FILE_SIZE' => 50,
+    
+    'UPLOAD_TYPE_EDITOR' => [...],
+    'UPLOAD_TYPE_AUDIO' => [...],
+    'UPLOAD_TYPE_IMAGE' => [...],
+    'UPLOAD_TYPE_VIDEO' => [...],
+    'UPLOAD_TYPE_FILE' => [...],
+    'UPLOAD_TYPE_SIMAGE' => [...],
+    'UPLOAD_TYPE_JOB_IMAGE' => [...],
+    ```
+  + 新增*http_config.php*文件，并移动http协议相关配置
+    ```php
+    //通过$_SERVER数组获取当前访问的http协议的关键值
+    'HTTP_PROTOCOL_KEY' => 'REQUEST_SCHEME',
+    ```
+  + 移除*config.php*以上配置项，并将以上新增配置文件合并至同一数组
+    ```php
+    // 第二行    
+    return array(
+    // 改为
+    $common_config = array(
+    
+    // 在尾部追加文件
+    return array_merge($common_config, loadAllCommonConfig());
+    ```
   
 
 #### 使用php8.0的修改
@@ -46,6 +80,8 @@
     + MenuModel
     
     + NodeModel
+      
+    + RoleModel
     
     + UserModel
 
