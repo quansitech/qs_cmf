@@ -150,3 +150,9 @@
 ```
 
 v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
+
+
+
+##### v13修改计划
+
+- [ ] CompareBuilder FormBuilder ListBuilder 删除display方法
