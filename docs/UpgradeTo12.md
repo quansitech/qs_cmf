@@ -2,7 +2,7 @@
 
 + 将qs_cmf中的lara/config/cache.php文件复制到lara/config目录
 
-+ CompareBuilder FormBuilder ListBuilder 废弃display方法，需用build方法替换
++ CompareBuilder FormBuilder ListBuilder 废弃display提示，可用build方法替换
   
 + 修改composer.json文件，删除*require-dev*中的以下包的引入
   ```php
