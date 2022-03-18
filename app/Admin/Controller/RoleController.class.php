@@ -21,10 +21,6 @@ class RoleController extends GyListController {
         
         $data_list = $role_model->getListForPage($map, $page->nowPage, $page->listRows, 'status desc, id desc');
 
-        foreach($data_list as &$val){
-            $val['status'] = DBCont::getStatus($val['status']);
-        }
-        
         // 使用Builder快速建立列表页面。
         $builder = new \Qscmf\Builder\ListBuilder();
         
@@ -39,7 +35,7 @@ class RoleController extends GyListController {
         ->setNID(36)
         ->addTableColumn('id', 'ID')
         ->addTableColumn('name', '名称')
-        ->addTableColumn('status', '状态')
+        ->addTableColumn('status', '状态', "status")
         ->addTableColumn('remark', '备注')
         ->addTableColumn('right_button', '操作', 'btn')
         ->setTableDataList($data_list)     // 数据列表
