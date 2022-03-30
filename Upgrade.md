@@ -22,6 +22,7 @@
 6.(升级到v3.0.0以上版本)检查有无使用队列的计划任务功能，如使用了，可用升级脚本进行升级
     项目根目录/www# php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/[计划队列名] maintenance
    如用到七牛云的音视频上传功能，注意qs_file_pic的字段有无缺失，对比qs_cmf的迁移文件里的qs_file_pic表的定义
+    修改app/resque文件 修改绑定模块，将Home改为绑定到Qscmf
 7.(升级到v4.0.0以上版本)检查app/Behaviors/AppInitBehavior.class.php有无DOMAIN、SITE_URL、HTTP_PROTOCOL的常量定义，如有，将代码删除即可
 8.(升级到v5.0.0以上版本)检查有无引用Org\Util\String类，如有，将命名空间改为Org\Util\StringHelper，并将类名String修改为StringHelper。
 9.(升级到v6.0.0以上版本)检查有无在www/Public/views/Admin/common/common.js和www/Public/views/common.css中自定义客制化代码，如有，请
