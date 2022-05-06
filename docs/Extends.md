@@ -307,6 +307,42 @@ class Modal extends ListRightButton
 }
 ```
 
+#### 如何开发列表搜索控件
+```php
+namespace Qs\ListSearchType\Select2;
+
+use Qs\ListSearchType\Select2Builder;
+use Think\View;
+use Qscmf\Builder\ListSearchType\ListSearchType;
+
+// 必须继承\Qscmf\Builder\ListSearchType\ListSearchType抽象类
+class Select2 implements ListSearchType
+{
+    // 实现抽象函数build，完成控件渲染
+    // item接收所有搜索控件创建时需要的参数，如 name、type、title、options、auth_node
+    // 返回控件html
+    public function build(array $item){
+        $options = $item['options'] instanceof Select2Builder ? $item['options'] :
+        $this->buildDefBuilder($item['options']);
+
+        !$options->getPlaceholder() && $options->setPlaceholder($item['title']);
+
+        $view = new View();
+        $view->assign('item', $item);
+        $view->assign('gid', $options->getGid());
+        $view->assign('options', $options->getData());
+        $view->assign('select2_opt', $options->toArray());
+        $view->assign('value', I('get.'.$item['name']));
+        $content = $view->fetch(__DIR__ . '/select2.html');
+        return $content;
+    }
+
+    protected function buildDefBuilder(array $options):Select2Builder{
+        return new Select2Builder($options);
+    }
+}
+```
+
 没有列出示例代码的组件扩展都与以上的扩展方法类似，可直接参考上面的代码
 
 #### 扩展列表
