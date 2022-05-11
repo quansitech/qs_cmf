@@ -531,7 +531,7 @@ if(!function_exists('getIdByFullArea')) {
                 $map['upid'] = $pid;
             }
             $area_ent = $area->where($map)->select();
-            if (count($area_ent) != 1) {
+            if (count((array)$area_ent) != 1) {
                 return false;
             }
             $pid = $area_ent[0]['id'];
