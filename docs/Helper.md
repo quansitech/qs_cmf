@@ -205,3 +205,15 @@ $preserve bool 是否保留本身目录，默认为false，不保留
 缓存操作便捷函数, 见[[数据缓存 - ThinkPHP3.2完全开发手册](http://document.thinkphp.cn/manual_3_2.html#data_cache)]
 
 在此基础上，增加了第四个参数，是否保留缓存的过期时间。默认为false，开启的话设置true，开启后如果key有未过期，则保留当前的过期时间，不做刷新处理；否则将expire作为新的过期时间设置。
+
+#### getNid
+```blade
+获取node id，用于后台高亮菜单
+
+例如设置导入数据页面的高亮菜单
+
+参数
+$module_name string 模块名，默认为常量值MODULE_NAME，即当前模块
+$controller_name string 控制器名，默认为常量值CONTROLLER_NAME，即当前控制器
+$action_name string 方法名，默认为常量值ACTION_NAME，即当前方法
+```
