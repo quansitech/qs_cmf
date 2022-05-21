@@ -197,18 +197,12 @@ clearCache 方法
    );
    ```
    
-   设定回调函数，回调函数返回false，则禁止删除
+   设定回调函数，回调函数返回更复杂的信息验证，返回数据结果集，根据验证策略决定是否可删除
    
    ```php
    protected $_delete_validate = array(
        array(function($ids){
-           $access = D("Access")->where(['role_id', ['in', $ids]])->select();
-           if($access){
-               return false;
-           }
-           else{
-                return true;
-           }
+           return D("Access")->where(['role_id', ['in', $ids]])->select();
        }, '', parent::EXIST_VALIDATE, '请先清空用户组权限')  
    );
    ```
