@@ -50,6 +50,18 @@ $default_file 默认文件的URL地址
 该函数一般用于展示数据库存储文件的URL地址。
 ```
 
+#### showImg
+
+```blade
+参数
+$file_id 存放在qs_file_pic表的图片id，若为url,则返回该url
+
+返回值
+图片的URL地址
+
+该函数一般用于展示数据库存储图片的URL地址，若不存在图片则返回系统配置默认封面。
+```
+
 #### cleanRbacKey
 清空INJECT_RBAC标识key的session值
 
@@ -194,3 +206,4 @@ $module_name string 模块名，默认为常量值MODULE_NAME，即当前模块
 $controller_name string 控制器名，默认为常量值CONTROLLER_NAME，即当前控制器
 $action_name string 方法名，默认为常量值ACTION_NAME，即当前方法
 ```
+
