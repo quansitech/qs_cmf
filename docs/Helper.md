@@ -73,7 +73,7 @@ $default_file 默认文件的URL地址
 该函数一般用于展示数据库存储文件的URL地址。
 ```
 
-#### showImgWithDefThumb
+#### showImg
 
 ```blade
 参数
