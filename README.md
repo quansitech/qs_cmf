@@ -357,6 +357,9 @@ php artisan migrate:reset --no-cmd
 ## Builder
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Builder.md)
 
+## Cache
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Cache.md)
+
 ## 前台js错误收集
 #### 用法
 在前端head中引入log.js后调用frontLog方法
