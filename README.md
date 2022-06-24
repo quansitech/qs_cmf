@@ -446,6 +446,9 @@ php artisan migrate:reset --no-cmd
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Builder.md)
 
+## Cache
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Cache.md)
+
 ## 前台js错误收集
 
 #### 用法
