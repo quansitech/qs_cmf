@@ -71,7 +71,7 @@ or：用户一个权限都没有则隐藏该列，格式为：
 2. time
 > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
 3. pictures
-> + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy'
+> + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
 
 
 #### addTopButton
