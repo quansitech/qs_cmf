@@ -50,7 +50,7 @@ $page_template 页码模板自定义html代码
 参数
 $name 列名 
 $title 列标题
-$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num、checkbox、select、select2、textarea）  
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、pictures、type、fun、a、self、num、checkbox、select、select2、textarea）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $editable 列是否可编辑，默认为false  
 $tip 列标题提示文字，默认为''  
@@ -70,6 +70,8 @@ or：用户一个权限都没有则隐藏该列，格式为：
 > + 通过value设置转换的日期格式，默认为'Y-m-d'
 2. time
 > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+3. pictures
+> + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy'
 
 
 #### addTopButton
