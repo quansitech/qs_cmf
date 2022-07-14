@@ -1,7 +1,6 @@
 ## ListBuilder
 
 #### addRightButton
-
 ```blade
 加入一个数据列表右侧按钮
 
@@ -37,7 +36,6 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 ```
 
 #### setPageTemplate
-
 ```blade
 该方法用于设置页码模板
 
@@ -46,14 +44,13 @@ $page_template 页码模板自定义html代码
 ```
 
 #### addTableColumn
-
 ```blade
 该方法用于加一个表格列标题字段
 
 参数
 $name 列名 
 $title 列标题
-$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、type、fun、a、self、num、checkbox、select、select2、textarea）  
+$type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、pictures、type、fun、a、self、num、checkbox、select、select2、textarea）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
 $editable 列是否可编辑，默认为false  
 $tip 列标题提示文字，默认为''  
@@ -69,16 +66,15 @@ or：用户一个权限都没有则隐藏该列，格式为：
 ```
 
 ##### type类型使用说明
-
 1. date
-   
-   > + 通过value设置转换的日期格式，默认为'Y-m-d'
+> + 通过value设置转换的日期格式，默认为'Y-m-d'
 2. time
-   
-   > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+> + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+3. pictures
+> + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
+
 
 #### addTopButton
-
 ```blade
 加入一个列表顶部工具栏按钮
 
@@ -101,7 +97,6 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 ```
 
 #### addSearchItem
-
 ```blade
 加入一个筛选项，提交的url默认为当前页
 
@@ -149,13 +144,11 @@ $('body').on('beforeSearch', '.builder #search', function() {
   [Select使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Select/Select.md)
 
 #### setSearchUrl
-
 ```blade
 设置筛选提交的url
 ```
 
 #### setLockRow
-
 ```blade
 锁定行
 用法
@@ -165,7 +158,6 @@ $row 锁定行数
 ```
 
 #### setLockCol
-
 ```blade
 锁定列（左）
 用法
@@ -175,7 +167,6 @@ $row 锁定列数
 ```
 
 #### setLockColRight
-
 ```blade
 锁定列（右）
 用法
@@ -193,6 +184,8 @@ QsPage分数字分页风格和下拉分页风格，两种风格对分页有不�
 1. 数字分页风格限制了不能访问超出最大页数的页面，否则仅返回最大页（需求场景：用户删除最大页的所有数据后，程序会刷新停留在当前页，此时用户会看到是空数据页，会产生已经没有数据的误解。）。
 
 2. 下拉风格页没有访问超出最大页数的限制，否则下拉程序会不断加载最大页的内容，导致无限加载相同的数据。
+
+
 
 开启下拉风格
 
