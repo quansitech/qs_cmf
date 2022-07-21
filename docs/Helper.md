@@ -1,4 +1,27 @@
-## 全局函数
+### QsPage
+
+开启关闭下拉风格， 默认采用下拉风格
+
+QsPage分数字分页风格和下拉分页风格，两种风格对分页有不同的需求。
+
+1. 数字分页风格限制了不能访问超出最大页数的页面，否则仅返回最大页（需求场景：用户删除最大页的所有数据后，程序会刷新停留在当前页，此时用户会看到是空数据页，会产生已经没有数据的误解。）。
+
+2. 下拉风格页没有访问超出最大页数的限制，否则下拉程序会不断加载最大页的内容，导致无限加载相同的数据。
+
+
+开启下拉风格
+
+```
+//设置默认风格（不显式设置得默认值）
+QsPage::setDefaultPullStyle(true) 
+
+//按需求重置风格
+$page = new QsPage($total, $per_page_rows);
+$page->setPullStyle(false)
+```
+
+
+### 全局函数
 
 #### fork
 框架如果直接用pcntl_fork创建子进程时，进行数据库操作时会出错，直接使用该函数可避免这些问题.
@@ -207,3 +230,11 @@ $controller_name string 控制器名，默认为常量值CONTROLLER_NAME，即�
 $action_name string 方法名，默认为常量值ACTION_NAME，即当前方法
 ```
 
+#### extractParamsByUrl
+```blade
+提取url参数
+
+参数
+$url string url
+$filter_empty bool 是否过滤空值，true 是 false 否，默认为false
+```
