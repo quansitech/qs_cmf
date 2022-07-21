@@ -795,6 +795,34 @@ $this->assertTrue($test_ent['name'] == '测试');
 
 压缩办法很多，这里提供一种配置简单的方式，[传送门](https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3)
 
+### HEIC格式图片转JPG格式
+```
+为解决部分组件暂不支持展示heic格式图片，将其转换为jpg
+
+上传到阿里云oss的图片已处理
+```
++ 使用
+    + 复制数据迁移文件*2022_07_18_014941_alter_file_pic_add_mime_type.php*，qs_file_pic添加字段 mime_type
+
++ 扩展包需自行注册并实现heic_to_jpg行为
+    + 定义行为
+      ```php
+        class HeicToJpgBehavior{
+  
+        public function run(&$params)
+        {
+            // $params为qs_file_pic的一条数据
+            // 具体逻辑
+            $params['url'] = 'your new url';           
+        }
+    
+        }
+      ```
+    + 注册行为
+      ```php
+      \Think\Hook::add('heic_to_jpg', 'xxx\\HeicToJpgBehavior');
+      ```
+
 ## 文档
 
 由于工作量大，文档会逐步补全。
