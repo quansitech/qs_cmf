@@ -5,6 +5,9 @@ namespace Api\Controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/**
+ * @deprecated oss上传功能已在扩展包quansitech/qscmf-formitem-aliyun-oss中实现
+ **/
 class OssUploadController extends \Think\Controller{
 
     public function callBack(){
