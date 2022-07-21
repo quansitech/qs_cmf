@@ -238,3 +238,34 @@ $action_name string 方法名，默认为常量值ACTION_NAME，即当前方法
 $url string url
 $filter_empty bool 是否过滤空值，true 是 false 否，默认为false
 ```
+
+#### combineOssUrlImgOpt
+```blade
+拼接阿里云oss图片处理参数
+
+参数
+$url string url
+$opt string 图片处理参数，如'x-oss-process=image/resize,w_100'或者'resize,w_100'
+```
+用例
+```php
+  $url1 = 'https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic';
+  $url2 = 'https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1';
+  $url3 = 'https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?x-oss-process=image/format,jpg';
+  $url4 = 'https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1&x-oss-process=image/format,jpg';
+    
+   $opt = 'x-oss-process=image/resize,w_100';
+    
+    dd(
+        combineOssUrlImgOpt($url1,$opt)
+        ,combineOssUrlImgOpt($url2,$opt)
+        ,combineOssUrlImgOpt($url3,$opt)
+        ,combineOssUrlImgOpt($url4,$opt)
+    );
+
+// 输出
+// "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?x-oss-process=image/resize,w_100"
+// "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1&x-oss-process=image/resize,w_100"
+// "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?x-oss-process=image/format,jpg/resize,w_100"
+// "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1&x-oss-process=image/format,jpg/resize,w_100"
+```
