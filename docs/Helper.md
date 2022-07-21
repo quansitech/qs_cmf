@@ -229,3 +229,12 @@ $module_name string 模块名，默认为常量值MODULE_NAME，即当前模块
 $controller_name string 控制器名，默认为常量值CONTROLLER_NAME，即当前控制器
 $action_name string 方法名，默认为常量值ACTION_NAME，即当前方法
 ```
+
+#### extractParamsByUrl
+```blade
+提取url参数
+
+参数
+$url string url
+$filter_empty bool 是否过滤空值，true 是 false 否，默认为false
+```
