@@ -62,6 +62,7 @@ class UploadController extends \Think\Controller{
             $data['title'] = $file['name'];
             $data['size'] = $file['size'];
             $data['cate'] = $cate;
+            $data['mime_type'] = $file['type'];
             $data['security'] = isset($upload_config['security']) ? 1 : 0;
             $data['owner'] = isset($upload_config['security']) ? ($owner != 0 ? $owner : session(C('USER_AUTH_KEY'))) : 0;
             
