@@ -47,14 +47,12 @@ trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制�
 #### setNewRowPos
 
 ```php
-
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
 //指定新增的行添加到表顶部
 $ub_builder->setNewRowPos(\Qscmf\Builder\SubTableBuilder::NEW_ROW_AT_FIRST);
 
 //指定新增的行添加到表底部 默认采用这种方式
 $ub_builder->setNewRowPos(\Qscmf\Builder\SubTableBuilder::NEW_ROW_AT_LAST);
-
 ```
 
 #### addTableHeader

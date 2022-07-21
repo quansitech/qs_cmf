@@ -10,6 +10,8 @@ if(!function_exists('show_bug')){
     }
 }
 
+define('ROOT_PATH', __DIR__);
+
 //require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
 //require __DIR__ . '/app/Common/Common/function.php';
 require_once __DIR__ . '/vendor/autoload.php';
