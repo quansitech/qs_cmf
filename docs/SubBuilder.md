@@ -1,6 +1,7 @@
 ## SubBuilder
 
 <big>**此功能需要提供action genQsSubBuilderRowToJs**</big>
+
 ```
 用于异步处理点击添加新字段所需HTML
 
@@ -21,25 +22,41 @@ trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制�
 #### 用法
 
 #### 只读模式
+
 1. 实例SubTableBuilder对象时可控制隐藏/显示 删除、添加新字段 按钮，默认是false，即展示 
+   
    ```php
    $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
    ```
-   
+
 2. 表单项单个设置为只读
-  ```php
+   
+   ```php
    $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
    $sub_builder->addTableHeader('text', '10%');
    $sub_builder->addFormItem('text', 'text', '', true);
    ```
 
 3. 表单项统一设置为只读
+   
    ```php
    $sub_builder = new \Qscmf\Builder\SubTableBuilder(true);
    $sub_builder->setColReadOnly(true);
    ```
 
+#### setNewRowPos
+
+```php
+$sub_builder = new \Qscmf\Builder\SubTableBuilder();
+//指定新增的行添加到表顶部
+$ub_builder->setNewRowPos(\Qscmf\Builder\SubTableBuilder::NEW_ROW_AT_FIRST);
+
+//指定新增的行添加到表底部 默认采用这种方式
+$ub_builder->setNewRowPos(\Qscmf\Builder\SubTableBuilder::NEW_ROW_AT_LAST);
+```
+
 #### addTableHeader
+
 ```blade
 该方法用于加入一个子表单项的标题
 
@@ -47,6 +64,7 @@ trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制�
 $name 名称
 $width 该项占用整行宽度的比例
 ```
+
 ```php
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
 $sub_builder = $sub_builder
@@ -55,6 +73,7 @@ $sub_builder = $sub_builder
 ```
 
 #### addFormItem
+
 ```blade
 该方法用于加入一个子表单项的内容
 
@@ -73,6 +92,7 @@ and：用户拥有全部权限则显示该列，格式为：
 or：用户一个权限都没有则隐藏该列，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
+
 ```php
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
 $sub_builder = $sub_builder
@@ -84,11 +104,13 @@ $sub_builder = $sub_builder
 ```
 
 #### setData
+
 ```blade
 设置子表单项的数据
 
 该方法需要设置表单项属性，建议使用 setFormData 方法直接设置表单值
 ```
+
 ```php
 $data = [
     ['name' => 'id', 'type' => 'hidden', 'value' => 1],
@@ -107,9 +129,11 @@ $sub_builder = $sub_builder
 ```
 
 #### setFormData
+
 ```blade
 设置子表单的数据
 ```
+
 ```php
 $data = [
     ['title' => 'title1', 'summary' => 'summary1'],
@@ -128,6 +152,7 @@ $sub_builder = $sub_builder
 ```
 
 #### makeHtml
+
 ```blade
 返回所有表单项的html，可以根据需要嵌入FormBuilder
 ```
@@ -136,46 +161,59 @@ $sub_builder = $sub_builder
 
 + 支持类型
 1. checkbox
-> + 多选框，目前支持单个
-> 
+   
+   > + 多选框，目前支持单个
+
 2. text
-> + 文本类型
-> 
+   
+   > + 文本类型
+
 3. hidden
-> + 隐藏输入框
-> 
+   
+   > + 隐藏输入框
+
 4. select
-> + 下拉选择
->
+   
+   > + 下拉选择
+
 5. select2
-> + 下拉选择，支持模糊搜索
-> + 说明：
->  + select2新增了自定义标签功能
->  ```php
->  $subBuilder = new \Qscmf\Builder\SubTableBuilder();
->  $subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
->                  -> addFormItem('keywords_id', 'select2', [
->                      'tags' => true,
->                      'options' => [ 1 => '测试', 2 => '测试2']
->                      ]);
->  
->  $builder = new FormBuilder();
->  $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
->  ```
->  + 数据源分组显示
->  ```php
->   $options = [
->       ['text' => '分类一', 'children' => [['id' => '1', 'text' => '选项1'],['id' => '2', 'text' => '选项2']]],
->       ['text' => '分类二', 'children' => [['id' => '3', 'text' => '选项3'],['id' => '4', 'text' => '选项4']]],
->       ['text' => '分类三', 'children' => [['id' => '5', 'text' => '选项5'],['id' => '6', 'text' => '选项6']]],
->  ];
->  ```
->
+   
+   > + 下拉选择，支持模糊搜索
+   > 
+   > + 说明：
+   >   
+   >   + select2新增了自定义标签功能
+   >     
+   >     ```php
+   >     $subBuilder = new \Qscmf\Builder\SubTableBuilder();
+   >     $subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
+   >                  -> addFormItem('keywords_id', 'select2', [
+   >                      'tags' => true,
+   >                      'options' => [ 1 => '测试', 2 => '测试2']
+   >                      ]);
+   >     ```
+   >   
+   >   $builder = new FormBuilder();
+   >   $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
+   >   
+   >   ```
+   >   + 数据源分组显示
+   >   ```php
+   >   $options = [
+   >       ['text' => '分类一', 'children' => [['id' => '1', 'text' => '选项1'],['id' => '2', 'text' => '选项2']]],
+   >       ['text' => '分类二', 'children' => [['id' => '3', 'text' => '选项3'],['id' => '4', 'text' => '选项4']]],
+   >       ['text' => '分类三', 'children' => [['id' => '5', 'text' => '选项5'],['id' => '6', 'text' => '选项6']]],
+   >   ];
+   >   ```
+
 6. textarea
-> + 多行文本
-> 
+   
+   > + 多行文本
+
 7. date
-> + 日期组件
-> 
+   
+   > + 日期组件
+
 8. num
-> + 数字输入框
+   
+   > + 数字输入框
