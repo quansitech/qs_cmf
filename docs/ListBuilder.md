@@ -1,6 +1,7 @@
 ## ListBuilder
 
 #### addRightButton
+
 ```blade
 加入一个数据列表右侧按钮
 
@@ -36,6 +37,7 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 ```
 
 #### setPageTemplate
+
 ```blade
 该方法用于设置页码模板
 
@@ -44,6 +46,7 @@ $page_template 页码模板自定义html代码
 ```
 
 #### addTableColumn
+
 ```blade
 该方法用于加一个表格列标题字段
 
@@ -66,15 +69,19 @@ or：用户一个权限都没有则隐藏该列，格式为：
 ```
 
 ##### type类型使用说明
-1. date
-> + 通过value设置转换的日期格式，默认为'Y-m-d'
-2. time
-> + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
-3. pictures
-> + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
 
+1. date
+   
+   > + 通过value设置转换的日期格式，默认为'Y-m-d'
+2. time
+   
+   > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+3. pictures
+   
+   > + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
 
 #### addTopButton
+
 ```blade
 加入一个列表顶部工具栏按钮
 
@@ -97,6 +104,7 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 ```
 
 #### addSearchItem
+
 ```blade
 加入一个筛选项，提交的url默认为当前页
 
@@ -137,6 +145,86 @@ $('body').on('beforeSearch', '.builder #search', function() {
 });
 ```
 
+#### searchItem的parse方法
+
+提供了该方法的控件类型有：
+
++ DateRange
+  
+  ```php
+  //$key 搜索栏name
+  //$map_key 数据库字段值
+  //$get_data $_GET数组
+  //返回值 [$map_key => ['BETWEEN', [$start_time, $end_time]]]
+  $map = array_merge($map, DateRange::parse('date_range_data', 'create_date', $get_data));
+  ```
+
++ Hidden
+  
+  ```php
+  //$key 搜索栏name
+  //$map_key 数据库字段值
+  //$get_data $_GET数组
+  //返回值 [$map_key => '参数']
+  $map = array_merge($map, Hidden::parse('employee_id', 'employee_id', $get_data));
+  ```
+
++ Select
+  
+  用法同Hidden
+  
+  
+
++ SelectCity
+  
+  用法同Hidden
+
+
+
++ SelectText
+  
+  ```php
+  //$keys_rule 结构
+  // [
+  //    $key => [
+  //       'map_key' => $map_key,
+  //       'rule' => 'fuzzy' 模糊查找 | 'exact' 精准查找 || function(){}
+  //    ]   
+  // ]
+  // 返回值
+  // fuzzy类型 [$map_key => ['like', "%$get_data[$key]%""]]
+  // exact类型 [$map_key => $get_data[$key]]
+  // 回调函数 由回调函数决定
+  $map = array_merge($map, SelectText::parse([
+          'employee_name' => [
+                  'map_key' => 'employee_id',
+                  'rule' => function($map_key, $word){
+                      $employee_sql = D('Employee')->where(['name' => ['like', '%'.$word.'%']])->field('id')->buildSql();
+                      return [$map_key => ['exp', 'in '.$employee_sql]];
+                  }
+              ],
+              'reason' => [
+                  'map_key' => 'reason',
+                  'rule' => 'fuzzy'
+              ]
+          ], $get_data));
+  ```
+
++ Text
+  
+  ```php
+  //$key 搜索栏name
+  //$map_key 数据库字段值
+  //$get_data $_GET数组
+  //$rule 'fuzzy' 模糊查找 | 'exact' 精准查找
+  // 返回值
+  // fuzzy类型 [$map_key => ['like', "%$get_data[$key]%""]]
+  // exact类型 [$map_key => $get_data[$key]]
+  $map = array_merge($map, Hidden::parse('text', 'text', $get_data, 'exact'));
+  ```
+
+
+
 ##### type类型使用说明
 
 + select
@@ -144,11 +232,13 @@ $('body').on('beforeSearch', '.builder #search', function() {
   [Select使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Select/Select.md)
 
 #### setSearchUrl
+
 ```blade
 设置筛选提交的url
 ```
 
 #### setLockRow
+
 ```blade
 锁定行
 用法
@@ -158,6 +248,7 @@ $row 锁定行数
 ```
 
 #### setLockCol
+
 ```blade
 锁定列（左）
 用法
@@ -167,6 +258,7 @@ $row 锁定列数
 ```
 
 #### setLockColRight
+
 ```blade
 锁定列（右）
 用法
@@ -184,8 +276,6 @@ QsPage分数字分页风格和下拉分页风格，两种风格对分页有不�
 1. 数字分页风格限制了不能访问超出最大页数的页面，否则仅返回最大页（需求场景：用户删除最大页的所有数据后，程序会刷新停留在当前页，此时用户会看到是空数据页，会产生已经没有数据的误解。）。
 
 2. 下拉风格页没有访问超出最大页数的限制，否则下拉程序会不断加载最大页的内容，导致无限加载相同的数据。
-
-
 
 开启下拉风格
 
