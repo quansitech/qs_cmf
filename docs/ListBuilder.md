@@ -147,6 +147,8 @@ $('body').on('beforeSearch', '.builder #search', function() {
 
 #### searchItem的parse方法
 
+查询参数解释的封装方法，简化解析流程
+
 提供了该方法的控件类型有：
 
 + DateRange
