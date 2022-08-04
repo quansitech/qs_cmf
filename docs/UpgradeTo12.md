@@ -4,7 +4,7 @@
 
 + CompareBuilder FormBuilder ListBuilder 废弃display提示，可用build方法替换
   
-+ 修改composer.json文件，删除*require-dev*中的以下包的引入
++ 修改composer.json文件，替换*require-dev*中的以下包的引入
   ```php
     "phpunit/phpunit": "^8.0",
     "laravel/dusk": "^5.0",
