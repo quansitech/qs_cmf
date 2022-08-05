@@ -23,11 +23,6 @@
 + 全局方法 imageproxy已经删除，请使用 https://github.com/quansitech/qscmf-utils 的 Common::imageproxy 代替
 
 + QsController 取消引入trait类 \Qscmf\Builder\TSubBuilder，如果项目有使用该trait提供的方法，请自行在对应的controller引入
-  ```php
-  // SubBuilder 需要提供action genQsSubBuilderRowToJs
-  // trait类  \Qscmf\Builder\TSubBuilder 已实现此方法，可在需要的控制器中引入
-  ```
-  + 检测使用了SubBuilder的控制器，并引入trait类 \Qscmf\Builder\TSubBuilder
 
 + QsPage 原来的全局静态方法setPullStyle更名为setDefaultPullStyle，并且新增setPullStyle的对象方法。
   
