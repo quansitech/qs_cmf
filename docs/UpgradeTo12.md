@@ -111,6 +111,8 @@
     
     + array_intersect
   
+    + in_array
+  
   + 检查ListBuilder addTableColumn type为fun时，回调对应参数是否符合要求
     
     + 时间类展示建议使用type为date、time替换，如
