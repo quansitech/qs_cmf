@@ -4,7 +4,7 @@
 
 + CompareBuilder FormBuilder ListBuilder 废弃display提示，可用build方法替换
   
-+ 修改composer.json文件，删除*require-dev*中的以下包的引入
++ 修改composer.json文件，替换*require-dev*中的以下包的引入
   ```php
     "phpunit/phpunit": "^8.0",
     "laravel/dusk": "^5.0",
@@ -125,10 +125,6 @@
       // 替换
       ->addTableColumn('application_date', '借阅申请时间', 'time')
       ```
-  
-  + 检查模型层 $_validate中的 callback
-  
-  + 检查模型层 $_auto中的 callback
 
 + *each* 内置函数移除，需使用 *foreach* 代替
   
@@ -175,6 +171,7 @@
     // 修改Common\Util\AliOss.class.php文件
     
     // 约36行，正则表达式改为
+    // 中划线是特殊字符，需要使用反斜杠
     '/https*:\/\/([\w\-_]+?)\.[\w\-_.]+/' 
     ```
 
@@ -182,12 +179,13 @@
 
 #### 需要注意使用php8.0不兼容的变更
 
-+ pdo 事务中[隐形提交的sql](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)将会使事务失效，因为它无论如何都不能回滚。如创建、修改、删除数据表的sql
-  
-  - 检查数据迁移 DB::beginTransaction() 是否有符合条件的sql
-
 + 字符串与数字的比较：数字与非数字形式的字符串之间的非严格比较**现在将首先将数字转为字符串，然后比较这两个字符串；之前是将字符串转为数字，然后比较这两个数字**
 
-+ 被除数不能为0
++ implode()函数，在 PHP 8.0 之前可以接收两种参数顺序，之后必须保证 separator 参数在 array 参数之前。
 
-+ 可选参数之后不能使用使用必需的参数，**默认值为null除外，因为这会被认为是null类型**
++ 内置函数参数个数与数据类型需要一致
+  + ```php
+    // 以下写法8.0之后会报错
+    // time(1) 不接收参数
+    // microtime([]) 参数类型必须为float或者string
+    ```
