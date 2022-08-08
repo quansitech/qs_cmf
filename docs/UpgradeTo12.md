@@ -4,7 +4,7 @@
 
 + CompareBuilder FormBuilder ListBuilder 废弃display提示，可用build方法替换
   
-+ 修改composer.json文件，替换*require-dev*中的以下包的引入
++ 修改composer.json文件，从v12版本的think-core composer.json文件中找到require-dev的内容，替换掉脚手架的
   ```php
     "phpunit/phpunit": "^8.0",
     "laravel/dusk": "^5.0",
