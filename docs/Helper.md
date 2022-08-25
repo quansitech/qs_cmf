@@ -71,7 +71,22 @@ $default_file 默认文件的URL地址
 文件的URL地址
 
 该函数一般用于展示数据库存储文件的URL地址。
+
+如果上传策略的security设置成true
+
+第三方组件包可以注册 get_auth_url事件来自定义文件的临时授权访问地址
+
+$param = [
+    'file_ent' => $file_pic_ent, //qs_file_pic 记录
+    'timeout' => 60  //授权链接过期时间
+];
+\Think\Hook::listen('get_auth_url', $param);
+
+返回 $params['auth_url'] 即为临时授权链接
+
 ```
+
+
 
 #### showImg
 
