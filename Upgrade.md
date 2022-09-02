@@ -158,4 +158,4 @@ v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/
 
 - [ ] CompareBuilder FormBuilder ListBuilder 删除display方法
 - [ ] 重构ButtonType save的保存提交算法 原因是SubTableBuilder也可能会采用该方法来设置 column 的class，当同时作为listBuilder的modal使用时，就会被错误的一并save提交先采用全局变量来开发重置能力，但全局变量容易存在冲突，并不是一种好的解决方案，仅作过渡使用，合理的做法应该让ListBuilder或者SubTableBuilder来决定Column 的TargetForm，避免互相影响。
-- [ ] showFileUrl不再用于处理私密类资源的获取
+- [ ] showFileUrl不再处理除本地文件存储外的功能，例如oss的处理
