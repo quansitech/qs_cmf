@@ -1,5 +1,25 @@
 ## ListBuilder
 
+#### setCheckBox
+
+设置每行开始的checkbox元素
+
+```php
+//第一个参数是否显示checkbox，默认为true
+//第二个参数可传入自定义checkbox元素属性的回调，默认为null
+->setCheckBox(true, function($attr, $data){
+    if($data['type'] === 'manual'){
+        $attr['disabled'] = 'disabled';
+    }
+    return $attr;
+})
+
+//如果希望当data某个字段等于某个值时checkbox不可选择，可通过下面的辅助方法生成回调函数
+->setCheckBox(true, ListBuilder::genCheckBoxDisableCb('manual', 0))
+```
+
+
+
 #### addRightButton
 
 ```blade
@@ -55,7 +75,7 @@ $name 列名
 $title 列标题
 $type 列类型，默认为null（目前支持类型：status、icon、date、time、picture、pictures、type、fun、a、self、num、checkbox、select、select2、textarea）  
 $value 列属性，默认为''，一个定义标题/链接/CSS类名等的属性描述数组
-$editable 列是否可编辑，默认为false  
+$editable 列是否可编辑，默认为false，也可以是回调函数，见下面例子 
 $tip 列标题提示文字，默认为''  
 $th_extra_attr 列标题额外属性，默认为''  
 $td_extra_attr 列值额外属性，默认为''
@@ -68,14 +88,25 @@ or：用户一个权限都没有则隐藏该列，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
 
+```php
+//editable回调函数用法
+->addTableColumn('amount', '支出金额', 'number', '', function($data){
+    return $data['manual'] == 1;
+})
+```
+
+
+
 ##### type类型使用说明
 
 1. date
    
    > + 通过value设置转换的日期格式，默认为'Y-m-d'
+
 2. time
    
    > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
+
 3. pictures
    
    > + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
@@ -174,14 +205,10 @@ $('body').on('beforeSearch', '.builder #search', function() {
 + Select
   
   用法同Hidden
-  
-  
 
 + SelectCity
   
   用法同Hidden
-
-
 
 + SelectText
   
@@ -224,8 +251,6 @@ $('body').on('beforeSearch', '.builder #search', function() {
   // exact类型 [$map_key => $get_data[$key]]
   $map = array_merge($map, Hidden::parse('text', 'text', $get_data, 'exact'));
   ```
-
-
 
 ##### type类型使用说明
 
