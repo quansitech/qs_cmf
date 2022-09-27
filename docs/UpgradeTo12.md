@@ -189,3 +189,5 @@
     // time(1) 不接收参数
     // microtime([]) 参数类型必须为float或者string
     ```
+
++ 将phpstorm的php版本设置成8.0, 开启View--Tool Windows--Problems--Inspect Code 分析业务代码是否存在潜在语法错误
