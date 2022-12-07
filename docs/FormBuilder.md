@@ -217,6 +217,13 @@ $project_info = [
   dropdownParent="dom_id"
   ```
 
++ allowClear
+  ```text
+  是否可清除，false 否 true 是，默认为true
+  
+  allowClear="true"
+  ```
+
 
 #### 字段权限过滤机制
 ```blade
