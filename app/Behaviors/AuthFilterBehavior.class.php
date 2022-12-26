@@ -46,7 +46,7 @@ class AuthFilterBehavior extends \Think\Behavior{
             return false;
         }
         
-        list($module_name, $controller_name, $action_name) = split('.', $auth);
+        list($module_name, $controller_name, $action_name) = preg_split('.', $auth);
         
         $access_list = Rbac::getAccessList($auth_id);
         if(isset($access_list[strtoupper($module_name)][strtoupper($controller_name)][strtoupper($action_name)])){

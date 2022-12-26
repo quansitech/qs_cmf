@@ -117,7 +117,7 @@ class SendCloud{
         while(preg_match('/(%\w+?%)/i', $temp_template, $matches)){
             $key = $matches[1];
             
-            $temp_arr = split($key, $temp_template);
+            $temp_arr = preg_split($key, $temp_template);
 //            \Think\Log::write($temp_arr[0]);
             $template_arr[] = $temp_arr[0];
             $var_arr[] = str_replace('%', '', $key);

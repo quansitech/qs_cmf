@@ -1147,7 +1147,9 @@ if(!function_exists('downImageToDB')) {
         $data['title'] = $file_name;
         $data['file'] = $config['savePath'] . $sub_path . '/' . $file_name;
         $data['size'] = $size;
-        $data['cate'] = strtolower(array_pop(explode('_', $config_key)));
+        $array = explode('_', $config_key);
+        $cate = array_pop($array);
+        $data['cate'] = strtolower($cate);
         $data['upload_date'] = time();
 
         if ($add_db) {
