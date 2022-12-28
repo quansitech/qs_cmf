@@ -181,30 +181,50 @@ $sub_builder = $sub_builder
    > + 下拉选择，支持模糊搜索
    > 
    > + 说明：
-   >   
-   >   + select2新增了自定义标签功能
-   >     
+   >
+   >   + 是否可清除开关，配置属性 allow_clear，默认为true
+   >
    >     ```php
    >     $subBuilder = new \Qscmf\Builder\SubTableBuilder();
    >     $subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
    >                  -> addFormItem('keywords_id', 'select2', [
-   >                      'tags' => true,
+   >                      'allow_clear' => false,
    >                      'options' => [ 1 => '测试', 2 => '测试2']
    >                      ]);
+   >     
+   >     $builder = new FormBuilder();
+   >     $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml()); 
    >     ```
    >   
-   >   $builder = new FormBuilder();
-   >   $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
    >   
-   >   ```
-   >   + 数据源分组显示
-   >   ```php
-   >   $options = [
-   >       ['text' => '分类一', 'children' => [['id' => '1', 'text' => '选项1'],['id' => '2', 'text' => '选项2']]],
-   >       ['text' => '分类二', 'children' => [['id' => '3', 'text' => '选项3'],['id' => '4', 'text' => '选项4']]],
-   >       ['text' => '分类三', 'children' => [['id' => '5', 'text' => '选项5'],['id' => '6', 'text' => '选项6']]],
-   >   ];
-   >   ```
+   >     + select2新增了自定义标签功能
+   >   
+   >       ```php
+   >       $subBuilder = new \Qscmf\Builder\SubTableBuilder();
+   >       $subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
+   >                    -> addFormItem('keywords_id', 'select2', [
+   >                        'tags' => true,
+   >                        'options' => [ 1 => '测试', 2 => '测试2']
+   >                        ]);
+   >       
+   >       $builder = new FormBuilder();
+   >       $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
+   >       ```
+   >   
+   >       
+   >   
+   >     + 数据源分组显示
+   >   
+   >       ```php
+   >       $options = [
+   >             ['text' => '分类一', 'children' => [['id' => '1', 'text' => '选项1'],['id' => '2', 'text' => '选项2']]],
+   >             ['text' => '分类二', 'children' => [['id' => '3', 'text' => '选项3'],['id' => '4', 'text' => '选项4']]],
+   >             ['text' => '分类三', 'children' => [['id' => '5', 'text' => '选项5'],['id' => '6', 'text' => '选项6']]],
+   >          ];
+   >       ```
+   >   
+   >       
+   >
 
 6. textarea
    
