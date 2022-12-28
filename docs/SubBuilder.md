@@ -186,9 +186,9 @@ $sub_builder = $sub_builder
    >
    >   
    >
-   >   + 是否可清除开关，配置属性 allow_clear，默认为true
+   >  + 是否可清除开关，配置属性 allow_clear，默认为true
    >
-   >     ```php
+   >    ```php
    >      $subBuilder = new \Qscmf\Builder\SubTableBuilder();
    >       $subBuilder = $subBuilder -> addTableHeader('关键词', '30%')
    >                    -> addFormItem('keywords_id', 'select2', [
@@ -198,7 +198,7 @@ $sub_builder = $sub_builder
    >       
    >       $builder = new FormBuilder();
    >       $builder->addFormItem('keywords_id', 'self', '关键词','',$subBuilder->makeHtml());
-   >       ```
+   >     ```
    > 
    >
    > 
