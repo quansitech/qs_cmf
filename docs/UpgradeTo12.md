@@ -129,7 +129,7 @@
 + *each* 内置函数移除，需使用 *foreach* 代替
   
   + ```php
-      // 修改C123.class.php文件
+      // 修改app/Addons/C123/Util/C123.class.php文件
     
       // 约23行 
       while (list($k,$v) = each($data))  
@@ -138,7 +138,7 @@
     ```
   
   + ```php
-      // 修改PHPMailer.class.php文件
+      // 修改app/Common/Util/Mail/Driver/PHPMailer.class.php文件
       // 检查继承父类是否存在，否则改成 extends \Common\Util\Mail\Driver
     
       // 约1775行
@@ -148,7 +148,7 @@
     ```
   
   + ```php
-      // 修改SMTP.class.php文件
+      // 修改app/Common/Util/Mail/Driver/SMTP.class.php文件
     
       // 约393行 
       while(list(,$line) = @each($lines)) { 
