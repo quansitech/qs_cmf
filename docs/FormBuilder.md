@@ -33,11 +33,13 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 'oss_options' => [
     'bucket'=>'******真实的bucket名******',
 ],
-```
 
 //如果希望通过富文本上传音频视频等大文件时，oss公网上传会非常慢，此时可以使用内网地址上传，速度会得到极大提升
 //但返回的地址是内网地址，可以在config.php对应的上传类型中加上以下配置进行自动替换
 'oss_public_host' => 'http://oss-cn-hangzhou.aliyuncs.com',
+```
+
+
 
 通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
 ```blade
