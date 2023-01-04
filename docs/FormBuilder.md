@@ -35,6 +35,10 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 ],
 ```
 
+//如果希望通过富文本上传音频视频等大文件时，oss公网上传会非常慢，此时可以使用内网地址上传，速度会得到极大提升
+//但返回的地址是内网地址，可以在config.php对应的上传类型中加上以下配置进行自动替换
+'oss_public_host' => 'http://oss-cn-hangzhou.aliyuncs.com',
+
 通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
 ```blade
 复制外链文章时，会抓取外链图片至本地。若该属性为true，则未抓取完会显示loadding图片且不能保存；若该属性为false，如果未等全部抓取完就保存，此时图片还是外链。
