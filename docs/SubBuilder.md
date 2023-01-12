@@ -148,7 +148,7 @@ $sub_builder = $sub_builder
         ->addFormItem('id', 'hidden')
         ->addFormItem('title', 'text')
         ->addFormItem('summary', 'textarea')
-        ->setData($data);
+        ->setFormData($data);
 ```
 
 #### makeHtml
