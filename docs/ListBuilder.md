@@ -107,7 +107,17 @@ or：用户一个权限都没有则隐藏该列，格式为：
    
    > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
 
-3. pictures
+3. picture
+
+    > + 缩略图默认使用原图，可通过在value参数通过'small-url' 传入回调函数， 自定义缩略图地址
+    > ```php
+    > ->addTableColumn("proof", "转账凭证", "picture", ['small-url' => function($image_id){
+    >            $url = showFileUrl($image_id);
+    >            return $url . '?x-oss-process=image/resize,m_fill,w_40,h_40';
+    > }])
+    >  ```
+
+4. pictures
    
    > + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
 
