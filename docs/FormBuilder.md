@@ -309,4 +309,15 @@ default：默认值
 ```php
 ->addButton('self', ['title' => '查看资料', 'class' => 'btn btn-info qs-form-btn', 'onclick'=>"javascript:window.location.href='".U('admin/User/info', ['id' => '__data_id__'])."';"]);
 ```
++ 使用技巧, 如果只希望显示自定义的按钮，可以搭配setShowBtn方法实现
+```php
+->setShowBtn(false)
+->addButton('forbid')
+->addButton('delete'); 
+```
+
+#### setSubmitBtnTitle
+```blade
+自定义表单的“确定”按钮描述
+```
 
