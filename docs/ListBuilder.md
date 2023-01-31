@@ -144,6 +144,18 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
 ```
 
+```blade
+top button 常用于批量操作数据，可以限制用户需选中数据
+```
++ 按钮添加样式类 must-select-item
++ 设置属性 must-select-msg 可以自定义提示语，默认为 请选择要处理的数据
+```php
+$builder = new \Qscmf\Builder\ListBuilder();
+$builder = $builder->setMetaTitle('列表');
+$builder
+->addTopButton('add', ['title' => '退回', 'class' => "btn btn-primary must-select-item", 'must-select-msg'=>'请选择要退回的数据'])
+```
+
 #### addSearchItem
 
 ```blade
