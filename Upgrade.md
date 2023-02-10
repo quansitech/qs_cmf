@@ -162,3 +162,4 @@ v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/
 - [ ] 重构ueditor, 将其作为一个独立的扩展，oss功能使用内网传输
 - [ ] 将file_pic表的mime_type长度增加到200
 - [ ] 将showFileTitle方法移动到think-core
+- [ ] 升级jquery最新版本，旧版本废弃
