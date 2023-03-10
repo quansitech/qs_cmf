@@ -284,6 +284,9 @@ $('body').on('beforeSearch', '.builder #search', function() {
   
   [Select使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Select/Select.md)
 
++ self
+  
+  [Self使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Self/Self.md)
 #### setSearchUrl
 
 ```blade
