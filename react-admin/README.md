@@ -76,7 +76,11 @@
     </block>
   ```
   
-+ 在 src/vendor.js 中加入共用组件
++ 在 src/vendor.js 中加入antd或者自定义的基础组件
+  ```text
+  如antd的Table、Select、Button等基础组件
+  如基于Button组件结合项目定义样式且解决了节流等问题而封装的基础组件
+  ```
 
 + 在 src/page/ 创建 react-build-test.js 文件
   ```javascript
