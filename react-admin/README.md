@@ -78,6 +78,8 @@
   
 + 在 src/vendor.js 中加入antd或者自定义的基础组件
   ```text
+  此文件会自动在页面中引入，可以减少重复引入基础组件工作
+  
   如antd的Table、Select、Button等基础组件
   如基于Button组件结合项目定义样式且解决了节流等问题而封装的基础组件
   ```
