@@ -145,6 +145,15 @@
   /app/Admin/View/default/ReactBuildTest/index.html
   ```
 
++ 编译页面
+  ```js
+  // node版本为18.15.0
+  // 运行路径为 react-admin
+  // 安装依赖包
+  yarn install
+  // yarn xxx 运行编译命令，具体参考命令介绍
+  yarn build
+  ```
 
 #### 命令介绍
 ```text
