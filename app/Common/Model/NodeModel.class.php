@@ -24,16 +24,6 @@ class NodeModel extends \Gy_Library\GyListModel{
         array('Access', 'node_id', parent::EXIST_VALIDATE , '请先将该节点从用户组剔除'),
     );
 
-    public function getNodeListGroupByMenu($map):array{
-        $list = D()->table(buildNodeVSql().' n_v')->where($map)->order("sort asc")->select();
-        $menu_list = [];
-        collect($list)->each(function ($item) use(&$menu_list){
-            $menu_list[$item['menu_id']][] = $item;
-        });
-
-        return $menu_list;
-    }
-
     public function getNode($map){
         return $this->where($map)->find();
     }
