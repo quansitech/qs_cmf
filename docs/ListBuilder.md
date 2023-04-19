@@ -189,7 +189,17 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 
 场景：
 用户没有填写搜索关键字，点击搜索需要提醒用户搜索关键字不能为空且不跳转。
+
+增加date_range用例：
+->addSearchItem('donate_date', 'date_range', '时间范围',array('time_picker'=>'0'));
+
+用法：
+可以通过设置options.time_picker判断是否显示时间范围是否显示时分，time_picker为true显示。
+date_range新增加的用法，在options加入time_picker，time_picker=true即表示时间范围显示时间段（时分）
+
 ```
+
+
 
 ```javascript
 $('body').on('beforeSearch', '.builder #search', function() {
