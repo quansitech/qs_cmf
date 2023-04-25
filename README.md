@@ -675,6 +675,11 @@ $this->assertTrue($test_ent['name'] == '测试');
       \Think\Hook::add('heic_to_jpg', 'xxx\\HeicToJpgBehavior');
       ```
 
+
+### 后台使用react构建页面
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/react-admin/README.md)
+
+
 ## 文档
 
 由于工作量大，文档会逐步补全。
