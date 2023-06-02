@@ -304,7 +304,7 @@ public function genWhereByUid($uid, &$map, $field){
 以下是使用此功能的步骤与效果。
 ```
 
-+ 定义回调函数getFullAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
++ 定义回调函数getAllAreaIdsWithMultiPids，实现根据多个地区数据，返回这些地区及其下属所有地区的数据
 
 ```php
 function getAllAreaIdsWithMultiPids($city_ids, $model = 'AreaV', $max_level = 3, $need_exist = true, $cache = ''){
