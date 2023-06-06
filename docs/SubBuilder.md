@@ -248,3 +248,28 @@ $sub_builder = $sub_builder
 8. num
    
    > + 数字输入框
+
+9. district
+
+   > ```blade
+   > 省市区联动
+   >
+   > 支持自定义层级level、省市区数据源area_api_url
+   > level默认为2，最大为4
+   > area_api_url默认为U('Api/Area/getArea')
+   > ```
+   >
+   > + 三级联动
+   >
+   > ```php
+   > ->addFormItem('city_id', 'district', ['level' => 3]);
+   > ```
+   >
+   > + 四级联动
+   >
+   > ```php
+   > // 需要自定义数据源，默认的数据只有三级
+   > ->addFormItem('city_id', 'district', ['level' => 4, 'area_api_url' => U('Api/FullArea/getArea', '', '', true)]);
+   > ```
+   >
+

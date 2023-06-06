@@ -174,13 +174,21 @@ $render 是否输出页面的内容，默认为false
 ```blade
 省市区三级联动
 
-支持自定义省市区数据源api，默认为U('Api/Area/getArea')
+支持自定义层级level，省市区数据源api
+level 默认为3，最大为4
+area_api_url 默认为U('Api/Area/getArea')
 ```
 
 ```php
 // 使用说明
 // addFormItem第五个参数，传递自定义api，加上area_api_url
 ->addFormItem('city_id', 'district', '城市', '', ['area_api_url' => U('Api/Area/fetchLimitCity', '', '', true)]);
+```
+
+```php
+// 使用说明
+// addFormItem第五个参数，传递level和自定义数据源api
+->addFormItem('city_id', 'district', '城市', '', ['level' => 4, 'area_api_url' => U('Api/FullArea/getArea', '', '', true)]);
 ```
 
 #### select2组件
