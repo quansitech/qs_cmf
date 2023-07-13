@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class InitDatabase extends Migration
 {
@@ -296,6 +297,17 @@ class InitDatabase extends Migration
             'last_login_ip' => '10.0.1.1',
         ];
         DB::table('qs_user')->insert($user);
+
+        $node_v = <<<SQL
+create view qs_node_v as
+select n3.id, n1.name `module`,n2.name `controller`,n3.name `action`, CONCAT(n1.name, ".", n2.name, ".", n3.name) node, CONCAT(n1.title, ".", n2.title, ".", n3.title) title 
+from qs_node n3
+inner join qs_node n2 on n2.id=n3.pid and n2.status=1 and n2.level=2
+inner join qs_node n1 on n1.id=n2.pid and n1.status=1 and n1.level=1
+where n3.level=3 and n3.status=1;
+SQL;
+        DB::unprepared($node_v);
+
     }
 
     /**
@@ -323,5 +335,6 @@ class InitDatabase extends Migration
         Schema::dropIfExists('qs_schedule');
         Schema::dropIfExists('qs_syslogs');
         Schema::dropIfExists('qs_user');
+        DB::unprepared('drop view qs_node_v');
     }
 }
