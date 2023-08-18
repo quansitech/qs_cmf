@@ -308,6 +308,32 @@ where n3.level=3 and n3.status=1;
 SQL;
         DB::unprepared($node_v);
 
+        $db = env('DB_DATABASE');
+        $create_kill_all_procedure_sql = <<<SQL
+create procedure kill_all()
+BEGIN
+DECLARE done INT DEFAULT FALSE;
+  DECLARE p_id INT;
+  DECLARE cur CURSOR FOR SELECT ID FROM information_schema.processlist WHERE
+id<>CONNECTION_ID() and COMMAND <> 'Sleep' AND user <> 'system user' AND USER <> 'event_scheduler' and DB='{$db}';
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  OPEN cur;
+
+  loop_kill:
+  LOOP
+    FETCH cur INTO p_id;
+    IF done THEN
+      LEAVE loop_kill;
+    END IF;
+    kill p_id;
+  END LOOP;
+
+  CLOSE cur;
+END
+SQL;
+        \Illuminate\Support\Facades\DB::unprepared($create_kill_all_procedure_sql);
+
     }
 
     /**
@@ -336,5 +362,6 @@ SQL;
         Schema::dropIfExists('qs_syslogs');
         Schema::dropIfExists('qs_user');
         DB::unprepared('drop view qs_node_v');
+        DB::unprepared('drop procedure kill_all');
     }
 }
