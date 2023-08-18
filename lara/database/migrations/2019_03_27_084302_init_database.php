@@ -315,7 +315,7 @@ BEGIN
 DECLARE done INT DEFAULT FALSE;
   DECLARE p_id INT;
   DECLARE cur CURSOR FOR SELECT ID FROM information_schema.processlist WHERE
-id<>CONNECTION_ID() and COMMAND <> 'Sleep' AND user <> 'system user' AND USER <> 'event_scheduler' and DB='{$db}';
+id<>CONNECTION_ID() and COMMAND <> 'Sleep' AND user <> 'system user' AND USER <> 'event_scheduler' and DB='{$db}' and info like 'select %';
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
   OPEN cur;
