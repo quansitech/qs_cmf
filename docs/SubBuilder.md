@@ -151,6 +151,30 @@ $sub_builder = $sub_builder
         ->setFormData($data);
 ```
 
+#### addRowDefault
+
+```blade
+设置新增一行时的默认值
+```
+
+```php
+$data = [
+    ['title' => 'title1', 'summary' => 'summary1'],
+    ['title' => 'title2', 'summary' => 'summary2'],
+    ['title' => 'title3', 'summary' => 'summary3'],
+];
+
+$sub_builder = new \Qscmf\Builder\SubTableBuilder();
+$sub_builder = $sub_builder
+        ->addTableHeader('标题', '30%')
+        ->addTableHeader('摘要', '30%')
+        ->addFormItem('id', 'hidden')
+        ->addFormItem('title', 'text')
+        ->addFormItem('summary', 'textarea')
+        ->setFormData($data)
+        ->addRowDefault(['title' => 'title_def', 'summary' => 'summary_def']);
+```
+
 #### makeHtml
 
 ```blade
