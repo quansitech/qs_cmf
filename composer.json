@@ -13,7 +13,26 @@
     "require": {
         "tiderjian/think-core": "^12.0",
         "funkjedi/composer-include-files": "^1.0",
-        "quansitech/qscmf-utils": "^1.5"
+        "quansitech/qscmf-curd-generator": "*@dev",
+        "quansitech/qscmf-columntype-modal": "*@dev",
+        "quansitech/qscmf-utils": "*@dev",
+        "quansitech/qscmf-clear-abandon": "*@dev",
+        "quansitech/qscmf-adminlte-widgets": "*@dev",
+        "quansitech/qscmf-antd-builder": "*@dev",
+        "quansitech/qscmf-buttontype-modal": "*@dev",
+        "quansitech/qscmf-formitem-tengxun-cos": "*@dev",
+        "quansitech/qscmf-api": "*@dev",
+        "scriptotek/marc": "^2.2",
+        "quansitech/qscmf-bulider-date-picker": "*@dev",
+        "quansitech/qscmf-cross-api": "*@dev",
+        "quansitech/qscmf-topbutton-export": "*@dev",
+        "quansitech/qscmf-buttontype-download-img": "*@dev",
+        "quansitech/qscmf-list-search-type-select2": "*@dev",
+        "quansitech/qscmf-formitem-aliyun-oss": "*@dev",
+        "quansitech/easy-get-flower": "*@dev",
+        "quansitech/cus-form": "*@dev",
+        "quansitech/qscmf-access-generation": "*@dev",
+        "quansitech/qscmf-formitem-object-storage": "*@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3.0",
