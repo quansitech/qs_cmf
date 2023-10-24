@@ -39,6 +39,7 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 'oss_public_host' => 'http://oss-cn-hangzhou.aliyuncs.com',
 ```
 
+[自定义上传文件至不同云服务商功能](https://github.com/quansitech/qscmf-formitem-object-storage/blob/main/README.md#%E4%BD%BF%E7%94%A8)
 
 
 通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
