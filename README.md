@@ -484,6 +484,20 @@ REQUEST_URI 获取方向代理前的REQUEST_URI值
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Extends.md)
 
+```text
+部分扩展包会将组件的js/css注入 dashboard_layout 头部
+
+默认只注入路径 T('Admin@default/common/dashboard_layout')
+如果项目使用自定义的 layout ，可以通过 QS_INJECT_LAYOUT_PATH 配置需要注入的 layout 路径
+```
+```php
+// config.php文件加入以下配置
+// 只需要配置自定义的 layout 路径
+'QS_INJECT_LAYOUT_PATH' => [
+    T('Admin@default/common/letter/layout')
+]
+```
+
 ## 消息队列
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Resque.md)
