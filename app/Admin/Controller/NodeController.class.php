@@ -377,6 +377,6 @@ class NodeController extends GyListController {
 
         $module_list = D('Node')->getModuleList();
         $this->assign('module_list', $module_list);
-        $this->build();
+        $this->display();
     }
 }
