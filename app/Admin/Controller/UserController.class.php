@@ -89,7 +89,7 @@ class UserController extends GyListController{
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
         ->setExtraHtml($this->fetch('User/repwd'))
-        ->display();
+        ->build();
     }
 
     
@@ -137,7 +137,7 @@ class UserController extends GyListController{
                     ->addFormItem('pwd', 'password', '密码*')
                     ->addFormItem('pwd1', 'password', '重复密码*')
                     ->addFormItem('role', 'select', '用户组', '', $role_options)
-                    ->display();
+                    ->build();
         }
     }
     
@@ -194,7 +194,7 @@ class UserController extends GyListController{
                     ->addFormItem('telephone', 'text', '手机')
                     ->addFormItem('role', 'select', '用户组', '', $role_options)
                     ->setFormData($info)
-                    ->display();
+                    ->build();
         }
     }
     
@@ -373,7 +373,7 @@ class UserController extends GyListController{
                 ->addFormItem('pwd1', 'password', '重复密码')
                 ->addFormItem('referer', 'hidden', '跳转地址')
                 ->setFormData($info)
-                ->display();
+                ->build();
         }
     }
     

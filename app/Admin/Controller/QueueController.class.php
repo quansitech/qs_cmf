@@ -69,7 +69,7 @@ class QueueController extends GyListController {
         ->setTableDataList($data_list)
         ->setTableDataPage($page->show())
          ->addRightButton('self', array('title' => '重启任务', 'href' => U('/admin/queue/rebuild', array('id' => '__data_id__')), 'class' => 'label label-success ajax-get confirm', '{key}' => 'show_reset', '{condition}' => 'eq', '{value}' => '1'))
-        ->display();
+        ->build();
     }
 
     public function refreshWait(){

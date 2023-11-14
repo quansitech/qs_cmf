@@ -69,7 +69,7 @@ class OssUtil
      */
     public static function isGb2312($str)
     {
-        for ($i = 0; $i < strlen($str); $i++) {
+        for ($i = 0, $iMax = strlen($str); $i < $iMax; $i++) {
             $v = ord($str[$i]);
             if ($v > 127) {
                 if (($v >= 228) && ($v <= 233)) {
@@ -95,7 +95,7 @@ class OssUtil
      */
     public static function checkChar($str, $gbk = true)
     {
-        for ($i = 0; $i < strlen($str); $i++) {
+        for ($i = 0, $iMax = strlen($str); $i < $iMax; $i++) {
             $v = ord($str[$i]);
             if ($v > 127) {
                 if (($v >= 228) && ($v <= 233)) {

@@ -129,13 +129,13 @@ class SendCloud{
         
         $template_arr[] = $temp_template;
         $sub_arr = array();
-        for($i = 0; $i < count($template_arr); $i++){
+        for($i = 0, $iMax = count($template_arr); $i < $iMax; $i++){
             $content = str_replace_first($template_arr[$i], "{|}", $content);
         }
 //        \Think\Log::write($content);
         $content = trim($content, "{|}");
         $arr = explode("{|}", $content);
-        for($i = 0; $i < count($var_arr); $i++){
+        for($i = 0, $iMax = count($var_arr); $i < $iMax; $i++){
             $sub_arr['%' . $var_arr[$i] . '%'] = array($arr[$i]); 
         }
 //        \Think\Log::write(json_encode($sub_arr));

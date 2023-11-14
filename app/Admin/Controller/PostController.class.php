@@ -62,7 +62,7 @@ class PostController extends GyListController{
         ->addRightButton('edit')         
         ->addRightButton('forbid')      
         ->addRightButton('delete')        
-        ->display();
+        ->build();
     }
     
     public function save(){
@@ -110,7 +110,7 @@ class PostController extends GyListController{
                     ->addFormItem('english_name', 'text', '英文标题','', '') 
                     ->addFormItem('cate_id', 'select', '所属分类','', D("PostCate")->getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('publish_date', 'date', '发布时间','', '')->addFormItem('author', 'text', '作者','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '正文内容','', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片','', '')->addFormItem('attach', 'files', '附件','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())
                     ->addFormItem('up','radio','置顶','',  DBCont::getBoolStatusList())
-                    ->display();
+                    ->build();
         }
     }
     
@@ -161,7 +161,7 @@ class PostController extends GyListController{
                     ->addFormItem('up','radio','置顶','',  DBCont::getBoolStatusList())
                     ->setFormData($info)
                     ->setFormItemFilter($this->formItemFilter($this->content_option))
-                    ->display();
+                    ->build();
         }
     }
     

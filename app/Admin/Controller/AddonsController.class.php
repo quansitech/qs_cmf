@@ -45,7 +45,7 @@ class AddonsController extends GyListController{
                         array('key' => 'uninstall', 'value' => 1),
                         array('right_button' => '<a class="label label-warning" href="' . U('/admin/addons/install/addon_name/__name__') . '">安装</a>')
                     )
-                    ->display();
+                    ->build();
     }
     
     public function install($addon_name){
@@ -167,7 +167,7 @@ class AddonsController extends GyListController{
             }
             $builder->setFormData($db_config)
                         ->setPostUrl(U('config', array('id' => $id)))    // 设置表单提交地址
-                        ->display();
+                        ->build();
         }
     }
         

@@ -43,7 +43,7 @@ class RoleController extends GyListController {
         ->addRightButton('edit')           // 添加编辑按钮
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
-        ->display();
+        ->build();
     }
     
     private function _genAccessList(){
@@ -141,7 +141,7 @@ class RoleController extends GyListController {
         }
         else{
             $this->_genAccessList();
-            $this->display();
+            $this->build();
         }
     }
     
@@ -190,7 +190,7 @@ class RoleController extends GyListController {
             }
 
             $this->assign('vo', $vo);
-            $this->display();
+            $this->build();
         }
     }
     
