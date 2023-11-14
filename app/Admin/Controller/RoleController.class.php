@@ -141,7 +141,7 @@ class RoleController extends GyListController {
         }
         else{
             $this->_genAccessList();
-            $this->build();
+            $this->display();
         }
     }
     
@@ -190,7 +190,7 @@ class RoleController extends GyListController {
             }
 
             $this->assign('vo', $vo);
-            $this->build();
+            $this->display();
         }
     }
     
