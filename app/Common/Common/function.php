@@ -1219,20 +1219,6 @@ if(!function_exists('getDonateMonthlyPurpose')) {
     }
 }
 
-//显示数据库存储文件标题
-if(!function_exists('showFileTitle')) {
-    function showFileTitle($file_id)
-    {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->find($file_id);
-        if ($file_pic_ent) {
-            return $file_pic_ent['title'];
-        }
-        return '';
-    }
-}
-
-
 //自动格式化显示文件大小
 if(!function_exists('format_filesize')) {
     function format_filesize($filesize)
