@@ -168,7 +168,8 @@ class CustomButton extends ButtonType{
 
     //实现抽象函数build，完成控件渲染
     // option接收所有按钮控件创建时需要的参数，如 type、attribute、tips、auth_node
-    public function build(array $option){
+    // listBuilder 为 ListBuilder 类 
+    public function build(array $option, ListBuilder $listBuilder){
         //默认配置值
         $my_attribute['type'] = 'custom';
         $my_attribute['title'] = '自定义类型';
@@ -216,7 +217,7 @@ class Num extends ColumnType implements EditableInterface
     }
 
     public function editBuild(&$option, $data, $listBuilder){
-        $class = "form-control input text ". $this->getSaveTargetForm();
+        $class = "form-control input text ". $this->getSaveTargetForm($listBuilder);
         return "<input class='{$class}' type='number' name='{$option['name']}[]' value={$data[$option['name']]} />";
     }
 }
