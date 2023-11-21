@@ -4,6 +4,6 @@ const webpackConfig = {
     mode: 'production',
 };
 
-const webpack = Object.assign(webpackCommon, webpackConfig);
+const webpack_c = Object.assign(webpackCommon, webpackConfig);
 
-module.exports = webpack;
+module.exports = webpack_c;

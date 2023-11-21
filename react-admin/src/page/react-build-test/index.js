@@ -1,10 +1,9 @@
-import reactBuildTestReq from "../common/react-build-test-request";
+import React, {useState, useEffect} from "react";
+import { createRoot } from 'react-dom/client';
+import { Select, Row, Col } from 'antd';
+import reactBuildTestReq from "@/common/react-build-test-request";
 
-const useState = React.useState;
-const useEffect = React.useEffect;
-
-
-const ReactBuildTest = function(props){
+const Index = function(props){
     const [stageId, setStageId] = useState(1);
 
     useEffect(() => {
@@ -34,6 +33,9 @@ const ReactBuildTest = function(props){
     </>
 }
 
-ReactDOM.render(<ReactBuildTest
+const domNode = document.getElementById('app');
+const root = createRoot(domNode);
+
+root.render(<Index
     statusList={ statusList }
-/>, document.getElementById('app'));
+/>);
