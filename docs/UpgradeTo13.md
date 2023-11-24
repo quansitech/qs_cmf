@@ -55,7 +55,9 @@
   
 + 若实现了 showFileTitle 公共函数，需删除
  
-+ 检查是否使用了 jquery 新版 3.7 已删除方法。
++ 检查是否使用了 jquery 新版 3.7 已删除方法
+
++ 使用 DateTimeInterface::ATOM 替换 DateTime::ISO8601 
  
 + 其他说明
   + 移除了 *Common\Util\Mail* 发送邮箱的工具
