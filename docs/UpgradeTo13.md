@@ -1,4 +1,4 @@
-#### v13升级步骤
+## v13升级步骤
 
 + 修改composer.json文件
   + 从v13版本的think-core composer.json文件中找到require-dev的内容，替换掉脚手架的
@@ -61,6 +61,8 @@
   + 移除了 *Common\Util\Mail* 发送邮箱的工具
   + 移除了 *Common\Util\PDF* 
   + 移除了 *Gy_Library\DES*
+
++ 复制v13迁移文件 2023_11_21_015722_add_hashid_to_qs_file_pic.php 到 项目的迁移目录，执行迁移
 
 
 #### 使用php8.2的修改
