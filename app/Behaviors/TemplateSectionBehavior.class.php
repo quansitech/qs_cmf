@@ -22,7 +22,7 @@ class TemplateSectionBehavior extends \Think\Behavior{
        	$find = preg_match_all($this->config['tmpl_section_register'],$content,$matches);
         // dump($matches);
        	if(!$find) return $content;
-       	for ($i=0; $i < count($matches[0]); $i++) {
+       	for ($i=0, $iMax = count($matches[0]); $i < $iMax; $i++) {
             if($count = count($this->section[$matches[1][$i]]))
                 for ($j=0; $j < $count; $j++) { 
                     $content = str_replace($matches[0][$i],$this->section[$matches[1][$i]][$j],$content);
@@ -40,7 +40,7 @@ class TemplateSectionBehavior extends \Think\Behavior{
         // dump($matches);
         if(!$find) return $content;
         //替换Layout标签
-        for ($i=0; $i < count($matches[0]); $i++) { 
+        for ($i=0, $iMax = count($matches[0]); $i < $iMax; $i++) {
         	$content = str_replace($matches[0][$i],'',$content);
             if(!is_array($this->section[$matches[1][$i]])) $this->section[$matches[1][$i]]=array();
         	array_push($this->section[$matches[1][$i]],$matches[2][$i]);

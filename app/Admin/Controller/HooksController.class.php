@@ -61,7 +61,7 @@ class HooksController extends \Gy_Library\GyListController{
         ->addRightButton('edit')           // 添加编辑按钮
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
-        ->display();
+        ->build();
     }
     
     public function add(){
@@ -88,7 +88,7 @@ class HooksController extends \Gy_Library\GyListController{
                     ->setPostUrl(U('add'))    //设置表单提交地址
                     ->addFormItem('name', 'text', '钩子名称')
                     ->addFormItem('desc', 'text', '钩子描述')
-                    ->display();
+                    ->build();
         }
     }
     
@@ -118,7 +118,7 @@ class HooksController extends \Gy_Library\GyListController{
                     ->addFormItem('name', 'text', '钩子名称')
                     ->addFormItem('desc', 'text', '钩子描述')
                     ->setFormData($info)
-                    ->display();
+                    ->build();
         }
     }
     

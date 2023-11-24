@@ -57,7 +57,7 @@ class JsErrLogController extends GyListController
             ->addTableColumn('create_date','出现时间','time')
             ->addTableColumn('right_button', '操作', 'btn')
             ->addRightButton('edit',['title'=>'查看'])
-            ->display();
+            ->build();
     }
 
     public function edit($id){
@@ -76,6 +76,6 @@ class JsErrLogController extends GyListController
             ->addFormItem('create_date','datetime','出现时间','',[],[],'disabled')
             ->setFormData($data)
             ->setExtraHtml($this->fetch('edit_extra'))
-            ->display();
+            ->build();
     }
 }

@@ -63,7 +63,7 @@ class PostCateController extends GyListController{
                 ->addRightButton('edit')         
         ->addRightButton('forbid')      
         ->addRightButton('delete')        
-        ->display();
+        ->build();
     }
     
     public function save(){
@@ -105,7 +105,7 @@ class PostCateController extends GyListController{
             $builder->setMetaTitle('新增分类') 
                     ->setNID(933)
                     ->setPostUrl(U('add'))    
-                    ->addFormItem('name', 'text', '分类','', '')->addFormItem('pid', 'select', '上级分类','', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '分类封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '分类详情','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())                    ->display();
+                    ->addFormItem('name', 'text', '分类','', '')->addFormItem('pid', 'select', '上级分类','', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '分类封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '分类详情','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())                    ->build();
         }
     }
     
@@ -144,7 +144,7 @@ class PostCateController extends GyListController{
                     ->addFormItem('id', 'hidden', 'ID')
                     ->addFormItem('name', 'text', '分类', '', '')->addFormItem('pid', 'select', '上级分类', '', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '分类封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '分类详情', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    ->setFormData($info)
                     ->setFormItemFilter($this->formItemFilter($this->option))
-                    ->display();
+                    ->build();
         }
     }
     

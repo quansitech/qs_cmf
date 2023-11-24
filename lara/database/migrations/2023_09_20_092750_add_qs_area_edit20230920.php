@@ -556,7 +556,7 @@ class AddQsAreaEdit20230920 extends Migration
     {
         //贵州省 毕节市 黔西县
         \Illuminate\Support\Facades\DB::table('qs_area')->where(['id'=>'520581','upid'=>'520500'])->update(['cname'=>'黔西县','id'=>'520522']);
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', 'in', '520581')->delete();  
+        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '520581')->delete();
         $area_data = [
             [
                 'id' => '520522001',
@@ -840,10 +840,10 @@ class AddQsAreaEdit20230920 extends Migration
         ];        
         \Illuminate\Support\Facades\DB::table('qs_area')->insert($area_data);
         //添加莱芜市信息
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', 'in', '370116')->delete();         
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', 'in', '370116')->delete();         
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', 'in', '370117')->delete();         
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', 'in', '370117')->delete();
+        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', '=', '370116')->delete();
+        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '370116')->delete();
+        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', '=', '370117')->delete();
+        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '370117')->delete();
         $areadata = [
             [
                 'id' => '371200',

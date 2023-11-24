@@ -1,3 +1,6 @@
+import Http from '@/common/http';
+import ApiUrl from '@/common/api-url';
+
 const http = new Http();
 
 const ReactBuildTestRequest = {
