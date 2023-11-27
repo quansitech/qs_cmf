@@ -9,7 +9,7 @@
 GET
 
 ### 路径
-`/api/upload`
+`/api/upload/upload`
 
 ### 请求参数
 
@@ -54,7 +54,7 @@ GET
 POST
 
 ### 路径
-`/api/uploadFile`
+`/api/upload/uploadFile`
 
 ### 请求参数
 
