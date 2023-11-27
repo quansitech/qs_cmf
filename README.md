@@ -301,6 +301,9 @@ php artisan migrate:reset --no-cmd
 ## Cache
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Cache.md)
 
+## upload Api
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Upload.md)
+
 ## 前台js错误收集
 
 #### 用法

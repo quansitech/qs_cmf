@@ -64,6 +64,9 @@
 
 + 复制v13迁移文件 2023_11_21_015722_add_hashid_to_qs_file_pic.php 到 项目的迁移目录，执行迁移
 
++ 重构了脚手架的api/upload接口，接口的请求参数格式都会有变化，新增了hash_id的去重功能，同时v13 think-core 的 file picture组件也会根据新接口做重
+构。复制v13的qscmf/app/Api/Controller/UploadController.php 覆盖本项目的对应文件,检查项目有无进行上传接口的客制化改造，如果有则需要对新的上传代码做同样的客制化处理。
+
 
 #### 使用php8.2的修改
 + 将 DateTime::ISO8601 替换成 DateTimeInterface::ATOM
