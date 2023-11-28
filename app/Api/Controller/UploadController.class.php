@@ -57,6 +57,7 @@ class UploadController extends \Think\Controller{
         $upload_config = C($key);
 
         $data = $get_data;
+        $data['vendor_type'] = "";
         $data['security'] = isset($upload_config['security']) ? 1 : 0;
         $data['owner'] = isset($upload_config['security']) ? session(C('USER_AUTH_KEY')) : 0;
 
@@ -67,6 +68,7 @@ class UploadController extends \Think\Controller{
                 $ajax = [
                     'status' => 1,
                     'file_id' => $file_id,
+                    'title' => $get_data['title'],
                     'url' => HTTP_PROTOCOL . "://" . SITE_URL . showFileUrl($file_id),
                     'server_url' => U("uploadFile", $return_params, false, true)
                 ];
@@ -135,6 +137,7 @@ class UploadController extends \Think\Controller{
             $ajax = [
                 'status' => 1,
                 'file_id' => $file_id,
+                'title' => $data['title'],
                 'url' => HTTP_PROTOCOL . "://" . SITE_URL . showFileUrl($file_id),
             ];
 

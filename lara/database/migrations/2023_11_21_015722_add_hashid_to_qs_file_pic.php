@@ -31,6 +31,17 @@ class AddHashidToQsFilePic extends Migration
                 return $item->Field == 'hash_id';
             })->count();
 
+            $vendor_type_count = collect($columns)->filter(function($item){
+                return $item->Field == 'vendor_type';
+            })->count();
+
+            if(!$vendor_type_count){
+                $table->string("vendor_type", 50)->default("")
+                    ->comment("提供图片存储服务的媒介，如：aliyun, qiniu, 空的话就是服务器存储")
+                    ->after("cate");
+            }
+
+
             if(!$count){
                 $table->string('hash_id', 200)->default("")
                     ->comment("文件哈希值，除了空串，此值应该唯一")
@@ -54,6 +65,14 @@ class AddHashidToQsFilePic extends Migration
             $count = collect($columns)->filter(function($item){
                 return $item->Field == 'hash_id';
             })->count();
+
+            $vendor_type_count = collect($columns)->filter(function($item){
+                return $item->Field == 'vendor_type';
+            })->count();
+
+            if($vendor_type_count){
+                $table->dropColumn("vendor_type");
+            }
 
             if($count){
                 $table->dropIndex('idx_hashId');
