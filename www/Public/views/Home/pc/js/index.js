@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-    require('modules/ignore/jquery-1.8.3/jquery');
+    require('modules/ignore/jquery-3.7.1/jquery');
 
     function main() {
         utils().bannerH();

@@ -234,8 +234,8 @@ var require, define;
 
     require.timeout = 5000;
 })(undefined);
-;/*!/modules/ignore/jquery-1.8.3/jquery.js*/
-define('modules/ignore/jquery-1.8.3/jquery', function(require, exports, module) {
+;/*!/modules/ignore/jquery-3.7.1/jquery.js*/
+define('modules/ignore/jquery-3.7.1/jquery', function(require, exports, module) {
 
   /*!
    * jQuery JavaScript Library v1.8.3
@@ -9717,7 +9717,7 @@ define('modules/ignore/jquery-1.8.3/jquery', function(require, exports, module) 
 'use strict';
 
 (function () {
-    require('modules/ignore/jquery-1.8.3/jquery');
+    require('modules/ignore/jquery-3.7.1/jquery');
 
     function main() {
         utils().bannerH();
