@@ -64,7 +64,7 @@
             //重新加载验证码
             $('#loadingimg').show();
             var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
-                .load(function() {
+                .on('load', function() {
                     if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                         alert('验证码图片加载出错，请刷新');
                     } else {
