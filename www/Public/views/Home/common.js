@@ -77,7 +77,7 @@ jQuery(document).ready(function($) {
     $('a.validate-img').on('click', function() {
         //重新加载验证码
         var img = $("<img />").attr('src', $(this).children().attr('src'))
-            .load(function() {
+            .on('load', function() {
                 if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                     alert('验证码图片加载出错，请刷新');
                 } else {
