@@ -13,7 +13,7 @@ define('modules/js/fileupload/jquery.fileupload', function(require, exports, mod
   
   /* jshint nomen:false */
   /* global define, window, document, location, Blob, FormData */
-  var jQuery = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');
+  var jQuery = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
   (function (factory) {
       'use strict';
       if (typeof define === 'function' && define.amd) {
@@ -28,7 +28,7 @@ define('modules/js/fileupload/jquery.fileupload', function(require, exports, mod
       }
   }(function ($) {
       'use strict';
-      var $ = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');
+      var $ = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
       // Detect file input support, based on
       // http://viljamis.com/blog/2012/file-upload-support-on-mobile/
       $.support.fileInput = !(new RegExp(
