@@ -21,12 +21,6 @@ return array(
 		'replace'  => false, //存在同名是否覆盖
 		'hash'     => true, //是否生成hash编码
 		'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
-        'oss_host' => env("ALIOSS_HOST"),
-        'os_upload_meta' => array('Cache-Control' => 'max-age=2592000'),
-        'tos_host' => env('VOLC_HOST'),
-//        'vendorType' => 'volcengine_tos',
-        'cos_host' => env('COS_HOST'),
-//        'upload_tos_host' => env('VOLC_HOST'),
     ),
 
     'UPLOAD_TYPE_AUDIO' => array(
@@ -48,9 +42,9 @@ return array(
 
     /* 图片上传相关配置 */
     'UPLOAD_TYPE_IMAGE' => array(
-		'mimes'    => 'image/jpeg,image/png,image/gif,image/bmp,image/heic,image/heif', //允许上传的文件MiMe类型
-		'maxSize'  => 100*1024*1024, //上传的文件大小限制 (0-不做限制)
-		'exts'     => 'jpg,gif,png,jpeg,heic,heif', //允许上传的文件后缀
+		'mimes'    => 'image/jpeg,image/png,image/gif,image/bmp', //允许上传的文件MiMe类型
+		'maxSize'  => 10*1024*1024, //上传的文件大小限制 (0-不做限制)
+		'exts'     => 'jpg,gif,png,jpeg', //允许上传的文件后缀
 		'autoSub'  => true, //自动子目录保存文件
 		'subName'  => array('date','Ymd'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
 		'rootPath' => './Uploads/', //保存根路径
