@@ -70,7 +70,7 @@
                     <h1>内容自定义字段:</h1>
                     <php>$content_list_show_num = 0;</php>
                     <php>$content_add_show_num = 0;</php>
-                    <php>for($cus_i=0;$cus_i<count($coder_log['content_column_name']);$cus_i++){</php>
+                    <php>for($cus_i=0;$cus_i<count((array)$coder_log['content_column_name']);$cus_i++){</php>
                     <div class='row box box-solid'>
                         <div class="col-xs-12">
                             <div class='form-group'>
@@ -238,7 +238,7 @@
                     <h1>分类自定义字段:</h1>
                     <php>$cate_list_show_num = 0;</php>
                     <php>$cate_add_show_num = 0;</php>
-                    <php>for($cus_i=0;$cus_i<count($coder_log['cate_column_name']);$cus_i++){</php>
+                    <php>for($cus_i=0;$cus_i<count((array)$coder_log['cate_column_name']);$cus_i++){</php>
                     <div class='row box box-solid'>
                         <div class="col-xs-12">
                             <div class='form-group'>

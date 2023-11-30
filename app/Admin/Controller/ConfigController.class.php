@@ -88,7 +88,7 @@ class ConfigController extends GyListController{
         ->addRightButton('edit')           // 添加编辑按钮
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
-        ->display();
+        ->build();
     }
     
     public function forbid(){
@@ -178,7 +178,7 @@ class ConfigController extends GyListController{
                     ->addFormItem('value', 'textarea', '配置值')
                     ->addFormItem('extra', 'textarea', '配置项', '只有当配置类型为复选框、下拉框、单选按钮时需要填写')
                     ->addFormItem('remark', 'textarea', 'tips', '配置项说明提示')
-                    ->display();
+                    ->build();
         }
     }
     
@@ -222,7 +222,7 @@ class ConfigController extends GyListController{
                     ->addFormItem('extra', 'textarea', '配置项', '只有当配置类型为复选框、下拉框、单选按钮时需要填写')
                     ->addFormItem('remark', 'textarea', 'tips', '配置项说明提示')
                     ->setFormData($form_data)
-                    ->display();
+                    ->build();
         }
     }
     
@@ -273,7 +273,7 @@ class ConfigController extends GyListController{
                     ->setFormData($form_data)
                     ->setPostUrl(U('setting'))    // 设置表单提交地址
                     //->setExtraItems($data_list)     // 直接设置表单数据
-                    ->display();
+                    ->build();
         }
     }
     

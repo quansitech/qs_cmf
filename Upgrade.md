@@ -152,6 +152,7 @@
 
 v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
 
+v12->v13升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo13.md)
 
 
 ##### v13修改计划
@@ -163,3 +164,5 @@ v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/
 - [ ] 将file_pic表的mime_type长度增加到200
 - [ ] 将showFileTitle方法移动到think-core
 - [ ] 升级jquery最新版本，旧版本废弃
+- [ ] 优化 react-admin 模块
+- [ ] 本地上传组件添加文件查重，重复则新增数据用旧的路径

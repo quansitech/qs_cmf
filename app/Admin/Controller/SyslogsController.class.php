@@ -31,7 +31,7 @@ class SyslogsController extends GyListController{
         ->addTableColumn('opname', '操作记录')
         ->setTableDataList($data_list)     // 数据列表
         ->setTableDataPage($page->show())  // 数据列表分页
-        ->display();
+        ->build();
     }
 }
 

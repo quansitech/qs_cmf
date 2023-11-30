@@ -26,7 +26,7 @@ if(!function_exists('gmt_iso8601')) {
     {
         $dtStr = date("c", $time);
         $mydatetime = new DateTime($dtStr);
-        $expiration = $mydatetime->format(DateTime::ISO8601);
+        $expiration = $mydatetime->format(DateTimeInterface::ATOM);
         $pos = strpos($expiration, '+');
         $expiration = substr($expiration, 0, $pos);
         return $expiration . "Z";
@@ -127,7 +127,7 @@ if(!function_exists('intConvertToArr')) {
 
         $str = strval($i);
         $arr = array();
-        for ($i = 0; $i < strlen($str); $i++) {
+        for ($i = 0, $iMax = strlen($str); $i < $iMax; $i++) {
             $arr[] = $str[$i];
         }
         return $arr;
@@ -1218,20 +1218,6 @@ if(!function_exists('getDonateMonthlyPurpose')) {
         return getCateNameById($detail_ent['ref_id']);
     }
 }
-
-//显示数据库存储文件标题
-if(!function_exists('showFileTitle')) {
-    function showFileTitle($file_id)
-    {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->find($file_id);
-        if ($file_pic_ent) {
-            return $file_pic_ent['title'];
-        }
-        return '';
-    }
-}
-
 
 //自动格式化显示文件大小
 if(!function_exists('format_filesize')) {

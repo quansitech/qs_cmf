@@ -1,9 +1,16 @@
 const webpackCommon = require('./webpack.common.js');
+const webpack = require('webpack');
 
 const webpackConfig = {
     mode: 'development',
 };
 
-const webpack = Object.assign(webpackCommon, webpackConfig);
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin")
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = webpack;
+const webpack_c = Object.assign(webpackCommon, webpackConfig);
+// webpack_c.plugins.push(new webpack.SourceMapDevToolPlugin({}));
+// webpack_c.plugins.push(new SpeedMeasurePlugin());
+// webpack_c.plugins.push(new BundleAnalyzerPlugin({analyzerPort:22222}));
+
+module.exports = webpack_c;

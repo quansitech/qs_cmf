@@ -99,7 +99,7 @@ class NodeController extends GyListController {
         ->addRightButton('edit')           // 添加编辑按钮
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
-        ->display();
+        ->build();
     }
 
     public function add(){
@@ -155,7 +155,7 @@ class NodeController extends GyListController {
                     ->addFormItem('menu_id', 'select', '菜单', '', array(), '', 'id=cmbMenu')
                     ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
                     ->setExtraHtml($this->fetch('Node/add_script'))
-                    ->display();
+                    ->build();
         }
     }
 
@@ -218,7 +218,7 @@ class NodeController extends GyListController {
                     ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
                     ->setFormData($node_ent)
                     ->setExtraHtml($this->fetch('Node/edit_script'))
-                    ->display();
+                    ->build();
         }
     }
 

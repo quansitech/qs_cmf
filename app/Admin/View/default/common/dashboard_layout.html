@@ -37,7 +37,11 @@
           <script src="__PUBLIC__/libs/respond.min.js"></script>
         <![endif]-->
         <block name="style"></block>
-
+        <script>
+            const Base = {
+                siteUrl: "{:(HTTP_PROTOCOL . '://' . SITE_URL)}"
+            };
+        </script>
 
 </head>
     <body class="skin-blue fixed">

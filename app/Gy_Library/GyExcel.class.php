@@ -28,7 +28,7 @@ class GyExcel {
     
     //将数据导出excel并下载
     public function exportToDownload($list, $file_name = 'volunteer.xls'){
-        for($i = 1; $i<=count($list); $i++){
+        for($i = 1, $iMax = count($list); $i<= $iMax; $i++){
             $this->_fillRow($this->_php_excel, $i, $list[$i-1]);
         }
         
