@@ -154,6 +154,8 @@ v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/
 
 v12->v13升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo13.md)
 
+[扩展包使用v13修改说明](https://github.com/quansitech/qs_cmf/blob/master/docs/ExtendsUpgradeTo13.md)
+
 
 ##### v13修改计划
 

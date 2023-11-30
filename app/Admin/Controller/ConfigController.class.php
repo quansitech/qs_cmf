@@ -239,7 +239,7 @@ class ConfigController extends GyListController{
                 }
                 S('DB_CONFIG_DATA', null);
                 sysLogs('修改系统配置');
-                $this->success('修改配置成功', U(CONTROLLER_NAME . '/setting'));
+                $this->success('修改配置成功', U(CONTROLLER_NAME . '/setting', ['group' => $group]));
             }
         }else{
             $group_list   =   C('CONFIG_GROUP_LIST');
@@ -271,7 +271,7 @@ class ConfigController extends GyListController{
                     ->setNID(69)
                     ->SetTabNav($tab_list, $group)  // 设置Tab按钮列表
                     ->setFormData($form_data)
-                    ->setPostUrl(U('setting'))    // 设置表单提交地址
+                    ->setPostUrl(U('setting', ['group' => $group]))    // 设置表单提交地址
                     //->setExtraItems($data_list)     // 直接设置表单数据
                     ->build();
         }

@@ -179,8 +179,15 @@ class UploadController extends \Think\Controller{
         //统计下载次数
         $param = array(\Addons\Stat\StatCont::FILE_DOWNLOAD, 1, $file_id, 'FilePic');
         \Think\Hook::listen('stat', $param);
+        $mobile_detect = new \Common\Util\Mobile_Detect();
+        $is_mobile = $mobile_detect->isMobile();
 
-        forceDownload(UPLOAD_DIR. '/' . $file_pic_ent['file'], $file_pic_ent['title']);
+        if($is_mobile){
+            $url = showFileUrl($file_id);
+            header('Location:'.$url);
+        }else{
+            forceDownload(UPLOAD_DIR. '/' . $file_pic_ent['file'], $file_pic_ent['title']);
+        }
     }
    
 }
