@@ -11,9 +11,10 @@
         }
     ],
     "require": {
-        "tiderjian/think-core": "^12.0",
+        "tiderjian/think-core": "^13.0",
         "funkjedi/composer-include-files": "^1.0",
-        "quansitech/qscmf-utils": "^1.5"
+        "quansitech/qscmf-utils": "^1.5",
+        "quansitech/qscmf-formitem-ueditor": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3.0",
