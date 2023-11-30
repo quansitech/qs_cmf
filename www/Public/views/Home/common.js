@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
         alert('cookie 未打开!');
     }
     
-    $('.topnav a.top').click(function(e){
+    $('.topnav a.top').on('click', function(e){
         e.preventDefault();
     });
     $('.totop').toTop();
@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
     $('#showLogin').appendTo('body');
 
     //ajax提交form
-    $('body').delegate('.ajax-form', 'submit', function(e) {
+    $('body').on('submit', '.ajax-form', function(e) {
         e.preventDefault();
         var formValues = $(this).serialize();
         $.ajax({
@@ -74,10 +74,10 @@ jQuery(document).ready(function($) {
     });
     
     //刷新验证码
-    $('a.validate-img').click(function() {
+    $('a.validate-img').on('click', function() {
         //重新加载验证码
         var img = $("<img />").attr('src', $(this).children().attr('src'))
-            .load(function() {
+            .on('load', function() {
                 if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                     alert('验证码图片加载出错，请刷新');
                 } else {
@@ -87,7 +87,7 @@ jQuery(document).ready(function($) {
         return false;
     });
     //验证登录
-    $('#login-form').submit(function(e) {
+    $('#login-form').on('submit', function(e) {
         e.preventDefault();
         var formValues = $(this).serialize();
         $.ajax({

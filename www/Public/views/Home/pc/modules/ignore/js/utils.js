@@ -1,7 +1,7 @@
 define('modules/js/utils', function(require, exports, module) {
 
   
-  var $ = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');
+  var $ = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
   require('modules/js/fileupload/jquery.ui.widget');
   require('modules/js/fileupload/jquery.iframe-transport');
   require('modules/js/fileupload/jquery.fileupload');

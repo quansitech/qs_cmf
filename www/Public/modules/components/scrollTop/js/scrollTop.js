@@ -5,7 +5,7 @@ define('modules/components/scrollTop/js/scrollTop', function(require, exports, m
       return myScroll.y;
   }
   exports.scrollTop = function(){
-      $('#scrollTop').click(function(){
+      $('#scrollTop').on('click', function(){
           $(this).hide();
           new IScroll('#wrapper', {y: 0});
       });
