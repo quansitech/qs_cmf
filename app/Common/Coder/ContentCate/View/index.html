@@ -566,12 +566,12 @@
     </script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
-            $('#save_btn').click(function(){
+            $('#save_btn').on('click', function(){
                 $('#form').attr('action','/admin/coder/save');
-                $('#form').submit();
+                $('#form').trigger('submit');
             });
             
-            $('.addField').click(function () {
+            $('.addField').on('click', function () {
                 var prefix = $(this).attr('prefix');
                 var field_o = $($('#field').clone().html());
                 field_o.find('[name]').each(function(){

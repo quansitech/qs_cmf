@@ -1,7 +1,7 @@
 define('modules/js/app', function(require, exports, module) {
 
   // require('./zepto.min/zepto.min');
-  var $ = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');
+  var $ = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
   // 工具函数
   var utils = require('modules/js/utils');
   // 滚动条
