@@ -90,4 +90,96 @@
 
 + **检查继承了 ButtonType 的 TopButton，将 build 改成与父类一致。**  
 
-  
+
+#### think-core的修改
+  + 删除了下列文件
+    + asset\libs\jquery\flot\*
+    + asset\libs\jquery\inputmask\*
+    + asset\libs\jquery\jquery.ba-resize.min.js
+    + asset\libs\jquery\jquery.dataTables.js
+    + asset\libs\jquery\jquery.knob.js
+    + asset\libs\jquery\jquery.placeholder.js
+    + asset\libs\jquery\jquery.random-password.js
+    + asset\libs\jquery\jquery.sparkline.js
+    + asset\libs\jquery.sparkline.min.js
+    + asset\libs\donatecart.js
+    + asset\libs\jquery.form.js
+    + asset\libs\jquery.form.min.js
+    + asset\libs\jquery.min.js
+    + asset\libs\jquery.printPage.js
+    + asset\libs\jquery.stickytableheaders.min.js
+    + asset\libs\validate\additional-methods.min.js
+    + asset\libs\validate\jquery.validate.min.js
+    + asset\libs\jquery.validate.min.js
+    + asset\libs\jquery.waypoints.min.js
+    + asset\libs\modernizr.js
+    + asset\libs\tooltip.js
+    + asset\libs\AdminLTE\AdminLTE.js
+    + asset\libs\superslide.js
+    + asset\libs\amaze\js\amazeui.js
+    + asset\libs\amaze\js\amazeui.min.js
+    + asset\libs\amaze\js\handlebars.min.js
+    + asset\libs\amaze\js\jquery.min.js
+    + asset\libs\audioplayer\*
+    + asset\libs\label-select\lib\jquery.js
+    + asset\libs\morris\*
+    + asset\libs\videojs\*
+    + asset\libs\select2\select2.full.js
+    + asset\libs\select2\select2.min.js
+    + asset\libs\select2\select2.min.css
+    + asset\libs\ckeditor\*
+    + asset\libs\masonry\*
+    + asset\libs\fullcalendar\*
+    + asset\libs\qsuploader.boundle.js
+    + asset\libs\backbone\*
+    + asset\libs\bootstrap-typeahead\*
+    + asset\libs\bootstrap-wysihtml5\*
+    + asset\libs\bootstrap3-editable\*
+    + asset\libs\dataTables.bootstrap\*
+    + asset\libs\fancybox
+    + asset\libs\highcharts
+    + asset\libs\Fixed-Header-Table-master
+    + asset\libs\flexslider
+    + asset\libs\jquery-ui
+    + asset\libs\jquery-ui-1.11.4
+    + asset\libs\jvectormap
+    + asset\libs\magnific-popup
+    + asset\libs\messenger
+    + asset\libs\picshow\pinchzoom.js
+    + asset\libs\slimScroll\jquery.slimscroll.js
+    + asset\libs\scrollup
+    + asset\libs\umeditor
+    + asset\libs\tmall-cart
+    + asset\libs\polyfill
+    + asset\libs\video.min.js
+    + asset\libs\videojs-ie8.min.js
+    + asset\libs\modal.js
+    + asset\libs\stickUp.js
+
+  + 修改了下列文件
+    + 修改asset\libs\label-select\label-select.js语法兼容，并编译了一下
+    + 升级asset\libs\select2\css\* 从原来的Select2 4.0.6-rc.1 到现在的 Select2 4.1.0-rc.0
+    + 升级asset\libs\select2\js\* 从原来的Select2 4.0.6-rc.1 到现在的 Select2 4.1.0-rc.0
+    + 增加asset/libs/jquery-extend/jquery.extend.js
+    + 更新版本asset\libs\bootstrap-datepicker\* 从1.4.0版本更新到最新的1.10.0
+    + 修改asset\libs\cropper\main.js，兼容jquery最新语法
+    + 修改asset\libs\cui\cui.extend.min.js， 兼容jquery最新语法
+    + 修改src\Library\Qscmf\Builder\FormType\File\file.html			----------------开始------------------
+    + 修改src\Library\Qscmf\Builder\FormType\Files\files.html
+    + 修改src\Library\Qscmf\Builder\FormType\Picture\picture.html		$.parseJson改成JSON.parse
+    + 修改src\Library\Qscmf\Builder\FormType\Pictures\pictures.html  	-------------结束---------------------
+    + 修改src\Library\Qscmf\Builder\FormType\Citys\citys.html		----------unbind改成off---------
+    + 修改src\Library\Qscmf\Builder\FormType\Districts\districts.html	----------unbind改成off---------
+    + 修改asset\libs\cropper\main.js 替换该文件中的.selector属性（jquery3.0版本已经移除 ）
+
+
+#### qs_cmf 所做的修改
+  + 升级所有的jquery文件版本为3.7.1
+  + app/Home/View/default/Index/test.html  （asset\libs\qsuploader.boundle.js 已删除，注释掉相关使用）
+	+ app/Admin/View/default/common/dashboard_layout.html （将自定义扩展的$.isWindow()的文件通过script引入到其中 用来适配当前的bootstrap版本）
+	+ app/Admin/View/default/common/layout.html （将自定义扩展的$.isWindow()的文件通过script引入到其中 用来适配当前的bootstrap版本）
+	+ app\Admin\View\default\common\dashboard_layout.html 删除asset\libs\messenger的相关引入
+  + 删除www/public/addons/Qiniu
+  + 修改www/public/static/common.js
+  + 修改www/public/views/home/app.js
+	+ 修改www/public/views/home/pc/js/app.js

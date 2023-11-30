@@ -11,7 +11,7 @@ define('modules/js/fileupload/jquery.ui.widget', function(require, exports, modu
    * http://api.jqueryui.com/jQuery.widget/
    */
   
-  var jQuery = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');
+  var jQuery = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
   (function (factory) {
       if (typeof define === "function" && define.amd) {
           // Register as an anonymous AMD module:
