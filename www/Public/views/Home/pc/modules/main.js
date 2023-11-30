@@ -1,5 +1,9 @@
 define('modules/main', function(require, exports, module) {
 
+  $.fn.size = function() {
+    return this.length;
+  }
+
   var utils = require('modules/ignore/utils');
   // SuperSlide
   require('modules/ignore/SuperSlide/jquery.SuperSlide.2.1.1');
