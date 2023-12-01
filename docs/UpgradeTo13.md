@@ -82,15 +82,6 @@
 
 + 将phpstorm的php版本设置成8.2, 开启View--Tool Windows--Problems--Inspect Code 分析业务代码是否存在潜在语法错误
 
-
-#### 扩展包修改
-+ 若符合以下修改要求，需要同步修改 composer.json ，限制 think-core 为 v13 的最新版本
-
-+ **检查实现了 EditableInterface 的 ColumnType，将 builder 传给 getSaveTargetForm 方法。**
-
-+ **检查继承了 ButtonType 的 TopButton，将 build 改成与父类一致。**  
-
-
 #### think-core的修改
   + 删除了下列文件
     + asset\libs\jquery\flot\*

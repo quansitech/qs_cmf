@@ -55,7 +55,7 @@ return array(
 		'hash'     => true, //是否生成hash编码
 		'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
 		'oss_host' => env("ALIOSS_HOST"),
-		'oss_meta' => array('Cache-Control' => 'max-age=2592000'),
+        'oss_meta' => array('Cache-Control' => 'max-age=2592000'),
     ),
 
     'UPLOAD_TYPE_VIDEO' => array(
