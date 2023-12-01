@@ -36,6 +36,8 @@
   <script type="text/javascript" charset="utf-8" src="{:asset('ueditor/ueditor.config.js')}"></script>
   ```
   
+  系统配置中也会有调用富文本的设置，需要检查有无设置配置项，如果有，data-url也需要做以上修改
+  
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，使用build方法替换
 
 + 修改 *env* 加载方式
