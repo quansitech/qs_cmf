@@ -1,6 +1,6 @@
 ## v13升级步骤
 
-+ 修改composer.json文件
++ 若 composer.json 文件有 require-dev，则修改
   + 从v13版本的think-core composer.json文件中找到require-dev的内容，替换掉脚手架的
     ```php
     "phpunit/phpunit": "^8.0",
@@ -14,8 +14,23 @@
     "mockery/mockery": "^1.2",
     "fakerphp/faker": "^1.10.0"
     ```
+
++ 修改 *env* 加载方式
+  ```php
+  // 查找项目中 env 的创建代码
+  \Dotenv\Dotenv::create
   
-  + 引入 富文本组件 扩展包
+  // 替换成，默认为不可以改变env的值
+  \Dotenv\Dotenv::createImmutable
+  
+  // 如修改 app/tp.php 文件中
+  $dotenv = \Dotenv\Dotenv::create(__DIR__ );
+  
+  // 改为
+  $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ );
+  ```
+
++ 引入 富文本组件 扩展包
     ```php
     composer require quansitech/qscmf-formitem-ueditor
     ```
@@ -38,21 +53,6 @@
   
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，使用build方法替换
 
-+ 修改 *env* 加载方式
-  ```php
-  // 查找项目中 env 的创建代码
-  \Dotenv\Dotenv::create
-  
-  // 替换成，默认为不可以改变env的值
-  \Dotenv\Dotenv::createImmutable
-  
-  // 如修改 app/tp.php 文件中
-  $dotenv = \Dotenv\Dotenv::create(__DIR__ );
-  
-  // 改为
-  $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ );
-  ```
-  
 + 若实现了 showFileTitle 公共函数，需删除
  
 + 检查是否使用了 jquery 新版 3.7 已删除方法
