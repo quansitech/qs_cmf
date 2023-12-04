@@ -74,6 +74,16 @@
 
 + think-core删除"guzzlehttp/guzzle": "^6.3" 依赖，如果项目依赖了guzzle，需要自行处理
 
++ 若使用了以下扩展包，请限制最低版本
+  ```php
+  "quansitech/qscmf-topbutton-export":"^2.0",
+  "quansitech/qscmf-topbutton-download":"^2.0",
+  "quansitech/qscmf-buttontype-modal":"^3.0",
+  
+  "quansitech/qscmf-formitem-object-storage":"^1.3.7",
+  "quansitech/easy-get-flower":"^1.0.3",
+  ```
+
 
 #### 使用php8.2的修改
 + 将 DateTime::ISO8601 替换成 DateTimeInterface::ATOM
