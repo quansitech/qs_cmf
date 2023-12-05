@@ -35,10 +35,6 @@ class QueueController extends GyListController {
         $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
 
         foreach($data_list as &$v){
-            if($v['status'] != DBCont::JOB_STATUS_COMPLETE){
-                $model->refreshStatusOne($v['id']);
-            }
-
             if($v['status'] == DBCont::JOB_STATUS_FAILED || $v['status'] == DBCont::JOB_STATUS_RUNNING){
                 $v['show_reset'] = 1;
             }

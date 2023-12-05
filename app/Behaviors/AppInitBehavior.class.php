@@ -67,6 +67,24 @@ class AppInitBehavior extends \Think\Behavior
             if(isset($config['prefix']) && !empty($config['prefix']))
             RedisCluster::prefix($config['prefix']);
 
+			Event::listen('afterEnqueue', function($args){
+				$job_id = $args['job_id'];
+				$job = $args['class'];
+				$param = $args['args'];
+				$queue = $args['queue'];
+				$job_desc = $param['desc'];
+
+				$data['id'] = $job_id;
+				$data['job'] = $job;
+				$data['args'] = json_encode($param);
+				$data['description'] = $job_desc?:'';
+				$data['status'] = DBCont::JOB_STATUS_WAITING;
+				$data['create_date'] = time();
+				$data['queue'] = $queue;
+
+				D('Queue')->add($data);
+			});
+
 	        Event::listen('beforePerform', function($args){
 		        $job = $args['job'];
 
