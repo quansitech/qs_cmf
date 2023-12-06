@@ -68,7 +68,7 @@ class AppInitBehavior extends \Think\Behavior
             RedisCluster::prefix($config['prefix']);
 
 	        Event::listen('beforePerform', function($args){
-		        $job = $args['job'];
+		        $job = $args[0];
 
 		        D('Queue')->where(['id' => $job->payload['id']])->save([
 			        'status' => DBCont::JOB_STATUS_RUNNING,
@@ -76,7 +76,7 @@ class AppInitBehavior extends \Think\Behavior
 	        });
 
 	        Event::listen('afterPerform', function($args){
-		        $job = $args['job'];
+		        $job = $args[0];
 
 		        D('Queue')->where(['id' => $job->payload['id']])->save([
 			        'status' => DBCont::JOB_STATUS_COMPLETE,
