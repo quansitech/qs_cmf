@@ -107,7 +107,14 @@
     + $.get().success()、$.get().error()、$.get().complete()、$.post().success()、$.post().error()、$.post().complete()已经在3.0中被 移除，可以使用done()、fail()、always()代替
 
     （以上方法的详细信息可参考：https://api.jquery.com/category/removed  https://jquery.cuishifeng.cn/，以便做出更准确的判断 ）
-  + 修改app\Admin\View\default\common\head.html中，将代码<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 中的符号 "#" 删除
+  + 修改app/Admin/View/default/common/head.html中，将代码<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 中的符号 "#" 删除
+  + 在app/Admin/View/default/common/dashboard_layout.html文件的<script src="__PUBLIC__/libs/jquery/jquery.js"></script>代码下面加上代码：<script src="__PUBLIC__/libs/jquery-extend/jquery.extend.js"></script>
+  + 在app/Admin/View/default/common/layout.html文件的<script src="__PUBLIC__/libs/jquery/jquery.js"></script>代码下面加上代码：<script src="__PUBLIC__/libs/jquery-extend/jquery.extend.js"></script>
+  + 在 app/Home/View/default/Index/test.html文件下面删除对asset/libs/qsuploader.boundle.js的引用，因为asset/libs/qsuploader.boundle.js已经被删除
+  + 在 app/Admin/View/default/common/dashboard_layout.html文件下面删除对asset/libs/messenger的引用，因为asset/libs/messenger已经被删除
+  + 删除www/public/addons/Qiniu
+  + （先判断该文件是否有被引用，无引用可直接删除）利用assets/libs/jquery/jquery.js里面的内容替代www/Public/static/jquery-3.1.0.min.js里面的内容，同时将其名字改成www/Public/static/jquery-3.7.1.min.js，同时看看哪里引用到了就进行文件名的替换
+  + 
 
 #### think-core的修改
   + 删除了下列文件
@@ -173,31 +180,3 @@
     + asset\libs\videojs-ie8.min.js
     + asset\libs\modal.js
     + asset\libs\stickUp.js
-
-  + 修改了下列文件
-    + 修改asset\libs\label-select\label-select.js语法兼容，并编译了一下
-    + 升级asset\libs\select2\css\* 从原来的Select2 4.0.6-rc.1 到现在的 Select2 4.1.0-rc.0
-    + 升级asset\libs\select2\js\* 从原来的Select2 4.0.6-rc.1 到现在的 Select2 4.1.0-rc.0
-    + 增加asset/libs/jquery-extend/jquery.extend.js
-    + 更新版本asset\libs\bootstrap-datepicker\* 从1.4.0版本更新到最新的1.10.0
-    + 修改asset\libs\cropper\main.js，兼容jquery最新语法
-    + 修改asset\libs\cui\cui.extend.min.js， 兼容jquery最新语法
-    + 修改src\Library\Qscmf\Builder\FormType\File\file.html			----------------开始------------------
-    + 修改src\Library\Qscmf\Builder\FormType\Files\files.html
-    + 修改src\Library\Qscmf\Builder\FormType\Picture\picture.html		$.parseJson改成JSON.parse
-    + 修改src\Library\Qscmf\Builder\FormType\Pictures\pictures.html  	-------------结束---------------------
-    + 修改src\Library\Qscmf\Builder\FormType\Citys\citys.html		----------unbind改成off---------
-    + 修改src\Library\Qscmf\Builder\FormType\Districts\districts.html	----------unbind改成off---------
-    + 修改asset\libs\cropper\main.js 替换该文件中的.selector属性（jquery3.0版本已经移除 ）
-
-
-#### qs_cmf 所做的修改
-  + 升级所有的jquery文件版本为3.7.1
-  + app/Home/View/default/Index/test.html  （asset\libs\qsuploader.boundle.js 已删除，注释掉相关使用）
-	+ app/Admin/View/default/common/dashboard_layout.html （将自定义扩展的$.isWindow()的文件通过script引入到其中 用来适配当前的bootstrap版本）
-	+ app/Admin/View/default/common/layout.html （将自定义扩展的$.isWindow()的文件通过script引入到其中 用来适配当前的bootstrap版本）
-	+ app\Admin\View\default\common\dashboard_layout.html 删除asset\libs\messenger的相关引入
-  + 删除www/public/addons/Qiniu
-  + 修改www/public/static/common.js
-  + 修改www/public/views/home/app.js
-	+ 修改www/public/views/home/pc/js/app.js
