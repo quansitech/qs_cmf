@@ -96,6 +96,29 @@
 
 + 将phpstorm的php版本设置成8.2, 开启View--Tool Windows--Problems--Inspect Code 分析业务代码是否存在潜在语法错误
 
++ 升级到13，升级jQuery需要关注的操作
+  + 检查是否引入了下面 《think-core的修改》中已经删除的文件
+  + 查看是否使用了jquery的废弃语法
+    + .andSelf()
+    + .context
+    + deferred.isRejected()
+    + deferred.isResolved()
+    + die()
+    + error()
+    + jQuery.boxModel
+    + jQuery.browser
+    + jQuery.sub()
+    + live()
+    + .load()
+    + .selector
+    + .size()
+    + .toggle()
+    + .unload()
+    + $.get().success()、$.get().error()、$.get().complete()、$.post().success()、$.post().error()、$.post().complete()已经在3.0中被 移除，可以使用done()、fail()、always()代替
+
+    （以上方法的详细信息可参考：https://api.jquery.com/category/removed  https://jquery.cuishifeng.cn/，以便做出更准确的判断 ）
+  + 修改app\Admin\View\default\common\head.html中，将代码<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 中的符号 "#" 删除
+
 #### think-core的修改
   + 删除了下列文件
     + asset\libs\jquery\flot\*
