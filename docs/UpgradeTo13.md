@@ -55,7 +55,7 @@
   
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，使用build方法替换
 
-+ 若实现了 showFileTitle 公共函数，需删除
++ showFileTitle 公共函数移到了核心包，若项目也实现了同名的公共函数，需检查是否有客制化代码，有则修改函数名并替换，没有则删除。
  
 + 检查是否使用了 jquery 新版 3.7 已删除方法
  
@@ -73,6 +73,16 @@
 [新upload API说明文档](https://github.com/quansitech/qs_cmf/blob/master/docs/Upload.md)
 
 + think-core删除"guzzlehttp/guzzle": "^6.3" 依赖，如果项目依赖了guzzle，需要自行处理
+
++ 若使用了以下扩展包，请限制最低版本
+  ```php
+  "quansitech/qscmf-topbutton-export":"^2.0",
+  "quansitech/qscmf-topbutton-download":"^2.0",
+  "quansitech/qscmf-buttontype-modal":"^3.0",
+  
+  "quansitech/qscmf-formitem-object-storage":"^1.3.7",
+  "quansitech/easy-get-flower":"^1.0.3",
+  ```
 
 
 #### 使用php8.2的修改
