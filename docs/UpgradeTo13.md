@@ -88,7 +88,7 @@
 
 + 升级到13，升级jQuery需要关注的操作
   + 检查是否引入了下面 《think-core的修改》中已经删除的文件
-  + 查看是否使用了jquery的废弃语法
+  + 查看是否使用了jquery的废弃语法（如果使用到了废弃语法，如果是自己写的js，可以根据jquery文档使用同等作用的方法进行替换。如果是别人写的插件，尝试更新版本解决，如果无法通过更新版本解决，则自己写个jquery扩展方法，引入到对应的html中）
     + .andSelf()
     + .context
     + deferred.isRejected()
@@ -114,6 +114,7 @@
   + 在 app/Admin/View/default/common/dashboard_layout.html文件下面删除对asset/libs/messenger的引用，因为asset/libs/messenger已经被删除
   + 删除www/public/addons/Qiniu
   + （先判断该文件是否有被引用，无引用可直接删除）利用assets/libs/jquery/jquery.js里面的内容替代www/Public/static/jquery-3.1.0.min.js里面的内容，同时将其名字改成www/Public/static/jquery-3.7.1.min.js，同时看看哪里引用到了就进行文件名的替换
+  + 升级www/Public/modules/jquery/dist/jquery.js 为jquery3.7.1版本，文件保持不变
   + 
 
 #### think-core的修改
