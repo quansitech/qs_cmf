@@ -55,7 +55,7 @@
   
 + CompareBuilder FormBuilder ListBuilder 废弃display方法，使用build方法替换
 
-+ 若实现了 showFileTitle 公共函数，需删除
++ showFileTitle 公共函数移到了核心包，若项目也实现了同名的公共函数，需检查是否有客制化代码，有则修改函数名并替换，没有则删除。
  
 + 检查是否使用了 jquery 新版 3.7 已删除方法
  
