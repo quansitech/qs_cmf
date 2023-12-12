@@ -22,6 +22,7 @@
 6.(升级到v3.0.0以上版本)检查有无使用队列的计划任务功能，如使用了，可用升级脚本进行升级
     项目根目录/www# php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/[计划队列名] maintenance
    如用到七牛云的音视频上传功能，注意qs_file_pic的字段有无缺失，对比qs_cmf的迁移文件里的qs_file_pic表的定义
+    修改app/resque文件 修改绑定模块，将Home改为绑定到Qscmf
 7.(升级到v4.0.0以上版本)检查app/Behaviors/AppInitBehavior.class.php有无DOMAIN、SITE_URL、HTTP_PROTOCOL的常量定义，如有，将代码删除即可
 8.(升级到v5.0.0以上版本)检查有无引用Org\Util\String类，如有，将命名空间改为Org\Util\StringHelper，并将类名String修改为StringHelper。
 9.(升级到v6.0.0以上版本)检查有无在www/Public/views/Admin/common/common.js和www/Public/views/common.css中自定义客制化代码，如有，请
@@ -150,3 +151,15 @@
 ```
 
 v11->v12升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo12.md)
+
+
+
+##### v13修改计划
+
+- [ ] CompareBuilder FormBuilder ListBuilder 删除display方法
+- [ ] 重构ButtonType save的保存提交算法 原因是SubTableBuilder也可能会采用该方法来设置 column 的class，当同时作为listBuilder的modal使用时，就会被错误的一并save提交先采用全局变量来开发重置能力，但全局变量容易存在冲突，并不是一种好的解决方案，仅作过渡使用，合理的做法应该让ListBuilder或者SubTableBuilder来决定Column 的TargetForm，避免互相影响。
+- [ ] showFileUrl不再处理除本地文件存储外的功能，例如oss的处理
+- [ ] 重构ueditor, 将其作为一个独立的扩展，oss功能使用内网传输，上传至云服务商使用*quansitech/qscmf-formitem-object-storage*，不兼容旧配置
+- [ ] 将file_pic表的mime_type长度增加到200
+- [ ] 将showFileTitle方法移动到think-core
+- [ ] 升级jquery最新版本，旧版本废弃

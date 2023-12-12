@@ -23,7 +23,7 @@ class NodeModel extends \Gy_Library\GyListModel{
     protected $_delete_validate = array(
         array('Access', 'node_id', parent::EXIST_VALIDATE , '请先将该节点从用户组剔除'),
     );
-    
+
     public function getNode($map){
         return $this->where($map)->find();
     }

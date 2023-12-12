@@ -15,6 +15,12 @@
         "funkjedi/composer-include-files": "^1.0",
         "quansitech/qscmf-utils": "^1.5"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3.0",
+        "laravel/dusk": "^6.9.0",
+        "mockery/mockery": "^1.2",
+        "fakerphp/faker": "^1.10.0"
+    },
     "extra": {
         "include_files": [
             "vendor/tiderjian/think-core/src/Common/functions.php",
@@ -45,5 +51,11 @@
             "@php artisan qscmf:discover --ansi",
             "@php ./www/index.php /qscmf/createSymlink"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "easywechat-composer/easywechat-composer": true,
+            "funkjedi/composer-include-files": true
+        }
     }
 }

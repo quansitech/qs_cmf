@@ -33,7 +33,14 @@ $url_prefix = U('/ip/q90', '', false, true) . '/' . U('/', '', false, true);
 'oss_options' => [
     'bucket'=>'******真实的bucket名******',
 ],
+
+//如果希望通过富文本上传音频视频等大文件时，oss公网上传会非常慢，此时可以使用内网地址上传，速度会得到极大提升
+//但返回的地址是内网地址，可以在config.php对应的上传类型中加上以下配置进行自动替换
+'oss_public_host' => 'http://oss-cn-hangzhou.aliyuncs.com',
 ```
+
+[自定义上传文件至不同云服务商功能](https://github.com/quansitech/qscmf-formitem-object-storage/blob/main/README.md#%E4%BD%BF%E7%94%A8)
+
 
 通过forcecatchremote属性设置是否强制要求抓取外链图片至本地，该属性默认为true。 
 ```blade
@@ -168,13 +175,21 @@ $render 是否输出页面的内容，默认为false
 ```blade
 省市区三级联动
 
-支持自定义省市区数据源api，默认为U('Api/Area/getArea')
+支持自定义层级level，省市区数据源api
+level 默认为3，最大为4
+area_api_url 默认为U('Api/Area/getArea')
 ```
 
 ```php
 // 使用说明
 // addFormItem第五个参数，传递自定义api，加上area_api_url
 ->addFormItem('city_id', 'district', '城市', '', ['area_api_url' => U('Api/Area/fetchLimitCity', '', '', true)]);
+```
+
+```php
+// 使用说明
+// addFormItem第五个参数，传递level和自定义数据源api
+->addFormItem('city_id', 'district', '城市', '', ['level' => 4, 'area_api_url' => U('Api/FullArea/getArea', '', '', true)]);
 ```
 
 #### select2组件
@@ -302,5 +317,21 @@ default：默认值
 + 使用自定义类型按钮，可根据业务自定义按钮属性
 ```php
 ->addButton('self', ['title' => '查看资料', 'class' => 'btn btn-info qs-form-btn', 'onclick'=>"javascript:window.location.href='".U('admin/User/info', ['id' => '__data_id__'])."';"]);
+```
++ 使用技巧, 如果只希望显示自定义的按钮，可以搭配setShowBtn方法实现
+```php
+->setShowBtn(false)
+->addButton('forbid')
+->addButton('delete'); 
+```
+
+#### setSubmitBtnTitle
+```blade
+自定义表单的“确定”按钮描述
+```
+
+#### setGid
+```blade
+设置表单的唯一识别号
 ```
 
