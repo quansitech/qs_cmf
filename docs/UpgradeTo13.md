@@ -113,9 +113,25 @@
   + 在 app/Home/View/default/Index/test.html文件下面删除对asset/libs/qsuploader.boundle.js的引用，因为asset/libs/qsuploader.boundle.js已经被删除
   + 在 app/Admin/View/default/common/dashboard_layout.html文件下面删除对asset/libs/messenger的引用，因为asset/libs/messenger已经被删除
   + 删除www/public/addons/Qiniu
-  + （先判断该文件是否有被引用，无引用可直接删除）利用assets/libs/jquery/jquery.js里面的内容替代www/Public/static/jquery-3.1.0.min.js里面的内容，同时将其名字改成www/Public/static/jquery-3.7.1.min.js，同时看看哪里引用到了就进行文件名的替换
-  + 升级www/Public/modules/jquery/dist/jquery.js 为jquery3.7.1版本，文件保持不变
-  + 
+  + 下面的文件需要查看是否被使用到，如果没有则可以直接删除，用到了就修改内容（可以全局搜索 modules/）
+    + 利用assets/libs/jquery/jquery.js里面的内容替代www/Public/static/jquery-3.1.0.min.js里面的内容，同时将其名字改成www/Public/static/jquery-3.7.1.min.js，同时看看哪里引用到了就进行文件名的替换
+    + 升级www/Public/modules/jquery/dist/jquery.js 为jquery3.7.1版本，文件名字保持不变
+    + 将www/Public/modules/js下面的jquery-3.0.0文件夹名字改成jquery-3.7.1同时将其内部的jq.js的内容升级为jquery3.7.1。将其内部的jquery-3.0.0.min.js文件重命名为jquery-3.7.1.min.js，内容也替换成jquery3.7.1版本的内容。
+    + 将www/Public/modules/js/app.js中的require('modules/js/jquery-3.0.0/jquery-3.0.0.min')替换成require('modules/js/jquery-3.7.1/jquery-3.7.1.min')
+    + 将www/Public/modules/js/utils.js中的require('modules/js/jquery-3.0.0/jquery-3.0.0.min')替换成require('modules/js/jquery-3.7.1/jquery-3.7.1.min')
+    + 将www/Public/views/Home/pc/js/index.js中newsFocus_hd.size()改成newsFocus_hd.length 
+    + 将www/Public/views/Home/pc/modules/ignore/jquery-1.8.3/jquery.js 里面的内容升级成 jquery3.7.1，修改文件夹jquery-1.8.3名字为jquery-3.7.1
+    + 将www/Public/views/Home/pc/modules/ignore/js/jquery-3.0.0/jquery-3.0.0.min.js 里面的内容升级成 jquery3.7.1，修改jquery-3.0.0/jquery-3.0.0.min.js名字为jquery-3.7.1/jquery-3.7.1.min.js
+    + 修改www/Public/views/Home/pc/modules/ignore/js/fileupload/jquery.fileupload.js 里面的代码：var jQuery = require('modules/js/jquery-3.0.0/jquery-3.0.0.min'); 为 var jQuery = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
+    + 修改www\Public\views\Home\pc\modules\ignore\js\fileupload\jquery.iframe-transport.js 里面的代码：var jQuery = require('modules/js/jquery-3.0.0/jquery-3.0.0.min'); 为 var jQuery = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
+    + 修改 www\Public\views\Home\pc\modules\ignore\js\fileupload\jquery.ui.widget.js  里面的代码：var jQuery = require('modules/js/jquery-3.0.0/jquery-3.0.0.min'); 为 var jQuery = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
+    + 将www\Public\views\Home\pc\modules\ignore\js\jquery-3.0.0下面的jquery-3.0.0文件夹名字改成jquery-3.7.1同时将其内部的jq.js的内容升级为jquery3.7.1。将其内部的jquery-3.0.0.min.js文件重命名为jquery-3.7.1.min.js，内容也替换成jquery3.7.1版本的内容。
+    + 将www\Public\views\Home\pc\modules\ignore\js\app.js下面的代码：var $ = require('modules/js/jquery-3.0.0/jquery-3.0.0.min');替换成var $ = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
+    + 将www\Public\views\Home\pc\modules\ignore\js\utils.js下面的代码：var $ = require('modules/js/jquery-3.0.0/jquery-3.0.0.min'); 替换成var $ = require('modules/js/jquery-3.7.1/jquery-3.7.1.min');
+    + 在文件：www\Public\views\Home\pc\modules\main.js中在代码：define('modules/main', function(require, exports, module) {的下面加上代码：$.fn.size = function() {
+      return this.length;
+    }
+    + 文件：www\Public\views\Home\pc\static\app.js，将里面的内容：define('modules/ignore/jquery-1.8.3/jquery', 替换成：define('modules/ignore/jquery-3.7.1/jquery',
 
 #### think-core的修改
   + 删除了下列文件

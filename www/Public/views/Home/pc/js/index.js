@@ -78,7 +78,7 @@
         //
         // 新闻列表切换
         var newsFocus_hd = $('.news-focus .hd li');
-        var hd_size = newsFocus_hd.length() - 1;
+        var hd_size = newsFocus_hd.length - 1;
         var newsFocus_bd = $('.news-focus .bd li');
         var index = 0;
         newsFocus_hd.on('mouseenter', function () {
