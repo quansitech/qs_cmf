@@ -80,7 +80,7 @@
   "quansitech/qscmf-topbutton-download":"^2.0",
   "quansitech/qscmf-buttontype-modal":"^3.0",
   
-  "quansitech/qscmf-formitem-object-storage":"^1.3.7",
+  "quansitech/qscmf-formitem-object-storage":"^2.0.0",
   "quansitech/easy-get-flower":"^1.0.3",
   ```
   
