@@ -121,9 +121,7 @@ class RoleController extends GyListController {
         parent::autoCheckToken();
 
         if(!empty($_POST)){
-            if($data == ''){
-                $data = I('post.');
-            }
+            $data = I('post.');
 
             $model = D($this->dbname);
             if(!$model->create($data)){
@@ -185,9 +183,12 @@ class RoleController extends GyListController {
             $map['role_id'] = $vo['id'];
             $map['level'] = DBCont::LEVEL_ACTION;
             $access_list = $access->getAccessList($map);
+            $auth_arr = [];
             foreach($access_list as $v){
-                $vo['auth'][] = $v['node_id'];
+                array_push($auth_arr, $v['node_id']);
             }
+
+            $vo['auth'] = $auth_arr;
 
             $this->assign('vo', $vo);
             $this->display();

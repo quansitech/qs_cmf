@@ -83,6 +83,9 @@
   "quansitech/qscmf-formitem-object-storage":"^1.3.7",
   "quansitech/easy-get-flower":"^1.0.3",
   ```
+  
++ 8.2后从数据库获取的值会根据字段类型返回，如varchar类型会返回string, int类型会返回int类型。而8.0则清一色返回string。因此需要检查用了"==="的代码。
+如果是前后端分离的项目，则需要检查select类组件，有无因接口返回的值类型改变而导致代码失效。
 
 
 #### 使用php8.2的修改
