@@ -69,7 +69,7 @@
 + 执行数据库迁移
 
 + 重构了脚手架的api/upload接口，接口的请求参数格式都会有变化，新增了hash_id的去重功能，同时v13 think-core 的 file picture组件也会根据新接口做重
-构。复制v13的qscmf/app/Api/Controller/UploadController.php 覆盖本项目的对应文件,检查项目有无进行上传接口的客制化改造，如果有则需要对新的上传代码做同样的客制化处理。
+构。需要检查后台上传组件如果是使用了自定义data-url的方式，必须将url地址改成新的api地址格式。复制v13的qscmf/app/Api/Controller/UploadController.php 覆盖本项目的对应文件,检查项目有无进行上传接口的客制化改造，如果有则需要对新的上传代码做同样的客制化处理。
 [新upload API说明文档](https://github.com/quansitech/qs_cmf/blob/master/docs/Upload.md)
 
 + think-core删除"guzzlehttp/guzzle": "^6.3" 依赖，如果项目依赖了guzzle，需要自行处理
