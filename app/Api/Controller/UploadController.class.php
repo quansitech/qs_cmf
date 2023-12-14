@@ -69,7 +69,7 @@ class UploadController extends \Think\Controller{
                     'status' => 1,
                     'file_id' => $file_id,
                     'title' => $get_data['title'],
-                    'url' => HTTP_PROTOCOL . "://" . SITE_URL . showFileUrl($file_id),
+                    'url' => showFileUrl($file_id),
                     'server_url' => U("uploadFile", $return_params, false, true)
                 ];
 
@@ -138,7 +138,7 @@ class UploadController extends \Think\Controller{
                 'status' => 1,
                 'file_id' => $file_id,
                 'title' => $data['title'],
-                'url' => HTTP_PROTOCOL . "://" . SITE_URL . showFileUrl($file_id),
+                'url' => showFileUrl($file_id),
             ];
 
             Hook::listen('uploadFileSuccess', $ajax);
