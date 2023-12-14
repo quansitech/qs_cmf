@@ -82,7 +82,7 @@
   "quansitech/qscmf-topbutton-download":"^2.0",
   "quansitech/qscmf-buttontype-modal":"^3.0",
   
-  "quansitech/qscmf-formitem-object-storage":"^1.3.7",
+  "quansitech/qscmf-formitem-object-storage":"^2.0.0",
   "quansitech/easy-get-flower":"^1.0.3",
   ```
   
@@ -92,6 +92,27 @@
 
 #### 使用php8.2的修改
 + 将 DateTime::ISO8601 替换成 DateTimeInterface::ATOM
++ 获取数据库内容时，会根据字段的类型返回值，需要检查是否影响业务代码
+    + 当字段为数字类型时会返回整形
+        + 检查此字段是否直接传给模型层 mapping 的 in 过滤规则
+          ```php
+          // 以下写法会报错
+            $id = D('User')->getField('id');
+            if(empty($id)){
+                $map['_string'] = '1=0';
+            }else{
+                $map['model_id'] = ['IN', $id];
+            }
+          
+          // 需要将 id 变为字符串或者数组
+            $id = D('User')->getField('id');
+            if(empty($id)){
+                $map['_string'] = '1=0';
+            }else{
+                $map['model_id'] = ['IN', (string)$id];
+            }
+          ```
+
 
 **移除函数其它解决方案：已理解原函数的输入输出值后创建一个同名全局函数。**
 
