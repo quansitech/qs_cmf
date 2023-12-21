@@ -17,7 +17,7 @@
 
 + 修改 *env* 加载方式
   ```php
-  // 查找项目中 env 的创建代码。（全局搜索Dotenv::create，排除vendor目录）
+  // 查找项目中 env 的创建代码。（全局搜索，排除vendor目录）
   \Dotenv\Dotenv::create
   
   // 替换成，默认为不可以改变env的值
