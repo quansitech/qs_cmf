@@ -17,17 +17,23 @@
 
 + 修改 *env* 加载方式
   ```php
-  // 查找项目中 env 的创建代码
+  // 查找项目中 env 的创建代码。（全局搜索，排除vendor目录）
   \Dotenv\Dotenv::create
   
   // 替换成，默认为不可以改变env的值
   \Dotenv\Dotenv::createImmutable
   
-  // 如修改 app/tp.php 文件中
+  // 如修改 /tp.php 文件中
   $dotenv = \Dotenv\Dotenv::create(__DIR__ );
   
   // 改为
   $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ );
+  
+  // 如修改 app/resque.php 文件中
+  $dotenv = \Dotenv\Dotenv::create(__DIR__ . '/..' );
+  
+  // 改为
+  $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..' );
   ```
 
 + 引入 富文本组件 扩展包
