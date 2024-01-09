@@ -43,7 +43,10 @@ $this->redirect('/admin/public/login', '', 0, '请先登录');
   
   }
   ```
-+ 设置标签 *verify_login_user*
++ 设置标签位 *verify_login_user* 
+  ```blade
+  设置 _overlay 为true，则应用的行为配置文件中的定义将覆盖系统的行为定义
+  ```
   ```php
-  'verify_login_user' => array('Behaviors\\VerifyUserBehavior'),   
+  'verify_login_user' => array('Behaviors\\VerifyUserBehavior','_overlay'=>true),   
   ```
