@@ -692,6 +692,8 @@ $this->assertTrue($test_ent['name'] == '测试');
       \Think\Hook::add('heic_to_jpg', 'xxx\\HeicToJpgBehavior');
       ```
 
+### TRACE_ERROR
+env增加了TRACE_ERROR配置，如果希望在debug关闭的模式下能收集到错误的报错位置，可以设置为true。这样就无需开启debug模式，也能收集到错误的报错位置。减少日志负担。
 
 ### 后台使用react构建页面
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/react-admin/README.md)
