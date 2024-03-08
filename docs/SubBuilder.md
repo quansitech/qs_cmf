@@ -69,8 +69,8 @@ $tip 列提示文字，默认为''
 ```php
 $sub_builder = new \Qscmf\Builder\SubTableBuilder();
 $sub_builder = $sub_builder
-        ->addTableHeader('标题', '30%', '提示')
-        ->addTableHeader('摘要', '30%', '提示');
+        ->addTableHeader('标题', '30%')
+        ->addTableHeader('摘要', '30%');
 ```
 
 #### addFormItem
