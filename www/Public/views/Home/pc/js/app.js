@@ -10,7 +10,7 @@ String.prototype.rtrim=function(){
 
 jQuery(document).ready(function($) {
     //ajax提交form
-    $('body').delegate('.ajax-form', 'submit', function(e) {
+    $('body').on('submit', '.ajax-form', function(e) {
         e.preventDefault();
         var formValues = $(this).serialize();
         $.ajax({

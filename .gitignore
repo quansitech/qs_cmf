@@ -12,3 +12,8 @@
 /lara/vendor/composer/installed.json
 
 .phpunit.result.cache
+
+
+/www/Public/static/dist/admin
+/app/Admin/View/default/Public/vendor.html
+/app/Admin/View/default/ReactBuildTest/index.html

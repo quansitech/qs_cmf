@@ -1,5 +1,8 @@
 <?php
 $common_config = array(
+    "QS_ADDONS" => false, //是否要开启插件系统，关闭可以减少数据库访问频率
+    'DEFAULT_FILTER'        =>  'htmlspecialchars,trim', // 默认参数过滤方法 用于I函数...
+
     'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
     'SHOW_PAGE_TRACE'       =>  false,
 

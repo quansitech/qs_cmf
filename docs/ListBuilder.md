@@ -107,9 +107,23 @@ or：用户一个权限都没有则隐藏该列，格式为：
    
    > + 通过value设置转换的日期格式，默认为'Y-m-d H:i:s'
 
-3. pictures
+3. picture
+
+    > + 缩略图默认使用原图，可通过在value参数通过'small-url' 传入回调函数， 自定义缩略图地址
+    > ```php
+    > ->addTableColumn("proof", "转账凭证", "picture", ['small-url' => function($image_id){
+    >            $url = showFileUrl($image_id);
+    >            return $url . '?x-oss-process=image/resize,m_fill,w_40,h_40';
+    > }])
+    >  ```
+
+4. pictures
    
    > + 列表多图展示，缩略图默认使用原图，可通过value设置缩略图代理：'oss'、'imageproxy' 
+
+5. arr
+
+    > + 将逗号分隔的字符串以多行的形式展示
 
 #### addTopButton
 
@@ -132,6 +146,18 @@ and：用户拥有全部权限则显示该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'and']
 or：用户一个权限都没有则隐藏该按钮，格式为：
 ['node' => ['模块.控制器.方法名','模块.控制器.方法名'], 'logic' => 'or']
+```
+
+```blade
+top button 常用于批量操作数据，可以限制用户需选中数据
+```
++ 按钮添加样式类 must-select-item
++ 设置属性 must-select-msg 可以自定义提示语，默认为 请选择要处理的数据
+```php
+$builder = new \Qscmf\Builder\ListBuilder();
+$builder = $builder->setMetaTitle('列表');
+$builder
+->addTopButton('add', ['title' => '退回', 'class' => "btn btn-primary must-select-item", 'must-select-msg'=>'请选择要退回的数据'])
 ```
 
 #### addSearchItem
@@ -163,7 +189,17 @@ or：用户一个权限都没有则隐藏该按钮，格式为：
 
 场景：
 用户没有填写搜索关键字，点击搜索需要提醒用户搜索关键字不能为空且不跳转。
+
+增加date_range用例：
+->addSearchItem('donate_date', 'date_range', '时间范围',array('time_picker'=>'0'));
+
+用法：
+可以通过设置options.time_picker判断是否显示时间范围是否显示时分，time_picker为true显示。
+date_range新增加的用法，在options加入time_picker，time_picker=true即表示时间范围显示时间段（时分）
+
 ```
+
+
 
 ```javascript
 $('body').on('beforeSearch', '.builder #search', function() {
@@ -258,6 +294,9 @@ $('body').on('beforeSearch', '.builder #search', function() {
   
   [Select使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Select/Select.md)
 
++ self
+  
+  [Self使用说明](https://github.com/quansitech/qs_cmf/tree/master/docs/ListSearchType/Self/Self.md)
 #### setSearchUrl
 
 ```blade

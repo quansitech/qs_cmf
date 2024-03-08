@@ -58,7 +58,7 @@ class MenuController extends GyListController{
         ->addRightButton('edit')           // 添加编辑按钮
         ->addRightButton('forbid')         // 添加禁用/启用按钮
         ->addRightButton('delete')         // 添加删除按钮
-        ->display();
+        ->build();
     }
 
     public function add(){
@@ -103,7 +103,7 @@ class MenuController extends GyListController{
                     ->addFormItem('pid', 'select', '父菜单', '', $menu_list)
                     ->addFormItem('module', 'text', '绑定模块')
                     ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
-                    ->display();
+                    ->build();
         }
     }
 
@@ -159,7 +159,7 @@ class MenuController extends GyListController{
                     ->addFormItem('module', 'text', '绑定模块')
                     ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
                     ->setFormData($menu_ent)
-                    ->display();
+                    ->build();
         }
 
     }

@@ -149,7 +149,31 @@ $sub_builder = $sub_builder
         ->addFormItem('id', 'hidden')
         ->addFormItem('title', 'text')
         ->addFormItem('summary', 'textarea')
-        ->setData($data);
+        ->setFormData($data);
+```
+
+#### addRowDefault
+
+```blade
+设置新增一行时的默认值
+```
+
+```php
+$data = [
+    ['title' => 'title1', 'summary' => 'summary1'],
+    ['title' => 'title2', 'summary' => 'summary2'],
+    ['title' => 'title3', 'summary' => 'summary3'],
+];
+
+$sub_builder = new \Qscmf\Builder\SubTableBuilder();
+$sub_builder = $sub_builder
+        ->addTableHeader('标题', '30%')
+        ->addTableHeader('摘要', '30%')
+        ->addFormItem('id', 'hidden')
+        ->addFormItem('title', 'text')
+        ->addFormItem('summary', 'textarea')
+        ->setFormData($data)
+        ->addRowDefault(['title' => 'title_def', 'summary' => 'summary_def']);
 ```
 
 #### makeHtml
@@ -249,3 +273,28 @@ $sub_builder = $sub_builder
 8. num
    
    > + 数字输入框
+
+9. district
+
+   > ```blade
+   > 省市区联动
+   >
+   > 支持自定义层级level、省市区数据源area_api_url
+   > level默认为2，最大为4
+   > area_api_url默认为U('Api/Area/getArea')
+   > ```
+   >
+   > + 三级联动
+   >
+   > ```php
+   > ->addFormItem('city_id', 'district', ['level' => 3]);
+   > ```
+   >
+   > + 四级联动
+   >
+   > ```php
+   > // 需要自定义数据源，默认的数据只有三级
+   > ->addFormItem('city_id', 'district', ['level' => 4, 'area_api_url' => U('Api/FullArea/getArea', '', '', true)]);
+   > ```
+   >
+

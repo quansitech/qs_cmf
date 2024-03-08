@@ -1,5 +1,9 @@
 define('modules/main', function(require, exports, module) {
 
+  $.fn.size = function() {
+    return this.length;
+  }
+
   var utils = require('modules/ignore/utils');
   // SuperSlide
   require('modules/ignore/SuperSlide/jquery.SuperSlide.2.1.1');
@@ -25,7 +29,7 @@ define('modules/main', function(require, exports, module) {
               var myTargetElement2 = new CountUp("myTargetElement2", 0, $('#myTargetElement2').text(), 2, 2.5, options);
               var myTargetElement3 = new CountUp("myTargetElement3", 0, $('#myTargetElement3').text(), 2, 2.5, options);
               var myTargetElement4 = new CountUp("myTargetElement4", 0, $('#myTargetElement4').text(), 2, 2.5, options);
-              $(window).scroll(function() { 
+              $(window).on('scroll', function() { 
                   if ($(window).scrollTop() >= 80) {
                       myTargetElement.start();
                       myTargetElement2.start();

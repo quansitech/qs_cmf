@@ -29,7 +29,7 @@ class CoderController extends GyListController{
                     ->addTableColumn('right_button', '操作', 'btn')
                     ->setTableDataList($data_list)
                     ->addRightButton('self', array('title' => '生成器', 'href' => U('generate', array('id' => '__data_id__')) , 'data-id' => '__data_id__', 'class' => 'label label-primary'))
-                    ->display();
+                    ->build();
     }
     
     private function _parseImg($file_paths){

@@ -53,7 +53,7 @@ class ADECoder extends Coder{
         ->setTableDataPage($page->show())
         ->addRightButton('edit')           
         ->addRightButton('delete')        
-        ->display();
+        ->build();
     }
     
     public function generate($save_flag = ''){

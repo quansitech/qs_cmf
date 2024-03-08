@@ -60,11 +60,11 @@
         // $('html').addClass('bg-login');
         // $(document.body).addClass('bg-login');
         $('.form-box').fadeIn(800);
-        $('a.validate-img').click(function() {
+        $('a.validate-img').on('click', function() {
             //重新加载验证码
             $('#loadingimg').show();
             var img = $("<img />").attr('src', "<?php echo U('verify') ?>")
-                .load(function() {
+                .on('load', function() {
                     if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                         alert('验证码图片加载出错，请刷新');
                     } else {
@@ -73,7 +73,7 @@
                 });
             return false;
         });
-        $('#login_form').submit(function(e) {
+        $('#login_form').on('submit', function(e) {
             e.preventDefault();
             var formValues = $(this).serialize();
             $.ajax({

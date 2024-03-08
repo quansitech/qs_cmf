@@ -4,7 +4,7 @@ set_time_limit(0);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = \Dotenv\Dotenv::create(__DIR__ . '/..' );
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..' );
 $dotenv->load();
 
 define('MODE_NAME', 'cli'); // 自定义cli模式

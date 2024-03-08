@@ -26,7 +26,7 @@ if(!function_exists('gmt_iso8601')) {
     {
         $dtStr = date("c", $time);
         $mydatetime = new DateTime($dtStr);
-        $expiration = $mydatetime->format(DateTime::ISO8601);
+        $expiration = $mydatetime->format(DateTimeInterface::ATOM);
         $pos = strpos($expiration, '+');
         $expiration = substr($expiration, 0, $pos);
         return $expiration . "Z";
@@ -120,15 +120,15 @@ if(!function_exists('is_mobile_number')) {
 if(!function_exists('intConvertToArr')) {
     function intConvertToArr($i)
     {
-        $i = intval($i);
+        $i = (int)$i;
         if (!is_int($i)) {
             return false;
         }
 
-        $str = strval($i);
+        $str = (string)$i;
         $arr = array();
-        for ($i = 0; $i < strlen($str); $i++) {
-            $arr[] = $str[$i];
+        for ($n = 0, $iMax = strlen($str); $n < $iMax; $n++) {
+            $arr[] = $str[$n];
         }
         return $arr;
     }
@@ -543,8 +543,8 @@ if(!function_exists('getIdByFullArea')) {
 if(!function_exists('mkTempFile')) {
     function mkTempFile($path, $ext = '')
     {
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
+        if (!mkdir($path, 0777, true) && !is_dir($path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $file_name = md5(time());
         if ($ext != '') {
@@ -558,8 +558,8 @@ if(!function_exists('mkFile')) {
     function mkFile($file, $content)
     {
         $dir = dirname($file);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+        if (!mkdir($dir, 0755, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
 
         if (!file_exists($file)) {
@@ -1172,7 +1172,7 @@ if(!function_exists('createDir')) {
             return true;
         }
 
-        if (mkdir($dir, 0777, true)) {
+        if (mkdir($dir, 0777, true) || is_dir($dir)) {
             return true;
         } else {
             return false;
@@ -1218,20 +1218,6 @@ if(!function_exists('getDonateMonthlyPurpose')) {
         return getCateNameById($detail_ent['ref_id']);
     }
 }
-
-//显示数据库存储文件标题
-if(!function_exists('showFileTitle')) {
-    function showFileTitle($file_id)
-    {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->find($file_id);
-        if ($file_pic_ent) {
-            return $file_pic_ent['title'];
-        }
-        return '';
-    }
-}
-
 
 //自动格式化显示文件大小
 if(!function_exists('format_filesize')) {

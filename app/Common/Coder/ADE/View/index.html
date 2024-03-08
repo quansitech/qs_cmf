@@ -52,18 +52,18 @@
                 </div>
                 <div class="col-xs-12">
                     <div class='form-group'>
-                        <input type='checkbox' name='action[]' <php>if(in_array('add', $coder_log['action'])) echo 'checked="true"';</php> value='add'>增
-                        <input type='checkbox' name='action[]' <php>if(in_array('delete', $coder_log['action'])) echo 'checked="true"';</php> value='delete'>删
-                        <input type='checkbox' name='action[]' <php>if(in_array('edit', $coder_log['action'])) echo 'checked="true"';</php> value='edit'>改
-                        <input type='checkbox' name='action[]' <php>if(in_array('forbid_resume', $coder_log['action'])) echo 'checked="true"';</php> value='forbid_resume'>禁/启
-                        <input type='checkbox' name='action[]' <php>if(in_array('save', $coder_log['action'])) echo 'checked="true"';</php> value='save'>保存
+                        <input type='checkbox' name='action[]' <php>if(in_array('add', (array)$coder_log['action'])) echo 'checked="true"';</php> value='add'>增
+                        <input type='checkbox' name='action[]' <php>if(in_array('delete', (array)$coder_log['action'])) echo 'checked="true"';</php> value='delete'>删
+                        <input type='checkbox' name='action[]' <php>if(in_array('edit', (array)$coder_log['action'])) echo 'checked="true"';</php> value='edit'>改
+                        <input type='checkbox' name='action[]' <php>if(in_array('forbid_resume', (array)$coder_log['action'])) echo 'checked="true"';</php> value='forbid_resume'>禁/启
+                        <input type='checkbox' name='action[]' <php>if(in_array('save', (array)$coder_log['action'])) echo 'checked="true"';</php> value='save'>保存
                     </div>
                 </div>
             </div>
             <h1>自定义字段:</h1>
             <php>$list_show_num = 0;</php>
             <php>$add_show_num = 0;</php>
-            <php>for($cus_i=0;$cus_i<count($coder_log['column_name']);$cus_i++){</php>
+            <php>for($cus_i=0;$cus_i<count((array)$coder_log['column_name']);$cus_i++){</php>
             <div class='row box box-solid'>
                 <div class="col-xs-12">
                     <div class='form-group'>
@@ -390,12 +390,12 @@
     </script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
-            $('#save_btn').click(function(){
+            $('#save_btn').on('click', function(){
                 $('#form').attr('action','/admin/coder/save');
-                $('#form').submit();
+                $('#form').trigger('submit');
             });
             
-            $('#addField').click(function () {
+            $('#addField').on('click', function () {
                 $($('#field').clone().html()).insertBefore('#add-panel');
             });
             

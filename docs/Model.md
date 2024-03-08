@@ -110,11 +110,11 @@ protected function _initialize() {
 
 //如需指定删除联动数据失败时的操作，默认为继续删除，请指定第四参数，如:
 $this->_delete_auto = [
-    ['delete','Message',['id'=>['post_id'],[
+    ['delete','Message',['id'=>'post_id'],[
         'error_operate'=>self::DELETE_CONTINUE //继续删除
     ]],
     //或
-    ['delete','Message',['id'=>['post_id'],[
+    ['delete','Message',['id'=>'post_id'],[
         'error_operate'=>self::DELETE_BREAK //删除停止并返回错误信息
     ]],
 ];

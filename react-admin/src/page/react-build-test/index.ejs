@@ -1,0 +1,20 @@
+<extend name="Admin@default/common/dashboard_layout" />
+<block name="content">
+    <!-- Content Header (Page header) -->
+    <section class="content-header clearfix" >
+        <h1>
+            ReactBuildTest
+        </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content" n-id="{$nid}">
+        <div id="app" style="overflow-x: hidden;"></div>
+    </section>
+    <script>
+        var statusList = {:json_encode($status_list, JSON_PRETTY_PRINT)};
+    </script>
+    <%= htmlWebpackPlugin.tags.headTags %>
+
+
+    <!-- /.content -->
+</block>

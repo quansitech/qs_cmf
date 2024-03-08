@@ -26,7 +26,7 @@ class AlterFilePicAddMimeType extends Migration
     {
         Schema::table('qs_file_pic', function (Blueprint $table) {
             //
-            $table->string("mime_type", 50)->default("")->after("cate");
+            $table->string("mime_type", 200)->default("")->after("cate");
         });
     }
 

@@ -33,7 +33,7 @@ class SiteSearchAddon extends Addon{
         $field_map_attr = parse_config_attr($config['field_map']);
 
         $parm = array();
-        for($i=0;$i<count($model_attr);$i++){
+        for($i=0, $iMax = count($model_attr); $i< $iMax; $i++){
             $tmp['model'] = $model_attr[$i];
             $tmp['model_name'] = $model_name_attr[$i];
             $tmp['url'] = $url_attr[$i];
