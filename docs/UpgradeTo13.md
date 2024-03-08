@@ -63,8 +63,6 @@
 
 + showFileTitle 公共函数移到了核心包，若项目也实现了同名的公共函数，需检查是否有客制化代码，有则修改函数名并替换，没有则删除。
  
-+ 检查是否使用了 jquery 新版 3.7 已删除方法
- 
 + 其他说明
   + 移除了 *Common\Util\Mail* 发送邮箱的工具
   + 移除了 *Common\Util\PDF* 
@@ -128,6 +126,7 @@
 
 + 将phpstorm的php版本设置成8.2, 开启View--Tool Windows--Problems--Inspect Code 分析业务代码是否存在潜在语法错误
 
+#### 检查是否使用了 jquery 新版 3.7 已删除方法（可参考jquery网址：https://api.jquery.com/category/removed）
 + 升级到13，升级jQuery需要关注的操作
   + 检查是否引入了下面 《think-core的修改》中已经删除的文件
   + 查看是否使用了jquery的废弃语法（如果使用到了废弃语法，如果是自己写的js，可以根据jquery文档使用同等作用的方法进行替换。如果是别人写的插件，尝试更新版本解决，如果无法通过更新版本解决，则自己写个jquery扩展方法，引入到对应的html中）
