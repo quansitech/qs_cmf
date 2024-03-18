@@ -1137,7 +1137,7 @@ if(!function_exists('downImageToDB')) {
 
         $sub_path = call_user_func_array($func, $param);
 
-        $file_name = uniqid() . $ext;
+        $file_name = uniqid('', true) . $ext;
         $file = $config['rootPath'] . $config['savePath'] . $sub_path . '/' . $file_name;
         createDir($config['rootPath'] . $config['savePath'] . $sub_path);
         if (downImage($url, $file) === false) {
