@@ -111,7 +111,7 @@
 
   格式为 **['字段名' => 字段规则数组]**
 
-  [字段规则数组的元素说明](FieldValidator.md#addRule)
+  [字段规则数组的元素说明](FieldValidator.md#addrule)
 
 
 
