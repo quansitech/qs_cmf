@@ -89,7 +89,7 @@
   + setNeedValidate 需要设置为 true
   
     ```php
-    (new SubTableBuilder())->setNeedValidate($need_validate) 
+    (new SubTableBuilder())->setNeedValidate(true) 
     ```
     
     
