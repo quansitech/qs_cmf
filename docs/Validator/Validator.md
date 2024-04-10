@@ -11,7 +11,8 @@
 
 
 #### 用法
-+ FormBuilder 表单项添加验证规则
++ **FormBuilder 表单项添加验证规则**
+  
   ```php
   $builder = new \Qscmf\Builder\FormBuilder();
   $builder
@@ -21,7 +22,7 @@
     ]);
   ```
   
-+ SubTableBuilder 子表格表单项添加验证规则
++ **SubTableBuilder 子表格表单项添加验证规则**
   
   ```php
   $sub1 = 'teacher_list';
@@ -86,7 +87,7 @@
       return $builder;
   }
   ```
-  + setNeedValidate 需要设置为 true
+  + **setNeedValidate 需要设置为 true**
   
     ```php
     (new SubTableBuilder())->setNeedValidate(true) 
@@ -94,7 +95,7 @@
     
     
     
-  + 获取表单提交数据
+  + **获取表单提交数据**
   
     子表格开启验证功能后，字段索引值有可能不连续，可以使用便捷函数处理，将字段改成连续索引的数组
     
@@ -115,6 +116,10 @@
 
 
 
+
+
+
+
 #### 前端自定义表单项验证
 
 ##### 注册事件  customValidatorItem
@@ -128,7 +133,7 @@
 
 ###### 使用场景
 
-+ 复杂组件使用 validator 插件验证结果，动态修改输入框的颜色
++ **复杂组件使用 validator 插件验证结果，动态修改输入框的颜色**
 
   使用隐藏dom元素收集最终值，需要将错误提示定位到输入的dom元素，例如复杂组件 select2，district
 
@@ -165,12 +170,12 @@
 
 ​       
 
-+ 自定义表单项验证结果
++ **自定义表单项验证结果**
 
   主要思路：
   
   + 自定义验证规则并验证组件值，将结果更新到 customValidateErrorMap
-    + 通过则移除添加属性
+    + 通过则移除属性
     + 不通过则添加属性
   + 输入框的错误提示处理
     + 获取默认错误样式：form.validate().settings.errorClass
@@ -206,7 +211,7 @@
       });
     ```
   
-    
+    效果
   
      ![custom_validator.png](img/custom_validator.png)
   
