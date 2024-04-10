@@ -3,7 +3,7 @@
 
 
 
-效果图
+#### 效果图
 
  ![example.png](img/example.png)
 
@@ -22,6 +22,7 @@
   ```
   
 + SubTableBuilder 子表格表单项添加验证规则
+  
   ```php
   $sub1 = 'teacher_list';
   $sub2 = 'student_list';
@@ -65,7 +66,7 @@
       $mock_list = DBCont::getStatusList();
   
       $builder
-          ->setNeedValidate($need_validate)
+          ->setNeedValidate($need_validate) // 若开启验证，需要设置为 true
           ->addTableHeader($sign."_num", "250")
           ->addTableHeader($sign."_date", "250")
           ->addTableHeader($sign."_district", "250")
@@ -85,6 +86,14 @@
       return $builder;
   }
   ```
+  + setNeedValidate 需要设置为 true
+  
+    ```php
+    (new SubTableBuilder())->setNeedValidate($need_validate) 
+    ```
+    
+    
+    
   + 获取表单提交数据
   
     子表格开启验证功能后，字段索引值有可能不连续，可以使用便捷函数处理，将字段改成连续索引的数组
@@ -96,31 +105,13 @@
     $data = ValidatorManager::reIndexSubTableData(I('post.'));
     ```
   
-+ **addRulesFromArray** 用法
+  
+  
+##### addRulesFromArray 用法
 
   格式为 **['字段名' => 字段规则数组]**
 
-  [字段规则数组的元素用法参考](FieldValidator.md#addRule)
-
-
-
-#### 验证规则说明
-
-| 名称         | 参数类型            | 错误提示                             |
-| ------------ | ------------------- | ------------------------------------ |
-| required     | boolean，默认为true | 请输入                               |
-| email        | boolean，默认为true | 请输入有效的电子邮件地址             |
-| url          | boolean，默认为true | 请输入有效的网址                     |
-| date         | boolean，默认为true | 请输入有效的日期 (YYYY-MM-DD)        |
-| number       | boolean，默认为true | 请输入有效的数字                     |
-| digits       | boolean，默认为true | 只能输入数字                         |
-| equalTo      | mixed               | 你的输入不相同                       |
-| max_length   | number              | 最多可以输入 {0} 个字符              |
-| min_length   | number              | 最少要输入 {0} 个字符                |
-| range_length | number,number       | 请输入长度在 {0} 到 {1} 之间的字符串 |
-| range        | number,number       | 请输入范围在 {0} 到 {1} 之间的数值   |
-| max          | number              | 请输入不大于 {0} 的数值              |
-| min          | number              | 请输入不小于 {0} 的数值              |
+  [字段规则数组的元素说明](FieldValidator.md#addRule)
 
 
 
@@ -137,7 +128,7 @@
 
 ###### 使用场景
 
-+ 根据 validator 插件验证结果，动态修改输入框的颜色
++ 复杂组件使用 validator 插件验证结果，动态修改输入框的颜色
 
   使用隐藏dom元素收集最终值，需要将错误提示定位到输入的dom元素，例如复杂组件 select2，district
 
@@ -176,42 +167,72 @@
 
 + 自定义表单项验证结果
 
-  ```javascript
-    $('body').on('customValidatorItem', '.builder-form', function(event, form, customValidateErrorMap) {
-      const name = "{$name}";
-      const selectId = "select2-{$gid}-container";
+  主要思路：
   
-      if(hasSetValidate(form, name) && !hasError(form, name)){
-        const errorClass = form.validate().settings.errorClass
-        const res = $('#{$gid}').select2().val() === '1' // 自定义验证规则
-        const message = '错误信息' // 自定义错误信息
-        
-  
-        if(res === false){
-          customValidateErrorMap[name] = false;
-          $(`#${selectId}`).closest('.select2-selection--single').addClass(errorClass)
-          form.validate().showLabel($(`#${selectId}`).closest('.select2-selection--single'), message)
-        }else if(customValidateErrorMap.hasOwnProperty(name)){
-          delete customValidateErrorMap[name];
-          $(`#${selectId}`).closest('.select2-selection--single').removeClass(errorClass)
-        }
-      }
-  
-    });
-  ```
-
-  
-
-  + 验证组件值，将结果更新到 customValidateErrorMap
+  + 自定义验证规则并验证组件值，将结果更新到 customValidateErrorMap
     + 通过则移除添加属性
     + 不通过则添加属性
-  + 显示输入框的错误提示
-    + 获取错误样式：form.validate().settings.errorClass
+  + 输入框的错误提示处理
+    + 获取默认错误样式：form.validate().settings.errorClass
     + 设置错误提示dom：form.validate().showLabel.(element, message )
-
   
-
-   ![custom_validator.png](img/custom_validator.png)
+  
+  
+  示例：
+  
+  + select2
+  
+    ```php
+      $('body').on('customValidatorItem', '.builder-form', function(event, form, customValidateErrorMap) {
+        const name = "{$name}";
+        const selectId = "select2-{$gid}-container";
+    
+        if(hasSetValidate(form, name) && !hasError(form, name)){
+          const errorClass = form.validate().settings.errorClass
+          const res = $('#{$gid}').select2().val() === '1' // 自定义验证规则
+        const message = '错误信息' // 自定义错误信息
+          
+  
+          if(res === false){
+            customValidateErrorMap[name] = false;
+            $(`#${selectId}`).closest('.select2-selection--single').addClass(errorClass)
+            form.validate().showLabel($(`#${selectId}`).closest('.select2-selection--single'), message)
+          }else if(customValidateErrorMap.hasOwnProperty(name)){
+            delete customValidateErrorMap[name];
+          $(`#${selectId}`).closest('.select2-selection--single').removeClass(errorClass)
+          }
+      }
+    
+      });
+    ```
+  
+    
+  
+     ![custom_validator.png](img/custom_validator.png)
+  
+    
+  
+  + checkbox
+  
+    ```php
+    $('body').on('customValidatorItem', '.builder-form', function(event, form, customValidateErrorMap) {
+        const name = "{$form.name}";
+    
+        if(hasSetValidate(form, name) && !hasError(form, name)){
+            const res = $('input[name="'+name+'[]"]:checked').length !== 0; // 自定义验证规则
+            const message = form.validate().settings.messages?.[name]?.required || '此字段必填';// 自定义错误信息
+    
+            if(res === false){
+                customValidateErrorMap[name] = false;
+                form.validate().showLabel($('.item_{$form.name}').find('.right'), message)
+            }else if(customValidateErrorMap.hasOwnProperty(name)){
+                delete customValidateErrorMap[name];
+            }
+        }
+    });
+    ```
+  
+    
 
  
 
