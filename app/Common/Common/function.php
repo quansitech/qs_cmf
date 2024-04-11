@@ -520,21 +520,27 @@ if(!function_exists('getFullAreaByID')) {
 //通过城市名称获取到对应城市ID，返回false代表获取失败
 //$area_arr 为城市名称数组
 if(!function_exists('getIdByFullArea')) {
-    function getIdByFullArea($area_arr)
-    {
+
+    function getIdByFullArea($area_arr){
         $area = M('Area');
 
         $pid = 0;
-        foreach ($area_arr as $v) {
+        foreach($area_arr as $k=>$v){
+            $v = trim($v);
             $map['cname'] = array('like', '%' . $v . '%');
-            if ($pid !== 0) {
+            if($pid !== 0){
                 $map['upid'] = $pid;
             }
-            $area_ent = $area->where($map)->select();
-            if (count((array)$area_ent) != 1) {
+            $area_ent = $area->where($map)->order('id')->select();
+            if(count((array)($area_ent)) === 0){
                 return false;
             }
             $pid = $area_ent[0]['id'];
+            if (count((array)($area_arr)) === 3){
+                foreach ($area_ent as &$ent){
+                    if ((int)$ent['level'] === $k+1) $pid = $ent['id'];
+                }
+            }
         }
         return $pid == 0 ? false : $pid;
     }
