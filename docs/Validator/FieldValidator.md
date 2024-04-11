@@ -69,12 +69,11 @@
 | url          | boolean，默认为true | 请输入有效的网址                     |
 | date         | boolean，默认为true | 请输入有效的日期 (YYYY-MM-DD)        |
 | number       | boolean，默认为true | 请输入有效的数字                     |
-| digits       | boolean，默认为true | 只能输入数字                         |
-| equalTo      | mixed               | 你的输入不相同                       |
-| max_length   | number              | 最多可以输入 {0} 个字符              |
-| min_length   | number              | 最少要输入 {0} 个字符                |
-| range_length | number,number       | 请输入长度在 {0} 到 {1} 之间的字符串 |
-| range        | number,number       | 请输入范围在 {0} 到 {1} 之间的数值   |
-| max          | number              | 请输入不大于 {0} 的数值              |
-| min          | number              | 请输入不小于 {0} 的数值              |
+| digits       | boolean，默认为true | 请输入大于0的整数                    |
+| max_length   | int                 | 最多可以输入 {0} 个字符              |
+| min_length   | int                 | 最少要输入 {0} 个字符                |
+| range_length | int,int             | 请输入长度在 {0} 到 {1} 之间的字符串 |
+| range        | int,int             | 请输入范围在 {0} 到 {1} 之间的数值   |
+| max          | int                 | 请输入不大于 {0} 的数值              |
+| min          | int                 | 请输入不小于 {0} 的数值              |
 
