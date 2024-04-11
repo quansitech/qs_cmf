@@ -51,3 +51,11 @@ $placeholder = "请选择";
 $width = '100px';
 ->setWidth($width)
 ```
+
+#### hidePlaceholder
+```text
+禁用空选项，如 ->addSearchItem('order', 'select', '排序', $order_select) 默认情况下会有一个“排序”的空选项
+```
+```php
+->hidePlaceholder()
+```
