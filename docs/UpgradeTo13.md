@@ -238,3 +238,63 @@
     + asset\libs\videojs-ie8.min.js
     + asset\libs\modal.js
     + asset\libs\stickUp.js
+
+#### 队列相关升级
++ qs_queue增加error字段
+```php
+# 迁移文件
+Schema::table('qs_queue', function (Blueprint $table) {
+    $table->string('error',500)->default('')->comment('队列错误信息');
+});
+```
++ 修改Behaviors/AppInitBehavior.class.php
+```php
+# 增加beforePerform事件
+Event::listen('beforePerform', function($args){
+    $job = $args[0];
+    
+    D('Queue')->where(['id' => $job->payload['id']])->save([
+        'status' => DBCont::JOB_STATUS_RUNNING,
+    ]);
+});
+
+# 增加afterPerform事件
+Event::listen('afterPerform', function($args){
+    $job = $args[0];
+
+    D('Queue')->where(['id' => $job->payload['id']])->save([
+        'status' => DBCont::JOB_STATUS_COMPLETE,
+    ]);
+});
+
+# 增加onFailure事件
+Event::listen('onFailure', function($args){
+    $exception = $args['exception'];
+    $job = $args['job'];
+    D('Queue')->where(['id' => $job->payload['id']])->save([
+        'error'=> $exception->getMessage(),
+        'status' => DBCont::JOB_STATUS_FAILED,
+    ]);
+});
+```
+
++ 修改Admin/Controller/QueueController.class.php
+    + 列表页增加‘错误’和‘计划任务’字段
+    ```php
+        # 在index中的listbuilder，加上以下两个字段
+        ->addTableColumn('error', '错误', '', '', false)
+        ->addTableColumn('schedule', '计划任务', '', '', false)
+    ```
+    + 去除列表页的‘刷新所有等待’按钮
+    ```php
+        # 在index中的listbuilder，删除‘刷新所有等待’按钮：
+        ->addTopButton('self', array('title' => '刷新所有等待', 'href' => U('refreshWait'), 'class' => 'btn btn-primary ajax-get confirm'));
+    ```
+    + 去除访问列表页时的刷新数据库
+    ```php
+        # 去除index中的以下代码：
+        if($v['status'] != DBCont::JOB_STATUS_COMPLETE){
+            $model->refreshStatusOne($v['id']);
+        }
+    ```
+  
