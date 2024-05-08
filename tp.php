@@ -10,7 +10,9 @@ if(!function_exists('show_bug')){
     }
 }
 
-define('ROOT_PATH', __DIR__);
+// think-core 的 ConstDefine.php 已定义 ROOT_PATH 常量，此处无需重复定义
+// 若需要覆盖请使用示例，但测试用例会使用 ConstDefine.php 的值 ：
+// defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
 
 //require __DIR__ . '/vendor/tiderjian/think-core/src/Common/functions.php';
 //require __DIR__ . '/app/Common/Common/function.php';
