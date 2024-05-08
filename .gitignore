@@ -12,7 +12,7 @@
 /lara/vendor/composer/installed.json
 
 .phpunit.result.cache
-.phpunit.xml
+phpunit.xml
 
 
 /www/Public/static/dist/admin
