@@ -303,3 +303,9 @@ Event::listen('onFailure', function($args){
         }
     ```
   
+
+#### 升级到 v13.6.0
+```text
+Form 添加了前端表单验证功能，部分组件有修改，需要检查表单中特殊用法组件的功能是否正常
+```
++ select2 添加了 id 属性

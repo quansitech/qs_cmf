@@ -13,7 +13,7 @@ class LoginTest extends DuskTestCase {
             $browser->visit("/admin/Public/login")
                 ->waitFor('#login-box')
                 ->type('uid', 'admin')
-                ->type('pwd', 'admin123')
+                ->type('pwd', 'Qs123!@#')
                 ->press('button[type=submit]')
                 ->waitFor('.user-menu')
                 ->assertSeeIn('.user-menu', 'admin');

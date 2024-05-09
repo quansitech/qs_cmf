@@ -27,5 +27,10 @@
         <env name="DB_DATABASE" value="test"/>
         <env name="DB_USERNAME" value="root"/>
         <env name="DB_PASSWORD" value="root"/>
+        <env name="DB_PREFIX" value="qs_"/>
+        <env name="REDIS_HOST" value="redis" />
+        <env name="REDIS_PORT" value="6379" />
+        <env name="PHP_IDE_CONFIG" value="serverName=laradock" />
+        <const name="LARA_DIR" value="/var/www/qs_cmf/lara"/>
     </php>
 </phpunit>

@@ -12,14 +12,17 @@ class UploadTest extends TestCase {
             'file' => UploadedFile::fake()->image('test.jpg', 100, 100)
         ];
 
-        $content = $this->post('api/upload/uploadImage', $data);
+        $query = http_build_query([
+            'cate' => 'image',
+            'title' => 'test.jpg',
+        ]);
+        $content = $this->post('api/upload/uploadFile?'.$query, $data);
 
         $content = json_decode($content, true);
-        $this->assertTrue($content['Status'] == 1);
+        $this->assertTrue($content['status'] == 1);
         $this->assertDatabaseHas('qs_file_pic', [
-            'title' => 'test.jpg',
-            'file' => $content['file']
+            'id' => $content['file_id']
         ]);
-        $this->assertFileExists($this->laraPath() . '/../www/Uploads/' . $content['file']);
+        $this->assertFileExists($this->laraPath() . '/../www/' . $content['url']);
     }
 }

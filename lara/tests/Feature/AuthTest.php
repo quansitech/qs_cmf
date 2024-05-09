@@ -14,7 +14,7 @@ class AuthTest extends TestCase {
     }
 
     public function testLogin(){
-        $content = $this->post('/Admin/public/login', ['uid' => 'admin', 'pwd' => 'admin123']);
+        $content = $this->post('/Admin/public/login', ['uid' => 'admin', 'pwd' => 'Qs123!@#']);
 
         $this->assertTrue(Str::contains($content, '登录成功'));
     }
