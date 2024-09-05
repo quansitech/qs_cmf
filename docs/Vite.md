@@ -74,6 +74,12 @@ npm run dev
 npm run dev:backend
 ```
 
+增加环境变量到.env
+
+```dotenv
+APP_URL=http://[开发主机地址]/
+```
+
 ## SSR 服务端渲染
 
 1. 编译ssr资源
@@ -88,8 +94,9 @@ npm run build:ssr
 npm run ssr:serve
 ```
 
-3. 增加ssr服务地址配置到.env
+3. 增加配置到.env
 
 ```dotenv
+# SSR 服务端地址
 INERTIA_SSR_URL=http://[ssr主机]:13714
 ```
