@@ -1,0 +1,32 @@
+{
+  "name": "qs_cmf",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "![lincense](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:backend": "vite --config=vite.backend.config.js",
+    "build": "vite build",
+    "build:ssr": "vite build && vite build --ssr",
+    "build:backend": "vite build --config=vite.backend.config.js",
+    "ssr:serve": "node lara/bootstrap/ssr/ssr.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inertiajs/react": "^1.2.0",
+    "antd": "^5.20.5",
+    "laravel-vite-plugin": "^1.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "sass": "^1.78.0"
+  }
+}

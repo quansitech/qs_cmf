@@ -546,6 +546,9 @@ env增加了TRACE_ERROR配置，如果希望在debug关闭的模式下能收集�
 ### 后台使用react构建页面
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/react-admin/README.md)
 
+### vite构建前后台资源
+
+[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Vite.md)
 
 ## 文档
 

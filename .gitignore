@@ -18,3 +18,11 @@ phpunit.xml
 /www/Public/static/dist/admin
 /app/Admin/View/default/Public/vendor.html
 /app/Admin/View/default/ReactBuildTest/index.html
+
+# 前端构建文件
+node_modules
+/www/Public/build/*
+/www/Public/backend/build/*
+/www/Public/hot
+/www/Public/backend-hot
+/lara/bootstrap/ssr

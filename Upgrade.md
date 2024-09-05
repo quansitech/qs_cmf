@@ -168,3 +168,5 @@ v12->v13升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/
 - [ ] 升级jquery最新版本，旧版本废弃
 - [ ] 优化 react-admin 模块
 - [ ] 本地上传组件添加文件查重，重复则新增数据用旧的路径
+
+v13->v14升级步骤，[点击查看](https://github.com/quansitech/qs_cmf/blob/master/docs/UpgradeTo14.md)
