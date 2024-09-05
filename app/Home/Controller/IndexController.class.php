@@ -15,6 +15,20 @@ class IndexController extends \Gy_Library\GyController{
         $this->display();
     }
 
+    public function foo()
+    {
+        $this->inertia('Index/Foo', [
+            'barUrl' => U('bar'),
+        ]);
+    }
+
+    public function bar()
+    {
+        $this->inertia('Index/Bar', [
+            'fooUrl' => U('foo'),
+        ]);
+    }
+
     public function errorDemo(){
         if(IS_POST){
             flashError('发生了错误');

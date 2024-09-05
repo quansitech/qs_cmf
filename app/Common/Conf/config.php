@@ -83,6 +83,10 @@ $common_config = array(
     'TMPL_PARSE_STRING' => array(
         '__ADDONSJS__' => __ROOT__ . '/Public/Addons'
     ),
+
+    'INERTIA' => [
+        'ssr_url' => env('INERTIA_SSR_URL'),
+    ]
 );
 
 return array_merge($common_config, loadAllCommonConfig());
