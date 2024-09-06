@@ -74,22 +74,44 @@ npm run dev
 npm run dev:backend
 ```
 
+增加环境变量到.env
+
+```dotenv
+APP_URL=http://[开发主机地址]/
+```
+
 ## SSR 服务端渲染
 
-1. 编译ssr资源
+1. 修改resources/js/frontend/app.jsx
+
+```tsx 
+import {createRoot, hydrateRoot} from 'react-dom/client'
+
+//...省略代码
+
+//将
+createRoot(el).render(<App {...props} />)
+//替换为
+hydrateRoot(el, <App {...props} />)
+
+//...省略代码
+```
+
+2. 编译ssr资源
 
 ```shell
 npm run build:ssr
 ```
 
-2. 运行ssr服务
+3. 运行ssr服务
 
 ```shell
 npm run ssr:serve
 ```
 
-3. 增加ssr服务地址配置到.env
+4. 增加配置到.env
 
 ```dotenv
+# SSR 服务端地址
 INERTIA_SSR_URL=http://[ssr主机]:13714
 ```

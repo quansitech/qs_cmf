@@ -8,5 +8,8 @@ createInertiaApp({
     },
     setup({el, App, props}) {
         createRoot(el).render(<App {...props} />)
+
+        // ssr 渲染请使用以下代码
+        // hydrateRoot(el, <App {...props} />)
     },
 })
