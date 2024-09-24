@@ -284,3 +284,50 @@ $opt string 图片处理参数，如'x-oss-process=image/resize,w_100'或者'res
 // "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?x-oss-process=image/format,jpg/resize,w_100"
 // "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1&x-oss-process=image/format,jpg/resize,w_100"
 ```
+
+#### reorderArrayByFirstKeys
+```blade
+根据二维数组的第一个元素的键顺序重排数组中的键
+```
+
+参数
+
+| 名称             | 说明                           | 类型 | 必填 | 默认值   |
+|:---------------| :----------------------------- | ---- | ---- |:------|
+| list           | 需要重排的数组 |  array | 是   |       |
+| not_exists_then_null | 若该键不存在，是否返回null | bool | 否   | false |
+
+用例
+```php
+$list = [
+    ['id' => 1, 'name' => 'name1', 'other_key' => '1', 'value' => 'value1'],
+    ['name' => 'name2', 'id' => 2, 'value' => 'value2'],
+    ['value' => 'value3', 'id' => 3, 'name' => 'name3'],
+];
+
+$result = reorderArrayByFirstKeys($list);
+```
+
+
+#### reorderArrayByKeys
+```blade
+根据提供的键顺序重排数组中的键
+```
+
+参数
+
+| 名称             | 说明                           | 类型 | 必填 | 默认值   |
+|:---------------| :----------------------------- | ---- | ---- |:------|
+| data           | 需要重排的数组 |  array | 是   |       |
+| sorted_keys           | 已排序的键 |  array | 是   |       |
+| not_exists_then_null | 若该键不存在，是否返回null | bool | 否   | false |
+
+用例
+```php
+$data = ['name' => 'name2', 'id' => 2, 'value' => 'value2'];
+          
+$sorted_keys = ['id', 'name', 'other_key', 'value'];
+
+$result = reorderArrayByKeys($data, $sorted_keys);
+
+```
