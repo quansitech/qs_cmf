@@ -284,3 +284,26 @@ $opt string 图片处理参数，如'x-oss-process=image/resize,w_100'或者'res
 // "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?x-oss-process=image/format,jpg/resize,w_100"
 // "https://quansi-test.oss-cn-shenzhen.aliyuncs.com/Uploads/image/20220721/62d91a961c13a.heic?a=1&x-oss-process=image/format,jpg/resize,w_100"
 ```
+
+#### reorderRowKey
+```blade
+重排二维数组中一维数组的键
+```
+
+参数
+
+| 名称             | 说明                           | 类型 | 必填 | 默认值   |
+|:---------------| :----------------------------- | ---- | ---- |:------|
+| list           | 需要重排的数组 |  array | 是   |       |
+
+用例
+
+```php
+$list = [
+    ['id' => 1, 'name' => 'name1', 'other_key' => '1', 'value' => 'value1'],
+    ['name' => 'name2', 'id' => 2, 'value' => 'value2'],
+    ['value' => 'value3', 'id' => 3, 'name' => 'name3'],
+];
+
+$result = reorderRowKey($list);
+```
