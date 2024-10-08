@@ -546,6 +546,8 @@ env增加了TRACE_ERROR配置，如果希望在debug关闭的模式下能收集�
 ### 后台使用react构建页面
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/react-admin/README.md)
 
+### 静态资源配置CDN
+[传送门](./doc/InjectCdn.md)
 
 ## 文档
 
