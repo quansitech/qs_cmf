@@ -38,7 +38,7 @@ $common_config = array(
 
     //资源调用设置
     'ASSET' => array(
-        'prefix' => __ROOT__ . '/Public/',
+        'prefix' => injecCdntUrl() . __ROOT__ . '/Public/',
     ),
 
     //数据库连接配置
