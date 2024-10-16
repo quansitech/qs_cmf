@@ -13,13 +13,7 @@ export default defineConfig(() => {
                 output: {
                     manualChunks: {
                         react: ['react', 'react-dom'],
-                        antd: ['antd', '@ant-design/icons'],
                         axios: ['axios'],
-                        'pro-components': ['@ant-design/pro-components'],
-                        'pro-layout': ['@ant-design/pro-layout'],
-                        'pro-table': ['@ant-design/pro-table'],
-                        'pro-form': ['@ant-design/pro-form'],
-                        'pro-field': ['@ant-design/pro-field'],
                     }
                 }
             }

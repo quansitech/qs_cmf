@@ -1,8 +1,8 @@
 <?php
 
 namespace Admin\Controller;
-use Gy_Library\GyListController;
 use Gy_Library\DBCont;
+use Gy_Library\GyListController;
 
 class ConfigController extends GyListController{
     
@@ -269,7 +269,7 @@ class ConfigController extends GyListController{
             
             $builder->setMetaTitle('系统设置')       // 设置页面标题
                     ->setNID(69)
-                    ->SetTabNav($tab_list, $group)  // 设置Tab按钮列表
+                ->setTabNav($tab_list, $group)  // 设置Tab按钮列表
                     ->setFormData($form_data)
                     ->setPostUrl(U('setting', ['group' => $group]))    // 设置表单提交地址
                     //->setExtraItems($data_list)     // 直接设置表单数据

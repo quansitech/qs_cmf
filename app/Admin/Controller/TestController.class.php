@@ -34,8 +34,9 @@ class TestController extends GyListController
 
         $form = new Form();
         $form->actions(function (Form\ActionsContainer $container) {
-            $container->button('提交')->submit('post', U(''));
+            $container->button('提交')->submit();
         });
+        $form->setSubmitRequest('post', U(''));
         $tabs->addTab('form', '表单页', $form);
         $tabs->render();
     }
@@ -46,40 +47,49 @@ class TestController extends GyListController
      */
     public function index()
     {
-//        $map = [];
-//        $user_model = D('Node');
-//        $count = $user_model->getListForCount($map);
-//        $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
-//        if($per_page === false){
-//            $page = new \Gy_Library\GyPage($count);
-//        }
-//        else{
-//            $page = new \Gy_Library\GyPage($count, $per_page);
-//        }
-//        $data_list = $user_model->getListForPage($map, $page->nowPage, $page->listRows);
-//
-//        $builder = new ListBuilderByInertia();
-//        $builder->addTableColumn('id', 'ID');
-//        $builder->addTableColumn('name', '节点名');
-//        $builder->setTableDataList($data_list);
-//        $builder->setTableDataPage($page->show());
-//
-//        $builder->build();
-
         $map = [];
         $model = D('Node');
         $count = $model->getListForCount($map);
         $page = new \Gy_Library\GyPage($count, 20);
         $data_list = D('Node')->getListForPage($map, $page->nowPage, $page->listRows);
 
-
         $table = new Table();
         $table->setMetaTitle('列表页');
         $table->columns(function (Table\ColumnsContainer $container) {
             $container->text('id', 'ID')->setSearch(false)->setWidth('100px')->setFixed('left');
             $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
+            $container->text('name', '节点名')->editable();
 
-            $container->select('status', '状态')->setOptions([
+            $container->select('status', '状态')->setValueEnum([
                 DBCont::NORMAL_STATUS => [
                     'text' => '启用',
                     'status' => 'Success'
@@ -125,7 +135,7 @@ class TestController extends GyListController
             })
             ->setRowSelection(true)
             ->setDataSource($data_list)
-            ->setPagination(new QsPage2Pagination($page))
+            ->setPagination(QsPage2Pagination::render($page))
             ->setDefaultSearchValue(['name' => '1', 'status' => 1])
             ->render();
     }
@@ -142,7 +152,7 @@ class TestController extends GyListController
         $form = new Form();
         $form->setMetaTitle('表单页')
             ->columns(function (Form\ColumnsContainer $container) {
-                $container->select('test', 'test')->setOptions([
+                $container->select('test', 'test')->setValueEnum([
                     'a' => '1',
                     'b' => '2'
                 ])->setSearchUrl(U('search'));
