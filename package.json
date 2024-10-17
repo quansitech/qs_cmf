@@ -17,19 +17,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ant-design/pro-components": "^2.7.15",
     "@inertiajs/react": "^1.2.0",
-    "antd": "^5.20.5",
-    "antd-img-crop": "^4.23.0",
     "axios": "^1.7.7",
-    "js-md5": "^0.8.3",
     "laravel-vite-plugin": "^1.0.5",
     "lodash": "^4.17.21",
-    "prettier": "^3.3.3",
-    "rc-animate": "^3.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "vite": "^5.4.2"
+    "vite": "^5.4.2",
+    "@quansitech/antd-admin": "^1.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.193",
