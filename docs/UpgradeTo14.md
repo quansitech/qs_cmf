@@ -36,6 +36,7 @@ www/Public/backend/.gitignore
 return [
     //...省略
     
-    'ANTD_ADMIN_BUILDER_ENABLE' => true,    
+    'ANTD_ADMIN_BUILDER_ENABLE' => true, // 是否开启Antd Admin Builder
+    'ANTD_ADMIN_NEW_LAYOUT' => true, // 是否开启Antd Admin 新布局
 ];
 ```
