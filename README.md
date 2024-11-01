@@ -304,6 +304,31 @@ php artisan migrate:reset --no-cmd
 ## upload Api
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Upload.md)
 
+## 开启 antd-admin 后台
+
+* 配置 `app/Admin/Conf/config.php`
+
+```php
+return [
+    //...省略
+    
+    'ANTD_ADMIN_BUILDER_ENABLE' => true, // 是否开启Antd Admin Builder
+    'ANTD_ADMIN_NEW_LAYOUT' => true, // 是否开启Antd Admin 新布局
+];
+```
+
+* 安装前端依赖包
+
+```shell
+npm install
+```
+
+* 编译后台前端资源
+
+```shell
+npm run build:backend
+```
+
 ## 前台js错误收集
 
 #### 用法
