@@ -550,6 +550,10 @@ env增加了TRACE_ERROR配置，如果希望在debug关闭的模式下能收集�
 
 [传送门](./docs/Vite.md)
 
+### 静态资源配置CDN
+
+[传送门](./doc/InjectCdn.md)
+
 ## 文档
 
 由于工作量大，文档会逐步补全。

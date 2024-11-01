@@ -1,8 +1,8 @@
 <?php
 
 namespace Admin\Controller;
-use Gy_Library\GyListController;
 use Gy_Library\DBCont;
+use Gy_Library\GyListController;
 
 class NodeController extends GyListController {
 
@@ -202,7 +202,7 @@ class NodeController extends GyListController {
 
             // 使用FormBuilder快速建立表单页面。
             $builder = new \Qscmf\Builder\FormBuilder();
-            $builder->setMetaTitle('编辑用户')  // 设置页面标题
+            $builder->setMetaTitle('编辑节点')  // 设置页面标题
                     ->setNID(28)
                     ->setPostUrl(U('edit'))    //设置表单提交地址
                     ->addFormItem('id', 'hidden', 'ID')

@@ -1,10 +1,35 @@
 <extend name="Admin@default/common/dashboard_layout"/>
-<block name="style">
+<block name="head">
     <Inertia:head></Inertia:head>
     <Inertia:reactRefresh></Inertia:reactRefresh>
     <Inertia:vite file="resources/js/backend/app.tsx"></Inertia:vite>
 </block>
 
 <block name="content">
-    <Inertia:render></Inertia:render>
+    <div class="content" n-id="{$nid}">
+        <Inertia:render></Inertia:render>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            $('head title:not([inertia])').remove()
+
+            $('.sidebar-menu li a').on('click', function (e) {
+                e.preventDefault();
+
+                if ($(this).attr('href') === '#') {
+                    return false;
+                }
+                $('.sidebar-menu li').removeClass('active');
+                var that = this
+                window.$qsContainer.routerNavigateTo($(this).attr('href'), {
+                    onSuccess() {
+                        $(that).parents('li').addClass('active');
+                    }
+                });
+            })
+        })
+    </script>
 </block>

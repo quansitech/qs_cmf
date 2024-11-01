@@ -432,7 +432,7 @@ if(!function_exists('showFileSmallUrl')) {
         $file_pic = M('FilePic');
         $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
         if ($file_pic_ent) {
-            return UPLOAD_PATH . '/' . $file_pic_ent['small'];
+            return injecCdntUrl() . UPLOAD_PATH . '/' . $file_pic_ent['small'];
         }
         return '';
     }
