@@ -34,3 +34,11 @@ composer require quansitech/antd-admin
         'ssr_url' => env('INERTIA_SSR_URL'),
     ]
 ```
+
+* 将下列文件代码合并到项目中，自行检查是否有客制化代码：
+
+```
+app/Admin/Controller/DashboardController.class.php
+app/Admin/Controller/RoleController.class.php
+app/Admin/Controller/UserController.class.php
+```
