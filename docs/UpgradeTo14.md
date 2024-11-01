@@ -27,6 +27,8 @@ composer require quansitech/qscmf-buttontype-modal
 composer require quansitech/antd-admin
 ```
 
+* 若要开启antd-admin，请检查 `quansitech/qscmf-formitem-ueditor` 版本为 `^2.0` 或以上
+
 * 增加下列配置到app/Common/Conf/config.php配置文件里：
 
 ```php
