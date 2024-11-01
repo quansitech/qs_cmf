@@ -20,23 +20,17 @@ www/Public/backend/.gitignore
 <taglib name="Qscmf\Lib\Inertia\TagLib\Inertia" />
 ```
 
+* 安装依赖
+
+```shell
+composer require quansitech/qscmf-buttontype-modal
+composer require quansitech/antd-admin
+```
+
 * 增加下列配置到app/Common/Conf/config.php配置文件里：
 
 ```php
     'INERTIA' => [
         'ssr_url' => env('INERTIA_SSR_URL'),
     ]
-```
-
-## 开启 antd-admin
-
-* 配置 `app/Admin/Conf/config.php`
-
-```php
-return [
-    //...省略
-    
-    'ANTD_ADMIN_BUILDER_ENABLE' => true, // 是否开启Antd Admin Builder
-    'ANTD_ADMIN_NEW_LAYOUT' => true, // 是否开启Antd Admin 新布局
-];
 ```
