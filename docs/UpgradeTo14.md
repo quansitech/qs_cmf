@@ -20,6 +20,13 @@ www/Public/backend/.gitignore
 <taglib name="Qscmf\Lib\Inertia\TagLib\Inertia" />
 ```
 
+* 安装依赖
+
+```shell
+composer require quansitech/qscmf-buttontype-modal
+composer require quansitech/antd-admin
+```
+
 * 增加下列配置到app/Common/Conf/config.php配置文件里：
 
 ```php
@@ -39,4 +46,16 @@ return [
     'ANTD_ADMIN_BUILDER_ENABLE' => true, // 是否开启Antd Admin Builder
     'ANTD_ADMIN_NEW_LAYOUT' => true, // 是否开启Antd Admin 新布局
 ];
+```
+
+* 安装前端依赖包
+
+```shell
+npm install
+```
+
+* 编译后台前端资源
+
+```shell
+npm run build:backend
 ```
