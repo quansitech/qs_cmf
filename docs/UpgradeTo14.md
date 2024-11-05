@@ -37,6 +37,19 @@ composer require quansitech/antd-admin
     ]
 ```
 
+* 增加head块到 app/Admin/View/default/common/dashboard_layout.html 中：
+
+```html
+...
+<head>
+    ...
+    <!-- 增加代码 -->
+    <block name="head"></block>
+    <!-- 增加代码结束 -->
+</head>
+...
+```
+
 * 将下列文件代码合并到项目中，自行检查是否有客制化代码：
 
 ```
