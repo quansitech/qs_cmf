@@ -15,7 +15,7 @@
         "funkjedi/composer-include-files": "^1.0",
         "quansitech/antd-admin": "^1.0",
         "quansitech/qscmf-buttontype-modal": "^3.0",
-        "quansitech/qscmf-formitem-ueditor": "^1.0.0",
+        "quansitech/qscmf-formitem-ueditor": "^2.0.0",
         "quansitech/qscmf-utils": "^1.5"
     },
     "require-dev": {
