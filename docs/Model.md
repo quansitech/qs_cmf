@@ -166,3 +166,43 @@ strict模式默认启动一下设置
 // data 数据信息
 // options 查询表达式参数
 ```
+
+## 数据库帮助函数
+
+generator
+
+> 低内存消耗迭代函数
+>
+> 参数
+>
+> 1. $map 查询参数 默认为空数组
+> 2. $count 一次查询的数据量，越大占用的内存会大，但运行效率会更高，根据情况灵活调整 默认为 1
+>
+> 举例
+>
+> ```php
+>   foreach(D("Content")->generator([], 200) as $ent){
+>      var_dump($ent);
+>   }
+> ```
+
+getFieldForN1
+
+> 将循环N次select转成1次select
+>
+> 参数
+>
+> 1. $map 查询参数 默认为空数组
+> 2. $field 查询的字段列表
+> 3. $primary_key 查询的数据主键
+> 4. $show_field 需要返回的字段内容
+>
+> 举例
+>
+> ```php
+>   $orders = D("Order")->select();
+>   $person_ids = collect($orders)->pluck('person_id')->toArray();
+>   foreach($orders as $ent){
+>      $ent['person_name'] = D("Person")->getFieldForN1(['id' => ['in', $person_ids]], 'id,name', $ent['person_id'], 'name');
+>   }
+> ```

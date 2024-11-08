@@ -319,25 +319,6 @@ php artisan migrate:reset --no-cmd
     </script>
 ```
 
-## 数据库帮助函数
-
-generator
-
-> 低内存消耗迭代函数
-> 
-> 参数 
-> 
-> 1. $map 查询参数 默认为空数组
-> 2. $count 一次查询的数据量，越大占用的内存会大，但运行效率会更高，根据情况灵活调整 默认为 1
-> 
-> 举例
-> 
-> ```php
->   foreach(D("Content")->generator([], 200) as $ent){
->      var_dump($ent);
->   }
-> ```
-
 ## 权限功能
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Auth.md)
