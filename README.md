@@ -52,6 +52,13 @@ composer create-project tiderjian/qscmf qscmf
 php artisan migrate
 ```
 
+3. 安装前端扩展，编译后台界面
+
+```
+npm i
+npm run build:backend
+```
+
 将web服务器搭起来后，后台登录地址  协议://域名:端口/admin， 账号:admin 密码:Qs123!@#
 
 ## 维护模式
