@@ -1,5 +1,8 @@
 ## Model
 
+### 开启mysql ssl连接
+在.env中添加DB_SSL=true就可以开启
+
 ### auto
 
 增加传递新增记录给function或者callback的方法
