@@ -7,5 +7,6 @@ class Menu extends Model{
 
     protected $table = 'qs_menu';
 
+    public $timestamps = false;
     
 }
