@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use App\Models\User;
 use Think\Controller;
 
 class PublicController extends Controller {
@@ -89,15 +90,24 @@ class PublicController extends Controller {
             }
         }
         
-        $user_model = D('User');
-        $user_ent = $user_model->getUserByEmailOrNickName($uid);
+        $user = new User();
+
+        if(filter_var($uid, FILTER_VALIDATE_EMAIL) === false){
+
+            $user->where('nick_name', $uid);
+        }
+        else{
+            $user->where('email', $uid);
+        }
+
+        $user_ent = $user->first();
         
         
-        $r = $user_model->adminLogin($uid, $user_model->hashPwd($pwd, $user_ent['salt']));
+        $r = $user->adminLogin($uid, $user->hashPwd($pwd, $user_ent->salt));
 
         if ($r === false) {
 
-            $this->loginErr($user_model->getError());
+            $this->loginErr($user->error);
             return false;
         } 
         return true;
