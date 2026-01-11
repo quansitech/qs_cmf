@@ -1,4 +1,6 @@
 <?php
+
+
 if(!function_exists('checkGt')){
     function checkGt($value, $gt_value){
         return $value > $gt_value;
@@ -241,7 +243,7 @@ if(!function_exists('getModuleName')) {
     {
         $map['name'] = MODULE_NAME;
         $map['level'] = 1;
-        $title = D('node')->where($map)->getField('title');
+        $title = App\Models\Node::where($map)->value('title'); // Laravel Eloquent equivalent
         return $title ? $title : MODULE_NAME;
     }
 }
@@ -251,7 +253,7 @@ if(!function_exists('getModuleId')) {
     {
         $map['name'] = MODULE_NAME;
         $map['level'] = 1;
-        $id = D('node')->where($map)->getField('id');
+        $id = App\Models\Node::where($map)->value('id');
         return $id;
     }
 }
@@ -262,7 +264,7 @@ if(!function_exists('getControllerName')) {
         $map['name'] = CONTROLLER_NAME;
         $map['level'] = 2;
         $map['pid'] = getModuleId();
-        $title = D('node')->where($map)->getField('title');
+        $title = App\Models\Node::where($map)->value('title');
         return $title ? $title : CONTROLLER_NAME;
     }
 }
@@ -273,7 +275,7 @@ if(!function_exists('getControllerId')) {
         $map['name'] = CONTROLLER_NAME;
         $map['level'] = 2;
         $map['pid'] = getModuleId();
-        $id = D('node')->where($map)->getField('id');
+        $id = App\Models\Node::where($map)->value('id');
         return $id;
     }
 }
@@ -284,7 +286,7 @@ if(!function_exists('getActionName')) {
         $map['name'] = ACTION_NAME;
         $map['level'] = 3;
         $map['pid'] = getControllerId();
-        $title = D('node')->where($map)->getField('title');
+        $title = App\Models\Node::where($map)->value('title');
         return $title ? $title : ACTION_NAME;
     }
 }
@@ -577,17 +579,16 @@ if(!function_exists('mkFile')) {
 if(!function_exists('sysLogs')) {
     function sysLogs($message = '未知')
     {
-        $syslogs = M("Syslogs");
-        $data = array();
+        $syslogs = new App\Models\Syslogs();
         $ip = get_client_ip();
-        $data['modulename'] = getmodulename();
-        $data['actionname'] = getControllerName();
-        $data['opname'] = getActionName();
-        $data['message'] = $message;
-        $data['userid'] = isSession(session(C('USER_AUTH_KEY'))) ? session(C('USER_AUTH_KEY')) : '0';
-        $data['userip'] = $ip;
-        $data['create_time'] = time();
-        $syslogs->add($data);
+        $syslogs->modulename = getmodulename();
+        $syslogs->actionname = getControllerName();
+        $syslogs->opname = getActionName();
+        $syslogs->message = $message;
+        $syslogs->userid = isSession(session(C('USER_AUTH_KEY'))) ? session(C('USER_AUTH_KEY')) : '0';
+        $syslogs->userip = $ip;
+        $syslogs->create_time = time();
+        $syslogs->save();
     }
 }
 
