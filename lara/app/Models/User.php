@@ -6,7 +6,7 @@ use Gy_Library\DBCont;
 
 class User extends Model{
 
-    protected $table = 'qs_user';
+    protected $table = 'user';
 
     public $timestamps = false;
     public $error = "";

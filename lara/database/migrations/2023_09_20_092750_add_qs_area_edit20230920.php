@@ -25,8 +25,8 @@ class AddQsAreaEdit20230920 extends Migration
     public function up()
     {
         //贵州省 毕节市 黔西县
-        \Illuminate\Support\Facades\DB::table('qs_area')->where(['id'=>'520522','upid'=>'520500'])->update(['cname'=>'黔西市','id'=>'520581']);        
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', 520522)->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where(['id'=>'520522','upid'=>'520500'])->update(['cname'=>'黔西市','id'=>'520581']);        
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', 520522)->delete();
         $area_data = [
             [
                 'id' => '520581001',
@@ -318,11 +318,11 @@ class AddQsAreaEdit20230920 extends Migration
             ]
         ];
         //删除莱芜市信息
-        \Illuminate\Support\Facades\DB::table('qs_area')->insert($area_data);
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', 371200)->delete();     
-        Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', 371202)->delete();    
-        Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', 371203)->delete();       
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', '=', 371200)->delete();
+        \Illuminate\Support\Facades\DB::table('area')->insert($area_data);
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', 371200)->delete();     
+        Illuminate\Support\Facades\DB::table('area')->where('upid', '=', 371202)->delete();    
+        Illuminate\Support\Facades\DB::table('area')->where('upid', '=', 371203)->delete();       
+        \Illuminate\Support\Facades\DB::table('area')->where('id', '=', 371200)->delete();
         
         //山东省 济南市
         $areadata = [
@@ -543,7 +543,7 @@ class AddQsAreaEdit20230920 extends Migration
                 'level' => '4'
             ]	
         ];
-        \Illuminate\Support\Facades\DB::table('qs_area')->insert($areadata);
+        \Illuminate\Support\Facades\DB::table('area')->insert($areadata);
         
     }
 
@@ -555,8 +555,8 @@ class AddQsAreaEdit20230920 extends Migration
     public function down()
     {
         //贵州省 毕节市 黔西县
-        \Illuminate\Support\Facades\DB::table('qs_area')->where(['id'=>'520581','upid'=>'520500'])->update(['cname'=>'黔西县','id'=>'520522']);
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '520581')->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where(['id'=>'520581','upid'=>'520500'])->update(['cname'=>'黔西县','id'=>'520522']);
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', '520581')->delete();
         $area_data = [
             [
                 'id' => '520522001',
@@ -838,12 +838,12 @@ class AddQsAreaEdit20230920 extends Migration
                 'level' => '4'
             ]
         ];        
-        \Illuminate\Support\Facades\DB::table('qs_area')->insert($area_data);
+        \Illuminate\Support\Facades\DB::table('area')->insert($area_data);
         //添加莱芜市信息
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', '=', '370116')->delete();
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '370116')->delete();
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('id', '=', '370117')->delete();
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', '370117')->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where('id', '=', '370116')->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', '370116')->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where('id', '=', '370117')->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', '370117')->delete();
         $areadata = [
             [
                 'id' => '371200',
@@ -1053,7 +1053,7 @@ class AddQsAreaEdit20230920 extends Migration
                 'level' => '4'
             ]
         ];        
-        \Illuminate\Support\Facades\DB::table('qs_area')->insert($areadata);
+        \Illuminate\Support\Facades\DB::table('area')->insert($areadata);
     }
 
     public function afterCmmUp()

@@ -5,7 +5,7 @@ use \Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model{
 
-    protected $table = 'qs_menu';
+    protected $table = 'menu';
 
     public $timestamps = false;
     

@@ -14,7 +14,7 @@ class InitDatabase extends Migration
      */
     public function up()
     {
-        Schema::create('qs_access', function (Blueprint $table) {
+        Schema::create('access', function (Blueprint $table) {
             $table->smallInteger('role_id', false, true);
             $table->smallInteger('node_id', false, true);
             $table->tinyInteger('level');
@@ -23,7 +23,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_addons', function (Blueprint $table) {
+        Schema::create('addons', function (Blueprint $table) {
             $table->unsignedInteger('id', true)->comment('主键');
             $table->string('name', 40)->comment('插件名或标识');
             $table->string('title', 20)->default('')->comment('中文名');
@@ -38,7 +38,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_area', function(Blueprint $table){
+        Schema::create('area', function(Blueprint $table){
             $table->integer('id')->primary();
             $table->string('cname', 100);
             $table->string('cname1', 50);
@@ -52,9 +52,9 @@ class InitDatabase extends Migration
 
         $areas = require database_path('migrations/data/area_data.php');
 
-        DB::table('qs_area')->insert($areas);
+        DB::table('area')->insert($areas);
 
-        Schema::create('qs_coder_log', function(Blueprint $table){
+        Schema::create('coder_log', function(Blueprint $table){
             $table->integer('id', true);
             $table->string('coder_name', 30);
             $table->text('content');
@@ -66,9 +66,9 @@ class InitDatabase extends Migration
 
         $coderLogs = require database_path('migrations/data/coder_log_data.php');;
 
-        DB::table('qs_coder_log')->insert($coderLogs);
+        DB::table('coder_log')->insert($coderLogs);
 
-        Schema::create('qs_config', function(Blueprint $table){
+        Schema::create('config', function(Blueprint $table){
             $table->unsignedInteger('id', true)->comment('配置ID');
             $table->string('name', 30)->default('')->comment('配置名称');
             $table->string('type', 20)->default(0)->comment('配置类型');
@@ -88,9 +88,9 @@ class InitDatabase extends Migration
         $configs = require database_path('migrations/data/config_data.php');
 
 
-        DB::table('qs_config')->insert($configs);
+        DB::table('config')->insert($configs);
 
-        Schema::create('qs_file_pic', function(Blueprint $table){
+        Schema::create('file_pic', function(Blueprint $table){
             $table->bigIncrements('id');
             $table->string('title', 200)->default('');
             $table->string('file', 100)->default('');
@@ -110,7 +110,7 @@ class InitDatabase extends Migration
         });
 
 
-        Schema::create('qs_hooks', function(Blueprint $table){
+        Schema::create('hooks', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('name', 100);
             $table->string('desc', 500);
@@ -123,9 +123,9 @@ class InitDatabase extends Migration
         $hooks = require database_path('migrations/data/hooks_data.php');
 
 
-        DB::table('qs_hooks')->insert($hooks);
+        DB::table('hooks')->insert($hooks);
 
-        Schema::create('qs_js_errlog', function(Blueprint $table){
+        Schema::create('js_errlog', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('browser', 200)->default('');
             $table->string('msg', 500)->default('');
@@ -141,7 +141,7 @@ class InitDatabase extends Migration
         });
 
 
-        Schema::create('qs_menu', function(Blueprint $table){
+        Schema::create('menu', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('title', 50);
             $table->tinyInteger('status');
@@ -158,9 +158,9 @@ class InitDatabase extends Migration
 
         $menus = require database_path('migrations/data/menu_data.php');
 
-        DB::table('qs_menu')->insert($menus);
+        DB::table('menu')->insert($menus);
 
-        Schema::create('qs_node', function(Blueprint $table){
+        Schema::create('node', function(Blueprint $table){
             $table->unsignedSmallInteger('id', true);
             $table->string('name', 50);
             $table->string('title', 50);
@@ -178,9 +178,9 @@ class InitDatabase extends Migration
 
         $nodes = require database_path('migrations/data/node_data.php');
 
-        DB::table('qs_node')->insert($nodes);
+        DB::table('node')->insert($nodes);
 
-        Schema::create('qs_post', function(Blueprint $table){
+        Schema::create('post', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('title', 50)->comment('标题');
             $table->integer('cate_id')->comment('所属分类');
@@ -201,7 +201,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_post_cate', function(Blueprint $table){
+        Schema::create('post_cate', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('name', 50)->comment('分类');
             $table->integer('pid')->comment('上级分类');
@@ -215,7 +215,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_queue', function(Blueprint $table){
+        Schema::create('queue', function(Blueprint $table){
             $table->string('id', 100)->primary();
             $table->string('job', 100);
             $table->string('args', 2000);
@@ -228,7 +228,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_role', function(Blueprint $table){
+        Schema::create('role', function(Blueprint $table){
             $table->unsignedSmallInteger('id', true);
             $table->string('name', 20);
             $table->smallInteger('pid')->default(0);
@@ -238,14 +238,14 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_role_user', function(Blueprint $table){
+        Schema::create('role_user', function(Blueprint $table){
             $table->unsignedMediumInteger('role_id')->nullable()->default(null);
             $table->char('user_id', 32)->nullable()->default(null);
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_schedule', function(Blueprint $table){
+        Schema::create('schedule', function(Blueprint $table){
             $table->string('id', 50)->primary();
             $table->integer('run_time')->default(0);
             $table->string('desc', 200)->default('');
@@ -256,7 +256,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_syslogs', function(Blueprint $table){
+        Schema::create('syslogs', function(Blueprint $table){
             $table->integerIncrements('id');
             $table->string('modulename', 30)->default('');
             $table->string('actionname', 30)->default('');
@@ -269,7 +269,7 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('qs_user', function(Blueprint $table){
+        Schema::create('user', function(Blueprint $table){
             $table->bigIncrements('id');
             $table->string('nick_name', 30);
             $table->integer('salt');
@@ -296,44 +296,18 @@ class InitDatabase extends Migration
             'last_login_time' => 1552356067,
             'last_login_ip' => '10.0.1.1',
         ];
-        DB::table('qs_user')->insert($user);
+        DB::table('user')->insert($user);
 
+        $tablePrefix = DB::getTablePrefix();
         $node_v = <<<SQL
-create view qs_node_v as
-select n3.id, n1.name `module`,n2.name `controller`,n3.name `action`, CONCAT(n1.name, ".", n2.name, ".", n3.name) node, CONCAT(n1.title, ".", n2.title, ".", n3.title) title 
-from qs_node n3
-inner join qs_node n2 on n2.id=n3.pid and n2.status=1 and n2.level=2
-inner join qs_node n1 on n1.id=n2.pid and n1.status=1 and n1.level=1
+create view {$tablePrefix}node_v as
+select n3.id, n1.name "module",n2.name "controller",n3.name "action", CONCAT(n1.name, '.', n2.name, '.', n3.name) node, CONCAT(n1.title, '.', n2.title, '.', n3.title) title 
+from {$tablePrefix}node n3
+inner join {$tablePrefix}node n2 on n2.id=n3.pid and n2.status=1 and n2.level=2
+inner join {$tablePrefix}node n1 on n1.id=n2.pid and n1.status=1 and n1.level=1
 where n3.level=3 and n3.status=1;
 SQL;
         DB::unprepared($node_v);
-
-        $db = env('DB_DATABASE');
-        $create_kill_all_procedure_sql = <<<SQL
-create procedure kill_all()
-BEGIN
-DECLARE done INT DEFAULT FALSE;
-  DECLARE p_id INT;
-  DECLARE cur CURSOR FOR SELECT ID FROM information_schema.processlist WHERE
-id<>CONNECTION_ID() and COMMAND <> 'Sleep' AND user <> 'system user' AND USER <> 'event_scheduler' and DB='{$db}' and info like 'select %';
-  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-  OPEN cur;
-
-  loop_kill:
-  LOOP
-    FETCH cur INTO p_id;
-    IF done THEN
-      LEAVE loop_kill;
-    END IF;
-    kill p_id;
-  END LOOP;
-
-  CLOSE cur;
-END
-SQL;
-        \Illuminate\Support\Facades\DB::unprepared($create_kill_all_procedure_sql);
-
     }
 
     /**
@@ -343,25 +317,26 @@ SQL;
      */
     public function down()
     {
-        Schema::dropIfExists('qs_access');
-        Schema::dropIfExists('qs_addons');
-        Schema::dropIfExists('qs_area');
-        Schema::dropIfExists('qs_coder_log');
-        Schema::dropIfExists('qs_config');
-        Schema::dropIfExists('qs_file_pic');
-        Schema::dropIfExists('qs_hooks');
-        Schema::dropIfExists('qs_js_errlog');
-        Schema::dropIfExists('qs_menu');
-        Schema::dropIfExists('qs_node');
-        Schema::dropIfExists('qs_post');
-        Schema::dropIfExists('qs_post_cate');
-        Schema::dropIfExists('qs_queue');
-        Schema::dropIfExists('qs_role');
-        Schema::dropIfExists('qs_role_user');
-        Schema::dropIfExists('qs_schedule');
-        Schema::dropIfExists('qs_syslogs');
-        Schema::dropIfExists('qs_user');
-        DB::unprepared('drop view qs_node_v');
-        DB::unprepared('drop procedure kill_all');
+        $tablePrefix = DB::getTablePrefix();
+        DB::unprepared('drop view if exists ' . $tablePrefix . 'node_v');
+        
+        Schema::dropIfExists('access');
+        Schema::dropIfExists('addons');
+        Schema::dropIfExists('area');
+        Schema::dropIfExists('coder_log');
+        Schema::dropIfExists('config');
+        Schema::dropIfExists('file_pic');
+        Schema::dropIfExists('hooks');
+        Schema::dropIfExists('js_errlog');
+        Schema::dropIfExists('menu');
+        Schema::dropIfExists('node');
+        Schema::dropIfExists('post');
+        Schema::dropIfExists('post_cate');
+        Schema::dropIfExists('queue');
+        Schema::dropIfExists('role');
+        Schema::dropIfExists('role_user');
+        Schema::dropIfExists('schedule');
+        Schema::dropIfExists('syslogs');
+        Schema::dropIfExists('user');
     }
 }

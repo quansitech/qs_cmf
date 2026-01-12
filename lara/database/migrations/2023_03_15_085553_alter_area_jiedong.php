@@ -26,7 +26,8 @@ class AlterAreaJiedong extends Migration
     public function up()
     {
         //
-        DB::unprepared("UPDATE `qs_area` SET `cname` = '揭东区' WHERE id = 445221;");
+        $tablePrefix = DB::getTablePrefix();
+        DB::unprepared("UPDATE {$tablePrefix}area SET cname = '揭东区' WHERE id = 445221;");
     }
 
     /**
@@ -37,7 +38,8 @@ class AlterAreaJiedong extends Migration
     public function down()
     {
         //
-        DB::unprepared("UPDATE `qs_area` SET `cname` = '揭东县' WHERE id = 445221;");
+        $tablePrefix = DB::getTablePrefix();
+        DB::unprepared("UPDATE {$tablePrefix}area SET cname = '揭东县' WHERE id = 445221;");
     }
 
     public function afterCmmUp()

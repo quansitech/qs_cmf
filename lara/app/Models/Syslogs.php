@@ -5,7 +5,7 @@ use \Illuminate\Database\Eloquent\Model;
 
 class Syslogs extends Model{
 
-    protected $table = 'qs_syslogs';
+    protected $table = 'syslogs';
     public $timestamps = false;
 
     

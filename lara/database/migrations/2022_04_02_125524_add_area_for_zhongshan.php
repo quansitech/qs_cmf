@@ -170,7 +170,7 @@ class AddAreaForZhongshan extends Migration
                 'level' => '3'
             ],
         ];
-        \Illuminate\Support\Facades\DB::table('qs_area')->insert($area_data);
+        \Illuminate\Support\Facades\DB::table('area')->insert($area_data);
     }
 
     /**
@@ -180,7 +180,7 @@ class AddAreaForZhongshan extends Migration
      */
     public function down()
     {
-        \Illuminate\Support\Facades\DB::table('qs_area')->where('upid', '=', 442000)->delete();
+        \Illuminate\Support\Facades\DB::table('area')->where('upid', '=', 442000)->delete();
     }
 
     public function afterCmmUp()

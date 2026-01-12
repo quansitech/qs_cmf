@@ -24,25 +24,19 @@ class AddHashidToQsFilePic extends Migration
      */
     public function up()
     {
-        Schema::table('qs_file_pic', function (Blueprint $table) {
-            $columns = \Illuminate\Support\Facades\DB::select("show columns from qs_file_pic");
+        Schema::table('file_pic', function (Blueprint $table) {
+            // 使用 Laravel 的 Schema 方法来检查列是否存在，兼容 MySQL 和 PostgreSQL
+            $hasHashId = Schema::hasColumn('file_pic', 'hash_id');
+            $hasVendorType = Schema::hasColumn('file_pic', 'vendor_type');
 
-            $count = collect($columns)->filter(function($item){
-                return $item->Field == 'hash_id';
-            })->count();
-
-            $vendor_type_count = collect($columns)->filter(function($item){
-                return $item->Field == 'vendor_type';
-            })->count();
-
-            if(!$vendor_type_count){
+            if(!$hasVendorType){
                 $table->string("vendor_type", 50)->default("")
                     ->comment("提供图片存储服务的媒介，如：aliyun, qiniu, 空的话就是服务器存储")
                     ->after("cate");
             }
 
 
-            if(!$count){
+            if(!$hasHashId){
                 $table->string('hash_id', 200)->default("")
                     ->comment("文件哈希值，除了空串，此值应该唯一")
                     ->after("cate");
@@ -59,27 +53,18 @@ class AddHashidToQsFilePic extends Migration
      */
     public function down()
     {
-        Schema::table('qs_file_pic', function (Blueprint $table) {
-            $columns = \Illuminate\Support\Facades\DB::select("show columns from qs_file_pic");
+        Schema::table('file_pic', function (Blueprint $table) {
+            // 使用 Laravel 的 Schema 方法来检查列是否存在，兼容 MySQL 和 PostgreSQL
+            $hasHashId = Schema::hasColumn('file_pic', 'hash_id');
+            $hasVendorType = Schema::hasColumn('file_pic', 'vendor_type');
 
-            $count = collect($columns)->filter(function($item){
-                return $item->Field == 'hash_id';
-            })->count();
-
-            $vendor_type_count = collect($columns)->filter(function($item){
-                return $item->Field == 'vendor_type';
-            })->count();
-
-            if($vendor_type_count){
+            if($hasVendorType){
                 $table->dropColumn("vendor_type");
             }
 
-            if($count){
+            if($hasHashId){
                 $table->dropIndex('idx_hashId');
-
                 $table->dropColumn("hash_id");
-
-
             }
         });
     }

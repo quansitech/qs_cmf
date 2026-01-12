@@ -25,7 +25,7 @@ class ChangeNameOfQsConfigLonger extends Migration
      */
     public function up()
     {
-        Schema::table('qs_config', function (Blueprint $table) {
+        Schema::table('config', function (Blueprint $table) {
             $table->string('name', 50)->comment('配置名称')->change();
         });
     }
@@ -37,7 +37,7 @@ class ChangeNameOfQsConfigLonger extends Migration
      */
     public function down()
     {
-        Schema::table('qs_config', function (Blueprint $table) {
+        Schema::table('config', function (Blueprint $table) {
             $table->string('name', 30)->comment('配置名称')->change();
         });
     }

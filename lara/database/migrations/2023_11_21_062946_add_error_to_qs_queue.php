@@ -24,7 +24,7 @@ class AddErrorToQsQueue extends Migration
 	 */
 	public function up()
 	{
-		Schema::table('qs_queue', function (Blueprint $table) {
+		Schema::table('queue', function (Blueprint $table) {
 			$table->string('error', 500)->default('')->comment('队列错误信息');
 		});
 	}
@@ -36,7 +36,7 @@ class AddErrorToQsQueue extends Migration
 	 */
 	public function down()
 	{
-		Schema::table('qs_queue', function (Blueprint $table) {
+		Schema::table('queue', function (Blueprint $table) {
 			$table->dropColumn('error');
 		});
 	}

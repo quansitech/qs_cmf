@@ -5,7 +5,7 @@ use \Illuminate\Database\Eloquent\Model;
 
 class Node extends Model{
 
-    protected $table = 'qs_node';
+    protected $table = 'node';
     public $timestamps = false;
     
 }

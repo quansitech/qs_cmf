@@ -24,7 +24,7 @@ class AlterFilePicAddMimeType extends Migration
      */
     public function up()
     {
-        Schema::table('qs_file_pic', function (Blueprint $table) {
+        Schema::table('file_pic', function (Blueprint $table) {
             //
             $table->string("mime_type", 200)->default("")->after("cate");
         });
@@ -37,7 +37,7 @@ class AlterFilePicAddMimeType extends Migration
      */
     public function down()
     {
-        Schema::table('qs_file_pic', function (Blueprint $table) {
+        Schema::table('file_pic', function (Blueprint $table) {
             //
             $table->dropColumn("mime_type");
         });

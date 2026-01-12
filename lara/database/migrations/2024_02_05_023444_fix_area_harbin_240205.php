@@ -30,16 +30,18 @@ class FixAreaHarbin240205 extends Migration
     }
 
     protected function clear(){
+        $tablePrefix = \Illuminate\Support\Facades\DB::getTablePrefix();
         $sql = <<<SQL
-DELETE FROM qs_area where upid=230100;
+DELETE FROM {$tablePrefix}area where upid=230100;
 SQL;
 
         \Illuminate\Support\Facades\DB::unprepared($sql);
     }
 
     protected function fixNew(){
+        $tablePrefix = \Illuminate\Support\Facades\DB::getTablePrefix();
         $sql = <<<SQL
-INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`,  `ename`,  `pinyin`, `level`) VALUES 
+INSERT INTO {$tablePrefix}area (id, cname, cname1, upid, ename, pinyin, level) VALUES 
 ('230102', '道里区', '', '230100', '', '', '3'), 
 ('230103', '南岗区', '', '230100', '', '', '3'), 
 ('230104', '道外区', '', '230100', '', '', '3'), 
@@ -64,8 +66,9 @@ SQL;
     }
 
     protected function fixOld(){
+        $tablePrefix = \Illuminate\Support\Facades\DB::getTablePrefix();
         $sql = <<<SQL
-INSERT INTO `qs_area` (`id`, `cname`, `cname1`, `upid`, `ename`, `pinyin`, `level`) VALUES
+INSERT INTO {$tablePrefix}area (id, cname, cname1, upid, ename, pinyin, level) VALUES
 ('230102', '道里区', '', '230100', '', '', '3'),
 ('230103', '南岗区', '', '230100', '', '', '3'),
 ('230104', '道外区', '', '230100', '', '', '3'),

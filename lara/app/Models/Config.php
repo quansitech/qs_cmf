@@ -6,7 +6,7 @@ use Gy_Library\DBCont;
 
 class Config extends Model{
 
-    protected $table = 'qs_config';
+    protected $table = 'config';
 
     public $timestamps = false;
 
