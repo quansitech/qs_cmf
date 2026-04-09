@@ -69,94 +69,10 @@ npm run build:backend
 php index.php Qscmf/UpgradeFix/v300FixSchedule/queue/default maintenance
 ```
 
-## Elasticsearch
-
-框架为集成Elasticsearch提供了方便的方法, 假设使用者已经具备elasticsearch使用的相关知识。
-
-1. 添加 "elasticsearch/elasticsearch": "~6.0" 到composer.json文件，执行composer update 命令安装扩展包。
-
-2. 安装elasticsearch, 具体安装方法自行查找，推荐使用laradock作为开发环境，直接集成了elasticsearch的docker安装环境。
-
-3. 安装ik插件，安装查找elasticsearch官方文档。
-
-4. 在.env下添加 ELASTICSEARCH_HOSTS值，设置为elasticsearch的启动ip和端口，如laradock的默认设置为10.0.75.1:9200，需要配置一组地址，可用“,”隔开。
-
-5. 设置需要使用elastic的model和字段
-   
-    以ChapterModel添加title和summary到全文索引为例
-   
-   ```php
-   // ChapterModel类必须继承接口
-   class ChapterModel  extends \Gy_Library\GyListModel implements \Qscmf\Lib\Elasticsearch\ElasticsearchModelContract{
-   
-      // ElasticsearchHelper已经实现了一些帮助函数
-      use \Qscmf\Lib\Elasticsearch\ElasticsearchHelper;
-   
-      // 初始化全文索引时需要指定该Model要添加的索引记录
-      public function elasticsearchIndexList()
-      {
-           // 如这里chapter表与course表关联，只有当course及chapter状态都为可用，且非描述类chapter(pid = 0为描述类chapter)才会添加全文索引
-          return $this->alias('ch')->join('__COURSE__ c ON c.id=ch.course_id and c.status = ' . DBCont::NORMAL_STATUS)->where(['ch.status' => DBCont::NORMAL_STATUS, 'ch.pid' => ['neq', 0]])->field('ch.*')->select();
-      }
-   
-      // chapter进行增删查改时同时会更新索引内容，该方法是指定什么状态的记录才会进行索引更改
-      // 返回false为无需索引的记录，true则会进行索引更新
-      public function isElasticsearchIndex($ent){
-          if($ent['status'] != DBCont::NORMAL_STATUS || $ent['pid'] == 0){
-              return false;
-          }
-   
-          $course_ent = D('Course')->find($ent['course_id']);
-          if($course_ent['status'] == DBCont::NORMAL_STATUS){
-              return true;
-          }
-          else{
-              return false;
-          }
-      }
-   
-      // 程序会自动生成索引的配置参数，此处是定义生成参数的规则
-      // 以:开头的字母表示该处会自动替换成相应字段的实际值
-      // {}表示里面的字符会与替换后的:字段值进行连接，如:id{_chapter}, id实际值为 12，则该处会替换成 12_chapter
-      // | 表示可以将字段的实际值传递给指定的函数进行处理，转换成想要的值。如，description字段是富文本内容，我们将html标签进行索引，可以在model方法里自定义一个叫deleteHtmlTag的方法进行处理，当然也可以定义为全局函数，程序会先查找全局是否存在该函数，如果没有再去对象里查找有无该方法
-     // index和type的值在建立初始化全文索引时指定，具体查看全文索引初始化说明
-      public function elasticsearchAddDataParams()
-      {
-          return [
-              'index' => 'global_search',
-              'type' => 'content',
-              'id' => ':id{_chapter}',
-              'body' => [
-                  'title' => ':title',
-                  'desc' => ':description|html_entity_decode'
-              ]
-          ];
-      }
-   }
-   ```
-
-6. 初始化全文索引
-   
-    打开Home/Controller/ElasticController.class.php文件, 修改index方法里的$params变量，根据你的需要来设置
-
-7. 执行索引初始化，程序会自动检索数据库全部数据表，为需要添加索引的表和字段进行索引添加操作。
-   
-   ```
-   //进入app目录，下面有个makeIndex.php文件
-   php makeIndex.php
-   ```
-
-8. 可通过在config文件设置 "ELASTIC_ALLOW_EXCEPTION" 来禁止抛出异常，即使搜索引擎关闭，也不会影响原来的业务操作。
-
-9. 更新操作的索引重建仅会在索引字段发生变化时才会触发。
-
 ## Controller
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Controller.md)
 
-## Model
-
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Model.md)
 
 ## 数据库迁移
 
@@ -293,21 +209,6 @@ php artisan migrate:reset --no-cmd
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/BackendJs.md)
 
-## ListBuilder
-
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/ListBuilder.md)
-
-## FormBuilder
-
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/FormBuilder.md)
-
-## CompareBuilder
-
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/CompareBuilder.md)
-
-## Builder
-
-[传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Builder.md)
 
 ## Cache
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Cache.md)
@@ -340,110 +241,10 @@ npm install
 npm run build:backend
 ```
 
-## 前台js错误收集
-
-#### 用法
-
-在前端head中引入log.js后调用frontLog方法
-
-```php
-    <script src="__PUBLIC__/libs/log.js"></script>
-    <script>
-      frontLog({
-        url:'/api/jsLog/index'
-      });
-    </script>
-```
-
 ## 权限功能
 
 [传送门](https://github.com/quansitech/qs_cmf/blob/master/docs/Auth.md)
 
-## 微信登录
-
-为解决第三方平台网站应用的PC扫码后openid不可操作问题，统一对PC端微信扫码以及微信端登录进行封装。
-
-* 从[微信公众平台](https://mp.weixin.qq.com/)中获取公众号的app_id和app_secret，并进行相关配置，放入.env文件
-  
-  ```dotenv
-  # 微信公众号
-  WX_APPID=
-  WX_APPSECRET=
-  ```
-
-* PC扫码页面，在需要显示二维码的地方加入iframe
-  
-  ```html
-  <iframe src="{:U('qscmf/weixinLogin/scan')}"></iframe>
-  ```
-  
-  PS:
-1. 构造iframe的src时，可通过goto_url参数来指定PC端扫码后跳转的地址，默认为首页
-
-2. 构造iframe的src时，可通过mobile_goto_url参数来指定微信端扫码后跳转的地址，默认为首页
-* 微信端获取登录信息
-  
-  ```php
-    $wx_info=Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile();
-  ```
-
-* 运行/扫码后可用``` session('wx_info') ```获取微信登录信息
-
-* 若'wx_info'的session值已设置，可通过设置config.php中的'WX_INFO_SESSION_KEY'来改变
-
-### 场景模拟
-
-一、 PC端实现扫码登录/注册
-
-* 扫码页面（扫码后需要跳转到'/home/index/wxLogin'）
-  
-  ```html
-  <!-- 其它代码 -->
-    <!-- 此处是放入二维码的位置 -->
-    <iframe id="scan" src="{:U('qscmf/weixinLogin/scan',['goto_url'=>urlencode('/home/index/wxLogin')])}"></iframe>
-  <!-- 其它代码 -->
-  ```
-
-* 登录/注册业务处理（对应上一步的"/home/index/wxLogin"）
-  
-  ```php
-  $wx_info=json_decode(session('wx_info'),true);
-  // 若用户表为member表
-  $member=D('Member')->where(['openid'=>$wx_info['id']])->find();
-  if ($member){
-    //登录
-    session('mid',$member['id']);
-  }else{
-    //注册
-    $ent=[
-        'openid'=>$wx_info['id'],
-        'nickname'=>$wx_info['nickname']
-    ];
-    $r=D('Member')->createAdd($ent);
-    if ($r===false){
-        E(D('Member')->getError());    
-    }
-    session('mid',$r);
-  }
-  redirect(U('home/user/index'));
-  ```
-
-二、 微信端实现授权登录/注册
-
-1. 授权页面 （授权后需要跳转到'/home/index/wxLogin'）
-   
-   ```php
-    $wx_info=Qscmf\Lib\WeixinLogin::getInstance()->getInfoForMobile();
-    if ($wx_info){
-        redirect(U('/home/index/wxLogin'));    
-    }   
-   ```
-
-2. 登录/注册业务处理（对应上一步的"/home/index/wxLogin"）
-   
-   ```php
-   // 与PC端扫码后登录/注册业务处理一致
-   ```
 
 ## 全局函数
 
@@ -567,10 +368,6 @@ env增加了TRACE_ERROR配置，如果希望在debug关闭的模式下能收集�
 ### 静态资源配置CDN
 
 [传送门](./doc/InjectCdn.md)
-
-## 文档
-
-由于工作量大，文档会逐步补全。
 
 ## license
 
