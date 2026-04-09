@@ -29,7 +29,7 @@ class AuthCheckWidget extends Controller{
                 foreach($methods as $method){
                     $method_name = $method->getName();
                     if($method->isPublic() && $method->isUserDefined() && !in_array($method_name, $this->_controller_public_methods)){
-                        if(!D('Node')->isExistsNode($module, $controller_name, $method_name)){
+                        if(!\App\Models\Node::isExistsNode($module, $controller_name, $method_name)){
                             flushWebContent($method_name . '<br />');
                         }
                     }

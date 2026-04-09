@@ -1,6 +1,7 @@
 <?php
 
 namespace Common\Lib;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class MsgTemplateParse{
     
@@ -31,31 +32,31 @@ class MsgTemplateParse{
     
     static public function parseChildName($args){
         $cid = $args['cid'];
-        $ent = D('Children')->getOne($cid);
+        $ent = (array)Capsule::table('children')->where('id', $cid)->first();
         return $ent['name'];
     }
-    
+
     static public function parseChildPrefix($args){
         $cid = $args['cid'];
-        $ent = D('Children')->getOne($cid);
+        $ent = (array)Capsule::table('children')->where('id', $cid)->first();
         return $ent['gender'] == 'female' ? '妹妹' : '弟弟';
     }
     
     static public function parseVolunteerName($args){
         $vid = $args['vid'];
-        $ent = D('Volunteer')->getOne($vid);
+        $ent = (array)Capsule::table('volunteer')->where('id', $vid)->first();
         return $ent['name'];
     }
-    
+
     static public function parseVolunteerPrefix($args){
         $vid = $args['vid'];
-        $ent = D('Volunteer')->getOne($vid);
+        $ent = (array)Capsule::table('volunteer')->where('id', $vid)->first();
         return $ent['gender'] == 'female' ? '姐姐' : '哥哥';
     }
     
     static public function parseSendLetterTime($args){
         $letter_id = $args['letter_id'];
-        $ent = D('Letter')->getOne($letter_id);
+        $ent = (array)Capsule::table('letter')->where('id', $letter_id)->first();
         return date('Y-m-d H:i:s', $ent['create_date']);
     }
 }

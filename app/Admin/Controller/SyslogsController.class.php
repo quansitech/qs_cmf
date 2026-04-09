@@ -1,24 +1,33 @@
 <?php
 namespace Admin\Controller;
 use Gy_Library\GyListController;
-use Qscmf\Builder\ListSearchType\DateRange\DateRange;
-use Qscmf\Builder\ListSearchType\Text\Text;
+use App\Models\Syslogs;
 
 class SyslogsController extends GyListController{
 
-	private function _filter(&$map){
+	private function _filter($query){
 		$get_data = I('get.');
-		$map = array_merge($map, Text::parse('message', 'message', $get_data));
-		$map = array_merge($map, DateRange::parse('create_time', 'create_time', $get_data));
-		$map = array_merge($map, Text::parse('userid', 'userid', $get_data,'exact'));
-		$map = array_merge($map, Text::parse('opname', 'opname', $get_data,'exact'));
+		if(isset($get_data['message']) && !qsEmpty($get_data['message'])){
+			$query->where('message', 'like', '%' . $get_data['message'] . '%');
+		}
+		if(isset($get_data['create_time'])){
+			$date_range = explode('-', $get_data['create_time']);
+			$start_time = strtotime(trim($date_range[0]));
+			$end_time = strtotime(trim($date_range[1]) . '+1 day') - 1;
+			$query->whereBetween('create_time', [$start_time, $end_time]);
+		}
+		if(isset($get_data['userid']) && !qsEmpty($get_data['userid'])){
+			$query->where('userid', $get_data['userid']);
+		}
+		if(isset($get_data['opname']) && !qsEmpty($get_data['opname'])){
+			$query->where('opname', $get_data['opname']);
+		}
 	}
 
     public function index(){
-	    $map = [];
-	    $this->_filter($map);
-        $syslog_model = D('Syslogs');
-        $count = $syslog_model->getListForCount($map);
+        $query = Syslogs::query();
+	    $this->_filter($query);
+        $count = (clone $query)->count();
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
             $page = new \Gy_Library\GyPage($count);
@@ -26,12 +35,16 @@ class SyslogsController extends GyListController{
         else{
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
-        
-        $data_list = $syslog_model->getListForPage($map, $page->nowPage, $page->listRows, 'create_time desc');
+
+        $data_list = $query->orderBy('create_time', 'desc')
+            ->offset(($page->nowPage - 1) * $page->listRows)
+            ->limit($page->listRows)
+            ->get()
+            ->toArray();
 
         // 使用Builder快速建立列表页面。
         $builder = new \Qscmf\Builder\ListBuilder();
-        
+
         $builder = $builder->setMetaTitle('系统日志')  // 设置页面标题
         ->setNIDByNode()
         ->addSearchItem('message', 'text', '消息')
@@ -50,42 +63,3 @@ class SyslogsController extends GyListController{
         ->build();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

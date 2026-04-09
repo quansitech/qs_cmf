@@ -10,7 +10,8 @@ class ReactBuildTestController extends GyListController
 
     public function index(){
 
-        $status_list = collect(DBCont::getApplicatStatusList())->map(Fn($name,$key)=>['value'=>$key,'label'=>$name])->values()->all();
+        $list = DBCont::getApplicatStatusList();
+        $status_list = $list ? collect($list)->map(Fn($name,$key)=>['value'=>$key,'label'=>$name])->values()->all() : [];
         $this->assign("status_list", $status_list);
         $this->display();
     }

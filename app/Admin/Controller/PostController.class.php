@@ -3,6 +3,8 @@ namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
 use Qscmf\Lib\Cms\ContentHelperTrait;
+use App\Models\Post;
+use App\Models\PostCate;
 
 //自动生成代码
 class PostController extends GyListController{
@@ -31,8 +33,7 @@ class PostController extends GyListController{
         }        
         if(isset($get_data['key']) && $get_data['word']){
             $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $model = D('Post');
-                $count = $model->getListForCount($map);
+        }        $count = Post::getListForCount($map);
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
             $page = new \Gy_Library\GyPage($count);
@@ -41,13 +42,13 @@ class PostController extends GyListController{
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
         
-        $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'sort asc');
+        $data_list = Post::getListForPage($map, $page->nowPage, $page->listRows, 'sort asc');
         
 
         $builder = new \Qscmf\Builder\ListBuilder();
         
         $builder = $builder->setMetaTitle('内容管理')        
-        ->addSearchItem('cate_id', 'select', '所有分类', D("PostCate")->getParentOptions("id","name"))->addSearchItem('status', 'select', '所有状态', DBCont::getStatusList())        ->addSearchItem('', 'select_text', '搜索内容', array('title'=>'标题'))                
+        ->addSearchItem('cate_id', 'select', '所有分类', PostCate::getParentOptions("id","name"))->addSearchItem('status', 'select', '所有状态', DBCont::getStatusList())        ->addSearchItem('', 'select_text', '搜索内容', array('title'=>'标题'))                
         
         ->addTopButton('addnew')
         ->addTopButton('forbid')
@@ -56,7 +57,7 @@ class PostController extends GyListController{
         $builder->addTopButton('save', array('title' => '保存排序'));        
         $builder->setNID(969)
         ->addTableColumn('title', '标题', '', '', false)      
-        ->addTableColumn('cate_id', '所属分类', 'fun', 'D("PostCate")->getOneField(__data_id__,"name")', false)->addTableColumn('sort', '排序', '', '', true)->addTableColumn('publish_date', '发布时间', 'fun', 'date("Y-m-d",__data_id__)', false)->addTableColumn('status', '状态', 'status', '', false)        ->addTableColumn('right_button', '操作', 'btn')
+        ->addTableColumn('cate_id', '所属分类', 'fun', 'PostCate::getOneField(__data_id__,"name")', false)->addTableColumn('sort', '排序', '', '', true)->addTableColumn('publish_date', '发布时间', 'fun', 'date("Y-m-d",__data_id__)', false)->addTableColumn('status', '状态', 'status', '', false)        ->addTableColumn('right_button', '操作', 'btn')
         ->setTableDataList($data_list)     
         ->setTableDataPage($page->show())
         ->addRightButton('edit')         
@@ -69,7 +70,7 @@ class PostController extends GyListController{
         if(IS_POST){
             $data = I('post.');
             foreach($data['id'] as $k=>$v){
-                $save_data['sort'] = $data['sort'][$k];                D('Post')->where('id=' . $v)->save($save_data);
+                $save_data['sort'] = $data['sort'][$k];                Post::where('id', $v)->update($save_data);
             }
             $this->success('保存成功', U('index'));
         }
@@ -80,10 +81,9 @@ class PostController extends GyListController{
             parent::autoCheckToken();
             $data = I('post.');
 
-            $model = D('Post');
-            $r = $model->createAdd($data);
+            $r = Post::createAdd($data);
             if($r === false){
-                $this->error($model->getError());
+                $this->error('新增失败');
             }
             else{
                 sysLogs('新增内容id:' . $r);
@@ -108,23 +108,22 @@ class PostController extends GyListController{
                     ->setPostUrl(U('add'))    
                     ->addFormItem('title', 'text', '标题','', '')
                     ->addFormItem('english_name', 'text', '英文标题','', '') 
-                    ->addFormItem('cate_id', 'select', '所属分类','', D("PostCate")->getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('publish_date', 'date', '发布时间','', '')->addFormItem('author', 'text', '作者','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '正文内容','', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片','', '')->addFormItem('attach', 'files', '附件','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())
+                    ->addFormItem('cate_id', 'select', '所属分类','', PostCate::getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('publish_date', 'date', '发布时间','', '')->addFormItem('author', 'text', '作者','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '正文内容','', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片','', '')->addFormItem('attach', 'files', '附件','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())
                     ->addFormItem('up','radio','置顶','',  DBCont::getBoolStatusList())
                     ->build();
         }
     }
-    
+
     public function edit($id){
         if (IS_POST) {
             parent::autoCheckToken();
             $m_id = I('post.id');
             $data = I('post.');
-            $model = D('Post');
             if(!$m_id){
                 E('缺少内容ID');
             }
             
-            $ent = $model->getOne($m_id);
+            $ent = Post::getOne($m_id);
             if(!$ent){
                 E('不存在内容');
             }
@@ -138,8 +137,8 @@ class PostController extends GyListController{
             $ent['english_name'] = $data['english_name'];
             $ent['publish_date'] = $data['publish_date'];
             $ent['author'] = $data['author'];$ent['url'] = $data['url'];$ent['content'] = $data['content'];$ent['video'] = $data['video'];$ent['images'] = $data['images'];$ent['attach'] = $data['attach'];$ent['status'] = $data['status'];
-            if($model->createSave($ent) === false){
-                $this->error($model->getError());
+            if(Post::createSave($ent) === false){
+                $this->error('修改失败');
             }
             else{
                 sysLogs('修改内容id:' . $m_id);
@@ -147,7 +146,7 @@ class PostController extends GyListController{
             }
         } else {
 
-            $info = D('Post')->getOne($id);
+            $info = Post::getOne($id);
 
 
             $builder = new \Qscmf\Builder\FormBuilder();
@@ -157,10 +156,10 @@ class PostController extends GyListController{
                     ->addFormItem('id', 'hidden', 'ID')
                     ->addFormItem('title', 'text', '标题', '', '')
                     ->addFormItem('english_name', 'text', '英文标题','', '') 
-                    ->addFormItem('cate_id', 'select', '所属分类', '', D("PostCate")->getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('publish_date', 'date', '发布时间', '', '')->addFormItem('author', 'text', '作者', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '正文内容', '', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片', '', '')->addFormItem('attach', 'files', '附件', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    
+                    ->addFormItem('cate_id', 'select', '所属分类', '', PostCate::getParentOptions("id","name"))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('publish_date', 'date', '发布时间', '', '')->addFormItem('author', 'text', '作者', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '正文内容', '', '')->addFormItem('video', 'text', '视频','添加优酷视频分享代码，请使用通用代码', '')->addFormItem('images', 'pictures', '图片', '', '')->addFormItem('attach', 'files', '附件', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    
                     ->addFormItem('up','radio','置顶','',  DBCont::getBoolStatusList())
                     ->setFormData($info)
-                    ->setFormItemFilter($this->formItemFilter($this->content_option))
+                    // ->setFormItemFilter($this->formItemFilter($this->content_option))  // v15: Eloquent model 不兼容 ContentHelperTrait 的 Think\Model 检查
                     ->build();
         }
     }
@@ -170,13 +169,13 @@ class PostController extends GyListController{
         if(!$ids){
             $this->error('请选择要禁用的数据');
         }
-        $r = parent::_forbid($ids);
+        $r = Post::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::FORBIDDEN_STATUS]);
         if($r !== false){
             sysLogs('内容id: ' . $ids . ' 禁用');
             $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
         }
         else{
-            $this->error($this->_getError());
+            $this->error('禁用失败');
         }
     }
     
@@ -185,15 +184,15 @@ class PostController extends GyListController{
         if(!$ids){
             $this->error('请选择要启用的数据');
         }
-        $r = parent::_resume($ids);
+        $r = Post::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::NORMAL_STATUS]);
         if($r !== false){
             sysLogs('内容id: ' . $ids . ' 启用');
             $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
         }
         else{
-            $this->error($this->_getError());
+            $this->error('启用失败');
         }
-        
+
     }
     
     public function delete(){
@@ -201,9 +200,9 @@ class PostController extends GyListController{
         if(!$ids){
             $this->error('请选择要删除的数据');
         }
-        $r = parent::_del($ids);
+        $r = Post::destroy(is_array($ids) ? $ids : explode(',', $ids));
         if($r === false){
-            $this->error($this->_getError());
+            $this->error('删除失败');
         }
         else{
             sysLogs('内容id: ' . $ids . ' 删除');

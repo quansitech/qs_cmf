@@ -4,405 +4,527 @@ namespace Admin\Controller;
 
 use Gy_Library\DBCont;
 use Gy_Library\GyListController;
-use Qscmf\Builder\FormBuilder;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\RoleUser;
+use AntdAdmin\Component\Tabs;
+use AntdAdmin\Component\Table;
+use AntdAdmin\Component\Table\Pagination;
+use AntdAdmin\Component\Modal\Modal;
+use AntdAdmin\Component\Form;
+use AntdAdmin\Component\ColumnType\RuleType\Required;
+use AntdAdmin\Component\ColumnType\RuleType\Pattern;
+use AntdAdmin\Component\ColumnType\RuleType\Min;
+use AntdAdmin\Component\ColumnType\RuleType\Max;
+use AntdAdmin\Component\ColumnType\RuleType\Type;
 
 class UserController extends GyListController
 {
 
-    public function test()
+    public function index()
     {
-        D('TeamMember')->isMember(136, 2);
-    }
+        // 获取搜索参数
+        $get_data = I("get.");
 
-    public function index($status = DBCont::NORMAL_STATUS)
-    {
-        // 搜索
-        $keyword = I('keyword', '', 'string');
-        $condition = array('like', '%' . $keyword . '%');
-        $map['id|nick_name|email|telephone'] = array(
-            $condition,
-            $condition,
-            $condition,
-            $condition,
-            '_multi' => true
-        );
-
-        $map['status'] = $status;
-        $map['user_type'] = 'system';
-
-        $user_model = D('User');
-        $count = $user_model->getListForCount($map);
-        $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
-        if ($per_page === false) {
-            $page = new \Gy_Library\GyPage($count);
-        } else {
-            $page = new \Gy_Library\GyPage($count, $per_page);
-        }
-
-        $data_list = $user_model->getListForPage($map, $page->nowPage, $page->listRows, 'register_date desc');
-        foreach ($data_list as &$data) {
-            $role_ids = D('RoleUser')->where('user_id=' . $data['id'])->getField('role_id', true);
-            if ($role_ids) {
-                $role_map['id'] = array('in', $role_ids);
-                $role_map['status'] = DBCont::NORMAL_STATUS;
-                $data['role'] = D('Role')->where($role_map)->getField('name', true);
-                $data['role'] = implode(',', (array)$data['role']);
-            }
-
-            $data['change_password_modal'] = $this->buildPasswordModal($data['id']);
-//            dd($data['change_password_modal']);
-        }
-
-
-        // 设置Tab导航数据列表
+        // Tab 导航 - 直接渲染每个 tab 的内容
         $user_status_list = DBCont::getUserStatusList();
+        $tabs = new Tabs();
+
         foreach ($user_status_list as $key => $val) {
-            $tab_list[$key]['title'] = $val;
-            $tab_list[$key]['href'] = U('index', array('status' => $key));
+            // 为每个状态创建一个 Table
+            $table = $this->createUserListTable($key, $get_data);
+            $tabs->addTab('tab_' . $key, $val, $table);
         }
 
-        // 使用Builder快速建立列表页面。
-        $builder = new \Qscmf\Builder\ListBuilder();
-
-        $builder = $builder->setMetaTitle('账号列表')  // 设置页面标题
-        ->addTopButton('addnew')   // 添加新增按钮
-        ->addSearchItem('keyword', 'text', 'id/昵称/email/手机号');
-
-        switch ($status) {
-            case DBCont::NORMAL_STATUS;
-                $builder = $builder->addTopButton('forbid');   // 添加禁用按钮
-                break;
-            case DBCont::FORBIDDEN_STATUS;
-                $builder = $builder->addTopButton('resume');   // 添加启用按钮
-                break;
-            default:
-                break;
-        }
-
-        $builder->addTopButton('delete')   // 添加删除按钮
-        ->setNID(5)
-            ->setTabNav($tab_list, $status)  // 设置页面Tab导航
-            ->addTableColumn('id', 'ID')
-            ->addTableColumn('nick_name', '用户名')
-            ->addTableColumn('email', '邮箱')
-            ->addTableColumn('telephone', '手机')
-            ->addTableColumn('role', '用户组')
-            ->addTableColumn('right_button', '操作', 'btn')
-            ->setTableDataList($data_list)     // 数据列表
-            ->setTableDataPage($page->show())  // 数据列表分页
-            ->addRightButton('edit')           // 添加编辑按钮
-            ->addRightButton('modal', ['title' => '修改密码'], '', '', 'change_password_modal')
-//        ->addRightButton('self', array('title' => '修改密码','href'=>'#', 'data-id' => '__data_id__', 'class' => 'label label-default repwd-btn', 'data-toggle' => 'modal', 'data-target' => '#changepassword'))
-            ->addRightButton('self', array('title' => '激活', 'href' => U('active', array('ids' => '__data_id__')), 'class' => 'label label-primary', '{key}' => 'status', '{condition}' => 'eq', '{value}' => '2'))
-            ->addRightButton('forbid')         // 添加禁用/启用按钮
-            ->addRightButton('delete')         // 添加删除按钮
-            ->setExtraHtml($this->fetch('User/repwd'))
-            ->build();
+        $tabs->setDefaultActiveKey('tab_' . array_key_first($user_status_list));
+        $this->setActiveNid(getNid(MODULE_NAME, CONTROLLER_NAME, 'Index'));
+        $tabs->setMetaTitle('账号列表')
+             ->render();
     }
 
+    /**
+     * 创建用户列表 Table 组件
+     * @param int $status 用户状态
+     * @param array $get_data 搜索参数
+     * @return Table
+     */
+    private function createUserListTable($status, array $get_data = [])
+    {
+        $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
 
+        // 数据查询
+        $query = User::where('status', $status);
+
+        // 应用搜索条件
+        $this->applySearchConditions($query, $get_data);
+
+        $users = $query->orderBy('register_date', 'desc')->paginate($per_page);
+
+        $page = new Pagination($users->currentPage(), $users->perPage(), $users->total());
+
+        $role_options = $this->getRoleOptions();
+
+        // 批量获取角色信息，避免 N+1 查询
+        $user_ids = collect($users->items())->pluck('id');
+        $role_id_map = [];
+        if (!$user_ids->isEmpty()) {
+            $role_id_map = RoleUser::whereIn('user_id', $user_ids)
+                ->pluck('role_id', 'user_id')
+                ->toArray();
+        }
+
+        // 数据处理 - 使用角色ID（select组件通过valueEnum自动显示名称）
+        $data_list = collect($users->items())->map(function($item) use ($role_id_map) {
+            $data = $item->toArray();
+            $data['role'] = $role_id_map[$data['id']] ?? '';
+            return $data;
+        })->all();
+
+        $table = new Table();
+        $table->setMetaTitle('账号列表')
+            ->setSearch(true)
+            ->actions(function(Table\ActionsContainer $actions){
+                $actions->button('添加')->modal(
+                    (new Modal())->setUrl(U('add'))->setWidth(1080)->setTitle('新增用户')
+                );
+            })
+            ->columns(function (Table\ColumnsContainer $container) use ($role_options){
+                $container->text('id', 'ID');
+                $container->text('nick_name', '用户名');
+                $container->text('email', '邮箱');
+                $container->text('telephone', '手机');
+                $container->select('role', '用户组')->setValueEnum($role_options);
+                $container->action('', '操作')->actions(function(Table\ColumnType\ActionsContainer $actions){
+                    $actions->link('编辑')
+                        ->modal((new Modal())->setUrl(U('edit', ['id'=>'__id__']))->setWidth(1080)->setTitle('编辑用户'));
+                    $actions->link('修改密码')
+                        ->modal((new Modal())->setUrl(U('repwd', ['id'=>'__id__']))->setWidth(800)->setTitle('修改密码'));
+                });
+            })
+            ->setDataSource($data_list)
+            ->setPagination($page);
+
+        return $table;
+    }
+
+    /**
+     * 应用搜索查询条件
+     * @param \Illuminate\Database\Eloquent\Builder $query 查询构建器
+     * @param array $get_data 前端 GET 参数
+     */
+    protected function applySearchConditions($query, array $get_data): void
+    {
+        // ID 精确搜索
+        if (!empty($get_data['id'])) {
+            $id = trim($get_data['id']);
+            if (ctype_digit($id)) {
+                $query->where('id', '=', (int)$id);
+            }
+        }
+
+        // 用户名模糊搜索
+        if (!empty($get_data['nick_name'])) {
+            $query->where('nick_name', 'like', '%' . trim($get_data['nick_name']) . '%');
+        }
+
+        // 邮箱模糊搜索
+        if (!empty($get_data['email'])) {
+            $query->where('email', 'like', '%' . trim($get_data['email']) . '%');
+        }
+
+        // 手机号模糊搜索
+        if (!empty($get_data['telephone'])) {
+            $query->where('telephone', 'like', '%' . trim($get_data['telephone']) . '%');
+        }
+
+        // 用户组搜索
+        if (!empty($get_data['role'])) {
+            $role_id = (int)$get_data['role'];
+            $user_ids_with_role = RoleUser::where('role_id', $role_id)->pluck('user_id')->toArray();
+            $query->whereIn('id', $user_ids_with_role);
+        }
+    }
+
+    /**
+     * 批量获取用户角色映射（避免 N+1 查询）
+     * @param \Illuminate\Support\Collection $user_ids
+     * @return array [user_id => role_names]
+     */
+    protected function getUserRolesMap($user_ids): array
+    {
+        if ($user_ids->isEmpty()) {
+            return [];
+        }
+
+        // 批量查询用户角色关联
+        $role_users = RoleUser::whereIn('user_id', $user_ids)
+            ->get()
+            ->groupBy('user_id');
+
+        // 获取所有角色ID
+        $role_ids = $role_users->flatten()->pluck('role_id')->unique();
+
+        if ($role_ids->isEmpty()) {
+            return [];
+        }
+
+        // 批量查询角色名称
+        $roles = Role::whereIn('id', $role_ids)
+            ->where('status', DBCont::NORMAL_STATUS)
+            ->pluck('name', 'id');
+
+        // 构建用户ID到角色名称的映射
+        $role_map = [];
+        foreach ($role_users as $user_id => $items) {
+            $role_names = [];
+            foreach ($items as $role_user) {
+                $role_id = $role_user->role_id;
+                if (isset($roles[$role_id])) {
+                    $role_names[] = $roles[$role_id];
+                }
+            }
+            $role_map[$user_id] = implode(',', $role_names);
+        }
+
+        return $role_map;
+    }
+
+    /**
+     * 新增用户
+     */
     public function add()
     {
         if (IS_POST) {
             parent::autoCheckToken();
             $data = I('post.');
 
-            if ($data['pwd'] != $data['pwd1']) {
-                $this->error('密码不一致');
+            // 验证密码一致性
+            if ($data['pwd'] !== $data['pwd1']) {
+                $this->error('两次密码不一致');
             }
 
+            // 设置默认值
             $data['status'] = DBCont::NORMAL_STATUS;
             $data['user_type'] = 'system';
+            $data['register_date'] = time();
 
-            $user_model = D('User');
-            $user_id = $user_model->newUser($data);
-            if ($user_id === false) {
-                $this->error($user_model->getError());
-            } else {
+            // 使用 User 模型验证并保存
+            $user = new User();
+            $user->nick_name = $data['nick_name'];
+            $user->email = $data['email'];
+            $user->telephone = $data['telephone'];
+            $user->pwd = $user->hashPwd($data['pwd']);
+            $user->status = $data['status'];
+            $user->register_date = $data['register_date'];
 
-                //插入用户组信息
-                $this->_addRole($user_id);
-                sysLogs('新增用户id:' . $user_id);
-
-                $this->success(l('add') . l('success'), U(CONTROLLER_NAME . '/index'));
+            if (!$user->save()) {
+                $errors = $user->getErrors();
+                $err_msg = is_array($errors) ? implode('; ', $errors) : (string)$errors;
+                $this->error('新增用户失败: ' . $err_msg);
             }
+
+            // 保存用户角色关联
+            $this->saveUserRole($user->id, $data['role']);
+
+            sysLogs('新增用户id: ' . $user->id);
+            $this->success('新增成功');
         } else {
-            // 使用FormBuilder快速建立表单页面。
-            $role = new \Common\Model\RoleModel();
-            $map['status'] = DBCont::NORMAL_STATUS;
-            $role_list = $role->getRoleList($map);
-            foreach ($role_list as $role) {
-                $role_options[$role['id']] = $role['name'];
-            }
-            $builder = new \Qscmf\Builder\FormBuilder();
-            $builder->setMetaTitle('新增用户') //设置页面标题
-            ->setNID(5)
-                ->setPostUrl(U('add'))    //设置表单提交地址
-                ->addFormItem('nick_name', 'text', '用户名*')
-                ->addFormItem('email', 'text', '电子邮箱*')
-                ->addFormItem('telephone', 'text', '手机')
-                ->addFormItem('pwd', 'password', '密码*')
-                ->addFormItem('pwd1', 'password', '重复密码*')
-                ->addFormItem('role', 'select', '用户组', '', $role_options)
-                ->build();
+            $form = new Form();
+            $form->setMetaTitle('新增用户')
+                ->setSubmitRequest('post', U('add'));
+            $this->buildUserForm($form)->render();
         }
     }
 
-    public function edit($id)
+    /**
+     * 编辑用户
+     */
+    public function edit()
     {
         if (IS_POST) {
             parent::autoCheckToken();
-            $user_id = I('post.id');
             $data = I('post.');
-            $user_model = D('User');
+            $user_id = $data['id'] ?? null;
+
             if (!$user_id) {
-                E('缺少user_id');
+                $this->error('缺少用户ID');
             }
 
-            $user_ent = $user_model->getOne($user_id);
-            if (!$user_ent) {
-                E('不存在用户');
+            // 查找用户
+            $user = User::find($user_id);
+            if (!$user) {
+                $this->error('用户不存在');
             }
 
-            //需要更新的fields
-            $user_ent['nick_name'] = $data['nick_name'];
-            $user_ent['email'] = $data['email'];
-            $user_ent['telephone'] = $data['telephone'];
-            $user_ent['portrait'] = $data['portrait'];
+            // 更新字段
+            $user->nick_name = $data['nick_name'];
+            $user->email = $data['email'];
+            $user->telephone = $data['telephone'];
 
-            if ($user_model->createSave($user_ent) === false) {
-                $this->error($user_model->getError());
-            } else {
-                $this->_addRole($user_id);
-                sysLogs('修改用户id:' . $user_id);
-                $this->success('修改成功', U('index'));
+            if (!$user->save()) {
+                $errors = $user->getErrors();
+                $err_msg = is_array($errors) ? implode('; ', $errors) : (string)$errors;
+                $this->error('更新用户失败: ' . $err_msg);
             }
+
+            // 更新用户角色关联
+            $this->saveUserRole($user_id, $data['role']);
+
+            sysLogs('修改用户id: ' . $user_id);
+            $this->success('修改成功');
         } else {
-            // 获取账号信息
-            $info = D('User')->getOne($id);
-            $role_user_ent = D('RoleUser')->getByUser_id($id);
-            $info['role'] = $role_user_ent['role_id'];
-
-            $role = new \Common\Model\RoleModel();
-            $map['status'] = DBCont::NORMAL_STATUS;
-            $role_list = $role->getRoleList($map);
-            foreach ($role_list as $role) {
-                $role_options[$role['id']] = $role['name'];
+            $id = I('id');
+            if (!$id) {
+                $this->error('缺少用户ID');
             }
 
-            // 使用FormBuilder快速建立表单页面。
-            $builder = new \Qscmf\Builder\FormBuilder();
-            $builder->setMetaTitle('编辑用户')  // 设置页面标题
-            ->setPostUrl(U('edit'))    // 设置表单提交地址
-            ->setNID(5)
-                ->addFormItem('id', 'hidden', 'ID')
-                ->addFormItem('nick_name', 'text', '用户名*')
-                ->addFormItem('email', 'text', '电子邮箱*')
-                ->addFormItem('telephone', 'text', '手机')
-                ->addFormItem('role', 'select', '用户组', '', $role_options)
-                ->setFormData($info)
-                ->build();
+            // 获取用户信息
+            $user = User::find($id);
+            if (!$user) {
+                $this->error('用户不存在');
+            }
+
+            // 获取用户角色
+            $role_ids = RoleUser::getRoleIdsByUserId($id);
+            $user->role = $role_ids[0] ?? null;
+
+            $form = new Form();
+            $form->setMetaTitle('编辑用户')
+                ->setSubmitRequest('post', U('edit'));
+            $this->buildUserForm($form, $user)->render();
         }
     }
 
-    //插入用户组信息
-    private function _addRole($user_id)
+    /**
+     * 修改密码
+     */
+    public function repwd()
     {
-        $role_id = I('role');
-        $role_user = D('RoleUser');
-        $data_arr = array();
-        $data_arr[] = array('role_id' => $role_id, 'user_id' => $user_id);
-        $r = $role_user->where(array('user_id' => $user_id))->delete();
-        if ($r === false) {
-            $this->error($role_user->getError());
-        }
-        if (!empty($data_arr)) {
-            $r = $role_user->addAll($data_arr);
-            if ($r === false) {
-                $this->error($role_user->getError());
-            }
-        }
-    }
+        if (IS_POST) {
+            parent::autoCheckToken();
+            $data = I('post.');
 
-    //激活用户
-    public function active()
-    {
-        $ids = I('ids');
-        if (!$ids) {
-            $this->error('请选择要激活的用户');
-        }
-        $user_model = D('User');
-        $map['id'] = array('in', $ids);
-        $r = $user_model->where($map)->setField('status', DBCont::NORMAL_STATUS);
-        //设置默认分组
-        $default_ent = D('DefaultRole')->find();
-        if ($default_ent) {
-            $user_ents = $user_model->where($map)->select();
-            foreach ($user_ents as $v) {
-                D('RoleUser')->where('user_id=' . $v['id'] . ' and role_id=' . $default_ent['role_id'])->delete();
-                D('RoleUser')->add(array('role_id' => $default_ent['role_id'], 'user_id' => $v['id']));
+            // 验证密码一致性
+            if ($data['pwd'] !== $data['pwd1']) {
+                $this->error('两次密码不一致');
             }
-        }
-        if ($r === false) {
-            $this->error($user_model->getError());
+
+            $user_id = $data['id'] ?? null;
+            if (!$user_id) {
+                $this->error('缺少用户ID');
+            }
+
+            // 查找用户
+            $user = User::find($user_id);
+            if (!$user) {
+                $this->error('用户不存在');
+            }
+
+            // 更新密码
+            $user->pwd = $user->hashPwd($data['pwd']);
+
+            if (!$user->save()) {
+                $errors = $user->getErrors();
+                $err_msg = is_array($errors) ? implode('; ', $errors) : (string)$errors;
+                $this->error('修改密码失败: ' . $err_msg);
+            }
+
+            sysLogs('修改密码, 用户id: ' . $user_id);
+            $this->success('修改密码成功');
         } else {
-            sysLogs('用户id: ' . $ids . ' 激活');
-            $this->success('激活成功', U(CONTROLLER_NAME . '/index'));
+            $user_id = I('id');
+            if (!$user_id) {
+                $this->error('缺少用户ID');
+            }
+
+            $form = new Form();
+            $form->setMetaTitle('修改密码')
+                ->setSubmitRequest('post', U('repwd'));
+            $this->buildPasswordForm($form, $user_id)->render();
         }
     }
 
     public function forbid()
     {
         $ids = I('ids');
-        if (!$ids) {
+        if(!$ids){
             $this->error('请选择要禁用的数据');
         }
-        $r = parent::_forbid($ids);
-        if ($r !== false) {
-            sysLogs('用户id: ' . $ids . ' 禁用');
-            $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
-        } else {
-            $this->error($this->_getError());
+        $r = User::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::FORBIDDEN_STATUS]);
+        if($r !== false){
+            sysLogs('用户id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 禁用');
+            $this->success('禁用成功');
+        }
+        else{
+            $this->error('禁用失败');
         }
     }
 
     public function resume()
     {
         $ids = I('ids');
-        if (!$ids) {
+        if(!$ids){
             $this->error('请选择要启用的数据');
         }
-        $r = parent::_resume($ids);
-        if ($r !== false) {
-            sysLogs('用户id: ' . $ids . ' 启用');
-            $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
-        } else {
-            $this->error($this->_getError());
+        $r = User::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::NORMAL_STATUS]);
+        if($r !== false){
+            sysLogs('用户id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 启用');
+            $this->success('启用成功');
         }
-
+        else{
+            $this->error('启用失败');
+        }
     }
 
     public function delete()
     {
         $ids = I('ids');
-        if (!$ids) {
+        if(!$ids){
             $this->error('请选择要删除的数据');
         }
-        $r = parent::_del($ids);
-        if ($r === false) {
-            $this->error($this->_getError());
-        } else {
-            sysLogs('用户id: ' . $ids . ' 删除');
-            $this->success('删除成功', U(MODULE_NAME . '/' . CONTROLLER_NAME . '/index'));
+        $r = User::destroy(is_array($ids) ? $ids : explode(',', $ids));
+        if($r === false){
+            $this->error('删除失败');
         }
-    }
-
-    public function repwd()
-    {
-
-        if (IS_POST) {
-            parent::autoCheckToken();
-
-            $user_model = new \Common\Model\UserModel();
-
-            if (I('post.pwd') != I('post.pwd1')) {
-                $this->error('密码不一致');
-            }
-
-            $user_ent = $user_model->getOne(I('post.id'));
-            if (!$user_ent) {
-                $this->error('用户不存在');
-            }
-
-            $r = $user_model->modifyPwdByAdmin(I('post.id'), I('post.pwd'));
-            if ($r === false) {
-                $this->error($user_model->getError());
-            } else {
-                syslogs('修改密码, 用户id:' . I('id'));
-                $this->success('修改密码成功');
-            }
+        else{
+            sysLogs('用户id: ' . $ids . ' 删除');
+            $this->success('删除成功');
         }
     }
 
     /**
-     * 登陆者编辑自己的资料
+     * 构建用户表单
+     * @param Form $form 表单对象
+     * @param User|null $user 用户对象（编辑时传入）
+     * @return Form
      */
-    public function editUser()
+    protected function buildUserForm(Form $form, ?User $user = null): Form
     {
-        $id = session('auth_id');
-        if (IS_POST) {
-            parent::autoCheckToken();
-            $data = I('post.');
-            if ($data['pwd'] != $data['pwd1']) {
-                $this->error('密码不一致');
+        $role_options = $this->getRoleOptions();
+        $is_edit = $user !== null;
+
+        $form->actions(function (Form\ActionsContainer $actions) {
+            $actions->button('提交')->submit()->setProps(['type' => 'primary']);
+            $actions->button('重置')->reset();
+        });
+
+        $form->columns(function (Form\ColumnsContainer $columns) use ($role_options, $is_edit, $user) {
+            $columns->text('nick_name', '用户名')
+                ->addRule(new Required('用户名不能为空'));
+
+            $columns->text('email', '电子邮箱')
+                ->addRule(new Required('邮箱不能为空'))
+                ->addRule(new Type('email', '邮箱格式不正确'));
+
+            $columns->text('telephone', '手机')
+                ->addRule(new Required('手机号不能为空'))
+                ->addRule(new Pattern('^1\\d{10}$', '手机号码格式不正确'));
+
+            if (!$is_edit) {
+                // 新增时显示密码字段
+                $columns->password('pwd', '密码*')
+                    ->addRule(new Required('密码不能为空'))
+                    ->addRule(new Min('string', 6, '密码长度至少6位'))
+                    ->addRule(new Max('string', 12, '密码长度最多12位'));
+
+                $columns->password('pwd1', '重复密码*')
+                    ->addRule(new Required('请再次输入密码'))
+                    ->setTips('需与密码一致');
             }
-            $user_model = D('User');
-            $user_ent = $user_model->getOne($id);
-            if (!$user_ent) {
-                E('不存在用户');
+
+            $columns->select('role', '用户组')
+                ->setValueEnum($role_options);
+
+            if ($is_edit) {
+                // 编辑时添加隐藏的 ID 字段
+                $columns->text('id', '')->hideInForm();
             }
-            $user_model->startTrans();
-            try {
-                $save = [
-                    'id' => $id,
-                    'nick_name' => $data['nick_name'],
-                    'email' => $data['email'],
-                    'telephone' => $data['telephone'],
-                ];
-                if ($user_model->createSave($save) === false) {
-                    E($user_model->getError());
-                }
-                if (!empty($data['pwd'])) {
-                    if ($user_model->modifyPwdByAdmin($id, $data['pwd']) === false) {
-                        E($user_model->getError());
-                    }
-                }
-                $user_model->commit();
-            } catch (\Exception $e) {
-                $user_model->rollback();
-                $this->error($e->getMessage());
-            }
-            if (empty($data['referer'])) {
-                $this->success('修改成功', U('admin/dashboard/index'));
-            } else {
-                $this->success('修改成功', $data['referer']);
-            }
-        } else {
-            // 获取账号信息
-            $info = D('User')->getOne($id);
-            unset($info['pwd']);
-            $info['referer'] = $_SERVER['HTTP_REFERER'];
-            $builder = new \Qscmf\Builder\FormBuilder();
-            $builder->setMetaTitle('编辑用户')  // 设置页面标题
-            ->setPostUrl(U(''))
-                ->addFormItem('nick_name', 'text', '用户名*')
-                ->addFormItem('email', 'text', '电子邮箱')
-                ->addFormItem('telephone', 'text', '手机')
-                ->addFormItem('pwd', 'password', '密码')
-                ->addFormItem('pwd1', 'password', '重复密码')
-                ->addFormItem('referer', 'hidden', '跳转地址')
-                ->setFormData($info)
-                ->build();
+        });
+
+        // 如果是编辑模式，设置初始值
+        if ($is_edit) {
+            $form->setInitialValues([
+                'id' => $user->id,
+                'nick_name' => $user->nick_name,
+                'email' => $user->email,
+                'telephone' => $user->telephone,
+                'role' => $user->role ?? null,
+            ]);
         }
+
+        return $form;
     }
 
-    protected function buildPasswordModal(mixed $id)
+    /**
+     * 构建密码修改表单
+     * @param Form $form 表单对象
+     * @param int $user_id 用户ID
+     * @return Form
+     */
+    protected function buildPasswordForm(Form $form, int $user_id): Form
     {
-        $builder = new FormBuilder();
-        $builder->setPostUrl(U('/admin/user/repwd'))
-            ->addFormItem('pwd', 'password', '新密码')
-            ->addFormItem('pwd1', 'password', '重复密码')
-            ->addFormItem('id', 'hidden')
-            ->setFormData(['id' => $id])
-            ->setShowBtn(false);
+        $form->actions(function (Form\ActionsContainer $actions) {
+            $actions->button('提交')->submit()->setProps(['type' => 'primary']);
+            $actions->button('重置')->reset();
+        });
 
-        return (new \Qs\ModalButton\ModalButtonBuilder())
-            ->bindFormBuilder($builder)
-            ->setKeyboard(false)
-            ->setBackdrop(false)
-            ->setBodyHeight('200px')
-            ->setDialogWidth('800px')
-            ->setTitle('修改密码');
+        $form->columns(function (Form\ColumnsContainer $columns) use ($user_id) {
+            $columns->password('pwd', '新密码')
+                ->addRule(new Required('新密码不能为空'))
+                ->addRule(new Min('string', 6, '密码长度至少6位'))
+                ->addRule(new Max('string', 12, '密码长度最多12位'));
+
+            $columns->password('pwd1', '重复密码')
+                ->addRule(new Required('请再次输入密码'))
+                ->setTips('需与新密码一致');
+
+            $columns->text('id', '')->hideInForm();
+        });
+
+        // 设置初始值
+        $form->setInitialValues(['id' => $user_id]);
+
+        return $form;
+    }
+
+    /**
+     * 获取角色选项列表
+     * @return array
+     */
+    protected function getRoleOptions(): array
+    {
+        $role = new Role();
+        $role_list = $role->getRoleList(['status' => DBCont::NORMAL_STATUS]);
+
+        $role_options = [];
+        foreach ($role_list as $role) {
+            $role_options[$role['id']] = $role['name'];
+        }
+
+        return $role_options;
+    }
+
+    /**
+     * 保存用户角色关联
+     * @param int $user_id 用户ID
+     * @param int $role_id 角色ID
+     * @return void
+     */
+    protected function saveUserRole(int $user_id, ?int $role_id): void
+    {
+        // 删除原有的角色关联
+        RoleUser::where('user_id', $user_id)->delete();
+
+        // 角色为空时跳过
+        if (empty($role_id)) {
+            return;
+        }
+
+        // 创建新的角色关联
+        $role_user = new RoleUser();
+        $role_user->user_id = $user_id;
+        $role_user->role_id = $role_id;
+        $role_user->save();
     }
 
 }

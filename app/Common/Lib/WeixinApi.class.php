@@ -1,5 +1,6 @@
 <?php
 namespace Common\Lib;
+use Illuminate\Database\Capsule\Manager as Capsule;
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,8 +17,8 @@ class WeixinApi{
     }
     
     private function _getAccessToken(){
-        $ent = M("WeixinToken")->find();
-        
+        $ent = (array)Capsule::table('weixin_token')->first();
+
         try{
             if(!$ent || ($ent['create_date'] + ($ent['expires_in'])) <= time()){
                 return $this->_getAccessTokenFromWx();
@@ -41,9 +42,9 @@ class WeixinApi{
         $data = http($this->_get_access_token_url, $params);
         $data = json_decode($data, true);
         if(isset($data['access_token'])){
-            M("WeixinToken")->where("1=1")->delete();
+            Capsule::table('weixin_token')->whereRaw('1=1')->delete();
             $data['create_date'] = time();
-            M('WeixinToken')->add($data);
+            Capsule::table('weixin_token')->insert($data);
             return $data['access_token'];
         }
         else{

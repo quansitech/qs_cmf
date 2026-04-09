@@ -1,4 +1,5 @@
 <?php
+define('ROOT_PATH', __DIR__);
 // 应用入口文件
 ini_set('display_errors', '0');
 

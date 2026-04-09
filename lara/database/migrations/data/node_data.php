@@ -2,7 +2,7 @@
   0 => 
   array (
     'id' => '1',
-    'name' => 'admin',
+    'name' => 'Admin',
     'title' => '管理后台',
     'status' => '1',
     'remark' => '',
@@ -16,7 +16,7 @@
   1 => 
   array (
     'id' => '2',
-    'name' => 'user',
+    'name' => 'User',
     'title' => '账号管理',
     'status' => '1',
     'remark' => '',
@@ -30,7 +30,7 @@
   2 => 
   array (
     'id' => '3',
-    'name' => 'dashboard',
+    'name' => 'Dashboard',
     'title' => '后台面板',
     'status' => '1',
     'remark' => '',
@@ -44,7 +44,7 @@
   3 => 
   array (
     'id' => '4',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '平台概况',
     'status' => '1',
     'remark' => '',
@@ -58,7 +58,7 @@
   4 => 
   array (
     'id' => '5',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '账号列表',
     'status' => '1',
     'remark' => '',
@@ -72,7 +72,7 @@
   5 => 
   array (
     'id' => '15',
-    'name' => 'role',
+    'name' => 'Role',
     'title' => '组管理',
     'status' => '1',
     'remark' => '',
@@ -86,7 +86,7 @@
   6 => 
   array (
     'id' => '21',
-    'name' => 'node',
+    'name' => 'Node',
     'title' => '节点管理',
     'status' => '1',
     'remark' => '',
@@ -100,7 +100,7 @@
   7 => 
   array (
     'id' => '23',
-    'name' => 'menu',
+    'name' => 'Menu',
     'title' => '菜单管理',
     'status' => '1',
     'remark' => '',
@@ -114,7 +114,7 @@
   8 => 
   array (
     'id' => '24',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '菜单列表',
     'status' => '1',
     'remark' => '',
@@ -128,7 +128,7 @@
   9 => 
   array (
     'id' => '26',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增菜单',
     'status' => '1',
     'remark' => '',
@@ -142,7 +142,7 @@
   10 => 
   array (
     'id' => '27',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '修改菜单',
     'status' => '1',
     'remark' => '',
@@ -156,7 +156,7 @@
   11 => 
   array (
     'id' => '28',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '节点列表',
     'status' => '1',
     'remark' => '',
@@ -170,7 +170,7 @@
   12 => 
   array (
     'id' => '29',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增节点',
     'status' => '1',
     'remark' => '',
@@ -184,7 +184,7 @@
   13 => 
   array (
     'id' => '30',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '修改节点',
     'status' => '1',
     'remark' => '',
@@ -198,7 +198,7 @@
   14 => 
   array (
     'id' => '31',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增账号',
     'status' => '1',
     'remark' => '',
@@ -212,7 +212,7 @@
   15 => 
   array (
     'id' => '32',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用菜单',
     'status' => '1',
     'remark' => '',
@@ -226,7 +226,7 @@
   16 => 
   array (
     'id' => '33',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用菜单',
     'status' => '1',
     'remark' => '',
@@ -240,7 +240,7 @@
   17 => 
   array (
     'id' => '34',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用节点',
     'status' => '1',
     'remark' => '',
@@ -254,7 +254,7 @@
   18 => 
   array (
     'id' => '35',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用节点',
     'status' => '1',
     'remark' => '',
@@ -268,7 +268,7 @@
   19 => 
   array (
     'id' => '36',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '组列表',
     'status' => '1',
     'remark' => '',
@@ -282,7 +282,7 @@
   20 => 
   array (
     'id' => '37',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增组',
     'status' => '1',
     'remark' => '',
@@ -296,7 +296,7 @@
   21 => 
   array (
     'id' => '38',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '修改组',
     'status' => '1',
     'remark' => '',
@@ -310,7 +310,7 @@
   22 => 
   array (
     'id' => '39',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用组',
     'status' => '1',
     'remark' => '',
@@ -324,7 +324,7 @@
   23 => 
   array (
     'id' => '40',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用组',
     'status' => '1',
     'remark' => '',
@@ -338,7 +338,7 @@
   24 => 
   array (
     'id' => '43',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '编辑账号',
     'status' => '1',
     'remark' => '',
@@ -352,7 +352,7 @@
   25 => 
   array (
     'id' => '44',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用账号',
     'status' => '1',
     'remark' => '',
@@ -366,7 +366,7 @@
   26 => 
   array (
     'id' => '45',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用账号',
     'status' => '1',
     'remark' => '',
@@ -380,7 +380,7 @@
   27 => 
   array (
     'id' => '46',
-    'name' => 'repwd',
+    'name' => 'Repwd',
     'title' => '修改密码',
     'status' => '1',
     'remark' => '',
@@ -394,7 +394,7 @@
   28 => 
   array (
     'id' => '47',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除账号',
     'status' => '1',
     'remark' => '',
@@ -408,7 +408,7 @@
   29 => 
   array (
     'id' => '48',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除菜单',
     'status' => '1',
     'remark' => '',
@@ -422,7 +422,7 @@
   30 => 
   array (
     'id' => '50',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除节点',
     'status' => '1',
     'remark' => '',
@@ -436,7 +436,7 @@
   31 => 
   array (
     'id' => '59',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除组',
     'status' => '1',
     'remark' => '',
@@ -450,7 +450,7 @@
   32 => 
   array (
     'id' => '60',
-    'name' => 'config',
+    'name' => 'Config',
     'title' => '配置管理',
     'status' => '1',
     'remark' => '',
@@ -464,7 +464,7 @@
   33 => 
   array (
     'id' => '61',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '配置管理',
     'status' => '1',
     'remark' => '',
@@ -478,7 +478,7 @@
   34 => 
   array (
     'id' => '62',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增配置',
     'status' => '1',
     'remark' => '',
@@ -492,7 +492,7 @@
   35 => 
   array (
     'id' => '63',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '修改配置',
     'status' => '1',
     'remark' => '',
@@ -506,7 +506,7 @@
   36 => 
   array (
     'id' => '64',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用配置',
     'status' => '1',
     'remark' => '',
@@ -520,7 +520,7 @@
   37 => 
   array (
     'id' => '65',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用配置',
     'status' => '1',
     'remark' => '',
@@ -534,7 +534,7 @@
   38 => 
   array (
     'id' => '66',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除配置',
     'status' => '1',
     'remark' => '',
@@ -548,7 +548,7 @@
   39 => 
   array (
     'id' => '69',
-    'name' => 'setting',
+    'name' => 'Setting',
     'title' => '系统配置',
     'status' => '1',
     'remark' => '',
@@ -576,7 +576,7 @@
   41 => 
   array (
     'id' => '86',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '系统日志',
     'status' => '1',
     'remark' => '系统日志列表',
@@ -587,108 +587,10 @@
     'icon' => '',
     'url' => '',
   ),
-  42 => 
-  array (
-    'id' => '121',
-    'name' => 'hooks',
-    'title' => '钩子管理',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '1',
-    'level' => '2',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  43 => 
-  array (
-    'id' => '122',
-    'name' => 'index',
-    'title' => '钩子列表',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '8',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '2',
-    'icon' => '',
-    'url' => '',
-  ),
-  44 => 
-  array (
-    'id' => '125',
-    'name' => 'add',
-    'title' => '新增钩子',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '1',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  45 => 
-  array (
-    'id' => '126',
-    'name' => 'edit',
-    'title' => '修改钩子',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '1',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  46 => 
-  array (
-    'id' => '127',
-    'name' => 'forbid',
-    'title' => '禁用钩子',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '1',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  47 => 
-  array (
-    'id' => '128',
-    'name' => 'resume',
-    'title' => '启用钩子',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '1',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  48 => 
-  array (
-    'id' => '129',
-    'name' => 'delete',
-    'title' => '删除钩子',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '1',
-    'pid' => '121',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
   49 => 
   array (
     'id' => '175',
-    'name' => 'authCheck',
+    'name' => 'AuthCheck',
     'title' => '权限点检查',
     'status' => '1',
     'remark' => '',
@@ -699,122 +601,10 @@
     'icon' => '',
     'url' => '',
   ),
-  52 => 
-  array (
-    'id' => '306',
-    'name' => 'addons',
-    'title' => '插件管理',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '1',
-    'level' => '2',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  53 => 
-  array (
-    'id' => '307',
-    'name' => 'index',
-    'title' => '插件列表',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '5',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '2',
-    'icon' => '',
-    'url' => '',
-  ),
-  54 => 
-  array (
-    'id' => '600',
-    'name' => 'execute',
-    'title' => '运行插件',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  55 => 
-  array (
-    'id' => '659',
-    'name' => 'forbid',
-    'title' => '禁用',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  56 => 
-  array (
-    'id' => '660',
-    'name' => 'resume',
-    'title' => '启用',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  57 => 
-  array (
-    'id' => '661',
-    'name' => 'install',
-    'title' => '安装',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  58 => 
-  array (
-    'id' => '662',
-    'name' => 'uninstall',
-    'title' => '卸载',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  59 => 
-  array (
-    'id' => '663',
-    'name' => 'config',
-    'title' => '设置',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '306',
-    'level' => '3',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
   61 => 
   array (
     'id' => '747',
-    'name' => 'post',
+    'name' => 'Post',
     'title' => '资讯管理',
     'status' => '1',
     'remark' => '',
@@ -842,7 +632,7 @@
   63 => 
   array (
     'id' => '927',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增',
     'status' => '1',
     'remark' => '',
@@ -856,7 +646,7 @@
   64 => 
   array (
     'id' => '928',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用',
     'status' => '1',
     'remark' => '',
@@ -870,7 +660,7 @@
   65 => 
   array (
     'id' => '929',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用',
     'status' => '1',
     'remark' => '',
@@ -884,7 +674,7 @@
   66 => 
   array (
     'id' => '930',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除',
     'status' => '1',
     'remark' => '',
@@ -898,7 +688,7 @@
   67 => 
   array (
     'id' => '931',
-    'name' => 'save',
+    'name' => 'Save',
     'title' => '保存',
     'status' => '1',
     'remark' => '',
@@ -912,7 +702,7 @@
   68 => 
   array (
     'id' => '932',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '编辑',
     'status' => '1',
     'remark' => '',
@@ -926,7 +716,7 @@
   69 => 
   array (
     'id' => '933',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '分类管理',
     'status' => '1',
     'remark' => '',
@@ -940,7 +730,7 @@
   70 => 
   array (
     'id' => '934',
-    'name' => 'add',
+    'name' => 'Add',
     'title' => '新增',
     'status' => '1',
     'remark' => '',
@@ -954,7 +744,7 @@
   71 => 
   array (
     'id' => '935',
-    'name' => 'forbid',
+    'name' => 'Forbid',
     'title' => '禁用',
     'status' => '1',
     'remark' => '',
@@ -968,7 +758,7 @@
   72 => 
   array (
     'id' => '936',
-    'name' => 'resume',
+    'name' => 'Resume',
     'title' => '启用',
     'status' => '1',
     'remark' => '',
@@ -982,7 +772,7 @@
   73 => 
   array (
     'id' => '937',
-    'name' => 'delete',
+    'name' => 'Delete',
     'title' => '删除',
     'status' => '1',
     'remark' => '',
@@ -996,7 +786,7 @@
   74 => 
   array (
     'id' => '938',
-    'name' => 'save',
+    'name' => 'Save',
     'title' => '保存',
     'status' => '1',
     'remark' => '',
@@ -1010,7 +800,7 @@
   75 => 
   array (
     'id' => '939',
-    'name' => 'edit',
+    'name' => 'Edit',
     'title' => '编辑',
     'status' => '1',
     'remark' => '',
@@ -1024,7 +814,7 @@
   76 => 
   array (
     'id' => '969',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '内容管理',
     'status' => '1',
     'remark' => '',
@@ -1038,7 +828,7 @@
   77 => 
   array (
     'id' => '970',
-    'name' => 'queue',
+    'name' => 'Queue',
     'title' => 'queue',
     'status' => '1',
     'remark' => '',
@@ -1052,7 +842,7 @@
   78 => 
   array (
     'id' => '971',
-    'name' => 'index',
+    'name' => 'Index',
     'title' => '任务队列',
     'status' => '1',
     'remark' => '',
@@ -1062,33 +852,5 @@
     'menu_id' => '2',
     'icon' => '',
     'url' => '',
-  ),
-  79 => 
-  array (
-    'id' => '989',
-    'name' => 'JsErrLog',
-    'title' => 'JsErrLog',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '0',
-    'pid' => '1',
-    'level' => '2',
-    'menu_id' => '0',
-    'icon' => '',
-    'url' => '',
-  ),
-  80 => 
-  array (
-    'id' => '990',
-    'name' => 'index',
-    'title' => '前台js异常日志',
-    'status' => '1',
-    'remark' => '',
-    'sort' => '98',
-    'pid' => '989',
-    'level' => '3',
-    'menu_id' => '2',
-    'icon' => '',
-    'url' => '',
-  ),
+  )
 );

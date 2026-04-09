@@ -6,6 +6,7 @@ use Qscmf\Lib\CusUpload;
 use Qscmf\Lib\FileUploadManager\File;
 use Qscmf\Lib\FileUploadManager\Manager;
 use Think\Hook;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class UploadController extends \Think\Controller{
 
@@ -149,9 +150,8 @@ class UploadController extends \Think\Controller{
     
     public function load($file_id){
 
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
-        
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
+
         //检查访问权限
         if(session('file_auth_key') != $file_pic_ent['owner']){
             header('Content-Type:text/html; charset=utf-8');
@@ -171,14 +171,11 @@ class UploadController extends \Think\Controller{
 
     //下载非安全控制文件
     public function downloadFile($file_id){
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
         if($file_pic_ent['security'] == 1){
             E('非法访问');
         }
-        //统计下载次数
-        $param = array(\Addons\Stat\StatCont::FILE_DOWNLOAD, 1, $file_id, 'FilePic');
-        \Think\Hook::listen('stat', $param);
+
         $mobile_detect = new \Common\Util\Mobile_Detect();
         $is_mobile = $mobile_detect->isMobile();
 

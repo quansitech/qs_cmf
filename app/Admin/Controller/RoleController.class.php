@@ -2,74 +2,103 @@
 
 namespace Admin\Controller;
 
+use App\Models\Role;
+use App\Models\Node;
+use App\Models\Access;
 use Gy_Library\DBCont;
 use Gy_Library\GyListController;
 use Qscmf\Lib\Inertia\Inertia;
+use AntdAdmin\Component\Table;
+use AntdAdmin\Component\Table\Pagination;
 
 class RoleController extends GyListController
 {
     public function index()
     {
-        $keyword = I('keyword', '', 'string');
-        $condition = array('like', '%' . $keyword . '%');
-        $map['name'] = $condition;
+        $get_data = I('get.');
 
-        $role_model = D('Role');
-        $count = $role_model->getListForCount($map);
-        $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
-        if ($per_page === false) {
-            $page = new \Gy_Library\GyPage($count);
-        } else {
-            $page = new \Gy_Library\GyPage($count, $per_page);
+        $query = Role::query();
+
+        if (!empty($get_data['id'])) {
+            $id = trim($get_data['id']);
+            if (ctype_digit($id)) {
+                $query->where('id', '=', (int)$id);
+            }
         }
 
-        $data_list = $role_model->getListForPage($map, $page->nowPage, $page->listRows, 'status desc, id desc');
+        if (!empty($get_data['name'])) {
+            $query->where('name', 'like', '%' . trim($get_data['name']) . '%');
+        }
 
-        // 使用Builder快速建立列表页面。
-        $builder = new \Qscmf\Builder\ListBuilder();
+        if (isset($get_data['status']) && $get_data['status'] !== '') {
+            $query->where('status', '=', (int)$get_data['status']);
+        }
 
-        $builder = $builder->setMetaTitle('用户组列表')  // 设置页面标题
-        ->addTopButton('addnew')  // 添加新增按钮
+        if (!empty($get_data['remark'])) {
+            $query->where('remark', 'like', '%' . trim($get_data['remark']) . '%');
+        }
 
-        ->addTopButton('delete')   // 添加删除按钮
-//        ->setSearch(
-//            '名称',
-//            U('index')
-//        )
-        ->setNID(36)
-            ->addTableColumn('id', 'ID')
-            ->addTableColumn('name', '名称')
-            ->addTableColumn('status', '状态', "status")
-            ->addTableColumn('remark', '备注')
-            ->addTableColumn('right_button', '操作', 'btn')
-            ->setTableDataList($data_list)     // 数据列表
-            ->setTableDataPage($page->show())  // 数据列表分页
-            ->addRightButton('edit')           // 添加编辑按钮
-            ->addRightButton('forbid')         // 添加禁用/启用按钮
-            ->addRightButton('delete')         // 添加删除按钮
-            ->build();
+        $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
+        if ($per_page === false) {
+            $per_page = 20;
+        }
+
+        $roles = $query->orderByRaw('status desc, id desc')->paginate($per_page);
+
+        $page = new Pagination($roles->currentPage(), $roles->perPage(), $roles->total());
+
+        $data_list = collect($roles->items())->map(function($item){
+            return $item->toArray();
+        });
+
+        $table = new Table();
+        $table->setMetaTitle('用户组列表')
+            ->actions(function(Table\ActionsContainer $actions){
+                $actions->button('添加')->link(U('add'));
+                $actions->delete();
+            })
+            ->columns(function (Table\ColumnsContainer $container){
+                $container->text('id', 'ID');
+                $container->text('name', '名称');
+                $container->select('status', '状态')
+                    ->setValueEnum([
+                        DBCont::NORMAL_STATUS => ['text' => '启用', 'status' => 'Success'],
+                        DBCont::FORBIDDEN_STATUS => ['text' => '禁用'
+, 'status' => 'Error'],
+                    ]);
+                $container->text('remark', '备注');
+                $container->action('', '操作')->actions(function(Table\ColumnType\ActionsContainer $container){
+                    $container->link('编辑')->setHref(U('edit', ['id' => '__id__']));
+                    $container->forbid();
+                    $container->delete();
+                });
+            })
+            ->setDataSource($data_list)
+            ->setPagination($page);
+
+        $this->setActiveNid(getNid(MODULE_NAME, CONTROLLER_NAME, 'Index'));
+        $table->render();
     }
 
     private function _genAccessList()
     {
-        $node = new \Common\Model\NodeModel();
         $map['level'] = DBCont::LEVEL_MODULE;
         $map['status'] = DBCont::NORMAL_STATUS;
-        $module_list = $node->getNodeList($map);
+        $module_list = Node::getNodeList($map);
 
-        $map = array();
+        $map = [];
         $map['level'] = DBCont::LEVEL_CONTROLLER;
         $map['status'] = DBCont::NORMAL_STATUS;
-        $controller_list = $node->getNodeList($map);
+        $controller_list = Node::getNodeList($map);
 
-        $map = array();
+        $map = [];
         $map['level'] = DBCont::LEVEL_ACTION;
         $map['status'] = DBCont::NORMAL_STATUS;
-        $action_list = $node->getNodeList($map);
+        $action_list = Node::getNodeList($map);
 
-        $this->assign('action_list', $action_list);
-        $this->assign('module_list', $module_list);
-        $this->assign('controller_list', $controller_list);
+        $this->action_list = $action_list;
+        $this->module_list = $module_list;
+        $this->controller_list = $controller_list;
     }
 
 
@@ -77,41 +106,33 @@ class RoleController extends GyListController
     {
         $auth = I('post.auth');
 
-        $access = new \Common\Model\AccessModel();
-        $map['role_id'] = $role_id;
-        $r = $access->delAccess($map);
+        $r = Access::delAccess(['role_id' => $role_id]);
         if ($r === false) {
             $this->error('删除数据时出错');
         }
 
-        $node = new \Common\Model\NodeModel();
-
-        $node_arr = array();
-        $access_arr = array();
+        $node_arr = [];
+        $access_arr = [];
         foreach ($auth as $v) {
             $access_arr = $this->getParentNode($v, $role_id, $node_arr);
         }
 
         if (!empty($access_arr)) {
-
-            $r = $access->addAll($access_arr);
+            $r = Access::createAll($access_arr);
             if ($r === false) {
-                $this->error($access->getError());
+                $this->error('保存权限数据时出错');
             }
         }
     }
 
-    //组装要插入gy_access的数组
     private function getParentNode($node_id, $role_id, &$node_arr)
     {
-        static $data_arr = array();
+        static $data_arr = [];
 
-        $node = new \Common\Model\NodeModel();
-        $map['id'] = $node_id;
-        $data = $node->getNode($map);
+        $data = Node::getNode(['id' => $node_id]);
 
         if (!in_array($data['id'], $node_arr)) {
-            $data_arr[] = array('role_id' => $role_id, 'node_id' => $data['id'], 'level' => $data['level'], 'module' => $data['name']);
+            $data_arr[] = ['role_id' => $role_id, 'node_id' => $data['id'], 'level' => $data['level'], 'module' => $data['name']];
             $node_arr[] = $data['id'];
         }
 
@@ -125,43 +146,35 @@ class RoleController extends GyListController
 
     public function add()
     {
-        //重复提交处理
         parent::autoCheckToken();
 
         if (!empty($_POST)) {
             $data = I('post.');
 
-            $model = D($this->dbname);
-            if (!$model->create($data)) {
-                $this->error($model->getError());
+            unset($data['auth']);
+            $role = Role::create($data);
+            if (!$role) {
+                $this->error('新增失败');
             }
-            $r = $model->add();
-            if ($r !== false) {
-                $this->_createAccessList($r);
-                sysLogs('新增用户组id: ' . $r);
-                $this->success(l('add') . l('success'), U(CONTROLLER_NAME . '/index'));
-            } else {
-                $this->error($model->getError());
-            }
+
+            $this->_createAccessList($role->id);
+            sysLogs('新增用户组id: ' . $role->id);
+            $this->success(l('add') . l('success'), U(CONTROLLER_NAME . '/index'));
         } else {
             $this->_genAccessList();
 
-            if (C('ANTD_ADMIN_BUILDER_ENABLE')) {
-                Inertia::share('layoutProps.metaTitle', '新增用户组');
-                $this->setActiveNid(36);
-                $this->assign('nid', 36);
-                $this->inertia('Role/Form', [
-                    'action_list' => $this->action_list,
-                    'module_list' => $this->module_list,
-                    'controller_list' => $this->controller_list,
+            Inertia::share('layoutProps.metaTitle', '新增用户组');
+            $this->setActiveNid(36);
+            $this->assign('nid', 36);
+            $this->inertia('Role/Form', [
+                'action_list' => $this->action_list,
+                'module_list' => $this->module_list,
+                'controller_list' => $this->controller_list,
 
-                    'submit' => [
-                        'url' => U(),
-                    ],
-                ]);
-                return;
-            }
-            $this->display();
+                'submit' => [
+                    'url' => U(),
+                ],
+            ]);
         }
     }
 
@@ -172,27 +185,17 @@ class RoleController extends GyListController
         if (!empty($_POST)) {
             $data = I('post.');
 
-            $model = D($this->dbname);
-            if (!$model->create($data)) {
-
-                $this->error($model->getError());
+            unset($data['id'], $data['auth']);
+            $r = Role::find($id)->update($data);
+            if ($r === false) {
+                $this->error('修改失败');
             }
 
-            $r = $model->edit();
-            if ($r !== false) {
-
-                $this->_createAccessList($id);
-                sysLogs('修改用户组id: ' . $id);
-
-                $this->success('修改成功', U(CONTROLLER_NAME . '/index'));
-            } else {
-
-                $this->error($model->getError());
-            }
+            $this->_createAccessList($id);
+            sysLogs('修改用户组id: ' . $id);
+            $this->success('修改成功', U(CONTROLLER_NAME . '/index'));
         } else {
-            $model = D($this->dbname);
-
-            $vo = $model->find($id);
+            $vo = Role::getOne($id);
 
             if (empty($vo)) {
                 $this->error('数据不存在');
@@ -200,38 +203,31 @@ class RoleController extends GyListController
 
             $this->_genAccessList();
 
-            $access = new \Common\Model\AccessModel();
             $map['role_id'] = $vo['id'];
             $map['level'] = DBCont::LEVEL_ACTION;
-            $access_list = $access->getAccessList($map);
+            $access_list = Access::getAccessList($map);
             $auth_arr = [];
             foreach ($access_list as $v) {
-                array_push($auth_arr, $v['node_id']);
+                $auth_arr[] = $v['node_id'];
             }
 
             $vo['auth'] = $auth_arr;
 
-            if (C('ANTD_ADMIN_BUILDER_ENABLE')) {
-                Inertia::share('layoutProps.metaTitle', '编辑用户组');
-                $this->setActiveNid(36);
-                $this->assign('nid', 36);
-                $this->inertia('Role/Form', [
-                    'action_list' => $this->action_list,
-                    'module_list' => $this->module_list,
-                    'controller_list' => $this->controller_list,
+            Inertia::share('layoutProps.metaTitle', '编辑用户组');
+            $this->setActiveNid(36);
+            $this->assign('nid', 36);
+            $this->inertia('Role/Form', [
+                'action_list' => $this->action_list,
+                'module_list' => $this->module_list,
+                'controller_list' => $this->controller_list,
 
-                    'initialValues' => $vo,
+                'initialValues' => $vo,
 
-                    'submit' => [
-                        'url' => U('', ['id' => $id]),
-                        'data' => ['id' => $id]
-                    ],
-                ]);
-                return;
-            }
-
-            $this->assign('vo', $vo);
-            $this->display();
+                'submit' => [
+                    'url' => U('', ['id' => $id]),
+                    'data' => ['id' => $id]
+                ],
+            ]);
         }
     }
 
@@ -241,12 +237,12 @@ class RoleController extends GyListController
         if (!$ids) {
             $this->error('请选择要禁用的数据');
         }
-        $r = parent::_forbid($ids);
+        $r = Role::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::FORBIDDEN_STATUS]);
         if ($r !== false) {
-            sysLogs('用户组id: ' . $ids . ' 禁用');
+            sysLogs('用户组id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 禁用');
             $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
         } else {
-            $this->error($this->_getError());
+            $this->error('禁用失败');
         }
     }
 
@@ -256,14 +252,13 @@ class RoleController extends GyListController
         if (!$ids) {
             $this->error('请选择要启用的数据');
         }
-        $r = parent::_resume($ids);
+        $r = Role::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::NORMAL_STATUS]);
         if ($r !== false) {
-            sysLogs('用户组id: ' . $ids . ' 启用');
+            sysLogs('用户组id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 启用');
             $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
         } else {
-            $this->error($this->_getError());
+            $this->error('启用失败');
         }
-
     }
 
     public function delete()
@@ -272,9 +267,9 @@ class RoleController extends GyListController
         if (!$ids) {
             $this->error('请选择要删除的数据');
         }
-        $r = parent::_del($ids);
+        $r = Role::destroy(is_array($ids) ? $ids : explode(',', $ids));
         if ($r === false) {
-            $this->error($this->_getError());
+            $this->error('删除失败');
         } else {
             sysLogs('用户组id: ' . $ids . ' 删除');
             $this->success('删除成功', U(MODULE_NAME . '/' . CONTROLLER_NAME . '/index'));

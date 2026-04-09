@@ -1,9 +1,6 @@
 <?php
 $common_config = array(
-    "QS_ADDONS" => false, //是否要开启插件系统，关闭可以减少数据库访问频率
     'DEFAULT_FILTER'        =>  'htmlspecialchars,trim', // 默认参数过滤方法 用于I函数...
-
-    'AUTOLOAD_NAMESPACE' => array('Addons' => ADDON_PATH), //扩展模块列表
     'SHOW_PAGE_TRACE'       =>  false,
 
     'USER_AUTH_GATEWAY' => '/Admin/Public/login',
@@ -11,8 +8,6 @@ $common_config = array(
     'LOG_RECORD'            =>  true,
 
     'COOKIE_HTTPONLY' => true,
-
-    'JS_ERROR_LOG' => true,
 
     'VAR_PATHINFO' => 'baobao_',
 
@@ -79,10 +74,6 @@ $common_config = array(
     'SHOW_ERROR_MSG'        =>  false,    // 显示错误信息
 
    // 'URL_ROUTER_ON' => true,
-
-    'TMPL_PARSE_STRING' => array(
-        '__ADDONSJS__' => __ROOT__ . '/Public/Addons'
-    ),
 
     'INERTIA' => [
         'ssr_url' => env('INERTIA_SSR_URL'),

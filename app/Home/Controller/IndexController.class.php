@@ -8,6 +8,7 @@ namespace Home\Controller;
  */
 
 use Home\Lib\Foo;
+use App\Models\User;
 
 class IndexController extends \Gy_Library\GyController{
 
@@ -40,5 +41,15 @@ class IndexController extends \Gy_Library\GyController{
     public function mock(){
         $foo = app()->make(Foo::class);
         echo $foo->say();
+    }
+
+    public function debug(){
+        $user = new User();
+        $r1 = $user->where('status', 0)->get();
+
+        $r2 = User::where('status', 0)
+            ->get();
+
+        dd($r1, $r2);
     }
 }

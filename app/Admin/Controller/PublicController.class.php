@@ -80,7 +80,7 @@ class PublicController extends Controller {
 
     //后台登录检测
     public function adminLogin($uid, $pwd) {
-        
+
         if (isShowVerify()) {
             //如果有验证码 则验证
             $verify = I('post.verify');
@@ -89,27 +89,17 @@ class PublicController extends Controller {
                 return false;
             }
         }
-        
+
         $user = new User();
 
-        if(filter_var($uid, FILTER_VALIDATE_EMAIL) === false){
-
-            $user->where('nick_name', $uid);
-        }
-        else{
-            $user->where('email', $uid);
-        }
-
-        $user_ent = $user->first();
-        
-        
-        $r = $user->adminLogin($uid, $user->hashPwd($pwd, $user_ent->salt));
+        // 直接传递原始密码，不再预先hash
+        $r = $user->adminLogin($uid, $pwd);
 
         if ($r === false) {
 
             $this->loginErr($user->error);
             return false;
-        } 
+        }
         return true;
     }
     
@@ -125,9 +115,9 @@ class PublicController extends Controller {
             }
         }
         
-        $user_model = D('User');
+        $user_model = new User();
         $user_ent = $user_model->getUserByEmailOrNickName($uid);
-        $r = $user_model->homeLogin($uid, $user_model->hashPwd($pwd, $user_ent['salt']), $third_login);
+        $r = $user_model->homeLogin($uid, $user_model->hashPwd($pwd), $third_login);
 
         if ($r === false) {
 

@@ -2,6 +2,7 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Qscmf\Lib\DBCont;
+use App\Models\Queue;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,8 +23,7 @@ class QueueController extends GyListController {
         }
         if(isset($get_data['key']) && $get_data['word']){
             $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $model = D('Queue');
-                $count = $model->getListForCount($map);
+        }        $count = Queue::getListForCount($map);
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
             $page = new \Gy_Library\GyPage($count);
@@ -32,7 +32,7 @@ class QueueController extends GyListController {
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
 
-        $data_list = $model->getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
+        $data_list = Queue::getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
 
         foreach($data_list as &$v){
 
@@ -71,9 +71,9 @@ class QueueController extends GyListController {
 
     public function refreshWait(){
         $map['status'] = DBCont::JOB_STATUS_WAITING;
-        $data_list = D('Queue')->getList($map);
+        $data_list = Queue::getList($map);
         foreach($data_list as $data){
-            D('Queue')->refreshStatusOne($data['id']);
+            Queue::refreshStatusOne($data['id']);
         }
         $this->success("刷新完毕", U('admin/queue/index'));
     }
@@ -81,9 +81,9 @@ class QueueController extends GyListController {
     public function rebuild(){
         $job_id = I('get.id');
 
-        $r = D('Queue')->rebuildJobOne($job_id);
-        if($r === false){
-            $this->error(D("Queue")->getError());
+        $r = Queue::rebuildJobOne($job_id);
+        if($r['result'] === false){
+            $this->error($r['error']);
         }
         else{
             $this->success("重启成功", U('admin/queue/index'));
@@ -91,10 +91,9 @@ class QueueController extends GyListController {
     }
 
     public function rebuildAllFail(){
-        $map['status'] = DBCont::JOB_STATUS_FAILED;
-        $queue_list = D('Queue')->where($map)->select();
+        $queue_list = Queue::where('status', DBCont::JOB_STATUS_FAILED)->get()->toArray();
         foreach($queue_list as $q){
-            D('Queue')->rebuildJobOne($q['id']);
+            Queue::rebuildJobOne($q['id']);
         }
         $this->success('重启完毕', U('admin/queue/index'));
     }

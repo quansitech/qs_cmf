@@ -23,7 +23,7 @@ class TemplateSectionBehavior extends \Think\Behavior{
         // dump($matches);
        	if(!$find) return $content;
        	for ($i=0, $iMax = count($matches[0]); $i < $iMax; $i++) {
-            if($count = count($this->section[$matches[1][$i]]))
+            if($count = count($this->section[$matches[1][$i]] ?? []))
                 for ($j=0; $j < $count; $j++) { 
                     $content = str_replace($matches[0][$i],$this->section[$matches[1][$i]][$j],$content);
                 }

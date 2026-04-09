@@ -26,3 +26,13 @@ node_modules
 /www/Public/hot
 /www/Public/backend-hot
 /lara/bootstrap/ssr
+
+composer.lock
+/www/Public/.gitignore
+
+CLAUDE.md*.py\nstats.html
+/.claude
+/.omc
+CLAUDE.md
+AGENTS.md
+/openspec

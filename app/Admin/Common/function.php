@@ -13,6 +13,6 @@ function get_config_group($group=''){
 
 //获取后台的网页标题
 function webSiteTitle(){
-    $node_name = D('Node')->getNodeName(MODULE_NAME, CONTROLLER_NAME, ACTION_NAME);
+    $node_name = \App\Models\Node::getNodeName(MODULE_NAME, CONTROLLER_NAME, ACTION_NAME);
     return  $node_name == '' ? C('WEB_SITE_TITLE') : $node_name. ' - ' . C('WEB_SITE_TITLE');
 }

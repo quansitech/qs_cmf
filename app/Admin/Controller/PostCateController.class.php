@@ -2,6 +2,7 @@
 namespace Admin\Controller;
 use Gy_Library\GyListController;
 use Gy_Library\DBCont;
+use App\Models\PostCate;
 use Qscmf\Lib\Cms\CateHelperTrait;
 
 //自动生成代码
@@ -34,8 +35,7 @@ class PostCateController extends GyListController{
         }        
         if(isset($get_data['key']) && $get_data['word']){
             $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $model = D('PostCate');
-                $data_list = $model->getList($map, 'sort asc');
+        }        $data_list = PostCate::getList($map, 'sort asc');
         $tree = list_to_tree($data_list);
         $data_list = genSelectByTree($tree);
         foreach($data_list as $k=>$v){
@@ -70,7 +70,7 @@ class PostCateController extends GyListController{
         if(IS_POST){
             $data = I('post.');
             foreach($data['id'] as $k=>$v){
-                $save_data['sort'] = $data['sort'][$k];                D('PostCate')->where('id=' . $v)->save($save_data);
+                $save_data['sort'] = $data['sort'][$k];                PostCate::where('id', $v)->update($save_data);
             }
             $this->success('保存成功', U('index'));
         }
@@ -81,10 +81,9 @@ class PostCateController extends GyListController{
             parent::autoCheckToken();
             $data = I('post.');
 
-            $model = D('PostCate');
-            $r = $model->createAdd($data);
+            $r = PostCate::createAdd($data);
             if($r === false){
-                $this->error($model->getError());
+                $this->error('新增失败');
             }
             else{
                 sysLogs('新增分类id:' . $r);
@@ -105,7 +104,7 @@ class PostCateController extends GyListController{
             $builder->setMetaTitle('新增分类') 
                     ->setNID(933)
                     ->setPostUrl(U('add'))    
-                    ->addFormItem('name', 'text', '分类','', '')->addFormItem('pid', 'select', '上级分类','', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '分类封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '分类详情','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())                    ->build();
+                    ->addFormItem('name', 'text', '分类','', '')->addFormItem('pid', 'select', '上级分类','', PostCate::getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要','', '')->addFormItem('cover_id', 'picture', '分类封面','', '')->addFormItem('sort', 'num', '排序','', '')->addFormItem('url', 'text', 'url','', '')->addFormItem('content', 'ueditor', '分类详情','', '')->addFormItem('status', 'select', '状态','', DBCont::getStatusList())                    ->build();
         }
     }
     
@@ -114,19 +113,18 @@ class PostCateController extends GyListController{
             parent::autoCheckToken();
             $m_id = I('post.id');
             $data = I('post.');
-            $model = D('PostCate');
             if(!$m_id){
                 E('缺少分类ID');
             }
-            
-            $ent = $model->getOne($m_id);
+
+            $ent = PostCate::getOne($m_id);
             if(!$ent){
                 E('不存在分类');
             }
             
             $ent['name'] = $data['name'];$ent['pid'] = $data['pid'];$ent['summary'] = $data['summary'];$ent['cover_id'] = $data['cover_id'];$ent['sort'] = $data['sort'];$ent['url'] = $data['url'];$ent['content'] = $data['content'];$ent['status'] = $data['status'];
-            if($model->createSave($ent) === false){
-                $this->error($model->getError());
+            if(PostCate::createSave($ent) === false){
+                $this->error('修改失败');
             }
             else{
                 sysLogs('修改分类id:' . $m_id);
@@ -134,7 +132,7 @@ class PostCateController extends GyListController{
             }
         } else {
 
-            $info = D('PostCate')->getOne($id);
+            $info = PostCate::getOne($id);
 
 
             $builder = new \Qscmf\Builder\FormBuilder();
@@ -142,8 +140,8 @@ class PostCateController extends GyListController{
                     ->setPostUrl(U('edit'))    
                     ->setNID(933)
                     ->addFormItem('id', 'hidden', 'ID')
-                    ->addFormItem('name', 'text', '分类', '', '')->addFormItem('pid', 'select', '上级分类', '', D("PostCate")->getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '分类封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '分类详情', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    ->setFormData($info)
-                    ->setFormItemFilter($this->formItemFilter($this->option))
+                    ->addFormItem('name', 'text', '分类', '', '')->addFormItem('pid', 'select', '上级分类', '', PostCate::getParentOptions("id","name",$id))->addFormItem('summary', 'textarea', '摘要', '', '')->addFormItem('cover_id', 'picture', '分类封面', '', '')->addFormItem('sort', 'num', '排序', '', '')->addFormItem('url', 'text', 'url', '', '')->addFormItem('content', 'ueditor', '分类详情', '', '')->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())                    ->setFormData($info)
+                    // ->setFormItemFilter($this->formItemFilter($this->option))  // v15: Eloquent model 不兼容 CateHelperTrait 的 Think\Model 检查
                     ->build();
         }
     }
@@ -153,13 +151,13 @@ class PostCateController extends GyListController{
         if(!$ids){
             $this->error('请选择要禁用的数据');
         }
-        $r = parent::_forbid($ids);
+        $r = PostCate::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::FORBIDDEN_STATUS]);
         if($r !== false){
             sysLogs('分类id: ' . $ids . ' 禁用');
             $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
         }
         else{
-            $this->error($this->_getError());
+            $this->error('禁用失败');
         }
     }
     
@@ -168,13 +166,13 @@ class PostCateController extends GyListController{
         if(!$ids){
             $this->error('请选择要启用的数据');
         }
-        $r = parent::_resume($ids);
+        $r = PostCate::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::NORMAL_STATUS]);
         if($r !== false){
             sysLogs('分类id: ' . $ids . ' 启用');
             $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
         }
         else{
-            $this->error($this->_getError());
+            $this->error('启用失败');
         }
         
     }
@@ -184,9 +182,9 @@ class PostCateController extends GyListController{
         if(!$ids){
             $this->error('请选择要删除的数据');
         }
-        $r = parent::_del($ids);
+        $r = PostCate::destroy(is_array($ids) ? $ids : explode(',', $ids));
         if($r === false){
-            $this->error($this->_getError());
+            $this->error('删除失败');
         }
         else{
             sysLogs('分类id: ' . $ids . ' 删除');

@@ -23,21 +23,6 @@ class InitDatabase extends Migration
             $table->collation = 'utf8mb4_general_ci';
         });
 
-        Schema::create('addons', function (Blueprint $table) {
-            $table->unsignedInteger('id', true)->comment('主键');
-            $table->string('name', 40)->comment('插件名或标识');
-            $table->string('title', 20)->default('')->comment('中文名');
-            $table->text('description')->comment('插件描述');
-            $table->tinyInteger('status')->default(1)->comment('状态');
-            $table->text('config')->default(null)->nullable()->comment('配置');
-            $table->string('author', 40)->default('')->comment('作者');
-            $table->string('version', 20)->default('')->comment('版本号');
-            $table->unsignedInteger('create_time')->default(0)->comment('安装时间');
-            $table->unsignedTinyInteger('has_adminlist')->default(0)->comment('是否有后台列表');
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
-        });
-
         Schema::create('area', function(Blueprint $table){
             $table->integer('id')->primary();
             $table->string('cname', 100);
@@ -53,20 +38,6 @@ class InitDatabase extends Migration
         $areas = require database_path('migrations/data/area_data.php');
 
         DB::table('area')->insert($areas);
-
-        Schema::create('coder_log', function(Blueprint $table){
-            $table->integer('id', true);
-            $table->string('coder_name', 30);
-            $table->text('content');
-            $table->integer('create_date');
-            $table->string('name', 50);
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
-        });
-
-        $coderLogs = require database_path('migrations/data/coder_log_data.php');;
-
-        DB::table('coder_log')->insert($coderLogs);
 
         Schema::create('config', function(Blueprint $table){
             $table->unsignedInteger('id', true)->comment('配置ID');
@@ -86,12 +57,11 @@ class InitDatabase extends Migration
         });
 
         $configs = require database_path('migrations/data/config_data.php');
-
-
+        $configs = array_map(function($c){ unset($c['id']); return $c; }, $configs);
         DB::table('config')->insert($configs);
 
         Schema::create('file_pic', function(Blueprint $table){
-            $table->bigIncrements('id');
+            $table->bigIncrementsForQscmf('id');
             $table->string('title', 200)->default('');
             $table->string('file', 100)->default('');
             $table->string('url', 500)->default('');
@@ -105,37 +75,6 @@ class InitDatabase extends Migration
             $table->integer('owner')->default(0);
             $table->integer('upload_date')->default(0);
             $table->tinyInteger('seed')->default(0);
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
-        });
-
-
-        Schema::create('hooks', function(Blueprint $table){
-            $table->integerIncrements('id');
-            $table->string('name', 100);
-            $table->string('desc', 500);
-            $table->integer('update_date');
-            $table->tinyInteger('status');
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
-        });
-
-        $hooks = require database_path('migrations/data/hooks_data.php');
-
-
-        DB::table('hooks')->insert($hooks);
-
-        Schema::create('js_errlog', function(Blueprint $table){
-            $table->integerIncrements('id');
-            $table->string('browser', 200)->default('');
-            $table->string('msg', 500)->default('');
-            $table->string('file', 500)->default('');
-            $table->unsignedInteger('line_no')->default(0);
-            $table->unsignedInteger('col_no')->default(0);
-            $table->string('stack', 2000)->default('');
-            $table->string('user_agent', 1000)->default('');
-            $table->string('url', 500)->default('');
-            $table->integer('create_date')->default(0);
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
         });
@@ -157,8 +96,7 @@ class InitDatabase extends Migration
         });
 
         $menus = require database_path('migrations/data/menu_data.php');
-
-        DB::table('menu')->insert($menus);
+        $menuIdMap = $this->insertWithAutoIncrement('menu', $menus, ['pid']);
 
         Schema::create('node', function(Blueprint $table){
             $table->unsignedSmallInteger('id', true);
@@ -177,8 +115,7 @@ class InitDatabase extends Migration
         });
 
         $nodes = require database_path('migrations/data/node_data.php');
-
-        DB::table('node')->insert($nodes);
+        $this->insertWithAutoIncrement('node', $nodes, ['pid'], ['menu_id' => $menuIdMap]);
 
         Schema::create('post', function(Blueprint $table){
             $table->integerIncrements('id');
@@ -270,10 +207,9 @@ class InitDatabase extends Migration
         });
 
         Schema::create('user', function(Blueprint $table){
-            $table->bigIncrements('id');
+            $table->bigIncrementsForQscmf('id');
             $table->string('nick_name', 30);
-            $table->integer('salt');
-            $table->string('pwd', 50);
+            $table->string('pwd', 255)->comment('密码hash（password_hash）');
             $table->string('email', 100)->comment('E-mail');
             $table->string('telephone', 50)->comment('手机号码');
             $table->integer('register_date');
@@ -285,10 +221,8 @@ class InitDatabase extends Migration
         });
 
         $user = [
-            'id' => 1,
             'nick_name' => 'admin',
-            'salt' => 534307,
-            'pwd' => 'e9dc5bd1bad0797c878e7010e3ef5937',
+            'pwd' => '$2y$10$uzQAmdyLqKe.XKjg74ibvufh5uF2ERnazogAfE9K3rOw2UDCWqWqK',
             'email' => 'admin@admin.com',
             'telephone' => '15300000000',
             'register_date' => 1464594432,
@@ -301,13 +235,58 @@ class InitDatabase extends Migration
         $tablePrefix = DB::getTablePrefix();
         $node_v = <<<SQL
 create view {$tablePrefix}node_v as
-select n3.id, n1.name "module",n2.name "controller",n3.name "action", CONCAT(n1.name, '.', n2.name, '.', n3.name) node, CONCAT(n1.title, '.', n2.title, '.', n3.title) title 
+select n3.id, n1.name "module",n2.name "controller",n3.name "action", CONCAT(n1.name, '.', n2.name, '.', n3.name) node, CONCAT(n1.title, '.', n2.title, '.', n3.title) title
 from {$tablePrefix}node n3
 inner join {$tablePrefix}node n2 on n2.id=n3.pid and n2.status=1 and n2.level=2
 inner join {$tablePrefix}node n1 on n1.id=n2.pid and n1.status=1 and n1.level=1
 where n3.level=3 and n3.status=1;
 SQL;
         DB::unprepared($node_v);
+    }
+
+    /**
+     * 插入数据并自动建立ID映射关系
+     * 按 level 排序确保父记录先插入，将旧ID映射到自增ID
+     *
+     * @param string $table 表名
+     * @param array $records 包含 'id' 和 'level' 字段的记录数组
+     * @param array $fkFields 需要映射的自身外键字段（如 ['pid']）
+     * @param array $externalIdMap 外部表ID映射 [字段名 => [旧id => 新id]]
+     * @return array 旧ID到新ID的映射
+     */
+    protected function insertWithAutoIncrement(string $table, array $records, array $fkFields = ['pid'], array $externalIdMap = []): array
+    {
+        usort($records, function($a, $b) {
+            $levelA = intval($a['level'] ?? 0);
+            $levelB = intval($b['level'] ?? 0);
+            if ($levelA !== $levelB) {
+                return $levelA - $levelB;
+            }
+            return intval($a['id']) - intval($b['id']);
+        });
+
+        $idMap = [];
+        foreach ($records as $record) {
+            $oldId = $record['id'];
+            unset($record['id']);
+
+            foreach ($fkFields as $fk) {
+                if (!empty($record[$fk]) && isset($idMap[$record[$fk]])) {
+                    $record[$fk] = $idMap[$record[$fk]];
+                }
+            }
+
+            foreach ($externalIdMap as $field => $mapping) {
+                if (!empty($record[$field]) && isset($mapping[$record[$field]])) {
+                    $record[$field] = $mapping[$record[$field]];
+                }
+            }
+
+            $newId = DB::table($table)->insertGetId($record);
+            $idMap[$oldId] = $newId;
+        }
+
+        return $idMap;
     }
 
     /**
@@ -319,15 +298,11 @@ SQL;
     {
         $tablePrefix = DB::getTablePrefix();
         DB::unprepared('drop view if exists ' . $tablePrefix . 'node_v');
-        
+
         Schema::dropIfExists('access');
-        Schema::dropIfExists('addons');
         Schema::dropIfExists('area');
-        Schema::dropIfExists('coder_log');
         Schema::dropIfExists('config');
         Schema::dropIfExists('file_pic');
-        Schema::dropIfExists('hooks');
-        Schema::dropIfExists('js_errlog');
         Schema::dropIfExists('menu');
         Schema::dropIfExists('node');
         Schema::dropIfExists('post');

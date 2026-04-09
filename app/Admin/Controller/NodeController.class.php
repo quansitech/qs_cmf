@@ -1,105 +1,116 @@
 <?php
 
 namespace Admin\Controller;
+use App\Models\Node;
+use App\Models\Menu;
 use Gy_Library\DBCont;
 use Gy_Library\GyListController;
+use AntdAdmin\Component\Table;
+use AntdAdmin\Component\Table\Pagination;
+use AntdAdmin\Component\Tabs;
+use AntdAdmin\Component\Form;
+use AntdAdmin\Component\Modal\Modal;
 
 class NodeController extends GyListController {
 
     public function index($status = DBCont::NORMAL_STATUS, $level = DBCont::LEVEL_ACTION){
-        // 搜索
         $keyword = I('keyword', '', 'string');
+        $get_data = I('get.');
+
+        $query = Node::query();
+
         if(!empty($keyword)){
-            $node_ent = D('Node')->getByName($keyword);
-            $map['pid'] = $node_ent['id'];
+            $node_ent = Node::getNode(['name' => $keyword]);
+            if($node_ent){
+                $query->where('pid', $node_ent['id']);
+            }
         }
 
-        $get_data = I('get.');
-        if(isset($get_data['key']) && $get_data['word']){
+        if(isset($get_data['key']) && !empty($get_data['word'])){
             switch($get_data['key']){
               case 'controller':
-                $s_map['level'] = DBCont::LEVEL_CONTROLLER;
-                $s_map['name'] = $get_data['word'];
-                $s_map['status'] = DBCont::NORMAL_STATUS;
-                $pids = D('Node')->where($s_map)->getField('id', true);
-                $map['pid'] = array('in', $pids);
+                $s_map = [
+                    'level' => DBCont::LEVEL_CONTROLLER,
+                    'name' => $get_data['word'],
+                    'status' => DBCont::NORMAL_STATUS
+                ];
+                $pids = Node::getNodeList($s_map);
+                $pid_arr = array_column($pids, 'id');
+                $query->whereIn('pid', $pid_arr);
                 break;
               default:
-                $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
+                $query->where($get_data['key'], 'like', '%' . $get_data['word'] . '%');
                 break;
             }
-
         }
 
-        $map['level'] = $level;
-        $map['status'] = $status;
+        $query->where('level', $level)->where('status', $status);
 
-        $node_model = D('Node');
-        $count = $node_model->getListForCount($map);
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
-            $page = new \Gy_Library\GyPage($count);
+            $per_page = 20;
         }
-        else{
-            $page = new \Gy_Library\GyPage($count, $per_page);
+        $nodes = $query->orderBy('id', 'desc')->paginate($per_page);
+
+        $page = new Pagination($nodes->currentPage(), $nodes->perPage(), $nodes->total());
+
+        $data_list = collect($nodes->items())->map(function($item){
+            $node = $item->toArray();
+
+            $menu_ent = Menu::getOne($node['menu_id']);
+            $node['menu'] = $menu_ent ? $menu_ent['title'] : '';
+
+            $controller_ent = Node::getOne($node['pid']);
+            $node['controller'] = $controller_ent ? $controller_ent['name'] : '';
+
+            $module_ent = Node::getOne($controller_ent['pid']);
+            $node['module'] = $module_ent ? $module_ent['name'] : '';
+
+            return $node;
+        });
+
+        $table = new Table();
+        $table->setMetaTitle('节点管理')
+            ->actions(function(Table\ActionsContainer $actions) use ($status){
+                $actions->button('添加')->modal((new Modal())->setUrl(U('add'))->setWidth(1080)->setTitle('新增节点'));
+                if($status == DBCont::NORMAL_STATUS){
+                    $actions->forbid();
+                }else{
+                    $actions->resume();
+                }
+                $actions->delete();
+            })
+            ->columns(function (Table\ColumnsContainer $container){
+                $container->text('id', 'ID');
+                $container->text('name', '节点名称');
+                $container->text('title', '节点标题');
+                $container->text('sort', '排序');
+                $container->text('menu', '菜单');
+                $container->text('controller', '控制器');
+                $container->text('module', '模块');
+                $container->action('', '操作')->actions(function(Table\ColumnType\ActionsContainer $container){
+                    $container->link('编辑')->setHref(U('edit', ['id' => '__id__']));
+                    $container->forbid();
+                    $container->delete();
+                });
+            })
+            ->setDataSource($data_list)
+            ->setPagination($page);
+
+        $tabs = new Tabs();
+        $user_status_list = DBCont::getStatusList();
+        foreach ($user_status_list as $key => $val) {
+            if ($key == $status) {
+                $tabs->addTab('tab_' . $key, $val, $table);
+            } else {
+                $tabs->addTab('tab_' . $key, $val, null, U('index', ['status' => $key]));
+            }
         }
+        $tabs->setDefaultActiveKey('tab_' . $status);
 
-        $data_list = $node_model->getListForPage($map, $page->nowPage, $page->listRows, 'id desc');
-
-        foreach($data_list as &$v){
-            $menu_ent = D('Menu')->getOne($v['menu_id']);
-            $v['menu'] = $menu_ent['title'];
-
-            $controller_ent = D('Node')->getOne($v['pid']);
-            $v['controller'] = $controller_ent['name'];
-
-            $module_ent = D('Node')->getOne($controller_ent['pid']);
-            $v['module'] = $module_ent['name'];
-        }
-
-
-        // 设置Tab导航数据列表
-        $status_list = DBCont::getStatusList();
-        foreach ($status_list as $key => $val) {
-            $tab_list[$key]['title'] = $val;
-            $tab_list[$key]['href']  = U('index', array('status' => $key));
-        }
-
-        // 使用Builder快速建立列表页面。
-        $builder = new \Qscmf\Builder\ListBuilder();
-
-        $builder = $builder->setMetaTitle('节点管理')  // 设置页面标题
-                                    ->addTopButton('addnew')   // 添加新增按钮
-                                    ->addTopButton('self', array('title' => '权限点检查', 'href' => U('authCheck')));
-        switch($status){
-            case DBCont::NORMAL_STATUS;
-                $builder = $builder->addTopButton('forbid');   // 添加禁用按钮
-                break;
-            case DBCont::FORBIDDEN_STATUS;
-                $builder = $builder->addTopButton('resume');   // 添加启用按钮
-                break;
-            default:
-                break;
-        }
-
-        $builder->addTopButton('delete')   // 添加删除按钮
-        ->addSearchItem('', 'select_text', '搜索内容', array('name'=>'节点名称', 'controller' => '控制器', 'title' => '节点标题'))
-        ->setNID(28)
-        ->setTabNav($tab_list, $status)  // 设置页面Tab导航
-        ->addTableColumn('id', 'ID')
-        ->addTableColumn('name', '节点名称')
-        ->addTableColumn('title', '节点标题')
-        ->addTableColumn('sort', '排序')
-        ->addTableColumn('menu', '菜单')
-        ->addTableColumn('controller', '控制器')
-        ->addTableColumn('module', '模块')
-        ->addTableColumn('right_button', '操作', 'btn')
-        ->setTableDataList($data_list)     // 数据列表
-        ->setTableDataPage($page->show())  // 数据列表分页
-        ->addRightButton('edit')           // 添加编辑按钮
-        ->addRightButton('forbid')         // 添加禁用/启用按钮
-        ->addRightButton('delete')         // 添加删除按钮
-        ->build();
+        $this->setActiveNid(getNid(MODULE_NAME, CONTROLLER_NAME, 'Index'));
+        $tabs->setMetaTitle('节点管理')
+             ->render();
     }
 
     public function add(){
@@ -112,51 +123,42 @@ class NodeController extends GyListController {
             $data['pid'] = $pid;
             $data['level'] = DBCont::LEVEL_ACTION;
 
-            $node_model = D('Node');
-            if(!$node_model->create($data)){
-                $this->error($node_model->getError());
+            $node = Node::create($data);
+            if(!$node){
+                $this->error('新增失败');
             }
-            $r = $node_model->add();
-            if($r !== false){
-                sysLogs('新增节点ID:' . $r);
-                $this->success(l('add') . l('success'), U(CONTROLLER_NAME . '/index'));
-            }
-            else{
-                $this->error($node_model->getError());
-            }
+
+            sysLogs('新增节点ID:' . $node->id);
+            $this->success(l('add') . l('success'));
         }
         else {
-            // 使用FormBuilder快速建立表单页面。
-            $menu_model = new \Common\Model\MenuModel();
+            $menu_list = Menu::getMenuListGroupByType();
+            $menu_options = $this->flattenMenuOptions($menu_list);
 
-            $menu_list = $menu_model->getMenuListGroupByType();
-            $this->assign('menu_list_json', json_encode($menu_list));
-
-            $builder = new \Qscmf\Builder\FormBuilder();
-
-            $data_list = array(
-            "status"=>1,            );
-
-            if($data_list){
-                $builder->setFormData($data_list);
-            }
-
-            $builder->setMetaTitle('新增节点') //设置页面标题
-                    ->setNID(28)
-                    ->setPostUrl(U('add'))    //设置表单提交地址
-                    ->addFormItem('name', 'text', '名称')
-                    ->addFormItem('title', 'text', '标题')
-                    ->addFormItem('sort', 'text', '排序')
-                    ->addFormItem('icon', 'text', 'icon')
-                    ->addFormItem('remark', 'text', '备注')
-                    ->addFormItem('controller', 'text', '控制器')
-                    ->addFormItem('module', 'text', '模块')
-                    ->addFormItem('menu_type', 'select', '菜单类型', '', array(), '', 'id=cmbType')
-                    ->addFormItem('menu_id', 'select', '菜单', '', array(), '', 'id=cmbMenu')
-                    ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
-                    ->setExtraHtml($this->fetch('Node/add_script'))
-                    ->build();
+            $form = new Form();
+            $form->setMetaTitle('新增节点')
+              ->setSubmitRequest('post', U('add'));
+            $this->handleFormBuild($form, $menu_options)->render();
         }
+    }
+
+    protected function handleFormBuild(Form $form, $menu_list = []){
+        $form->columns(function (Form\ColumnsContainer $columns) use ($menu_list){
+            $columns->text('name', '名称');
+            $columns->text('title', '标题');
+            $columns->text('sort', '排序');
+            $columns->text('icon', 'icon');
+            $columns->text('remark', '备注');
+            $columns->text('controller', '控制器');
+            $columns->text('module', '模块');
+            $columns->select('menu_id', '菜单')->setValueEnum($menu_list);
+            $columns->select('status', '状态')->setValueEnum(DBCont::getStatusList());
+        });
+        $form->actions(function (Form\ActionsContainer $actions){
+            $actions->button('提交')->submit();
+            $actions->button('重置')->reset();
+        });
+        return $form;
     }
 
     public function edit($id){
@@ -164,61 +166,42 @@ class NodeController extends GyListController {
             parent::autoCheckToken();
             $data = I('post.');
 
-            $node_model = new \Common\Model\NodeModel();
-            $node_ent = $node_model->getOne($data['id']);
-
+            $node_ent = Node::getOne($id);
             $data = array_merge($node_ent, $data);
 
             $pid = $this->_handleController();
 
             $data['pid'] = $pid;
-            if(!$node_model->create($data)){
+            unset($data['id']);
 
-                $this->error($node_model->getError());
+            $r = Node::find($id)->update($data);
+            if($r === false){
+                $this->error('修改失败');
             }
 
-            $r = $node_model->edit();
-            if($r !== false){
-                sysLogs('修改节点ID:' . $data['post.id']);
-                $this->success('修改成功', U(CONTROLLER_NAME . '/index'));
-            }
-            else{
-                $this->error($node_model->getError());
-            }
+            sysLogs('修改节点ID:' . $id);
+            $this->success('修改成功', U(CONTROLLER_NAME . '/index'));
         } else {
-            $node_ent = D('Node')->getOne($id);
-            $controller_ent = D('Node')->getOne($node_ent['pid']);
-            $module_ent = D('Node')->getOne($controller_ent['pid']);
+            $node_ent = Node::getOne($id);
+            if(!$node_ent){
+                E('节点不存在');
+            }
+
+            $controller_ent = Node::getOne($node_ent['pid']);
+            $module_ent = Node::getOne($controller_ent['pid']);
             $node_ent['controller'] = $controller_ent['name'];
             $node_ent['module'] = $module_ent['name'];
 
-            $menu_model = new \Common\Model\MenuModel();
+            $cur_menu = Menu::getOne($node_ent['menu_id']);
+            $menu_list = Menu::getMenuListGroupByType();
+            $menu_options = $this->flattenMenuOptions($menu_list);
 
-            $cur_menu = $menu_model->find($node_ent['menu_id']);
-            $menu_list = $menu_model->getMenuListGroupByType();
-            $this->assign('menu_list_json', json_encode($menu_list));
-            $this->assign('cur_menu', $cur_menu);
-
-
-            // 使用FormBuilder快速建立表单页面。
-            $builder = new \Qscmf\Builder\FormBuilder();
-            $builder->setMetaTitle('编辑节点')  // 设置页面标题
-                    ->setNID(28)
-                    ->setPostUrl(U('edit'))    //设置表单提交地址
-                    ->addFormItem('id', 'hidden', 'ID')
-                    ->addFormItem('name', 'text', '名称')
-                    ->addFormItem('title', 'text', '标题')
-                    ->addFormItem('sort', 'text', '排序')
-                    ->addFormItem('icon', 'text', 'icon')
-                    ->addFormItem('remark', 'text', '备注')
-                    ->addFormItem('controller', 'text', '控制器')
-                    ->addFormItem('module', 'text', '模块')
-                    ->addFormItem('menu_type', 'select', '菜单类型', '', array(), '', 'id=cmbType')
-                    ->addFormItem('menu_id', 'select', '菜单', '', array(), '', 'id=cmbMenu')
-                    ->addFormItem('status', 'select', '状态', '', DBCont::getStatusList())
-                    ->setFormData($node_ent)
-                    ->setExtraHtml($this->fetch('Node/edit_script'))
-                    ->build();
+            $form = new Form();
+            $form->setMetaTitle('编辑节点')
+              ->setSubmitRequest('post', U('edit', ['id' => $id]))
+              ->setInitialValues($node_ent);
+            $this->setActiveNid(getNid(MODULE_NAME, CONTROLLER_NAME, 'Index'));
+            $this->handleFormBuild($form, $menu_options)->render();
         }
     }
 
@@ -227,13 +210,13 @@ class NodeController extends GyListController {
         if(!$ids){
             $this->error('请选择要禁用的数据');
         }
-        $r = parent::_forbid($ids);
+        $r = Node::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::FORBIDDEN_STATUS]);
         if($r !== false){
-            sysLogs('Node id: ' . $ids . ' 禁用');
-            $this->success('禁用成功', U(CONTROLLER_NAME . '/index'));
+            sysLogs('Node id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 禁用');
+            $this->success('禁用成功');
         }
         else{
-            $this->error($this->_getError());
+            $this->error('禁用失败');
         }
     }
 
@@ -242,15 +225,14 @@ class NodeController extends GyListController {
         if(!$ids){
             $this->error('请选择要启用的数据');
         }
-        $r = parent::_resume($ids);
+        $r = Node::whereIn('id', is_array($ids) ? $ids : explode(',', $ids))->update(['status' => DBCont::NORMAL_STATUS]);
         if($r !== false){
-            sysLogs('Node id: ' . $ids . ' 启用');
-            $this->success('启用成功', U(CONTROLLER_NAME . '/index'));
+            sysLogs('Node id: ' . (is_array($ids) ? implode(',', $ids) : $ids) . ' 启用');
+            $this->success('启用成功');
         }
         else{
-            $this->error($this->_getError());
+            $this->error('启用失败');
         }
-
     }
 
     public function delete(){
@@ -258,18 +240,27 @@ class NodeController extends GyListController {
         if(!$ids){
             $this->error('请选择要删除的数据');
         }
-        $r = parent::_del($ids);
+        $r = Node::destroy(is_array($ids) ? $ids : explode(',', $ids));
         if($r === false){
-            $this->error($this->_getError());
+            $this->error('删除失败');
         }
         else{
             sysLogs('Node id: ' . $ids . ' 删除');
-            $this->success('删除成功', U(MODULE_NAME . '/' . CONTROLLER_NAME . '/index'));
+            $this->success('删除成功');
         }
     }
 
+    protected function flattenMenuOptions($menu_list){
+        $options = [0 => '-'];
+        foreach($menu_list as $type => $menus){
+            foreach($menus as $menu){
+                $options[$menu['id']] = $menu['title'];
+            }
+        }
+        return $options;
+    }
+
     private function _handleController(){
-        //控制器必填
         if(!I('post.controller')){
             $this->error('控制器不能为空');
         }
@@ -280,17 +271,13 @@ class NodeController extends GyListController {
             $this->error('必须填写英文');
         }
 
-        $node = new \Common\Model\NodeModel();
+        $controller_map = [
+            'name' => $controller,
+            'level' => DBCont::LEVEL_CONTROLLER
+        ];
 
-        $controller_map = array();
-        $controller_map['name'] = $controller;
-        $controller_map['level'] = DBCont::LEVEL_CONTROLLER;
-
-        $controller_node = $node->getNode($controller_map);
+        $controller_node = Node::getNode($controller_map);
         if(!$controller_node){
-            //控制器不存在，自动完成代码添加，并检查模块，如没有也一并添加
-
-            //检查是否有输入模块名
             if(!I('post.module')){
                 $this->error('新建控制器时,必须填写模块名!');
             }
@@ -301,14 +288,13 @@ class NodeController extends GyListController {
                 $this->error('必须填写英文');
             }
 
-            $module_map = array();
-            $module_map['name'] = $module;
-            $module_map['level'] = DBCont::LEVEL_MODULE;
+            $module_map = [
+                'name' => $module,
+                'level' => DBCont::LEVEL_MODULE
+            ];
 
-            $module_node = $node->getNode($module_map);
+            $module_node = Node::getNode($module_map);
             if(!$module_node){
-                //模块不存在,自动创建模块代码
-
                 $module_node['id'] = $this->_insertModule($module);
             }
 
@@ -317,65 +303,47 @@ class NodeController extends GyListController {
         return $controller_node['id'];
     }
 
-
     private function _insertModule($module){
-        //GyBuild::buildAppDir(ucfirst($module));
+        $module_node = [
+            'name' => ucfirst($module),
+            'title' => ucfirst($module),
+            'status' => DBCont::NORMAL_STATUS,
+            'pid' => 0,
+            'level' => DBCont::LEVEL_MODULE,
+            'sort' => 0
+        ];
 
-        $node = new \Common\Model\NodeModel();
-        $module_node = array();
-
-        $module_node['name'] = $module;
-        $module_node['title'] = $module;
-        $module_node['status'] = DBCont::NORMAL_STATUS;
-        $module_node['pid'] = 0;
-        $module_node['level'] = DBCont::LEVEL_MODULE;
-
-        if(!$node->create($module_node)){
-            $this->error($node->getError());
+        $node = Node::create($module_node);
+        if(!$node){
+            $this->error('模块创建失败');
         }
-
-        $module_node['id'] = $node->add();
-        if(!$module_node['id']){
-            $this->error($node->getError());
-        }
-        else{
-            return $module_node['id'];
-        }
+        return $node->id;
     }
 
     private function _insertController($module, $module_id, $controller){
-        //GyBuild::buildController(ucfirst($module), ucfirst($controller));
+        $controller_node = [
+            'name' => ucfirst($controller),
+            'title' => ucfirst($controller),
+            'status' => DBCont::NORMAL_STATUS,
+            'pid' => $module_id,
+            'level' => DBCont::LEVEL_CONTROLLER,
+            'sort' => 0
+        ];
 
-        $node = new \Common\Model\NodeModel();
-
-        $controller_node = array();
-        $controller_node['name'] = $controller;
-        $controller_node['title'] = $controller;
-        $controller_node['status'] = DBCont::NORMAL_STATUS;
-        $controller_node['pid'] = $module_id;
-        $controller_node['level'] = DBCont::LEVEL_CONTROLLER;
-
-        if(!$node->create($controller_node)){
-            $this->error($node->getError());
+        $node = Node::create($controller_node);
+        if(!$node){
+            $this->error('控制器创建失败');
         }
-
-        $controller_node['id'] = $node->add();
-        if(!$controller_node['id']){
-            $this->error($node->getError());
-        }
-        else{
-            return $controller_node['id'];
-        }
+        return $node->id;
     }
 
     public function authCheck(){
-
         if(IS_POST){
             $check_module = I('post.module');
             $this->assign('check_module', $check_module);
         }
 
-        $module_list = D('Node')->getModuleList();
+        $module_list = Node::getModuleList();
         $this->assign('module_list', $module_list);
         $this->display();
     }

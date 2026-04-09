@@ -1,6 +1,6 @@
 <?php
 namespace Behaviors;
-use Org\Util\Rbac;
+use Qscmf\Core\QsRbac;
 
 class AuthFilterBehavior extends \Think\Behavior{
     
@@ -48,7 +48,7 @@ class AuthFilterBehavior extends \Think\Behavior{
         
         list($module_name, $controller_name, $action_name) = preg_split('/\./', $auth);
         
-        $access_list = Rbac::getAccessList($auth_id);
+        $access_list = QsRbac::getAccessListForQsRbac($auth_id);
         if(isset($access_list[strtoupper($module_name)][strtoupper($controller_name)][strtoupper($action_name)])){
             return true;
         }

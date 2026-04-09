@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 if(!function_exists('checkGt')){
     function checkGt($value, $gt_value){
@@ -81,16 +82,6 @@ if(!function_exists('showImageByHttp')) {
         $image = $image === false ? imagecreatefromjpeg($file) : $image;
         imagepng($image);
         imagedestroy($image);
-    }
-}
-
-if(!function_exists('addon_t')) {
-    function addon_t($addon_name, $file)
-    {
-        $url = APP_PATH . 'Addons/' . ucfirst($addon_name) . '/View/';
-        $url .= C('DEFAULT_THEME') ? C('DEFAULT_THEME') . '/' : '';
-        $url .= $file . C('TMPL_TEMPLATE_SUFFIX');
-        return $url;
     }
 }
 
@@ -416,8 +407,7 @@ if(!function_exists('isCreditNo')) {
 if(!function_exists('getFile')) {
     function getFile($file_id)
     {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
         if (!$file_pic_ent) {
             return '';
         } else {
@@ -431,8 +421,7 @@ if(!function_exists('getFile')) {
 if(!function_exists('showFileSmallUrl')) {
     function showFileSmallUrl($file_id)
     {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
         if ($file_pic_ent) {
             return injecCdntUrl() . UPLOAD_PATH . '/' . $file_pic_ent['small'];
         }
@@ -444,8 +433,7 @@ if(!function_exists('showFileSmallUrl')) {
 if(!function_exists('showFilePath')) {
     function showFilePath($file_id)
     {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->find($file_id);
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
         if ($file_pic_ent) {
             return UPLOAD_DIR . DIRECTORY_SEPARATOR . $file_pic_ent['file'];
         }
@@ -480,11 +468,10 @@ if(!function_exists('getAreaStrByIds')) {
             return '';
         }
 
-        $area = M('Area');
         $id_arr = explode(',', $ids);
         $area_arr = array();
         foreach ($id_arr as $id) {
-            $ent = $area->where(array('id' => $id))->find();
+            $ent = (array)Capsule::table('area')->where('id', $id)->first();
             $area_arr[] = $ent[$name];
         }
         if (count($area_arr) > 0) {
@@ -498,8 +485,7 @@ if(!function_exists('getAreaStrByIds')) {
 if(!function_exists('getAreaNameByID')) {
     function getAreaNameByID($id, $name = 'cname1')
     {
-        $area = M('Area');
-        $area_ent = $area->find($id);
+        $area_ent = (array)Capsule::table('area')->find($id);
         return $area_ent[$name];
     }
 }
@@ -507,9 +493,7 @@ if(!function_exists('getAreaNameByID')) {
 if(!function_exists('getFullAreaByID')) {
     function getFullAreaByID($id)
     {
-        $area = M('Area');
-
-        $area_ent = $area->find($id);
+        $area_ent = (array)Capsule::table('area')->find($id);
         if ($area_ent['level'] > 1) {
             $p_name = getFullAreaByID($area_ent['upid']);
             return $p_name . ' ' . $area_ent['cname'];
@@ -524,21 +508,19 @@ if(!function_exists('getFullAreaByID')) {
 if(!function_exists('getIdByFullArea')) {
 
     function getIdByFullArea($area_arr){
-        $area = M('Area');
-
         $pid = 0;
         foreach($area_arr as $k=>$v){
             $v = trim($v);
-            $map['cname'] = array('like', '%' . $v . '%');
+            $query = Capsule::table('area')->where('cname', 'like', '%' . $v . '%');
             if($pid !== 0){
-                $map['upid'] = $pid;
+                $query->where('upid', $pid);
             }
-            $area_ent = $area->where($map)->order('id')->select();
-            if(count((array)($area_ent)) === 0){
+            $area_ent = $query->orderBy('id')->get()->toArray();
+            if(count($area_ent) === 0){
                 return false;
             }
             $pid = $area_ent[0]['id'];
-            if (count((array)($area_arr)) === 3){
+            if (count($area_arr) === 3){
                 foreach ($area_ent as &$ent){
                     if ((int)$ent['level'] === $k+1) $pid = $ent['id'];
                 }
@@ -645,32 +627,10 @@ if(!function_exists('getClassNameFromDir')) {
     }
 }
 
-//返回规则类名称
-//function getRuleClass($rule){
-//    return '\\Common\\Rule\\' . $rule;
-//}
-
-//返回钩子绑定的插件
-if(!function_exists('getHookAddons')) {
-    function getHookAddons($hook_name)
-    {
-        $addons_ents = D('Addons')->where(array('status' => \Gy_Library\DBCont::NORMAL_STATUS))->select();
-        $return = array();
-        foreach ($addons_ents as $ent) {
-            $class_name = get_addon_class($ent['name']);
-            $methods = get_class_methods($class_name);
-            if (array_intersect($methods, array($hook_name))) {
-                $return[] = $ent['name'];
-            }
-        }
-        return $return;
-    }
-}
-
 if(!function_exists('getMemberNickName')) {
     function getMemberNickName($member_id)
     {
-        $member_ent = D('TeamMember')->getOne($member_id);
+        $member_ent = (array)Capsule::table('team_member')->where('id', $member_id)->first();
         return $member_ent['nick_name'] != '' ? $member_ent['nick_name'] : $member_ent['name'];
     }
 }
@@ -682,19 +642,27 @@ if(!function_exists('getUserName')) {
             return '系统';
         }
 
-        return D('User')->getUserName($uid);
+        // 使用 Laravel Eloquent User 模型
+        $user = \App\Models\User::select('id', 'nick_name', 'telephone')->find($uid);
+
+        if (!$user) {
+            return null;
+        }
+
+        // 返回昵称，如果昵称为空则返回手机号
+        return $user->nick_name ? $user->nick_name : $user->telephone;
     }
 }
 
 if(!function_exists('getUserRealName')) {
     function getUserRealName($uid)
     {
-        $user_ent = D('User')->getOne($uid);
+        $user_ent = \App\Models\User::getOne($uid);
         if ($user_ent['user_type'] == 'person') {
-            $profile_ent = D('PersonProfile')->getByUid($uid);
+            $profile_ent = (array)Capsule::table('person_profile')->where('uid', $uid)->first();
             $name = $profile_ent['real_name'];
         } else if ($user_ent['user_type'] == 'company') {
-            $company_ent = D('CompanyProfile')->getByUid($uid);
+            $company_ent = (array)Capsule::table('company_profile')->where('uid', $uid)->first();
             $name = $company_ent['contact'];
         }
         return $name;
@@ -704,9 +672,9 @@ if(!function_exists('getUserRealName')) {
 if(!function_exists('getUserRealNameByMobile')) {
     function getUserRealNameByMobile($mobile)
     {
-        $ent = D('User')->where(array('telephone' => $mobile, 'user_type' => 'person'))->find();
+        $ent = \App\Models\User::where('telephone', $mobile)->where('user_type', 'person')->first();
         if ($ent) {
-            return getUserRealName($ent['id']);
+            return getUserRealName($ent->id);
         } else {
             return '';
         }
@@ -716,18 +684,14 @@ if(!function_exists('getUserRealNameByMobile')) {
 if(!function_exists('getMenu')) {
     function getMenu($type)
     {
-        $menu_model = D('Menu');
-
-        return $menu_model->getMenuList($type);
+        return \App\Models\Menu::getMenuList($type);
     }
 }
 
 if(!function_exists('getMenuTree')) {
     function getMenuTree($pid = 0, $type = '', $strip = 0)
     {
-        $menu_model = D('Menu');
-
-        $menu_ents = $menu_model->getMenuList($type, $pid);
+        $menu_ents = \App\Models\Menu::getMenuList($type, $pid);
         $menu_tree = array();
         foreach ($menu_ents as $ent) {
             if ($ent['id'] == $strip) {
@@ -911,8 +875,7 @@ if(!function_exists('getImgByFilePath')) {
 if(!function_exists('convertImgToBase64ByFileId')) {
     function convertImgToBase64ByFileId($file_id, $prefix = '')
     {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
 
         if ($file_pic_ent['security'] == 0) {
             $path = UPLOAD_DIR;
@@ -954,8 +917,7 @@ if(!function_exists('forceDownload')) {
 if(!function_exists('downloadFile')) {
     function downloadFile($file_id)
     {
-        $file_pic = M('FilePic');
-        $file_pic_ent = $file_pic->where(array('id' => $file_id))->find();
+        $file_pic_ent = (array)Capsule::table('file_pic')->where('id', $file_id)->first();
         if ($file_pic_ent) {
             forceDownload(UPLOAD_DIR . '/' . $file_pic_ent['file']);
         }
@@ -988,14 +950,6 @@ if(!function_exists('tree_to_list')) {
             $list = list_sort_by($list, $order, $sortby = 'asc');
         }
         return $list;
-    }
-}
-
-if(!function_exists('get_addon_class')) {
-    function get_addon_class($name)
-    {
-        $class = "Addons\\{$name}\\{$name}Addon";
-        return $class;
     }
 }
 
@@ -1051,37 +1005,6 @@ if(!function_exists('list_sort_by')) {
     }
 }
 
-/**
- * 插件显示内容里生成访问插件的url
- * @param string $url url
- * @param array $param 参数
- */
-if(!function_exists('addons_url')) {
-    function addons_url($url, $param = array())
-    {
-        $url = parse_url($url);
-        $case = C('URL_CASE_INSENSITIVE');
-        $addons = $case ? parse_name($url['scheme']) : $url['scheme'];
-        $controller = $case ? parse_name($url['host']) : $url['host'];
-        $action = trim($case ? strtolower($url['path']) : $url['path'], '/');
-
-        /* 解析URL带的参数 */
-        if (isset($url['query'])) {
-            parse_str($url['query'], $query);
-            $param = array_merge($query, $param);
-        }
-
-        /* 基础参数 */
-        $params = array(
-            '_addons' => $addons,
-            '_controller' => $controller,
-            '_action' => $action,
-        );
-        $params = array_merge($params, $param); //添加额外参数
-
-        return U('Addons/execute', $params);
-    }
-}
 
 if(!function_exists('downImage')) {
     function downImage($url, $file_path)
@@ -1160,7 +1083,7 @@ if(!function_exists('downImageToDB')) {
         $data['upload_date'] = time();
 
         if ($add_db) {
-            $r = D('FilePic')->add($data);
+            $r = Capsule::table('file_pic')->insertGetId($data);
             if ($r === false) {
                 return false;
             } else {
@@ -1205,23 +1128,25 @@ if(!function_exists('sf')) {
 if(!function_exists('getCateNameById')) {
     function getCateNameById($id = 0)
     {
-        $Model = D('Cate');
-        return $Model->where(array('id' => $id,))->getField('name');
+        return Capsule::table('cate')->where('id', $id)->value('name');
     }
 }
 
 if(!function_exists('getCateListByType')) {
     function getCateListByType($type, $sort = '')
     {
-        $Model = D('Cate');
-        return $Model->getCateList($type, $sort);
+        $query = Capsule::table('cate')->where('type', $type);
+        if (!empty($sort)) {
+            $query->orderByRaw($sort);
+        }
+        return $query->get()->toArray();
     }
 }
 
 if(!function_exists('getDonateMonthlyPurpose')) {
     function getDonateMonthlyPurpose($detail_id)
     {
-        $detail_ent = D('DonateMonthlyDetail')->getOne($detail_id);
+        $detail_ent = (array)Capsule::table('donate_monthly_detail')->where('id', $detail_id)->first();
         return getCateNameById($detail_ent['ref_id']);
     }
 }
@@ -1271,21 +1196,21 @@ if(!function_exists('callDBContFun')) {
 if(!function_exists('readDBDataList')) {
     function readDBDataList($model_name, $where = '', $order = '', $limit = '', $fields = '')
     {
-        $model_name = parse_name($model_name);
-        $model = D($model_name);
+        $table = parse_name($model_name);
+        $query = Capsule::table($table);
         if ($where) {
-            $model->where($where);
+            $query = buildQueryFromMap($query, $where);
         }
         if (!empty($order)) {
-            $model->order($order);
+            $query->orderByRaw($order);
         }
         if (!empty($limit)) {
-            $model->limit($limit);
+            $query->limit($limit);
         }
         if ($fields) {
-            return $model->getField($fields, true);
+            return $query->pluck($fields)->toArray();
         }
-        return $model->select();
+        return $query->get()->toArray();
     }
 }
 
@@ -1296,7 +1221,7 @@ if(!function_exists('readDBDataList')) {
 if(!function_exists('getTopParentId')) {
     function getTopParentId($d, $cate_id)
     {
-        $cate_ent = D($d)->where(array('id' => $cate_id))->find();
+        $cate_ent = (array)Capsule::table(parse_name($d))->where('id', $cate_id)->first();
         if ($cate_ent['pid'] != '0') {
             return getTopParentId($d, $cate_ent['pid']);
         } else {
@@ -1309,7 +1234,7 @@ if(!function_exists('getTopParentId')) {
 if(!function_exists('getSecondParentId')) {
     function getSecondParentId($d, $cate_id, $child_cate_id = 0)
     {
-        $cate_ent = D($d)->where(array('id' => $cate_id))->find();
+        $cate_ent = (array)Capsule::table(parse_name($d))->where('id', $cate_id)->first();
         if ($cate_ent['pid'] != '0') {
             return getSecondParentId($d, $cate_ent['pid'], $cate_id);
         } else {
@@ -1324,18 +1249,18 @@ if(!function_exists('readChildren')) {
     function readChildren($model_name, $id = 0, $link_field = 'pid', $order = 'sort asc,id desc')
     {
         static $data_list = array();
-        $model = D($model_name);
-        $model->where('status=' . Gy_Library\DBCont::NORMAL_STATUS . ' and ' . $link_field . '=' . $id);
+        $table = parse_name($model_name);
+        $query = Capsule::table($table)->where('status=' . \Gy_Library\DBCont::NORMAL_STATUS . ' and ' . $link_field . '=' . $id);
         if (!empty($order)) {
-            $model->order($order);
+            $query->orderByRaw($order);
         }
-        $ents = $model->select();
+        $ents = $query->get()->toArray();
         if ($ents) {
             foreach ($ents as $ent) {
                 readChildren($model_name, $ent['id'], $link_field, $order);
             }
         }
-        $data_list[] = D($model_name)->where('status=' . Gy_Library\DBCont::NORMAL_STATUS . ' and id=' . $id)->find();
+        $data_list[] = (array)Capsule::table($table)->whereRaw('status=' . \Gy_Library\DBCont::NORMAL_STATUS . ' and id=' . $id)->first();
         return $data_list;
     }
 }
@@ -1364,7 +1289,7 @@ if(!function_exists('displayTree')) {
 if(!function_exists('readContributeCateName')) {
     function readContributeCateName($model_name, $id)
     {
-        $ent = D($model_name)->getOne($id);
+        $ent = (array)Capsule::table(parse_name($model_name))->where('id', $id)->first();
         if ($ent['pid'] != 0) {
             return readContributeCateName($model_name, $ent['pid']) . '__' . $ent['name'];
         } else {
@@ -1381,18 +1306,18 @@ if(!function_exists('getContributeCate')) {
             foreach (Gy_Library\DBCont::getContributeModelList() as $m) {
                 $map['contribute'] = 1;
                 $map['status'] = 1;
-                $ents = D($m)->where($map)->select();
+                $ents = Capsule::table(parse_name($m))->where($map)->get()->toArray();
                 foreach ($ents as $ent) {
                     $contribute_cate[$m . '_' . $ent['id']] = readContributeCateName($m, $ent['id']);
                 }
             }
             return $contribute_cate;
         } else {
-            $role_arr = D('RoleUser')->where('user_id=' . $uid)->getField('role_id', true);
+            $role_arr = \App\Models\RoleUser::where('user_id', $uid)->pluck('role_id')->toArray();
             foreach (\Gy_Library\DBCont::getContributeModelList() as $m) {
                 $map['contribute'] = 1;
                 $map['status'] = 1;
-                $ents = D($m)->where($map)->select();
+                $ents = Capsule::table(parse_name($m))->where($map)->get()->toArray();
                 foreach ($ents as $ent) {
                     $contribute_role_arr = explode(',', $ent['contribute_role']);
                     if (!array_intersect($contribute_role_arr, $role_arr)) {
@@ -1413,6 +1338,7 @@ if(!function_exists('idToNameFromModel')) {
     function idToNameFromModel($id_str, $model_name, $id_key, $name_key)
     {
         $arr = explode(',', $id_str);
+        $table = parse_name($model_name);
 
         $return_str = '';
         foreach ($arr as $v) {
@@ -1420,7 +1346,7 @@ if(!function_exists('idToNameFromModel')) {
                 continue;
             }
 
-            $name = M($model_name)->where(array($id_key => $v))->getField($name_key);
+            $name = Capsule::table($table)->where($id_key, $v)->value($name_key);
             $return_str .= $name . ',';
         }
         return trim($return_str, ',');
@@ -1449,5 +1375,86 @@ if(!function_exists('idToNameFromDBCont')) {
 
 
 //前台信息展示类函数 end
+
+//Eloquent 查询辅助函数 begin
+
+if(!function_exists('buildQueryFromMap')){
+    /**
+     * 将 ThinkPHP 风格的 $map 条件转换为 Eloquent Query Builder 条件
+     *
+     * 支持的格式：
+     * - $map['field'] = 'value'  → where('field', 'value')
+     * - $map['field'] = ['like', '%val%']  → where('field', 'like', '%val%')
+     * - $map['field'] = ['in', [1,2,3]]  → whereIn('field', [1,2,3])
+     * - $map['field'] = ['not in', [1,2]]  → whereNotIn('field', [1,2])
+     * - $map['field'] = ['neq', $val]  → where('field', '!=', $val)
+     * - $map['field'] = ['gt', $val]  → where('field', '>', $val)
+     * - $map['field'] = ['lt', $val]  → where('field', '<', $val)
+     * - $map['field'] = [['lt', $v1], ['gt', $v2]]  → where('field', '<', $v1)->where('field', '>', $v2)
+     */
+    function buildQueryFromMap($query, array $map){
+        foreach ($map as $key => $value) {
+            if (is_array($value)) {
+                // 检查是否是多条件数组 [['lt', $v1], ['gt', $v2]]
+                if (isset($value[0]) && is_array($value[0])) {
+                    foreach ($value as $condition) {
+                        $query = _applyCondition($query, $key, $condition);
+                    }
+                } elseif (isset($value['_multi'])) {
+                    throw new \InvalidArgumentException("_multi format not supported in buildQueryFromMap, handle in controller directly");
+                } else {
+                    $query = _applyCondition($query, $key, $value);
+                }
+            } else {
+                $query->where($key, $value);
+            }
+        }
+        return $query;
+    }
+}
+
+if(!function_exists('_applyCondition')){
+    function _applyCondition($query, $key, array $condition){
+        $operator = $condition[0] ?? '=';
+        $value = $condition[1] ?? null;
+
+        switch ($operator) {
+            case 'like':
+                $query->where($key, 'like', $value);
+                break;
+            case 'in':
+                $query->whereIn($key, is_array($value) ? $value : explode(',', $value));
+                break;
+            case 'not in':
+                $query->whereNotIn($key, is_array($value) ? $value : explode(',', $value));
+                break;
+            case 'neq':
+                $query->where($key, '!=', $value);
+                break;
+            case 'gt':
+                $query->where($key, '>', $value);
+                break;
+            case 'lt':
+                $query->where($key, '<', $value);
+                break;
+            case 'gte':
+            case 'egt':
+                $query->where($key, '>=', $value);
+                break;
+            case 'lte':
+            case 'elt':
+                $query->where($key, '<=', $value);
+                break;
+            case 'exp':
+                $query->whereRaw($key . ' ' . $value);
+                break;
+            default:
+                $query->where($key, $operator, $value);
+        }
+        return $query;
+    }
+}
+
+//Eloquent 查询辅助函数 end
 
 

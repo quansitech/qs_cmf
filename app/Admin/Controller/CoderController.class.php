@@ -2,34 +2,13 @@
 
 namespace Admin\Controller;
 use Gy_Library\GyListController;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class CoderController extends GyListController{
     
     public function index(){
-
-        $proxy = new \Common\Coder\CoderProxy();
-        $object_list = $proxy->getObjectList();
-        $data_list = array();
-        foreach($object_list as $object){
-            $data['id'] = $object->getCoderName();
-            $data['name'] = $object->getName();
-            $data['desc'] = $object->getDesc();
-            $data['images'] = $this->_parseImg($object->getImages());
-            $data_list[] = $data;
-        }
-        
-        $builder = new \Qscmf\Builder\ListBuilder();
-        
-        $builder->setMetaTitle('代码生成器列表')
-                    ->setNID(301)
-                    ->setCheckBox(false)
-                    ->addTableColumn('name', '名称')
-                    ->addTableColumn('desc', '描述')
-                    ->addTableColumn('images', '效果图')
-                    ->addTableColumn('right_button', '操作', 'btn')
-                    ->setTableDataList($data_list)
-                    ->addRightButton('self', array('title' => '生成器', 'href' => U('generate', array('id' => '__data_id__')) , 'data-id' => '__data_id__', 'class' => 'label label-primary'))
-                    ->build();
+        // CoderProxy 类不存在，此功能暂时禁用
+        $this->error('代码生成器功能暂不可用，CoderProxy 组件缺失');
     }
     
     private function _parseImg($file_paths){
@@ -41,53 +20,32 @@ class CoderController extends GyListController{
     }
     
     public function generate($id){
-        $proxy = new \Common\Coder\CoderProxy();
-        
-        if(IS_POST){
-            $data = I('post.');
-            $coder_object = $proxy->getObject($data['id']);
-            $coder_object->generate();
-        }
-        else{
-            $coder_object = $proxy->getObject($id);
-            $coder_object->displayVew();
-        }
+        $this->error('代码生成器功能暂不可用，CoderProxy 组件缺失');
     }
     
     public function save(){
-        $proxy = new \Common\Coder\CoderProxy();
-        if(IS_POST){
-            $data = I('post.');
-            
-            $coder_object = $proxy->getObject($data['id']);
-            $coder_object->generate(1);
-        }
+        $this->error('代码生成器功能暂不可用，CoderProxy 组件缺失');
     }
     
     public function delete($ids){
         if(!$ids){
             $this->error('请选择要删除的项');
         }
-        $this->dbname = 'CoderLog';
-        $r = parent::_del($ids);
+        $ids_arr = is_array($ids) ? $ids : explode(',', $ids);
+        $r = Capsule::table('coder_log')->whereIn('id', $ids_arr)->delete();
         if($r !== false){
             $this->success('删除成功', U(CONTROLLER_NAME . '/index'));
         }else{
-            $this->error($this->_getError());
+            $this->error('删除失败');
         }
     }
     
     public function coderLog($id){
-        $proxy = new \Common\Coder\CoderProxy();
-        $coder_object = $proxy->getObject($id);
-        $coder_object->logList();
+        $this->error('代码生成器功能暂不可用，CoderProxy 组件缺失');
     }
-    
+
     public function edit($id){
-        $ent = D('CoderLog')->getOne($id);
-        $proxy = new \Common\Coder\CoderProxy();
-        $coder_object = $proxy->getObject($ent['coder_name']);
-        $coder_object->displayVew($id);
+        $this->error('代码生成器功能暂不可用，CoderProxy 组件缺失');
     }
     
 //    public function test(){
