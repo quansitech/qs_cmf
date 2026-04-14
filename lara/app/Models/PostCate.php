@@ -16,28 +16,6 @@ class PostCate extends Model
         return $ent ? $ent->toArray() : null;
     }
 
-    public static function getListForCount($map = [])
-    {
-        $query = self::query();
-        $query = buildQueryFromMap($query, $map);
-        return $query->count();
-    }
-
-    public static function getListForPage($map = [], $page = 1, $rows = 20, $order = 'id desc')
-    {
-        $query = self::query();
-        $query = buildQueryFromMap($query, $map);
-        $offset = ($page - 1) * $rows;
-        return $query->orderByRaw($order)->offset($offset)->limit($rows)->get()->toArray();
-    }
-
-    public static function getList($map = [], $order = 'sort asc')
-    {
-        $query = self::query();
-        $query = buildQueryFromMap($query, $map);
-        return $query->orderByRaw($order)->get()->toArray();
-    }
-
     public static function createAdd($data)
     {
         $ent = self::create($data);

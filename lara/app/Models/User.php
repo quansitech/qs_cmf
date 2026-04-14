@@ -118,7 +118,7 @@ class User extends BaseModel{
         }
 
         //密码验证
-        if (!$this->verifyAndUpgradePwd($pwd, $user)) {
+        if (!$this->verifyPwd($pwd, $user)) {
             $this->error = '密码错误';
             return false;
         }
@@ -163,52 +163,15 @@ class User extends BaseModel{
     }
 
     /**
-     * 密码验证 - 双重验证策略
-     * 优先使用 bcrypt (password_verify)，回退到旧版 md5+salt 验证并自动升级
-     * @param string $ori_pwd 原始密码
-     * @param string $hash 密码hash
-     * @param string|null $salt 旧版密码salt（md5+salt时使用）
-     * @return bool
-     */
-    public function verifyPwd($ori_pwd, $hash, $salt = null){
-        // 优先尝试 bcrypt 验证
-        if (password_verify($ori_pwd, $hash)) {
-            return true;
-        }
-
-        // 回退到旧版 md5+salt 验证
-        if ($salt !== null) {
-            $old_hash = md5(md5($ori_pwd) . $salt);
-            if ($old_hash === $hash) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 验证密码并自动升级（用于 _login 流程）
+     * 验证密码（用于 _login 流程）
      * @param string $ori_pwd 原始密码
      * @param object $user 用户对象（需要包含 pwd 和 salt 字段）
      * @return bool
      */
-    public function verifyAndUpgradePwd($ori_pwd, $user){
+    public function verifyPwd($ori_pwd, $user){
         // 优先尝试 bcrypt 验证
         if (password_verify($ori_pwd, $user->pwd)) {
             return true;
-        }
-
-        // 回退到旧版 md5+salt 验证
-        if (!empty($user->salt)) {
-            $old_hash = md5(md5($ori_pwd) . $user->salt);
-            if ($old_hash === $user->pwd) {
-                // 自动升级为 bcrypt
-                $user->pwd = password_hash($ori_pwd, PASSWORD_DEFAULT);
-                $user->salt = null;
-                $user->save();
-                return true;
-            }
         }
 
         return false;
@@ -286,34 +249,4 @@ class User extends BaseModel{
         return false;
     }
 
-    /**
-     * 等价于 GyListModel::getListForCount()
-     */
-    public static function getListForCount($map = [])
-    {
-        $query = self::query();
-        buildQueryFromMap($query, $map);
-        return $query->count();
-    }
-
-    /**
-     * 等价于 GyListModel::getListForPage()
-     */
-    public static function getListForPage($map = [], $page = 1, $rows = 20, $order = 'id desc')
-    {
-        $query = self::query();
-        buildQueryFromMap($query, $map);
-        $offset = ($page - 1) * $rows;
-        return $query->orderByRaw($order)->offset($offset)->limit($rows)->get()->toArray();
-    }
-
-    /**
-     * 等价于 GyListModel::getList()
-     */
-    public static function getList($map = [], $order = 'id desc')
-    {
-        $query = self::query();
-        buildQueryFromMap($query, $map);
-        return $query->orderByRaw($order)->get()->toArray();
-    }
 }

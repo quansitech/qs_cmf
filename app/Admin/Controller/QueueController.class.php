@@ -14,16 +14,18 @@ class QueueController extends GyListController {
 
     public function index(){
         $get_data = I('get.');
-        $map = array();
+        $query = Queue::query();
         if(isset($get_data['schedule'])){
-            $map['schedule'] = $get_data['schedule'];
+            $query->where('schedule', $get_data['schedule']);
         }
         if(isset($get_data['status'])){
-            $map['status'] = $get_data['status'];
+            $query->where('status', $get_data['status']);
         }
         if(isset($get_data['key']) && $get_data['word']){
-            $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $count = Queue::getListForCount($map);
+            $query->where($get_data['key'], 'like', '%' . $get_data['word'] . '%');
+        }
+
+        $count = $query->count();
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
             $page = new \Gy_Library\GyPage($count);
@@ -32,7 +34,7 @@ class QueueController extends GyListController {
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
 
-        $data_list = Queue::getListForPage($map, $page->nowPage, $page->listRows, 'create_date desc');
+        $data_list = $query->orderByRaw('create_date desc')->offset(($page->nowPage - 1) * $page->listRows)->limit($page->listRows)->get()->toArray();
 
         foreach($data_list as &$v){
 
@@ -70,8 +72,7 @@ class QueueController extends GyListController {
     }
 
     public function refreshWait(){
-        $map['status'] = DBCont::JOB_STATUS_WAITING;
-        $data_list = Queue::getList($map);
+        $data_list = Queue::where('status', DBCont::JOB_STATUS_WAITING)->orderByRaw('id desc')->get()->toArray();
         foreach($data_list as $data){
             Queue::refreshStatusOne($data['id']);
         }

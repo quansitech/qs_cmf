@@ -67,33 +67,6 @@ class Role extends Model
         return $role ? $role->toArray() : null;
     }
 
-    public static function getListForCount($map = []){
-        $query = self::query();
-
-        if(isset($map['name'])){
-            $query->where('name', $map['name']);
-        }
-        if(isset($map['status'])){
-            $query->where('status', $map['status']);
-        }
-
-        return $query->count();
-    }
-
-    public static function getListForPage($map = [], $page = 1, $rows = 20, $order = 'status desc, id desc'){
-        $query = self::query();
-
-        if(isset($map['name'])){
-            $query->where('name', $map['name']);
-        }
-        if(isset($map['status'])){
-            $query->where('status', $map['status']);
-        }
-
-        $offset = ($page - 1) * $rows;
-        return $query->orderByRaw($order)->offset($offset)->limit($rows)->get()->toArray();
-    }
-
     public static function getRoleList($map = [])
     {
         $query = self::where('status', DBCont::NORMAL_STATUS);

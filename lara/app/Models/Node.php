@@ -44,45 +44,6 @@ class Node extends Model{
         return $node ? $node->toArray() : null;
     }
 
-    public static function getListForCount($map){
-        $query = self::query();
-
-        if(isset($map['name'])){
-            $query->where('name', $map['name']);
-        }
-        if(isset($map['status'])){
-            $query->where('status', $map['status']);
-        }
-        if(isset($map['level'])){
-            $query->where('level', $map['level']);
-        }
-        if(isset($map['pid'])){
-            $query->where('pid', $map['pid']);
-        }
-
-        return $query->count();
-    }
-
-    public static function getListForPage($map, $page, $rows, $order = 'id desc'){
-        $query = self::query();
-
-        if(isset($map['name'])){
-            $query->where('name', $map['name']);
-        }
-        if(isset($map['status'])){
-            $query->where('status', $map['status']);
-        }
-        if(isset($map['level'])){
-            $query->where('level', $map['level']);
-        }
-        if(isset($map['pid'])){
-            $query->where('pid', $map['pid']);
-        }
-
-        $offset = ($page - 1) * $rows;
-        return $query->orderByRaw($order)->offset($offset)->limit($rows)->get()->toArray();
-    }
-
     public static function getModuleList(){
         return self::where('level', DBCont::LEVEL_MODULE)
                   ->where('status', DBCont::NORMAL_STATUS)

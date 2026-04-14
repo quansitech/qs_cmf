@@ -18,13 +18,13 @@ class ModelQueryTest extends TestCase
      */
     public function testConfigModelMethods()
     {
-        // 测试 getListForCount
-        $count = Config::getListForCount([]);
-        $this->assertIsInt($count, 'getListForCount 应该返回整数');
+        // 测试 count
+        $count = Config::count();
+        $this->assertIsInt($count, 'count 应该返回整数');
 
-        // 测试 getListForPage
-        $list = Config::getListForPage([], 1, 10);
-        $this->assertIsArray($list, 'getListForPage 应该返回数组');
+        // 测试分页查询
+        $list = Config::offset(0)->limit(10)->get()->toArray();
+        $this->assertIsArray($list, '分页查询应该返回数组');
 
         // 测试 getOne
         $first = Config::first();
@@ -74,13 +74,13 @@ class ModelQueryTest extends TestCase
         $modules = Node::getModuleList();
         $this->assertIsArray($modules, 'getModuleList 应该返回数组');
 
-        // 测试 getListForCount
-        $count = Node::getListForCount([]);
-        $this->assertIsInt($count, 'getListForCount 应该返回整数');
+        // 测试 count
+        $count = Node::count();
+        $this->assertIsInt($count, 'count 应该返回整数');
 
-        // 测试 getListForPage
-        $page = Node::getListForPage([], 1, 10);
-        $this->assertIsArray($page, 'getListForPage 应该返回数组');
+        // 测试分页查询
+        $page = Node::offset(0)->limit(10)->get()->toArray();
+        $this->assertIsArray($page, '分页查询应该返回数组');
 
         // 测试 getOne
         $first = Node::first();
@@ -100,13 +100,13 @@ class ModelQueryTest extends TestCase
         $list = Role::getRoleList([]);
         $this->assertIsArray($list, 'getRoleList 应该返回数组');
 
-        // 测试 getListForCount
-        $count = Role::getListForCount([]);
-        $this->assertIsInt($count, 'getListForCount 应该返回整数');
+        // 测试 count
+        $count = Role::count();
+        $this->assertIsInt($count, 'count 应该返回整数');
 
-        // 测试 getListForPage
-        $page = Role::getListForPage([], 1, 10);
-        $this->assertIsArray($page, 'getListForPage 应该返回数组');
+        // 测试分页查询
+        $page = Role::offset(0)->limit(10)->get()->toArray();
+        $this->assertIsArray($page, '分页查询应该返回数组');
 
         // 测试 getOne
         $first = Role::first();
@@ -142,17 +142,17 @@ class ModelQueryTest extends TestCase
      */
     public function testSyslogsModelMethods()
     {
-        // 测试 getListForCount
-        $count = Syslogs::getListForCount([]);
-        $this->assertIsInt($count, 'getListForCount 应该返回整数');
+        // 测试 count
+        $count = Syslogs::count();
+        $this->assertIsInt($count, 'count 应该返回整数');
 
-        // 测试 getListForPage
-        $page = Syslogs::getListForPage([], 1, 10);
-        $this->assertIsArray($page, 'getListForPage 应该返回数组');
+        // 测试分页查询
+        $page = Syslogs::offset(0)->limit(10)->get()->toArray();
+        $this->assertIsArray($page, '分页查询应该返回数组');
 
-        // 测试 getList
-        $list = Syslogs::getList([]);
-        $this->assertIsArray($list, 'getList 应该返回数组');
+        // 测试全量查询
+        $list = Syslogs::all()->toArray();
+        $this->assertIsArray($list, '全量查询应该返回数组');
     }
 
     /**

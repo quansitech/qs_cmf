@@ -29,13 +29,14 @@ class PostCateController extends GyListController{
 
     public function index(){
         $get_data = I('get.');
-        $map = array();
+        $query = PostCate::query();
         if(isset($get_data['status'])){
-            $map['status'] = $get_data['status'];
-        }        
+            $query->where('status', $get_data['status']);
+        }
         if(isset($get_data['key']) && $get_data['word']){
-            $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $data_list = PostCate::getList($map, 'sort asc');
+            $query->where($get_data['key'], 'like', '%' . $get_data['word'] . '%');
+        }
+        $data_list = $query->orderByRaw('sort asc')->get()->toArray();
         $tree = list_to_tree($data_list);
         $data_list = genSelectByTree($tree);
         foreach($data_list as $k=>$v){

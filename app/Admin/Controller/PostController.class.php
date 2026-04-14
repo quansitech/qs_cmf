@@ -25,15 +25,17 @@ class PostController extends GyListController{
 
     public function index(){
         $get_data = I('get.');
-        $map = array();
+        $query = Post::query();
         if(isset($get_data['cate_id'])){
-            $map['cate_id'] = $get_data['cate_id'];
-        }if(isset($get_data['status'])){
-            $map['status'] = $get_data['status'];
-        }        
+            $query->where('cate_id', $get_data['cate_id']);
+        }
+        if(isset($get_data['status'])){
+            $query->where('status', $get_data['status']);
+        }
         if(isset($get_data['key']) && $get_data['word']){
-            $map[$get_data['key']] = array('like', '%' . $get_data['word'] . '%');
-        }        $count = Post::getListForCount($map);
+            $query->where($get_data['key'], 'like', '%' . $get_data['word'] . '%');
+        }
+        $count = $query->count();
         $per_page = C('ADMIN_PER_PAGE_NUM', null, false);
         if($per_page === false){
             $page = new \Gy_Library\GyPage($count);
@@ -41,8 +43,8 @@ class PostController extends GyListController{
         else{
             $page = new \Gy_Library\GyPage($count, $per_page);
         }
-        
-        $data_list = Post::getListForPage($map, $page->nowPage, $page->listRows, 'sort asc');
+
+        $data_list = $query->orderByRaw('sort asc')->offset(($page->nowPage - 1) * $page->listRows)->limit($page->listRows)->get()->toArray();
         
 
         $builder = new \Qscmf\Builder\ListBuilder();
