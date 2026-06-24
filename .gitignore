@@ -14,6 +14,9 @@
 .phpunit.result.cache
 phpunit.xml
 
+# Kahlan schema 缓存（由 migrate 自动生成的派生物，勿提交）
+/lara/specs/Support/schema_cache.php
+
 
 /www/Public/static/dist/admin
 /app/Admin/View/default/Public/vendor.html
@@ -36,3 +39,4 @@ CLAUDE.md*.py\nstats.html
 CLAUDE.md
 AGENTS.md
 /openspec
+.codegraph
