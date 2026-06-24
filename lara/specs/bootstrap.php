@@ -121,6 +121,18 @@ if (! $diContainer->bound(\Qscmf\Contracts\RbacCheckerInterface::class)) {
     );
 }
 
+// QsController 构造注入的默认协作者：绑成无副作用 mock，spec 内即可零参 new Controller()。
+// QsController::__construct(?AuthStarter, ?BackendInitializer) 在参数为 null 时走容器兜底，
+// 故此处绑定让所有控制器子类的「默认构造」天然跳过 _initialize 的鉴权/菜单/Hook 副作用。
+// 注：这些是 Qscmf\Core 下的 think-core 协作者，其结构契约测试应在 think-core 仓库完成；
+// qs_cmf 的 specs 绑定 mock 仅服务于自身控制器测试，不承担 core 协作者的测试职责。
+if (! $diContainer->bound(\Qscmf\Core\AuthStarter::class)) {
+    $diContainer->instance(\Qscmf\Core\AuthStarter::class, mockAuthStarter());
+}
+if (! $diContainer->bound(\Qscmf\Core\BackendInitializer::class)) {
+    $diContainer->instance(\Qscmf\Core\BackendInitializer::class, mockBackendInitializer());
+}
+
 // 4. SQL 捕获：通过 beforeExecuting 钩子记录所有即将执行的 SQL（执行前触发，不受查询成败影响）。
 $GLOBALS['__qs_kahlan_sql_buffer'] = [];
 
@@ -305,6 +317,51 @@ function cleanTables(array $tables): void
 // PHP 语言机制保证：newInstanceWithoutConstructor 不调用 __construct，因此
 // Think\Controller::__construct() 里的 method_exists($this,'_initialize') 检查
 // 根本不会执行 —— 比 swapClass 的「让 method_exists 返回 false」更彻底。
+//
+// 另一条路径（推荐）：QsController 的 _initialize 已重构为委托 BackendInitializer
+// 协作者（构造注入）。测试时传入 mock 的 AuthStarter + BackendInitializer，控制器走
+// 真实构造但 _initialize 的副作用被 mock 吞掉。见 mockAuthStarter / mockBackendInitializer。
+
+/**
+ * 返回一个鉴权协作者的 mock：resetRbac/verifyLogin/authorize 全为 no-op。
+ *
+ * 用于 QsController 构造注入（__construct(?AuthStarter, ?BackendInitializer)），
+ * 测试时传入此 mock，让 _initialize 里的鉴权三步不产生副作用。
+ *
+ * @return \Qscmf\Core\AuthStarter
+ */
+function mockAuthStarter(): \Qscmf\Core\AuthStarter
+{
+    return new class extends \Qscmf\Core\AuthStarter {
+        public function resetRbac(): void {}
+        public function verifyLogin(): void {}
+        public function authorize(): void {}
+    };
+}
+
+/**
+ * 返回一个后台初始化协作者的 mock：initialize() 全为 no-op。
+ *
+ * 用于 QsController 构造注入，测试时传入此 mock，让 _initialize 委托的菜单/Hook/
+ * layoutProps 全部副作用被吞掉。这是消除 _initialize 副作用的最干净方式——
+ * mock 整个协作者 = 跳过全部后台初始化逻辑。
+ *
+ * @return \Qscmf\Core\BackendInitializer
+ */
+function mockBackendInitializer(): \Qscmf\Core\BackendInitializer
+{
+    return new class extends \Qscmf\Core\BackendInitializer {
+        public function __construct()
+        {
+            // 不调父构造（父构造需要 RbacCheckerInterface，测试 mock 无需）
+        }
+
+        public function initialize(\Qscmf\Core\QsController $controller): void
+        {
+            // no-op：吞掉全部后台初始化副作用
+        }
+    };
+}
 
 
 

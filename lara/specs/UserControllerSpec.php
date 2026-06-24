@@ -7,10 +7,10 @@
  * ThinkPHP 的 error()/success() 的 qs_exit、IS_POST、AntdAdmin render，属集成测试范畴，
  * 不在此覆盖。
  *
- * 构造策略：在 beforeAll 里调 bindControllerWithoutInit()，把 UserController 绑定到
- * 一个跳过构造的工厂闭包（ReflectionClass::newInstanceWithoutConstructor）。之后用
- * qs_instantiate(UserController::class) 拿到的实例不触发 QsController::_initialize()
- * 的 RBAC/菜单/session/Hook 副作用，且不污染类符号表。
+ * 构造策略：QsController::__construct(?AuthStarter, ?BackendInitializer) 在参数为 null 时
+ * 走容器兜底。bootstrap.php 已把两个协作者绑成无副作用 mock，故直接 new UserController()
+ * 即可——控制器走真实构造（属性正常初始化），_initialize 的鉴权/菜单/Hook 副作用被 mock 吞掉。
+ * 比反射跳过构造更干净，且控制器属性就绪。
  *
  * protected 方法仍需反射调用（这是 PHP 访问控制，不是 controller 构造问题）。
  */
@@ -26,14 +26,11 @@ use Illuminate\Support\Collection;
 describe('UserController 数据逻辑方法', function () {
 
     beforeAll(function () {
-        // 把 UserController 绑定到「无副作用构造」工厂：之后 qs_instantiate() 拿到的实例
-        // 跳过 QsController::_initialize() 的 RBAC/菜单/session/Hook 副作用，替代旧的 swapClass。
-        bindControllerWithoutInit(UserController::class);
-
         // user/role/role_user 表结构由 bootstrap 的 loadCachedSchema() 从迁移缓存自动建好，
         // 无需在此 defineTables。修改迁移后跑 php artisan migrate 即自动刷新。
         // 被测的 4 个 protected 方法是纯 DB 逻辑，不依赖 IS_POST/sysLogs
-        //（那些只在 _initialize/public action，已通过 bindControllerWithoutInit 跳过）。
+        //（那些只在 _initialize/public action，已通过 mock 协作者跳过）。
+        // 协作者的无副作用 mock 由 bootstrap 全局绑定到容器，直接 new UserController() 即可。
     });
 
     beforeEach(function () {
@@ -48,7 +45,8 @@ describe('UserController 数据逻辑方法', function () {
         // 因此必须包在 captureSql 内，才能同时捕获子查询与主查询。
         $captureAfterApply = function (array $getData) {
             return captureSql(function () use ($getData) {
-                $controller = qs_instantiate(UserController::class);
+                // 容器默认绑定无副作用协作者，零参构造即可跳过 _initialize 副作用
+                $controller = new UserController();
                 $query = User::query();
                 callProtected($controller, 'applySearchConditions', [$query, $getData]);
                 $query->get();
@@ -143,7 +141,7 @@ describe('UserController 数据逻辑方法', function () {
                 ['user_id' => 1, 'role_id' => 7], // 旧（会被删）
             ]);
 
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             callProtected($controller, 'saveUserRole', [1, 3]);
 
             // 该 user 只剩新关联（真实 role_user 无 id 主键，仅 user_id/role_id 两列）
@@ -155,14 +153,14 @@ describe('UserController 数据逻辑方法', function () {
         it('传入 null 角色时只删不建', function () {
             Capsule::table('role_user')->insert(['user_id' => 2, 'role_id' => 5]);
 
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             callProtected($controller, 'saveUserRole', [2, null]);
 
             expect(Capsule::table('role_user')->where('user_id', 2)->count())->toBe(0);
         });
 
         it('原无关联时传入新角色直接建立', function () {
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             callProtected($controller, 'saveUserRole', [3, 9]);
 
             $rows = Capsule::table('role_user')->where('user_id', 3)->get();
@@ -176,7 +174,7 @@ describe('UserController 数据逻辑方法', function () {
                 ['user_id' => 5, 'role_id' => 1], // 其它用户，不应被影响
             ]);
 
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             callProtected($controller, 'saveUserRole', [4, 2]);
 
             expect(Capsule::table('role_user')->where('user_id', 4)->pluck('role_id')->all())->toBe([2]);
@@ -193,14 +191,14 @@ describe('UserController 数据逻辑方法', function () {
                 ['id' => 3, 'name' => '已禁用', 'status' => DBCont::FORBIDDEN_STATUS],
             ]);
 
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             $options = callProtected($controller, 'getRoleOptions');
 
             expect($options)->toBe([1 => '管理员', 2 => '编辑']);
         });
 
         it('无角色时返回空数组', function () {
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             expect(callProtected($controller, 'getRoleOptions'))->toBe([]);
         });
     });
@@ -209,7 +207,7 @@ describe('UserController 数据逻辑方法', function () {
 
         // 给定 user_ids 集合，返回 [user_id => '角色名1,角色名2'] 映射
         $getMap = function (array $userIds): array {
-            $controller = qs_instantiate(UserController::class);
+            $controller = new UserController();
             return callProtected($controller, 'getUserRolesMap', [collect($userIds)]);
         };
 
