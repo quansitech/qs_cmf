@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "tiderjian/think-core": "^15.0",
+        "tiderjian/think-core": "^15.0@dev",
         "funkjedi/composer-include-files": "^1.0",
         "quansitech/antd-admin": "^2.0",
         "quansitech/qscmf-buttontype-modal": "^4.0",
@@ -23,7 +23,8 @@
         "phpunit/phpunit": "^10.0",
         "laravel/dusk": "^v8.2.5",
         "mockery/mockery": "^1.2",
-        "fakerphp/faker": "^1.10.0"
+        "fakerphp/faker": "^1.10.0",
+        "kahlan/kahlan": "^6.1"
     },
     "extra": {
         "include_files": [
@@ -50,6 +51,8 @@
     "scripts": {
         "test": "./vendor/bin/phpunit",
         "test:filter": "./vendor/bin/phpunit --filter",
+        "test:kahlan": "./vendor/bin/kahlan --config=kahlan-config.php",
+        "test:kahlan:coverage": "XDEBUG_MODE=coverage ./vendor/bin/kahlan --config=kahlan-config.php --coverage=1",
         "post-autoload-dump": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "./vendor/bin/qsinstall",
@@ -72,6 +75,13 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "composer",
+            "url": "https://composer.quansitech.com"
+        },
+        {
+            "packagist.org": false
         }
     ]
 }
