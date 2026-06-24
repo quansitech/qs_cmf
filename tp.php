@@ -1,5 +1,7 @@
 <?php
-define('ROOT_PATH', __DIR__);
+// think-core 的 ConstDefine.php 已定义 ROOT_PATH 常量，此处仅在未定义时兜底定义，
+// 避免测试沙箱子进程（已继承父进程常量）require 本文件时报 "already defined" 错误。
+defined('ROOT_PATH') || define('ROOT_PATH', __DIR__);
 // 应用入口文件
 ini_set('display_errors', '0');
 

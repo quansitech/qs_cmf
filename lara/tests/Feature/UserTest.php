@@ -30,8 +30,8 @@ class UserTest extends TestCase {
     }
 
     public function testDelete(){
-        DB::insert("INSERT INTO `qs_user` (`id`, `nick_name`, `salt`, `pwd`, `email`, `telephone`, `register_date`, `status`, `last_login_time`, `last_login_ip`) VALUES
-(2, 'tider', 275489, '7b082838e7b48377b2d158fa47c99857', 'tider@qq.com', '13800003021', 1560250480, 1, 0, '')");
+        DB::insert("INSERT INTO qs_user (id, nick_name, pwd, email, telephone, register_date, status, last_login_time, last_login_ip) OVERRIDING SYSTEM VALUE VALUES
+(2, 'tider', '\$2y\$10\$uzQAmdyLqKe.XKjg74ibvufh5F2ERnazogAfE9K3rOw2UDCWqWqK', 'tider@qq.com', '13800003021', 1560250480, 1, 0, '')");
 
         $this->loginSuperAdmin();
 
