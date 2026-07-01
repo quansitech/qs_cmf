@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "tiderjian/think-core": "^15.0@dev",
+        "tiderjian/think-core": "^15.0",
         "funkjedi/composer-include-files": "^1.0",
         "quansitech/antd-admin": "^2.0",
         "quansitech/qscmf-buttontype-modal": "^4.0",
@@ -67,21 +67,5 @@
             "easywechat-composer/easywechat-composer": true,
             "funkjedi/composer-include-files": true
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../think-core",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "composer",
-            "url": "https://composer.quansitech.com"
-        },
-        {
-            "packagist.org": false
-        }
-    ]
+    }
 }
