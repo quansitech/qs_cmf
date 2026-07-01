@@ -22,7 +22,8 @@ class AuthTest extends TestCase {
     public function testLoginFail(){
         $content = $this->post('/Admin/public/login', ['uid' => 'admin', 'pwd' => 'admin']);
 
-        $this->assertTrue(Str::contains($content, '用户名或密码错误'));
+        // admin 用户存在但密码错误，v15 返回跳转提示页含「密码错误」
+        $this->assertTrue(Str::contains($content, '密码错误'));
     }
 
     public function testDashboard(){
@@ -30,6 +31,10 @@ class AuthTest extends TestCase {
         $this->loginSuperAdmin();
         $content = $this->get('/Admin/Dashboard/index');
 
-        $this->assertTrue(Str::contains($content, '<title>网站概况｜后台管理</title>'));
+        // v15 后台为 Inertia + React 页面，断言 Inertia page 的 component 与 metaTitle
+        $page = $this->inertiaPage($content);
+        $this->assertNotNull($page, 'Dashboard 响应应为 Inertia 页面');
+        $this->assertEquals('Dashboard/Index', $page['component']);
+        $this->assertEquals('网站概况', $page['props']['layoutProps']['metaTitle']);
     }
 }

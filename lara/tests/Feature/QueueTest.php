@@ -14,7 +14,7 @@ class QueueTest extends TestCase {
 
     public function testQueueJob(){
         $id = Str::uuid()->getHex();
-        DB::table('qs_queue')->insert([
+        DB::table('queue')->insert([
             [
                 'id' => $id,
                 'job' => '\Common\Job\TestJob',
@@ -25,7 +25,7 @@ class QueueTest extends TestCase {
                 'queue' => 'test',
             ]
         ]);
-        $queue = (array)DB::table('qs_queue')->first();
+        $queue = (array)DB::table('queue')->first();
 
         $content = $this->runJob($queue['job'], $queue['args']);
 

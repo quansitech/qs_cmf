@@ -20,7 +20,7 @@ class UploadTest extends TestCase {
 
         $content = json_decode($content, true);
         $this->assertTrue($content['status'] == 1);
-        $this->assertDatabaseHas('qs_file_pic', [
+        $this->assertDatabaseHas('file_pic', [
             'id' => $content['file_id']
         ]);
         $this->assertFileExists($this->laraPath() . '/../www/' . $content['url']);

@@ -29,6 +29,17 @@ define('QS_PROJECT_ROOT', dirname(__DIR__, 2));
 // 1. Composer 自动加载（include_files 顺带载入 think-core 函数与 Eloquent macros）
 require QS_PROJECT_ROOT . '/vendor/autoload.php';
 
+// 1b. 预定义 ThinkPHP 运行时常量与 URL 配置 —— 这些在生产环境由 ThinkPHP 的
+//     Dispatcher/convention 阶段定义/加载，但 Kahlan 单元环境不走 ThinkPHP 请求流程，
+//     需在此预置，否则 U() 等函数会因常量未定义（__APP__/__ROOT__）或配置为 null
+//     （URL_PATHINFO_DEPR 触发 str_replace deprecation）而报错。
+if (!defined('__APP__')) {
+    define('__APP__', '/index.php');
+}
+if (function_exists('C') && !C('URL_PATHINFO_DEPR')) {
+    C('URL_PATHINFO_DEPR', '/');
+}
+
 // 2. 注册 think-core / app 下 ThinkPHP 风格 .class.php 类的自动加载器。
 //    复刻 Testing\TestCase::loadTpConfig() 的加载逻辑，但不依赖 Laravel 的 base_path()。
 spl_autoload_register(function ($class) {

@@ -17,7 +17,11 @@ class RoleControllerTest extends TestCase
 
         $content = $this->get('/Admin/Role/index');
 
-        $this->assertTrue(Str::contains($content, '用户组列表') || Str::contains($content, '角色管理'), '应该包含用户组列表标题');
+        // v15 后台为 Inertia 页面，断言 page 的 component 与 metaTitle
+        $page = $this->inertiaPage($content);
+        $this->assertNotNull($page, '角色列表页应为 Inertia 页面');
+        $this->assertEquals('Admin/Table', $page['component']);
+        $this->assertEquals('用户组列表', $page['props']['layoutProps']['metaTitle']);
     }
 
     /**
@@ -62,13 +66,15 @@ class RoleControllerTest extends TestCase
         $this->loginSuperAdmin();
 
         $name = 'test_role_' . time();
-        $content = $this->post('/Admin/Role/add', [
+        $this->post('/Admin/Role/add', [
+            '__hash__' => $this->getTpToken('/admin/role/add', false),
             'name' => $name,
             'status' => 1,
             'remark' => '测试角色',
         ]);
 
-        $this->assertTrue(Str::contains($content, '成功') || Str::contains($content, 'success'), '应该显示成功信息');
+        // v15 新增成功由前端处理（无成功文案），改断言记录已落库
+        $this->assertDatabaseHas('role', ['name' => $name]);
 
         // 清理
         Capsule::table('role')->where('name', $name)->delete();
@@ -83,7 +89,7 @@ class RoleControllerTest extends TestCase
 
         // 先创建一个测试角色
         $role = Capsule::table('role')->insertGetId([
-            'name' => 'test_forbid_' . time(),
+            'name' => 'test_fb_' . time(),
             'status' => 1,
             'remark' => '测试禁用角色',
         ]);
@@ -111,7 +117,7 @@ class RoleControllerTest extends TestCase
 
         // 先创建一个禁用的测试角色
         $role = Capsule::table('role')->insertGetId([
-            'name' => 'test_resume_' . time(),
+            'name' => 'test_rs_' . time(),
             'status' => 0,
             'remark' => '测试启用角色',
         ]);
@@ -139,7 +145,7 @@ class RoleControllerTest extends TestCase
 
         // 先创建一个测试角色
         $role = Capsule::table('role')->insertGetId([
-            'name' => 'test_delete_' . time(),
+            'name' => 'test_dl_' . time(),
             'status' => 1,
             'remark' => '测试删除角色',
         ]);
@@ -161,9 +167,9 @@ class RoleControllerTest extends TestCase
     protected function tearDown(): void
     {
         Capsule::table('role')->where('name', 'like', 'test_role_%')->delete();
-        Capsule::table('role')->where('name', 'like', 'test_forbid_%')->delete();
-        Capsule::table('role')->where('name', 'like', 'test_resume_%')->delete();
-        Capsule::table('role')->where('name', 'like', 'test_delete_%')->delete();
+        Capsule::table('role')->where('name', 'like', 'test_fb_%')->delete();
+        Capsule::table('role')->where('name', 'like', 'test_rs_%')->delete();
+        Capsule::table('role')->where('name', 'like', 'test_dl_%')->delete();
         parent::tearDown();
     }
 }

@@ -52,20 +52,10 @@ class ModelValidationTest extends TestCase
         $this->assertFalse($result, '邮箱格式验证应该失败');
         $this->assertTrue($user->getErrors()->has('email'), '应该有 email 字段的错误');
 
-        // 测试 4: 密码长度不足
-        $user = new User();
-        $user->nick_name = 'test_user4';
-        $user->pwd = '123'; // 密码太短
-        $user->telephone = '13800138002';
-        $user->email = 'test4@example.com';
-        $user->status = 1;
+        // 注：密码长度验证（min:6|max:12）在 v15 已从 User 模型 rules 移除
+        // （pwd 仅 required），故移除对应的长度验证测试段。
 
-        $result = $user->save();
-
-        $this->assertFalse($result, '密码长度验证应该失败');
-        $this->assertTrue($user->getErrors()->has('pwd'), '应该有 pwd 字段的错误');
-
-        // 测试 5: 更新用户时的 unique 验证（应该允许相同的 nick_name）
+        // 测试 4: 更新用户时的 unique 验证（应该允许相同的 nick_name）
         // 先创建一个用户
         $user = new User();
         $user->nick_name = 'test_unique_user';

@@ -22,7 +22,7 @@ class UserTest extends TestCase {
 
         $this->assertTrue(Str::contains($content, '新增成功'));
 
-        $this->assertDatabaseHas('qs_user', [
+        $this->assertDatabaseHas('user', [
             'nick_name' => 'tider',
             'email' => 'tider@qq.com',
             'telephone' => '13800003021'
@@ -39,7 +39,7 @@ class UserTest extends TestCase {
 
         $this->assertTrue(Str::contains($content, '删除成功'));
 
-        $this->assertDatabaseMissing('qs_user', [
+        $this->assertDatabaseMissing('user', [
             'nick_name' => 'tider',
             'email' => 'tider@qq.com',
             'telephone' => '13800003021'

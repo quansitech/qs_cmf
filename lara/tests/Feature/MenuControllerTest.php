@@ -17,7 +17,11 @@ class MenuControllerTest extends TestCase
 
         $content = $this->get('/Admin/Menu/index');
 
-        $this->assertTrue(Str::contains($content, '菜单管理'), '应该包含菜单管理标题');
+        // v15 后台为 Inertia 页面，断言 page 的 metaTitle
+        $page = $this->inertiaPage($content);
+        $this->assertNotNull($page, '菜单列表页应为 Inertia 页面');
+        $this->assertEquals('Admin/Tabs', $page['component']);
+        $this->assertEquals('菜单管理', $page['props']['layoutProps']['metaTitle']);
     }
 
     /**
@@ -54,7 +58,7 @@ class MenuControllerTest extends TestCase
         // 先创建一个测试菜单
         $menu = Capsule::table('menu')->insertGetId([
             'title' => '测试菜单_' . time(),
-            'name' => 'test_menu_' . time(),
+            'icon' => '',
             'sort' => 0,
             'type' => 1,
             'status' => 1,
@@ -78,7 +82,8 @@ class MenuControllerTest extends TestCase
         $this->loginSuperAdmin();
 
         $title = '测试菜单_' . time();
-        $content = $this->post('/Admin/Menu/add', [
+        $this->post('/Admin/Menu/add', [
+            '__hash__' => $this->getTpToken('/admin/menu/add', false),
             'title' => $title,
             'sort' => 0,
             'type' => 1,
@@ -87,7 +92,8 @@ class MenuControllerTest extends TestCase
             'level' => 1,
         ]);
 
-        $this->assertTrue(Str::contains($content, '成功') || Str::contains($content, 'success'), '应该显示成功信息');
+        // v15 新增成功由前端处理（无成功文案），改断言记录已落库
+        $this->assertDatabaseHas('menu', ['title' => $title]);
 
         // 清理
         Capsule::table('menu')->where('title', $title)->delete();
@@ -103,7 +109,7 @@ class MenuControllerTest extends TestCase
         // 先创建一个测试菜单
         $menu = Capsule::table('menu')->insertGetId([
             'title' => '测试菜单_forbid_' . time(),
-            'name' => 'test_forbid_' . time(),
+            'icon' => '',
             'sort' => 0,
             'type' => 1,
             'status' => 1,
@@ -135,7 +141,7 @@ class MenuControllerTest extends TestCase
         // 先创建一个禁用的测试菜单
         $menu = Capsule::table('menu')->insertGetId([
             'title' => '测试菜单_resume_' . time(),
-            'name' => 'test_resume_' . time(),
+            'icon' => '',
             'sort' => 0,
             'type' => 1,
             'status' => 0,
@@ -167,7 +173,7 @@ class MenuControllerTest extends TestCase
         // 先创建一个测试菜单
         $menu = Capsule::table('menu')->insertGetId([
             'title' => '测试菜单_delete_' . time(),
-            'name' => 'test_delete_' . time(),
+            'icon' => '',
             'sort' => 0,
             'type' => 1,
             'status' => 1,
@@ -191,7 +197,7 @@ class MenuControllerTest extends TestCase
      */
     protected function tearDown(): void
     {
-        Capsule::table('menu')->where('name', 'like', 'test_%')->delete();
+        Capsule::table('menu')->where('title', 'like', '测试菜单_%')->delete();
         parent::tearDown();
     }
 }

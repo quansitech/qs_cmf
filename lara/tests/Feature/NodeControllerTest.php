@@ -17,7 +17,11 @@ class NodeControllerTest extends TestCase
 
         $content = $this->get('/Admin/Node/index');
 
-        $this->assertTrue(Str::contains($content, '节点管理'), '应该包含节点管理标题');
+        // v15 后台为 Inertia 页面，断言 page 的 metaTitle
+        $page = $this->inertiaPage($content);
+        $this->assertNotNull($page, '节点列表页应为 Inertia 页面');
+        $this->assertEquals('Admin/Tabs', $page['component']);
+        $this->assertEquals('节点管理', $page['props']['layoutProps']['metaTitle']);
     }
 
     /**
@@ -77,7 +81,8 @@ class NodeControllerTest extends TestCase
         $this->loginSuperAdmin();
 
         $name = 'TestNode_' . time();
-        $content = $this->post('/Admin/Node/add', [
+        $this->post('/Admin/Node/add', [
+            '__hash__' => $this->getTpToken('/admin/node/add', false),
             'name' => $name,
             'title' => '测试节点',
             'sort' => 0,
@@ -88,7 +93,8 @@ class NodeControllerTest extends TestCase
             'controller' => 'Test',
         ]);
 
-        $this->assertTrue(Str::contains($content, '成功') || Str::contains($content, 'success'), '应该显示成功信息');
+        // v15 新增成功由前端处理（无成功文案），改断言记录已落库
+        $this->assertDatabaseHas('node', ['name' => $name]);
 
         // 清理
         Capsule::table('node')->where('name', $name)->delete();
